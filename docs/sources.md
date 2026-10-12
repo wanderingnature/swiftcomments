@@ -26,3 +26,8 @@ the commit that added it says what changed.
 | `tests/test_db.py` | new; the three regexes are `CITATION_RE`, `DEFICIENCY_RE`, `FIRSTPERSON_RE` of `scripts/substance/floor_filter.py` | |
 | `scripts/load_csv.py` | new (plan 3.1) | the loader of the bulk download |
 | `tests/test_load_csv.py`, `tests/fixtures/bulk_cut.csv` | new; the fixture is twenty records of the bulk download | |
+| `shared/text_norm.py` | `shared/text_norm.py` | copied, byte for byte |
+| `shared/near_duplicates.py` | `shared/near_duplicates.py` | copied, byte for byte |
+| `shared/project_context.py` | `shared/project_context.py` | plan 4.2: a dataclass of constants in place of the registry row; `render_sql` renders `{analysis}.` and `{src}.` to nothing; `db_config` is the SQLite path and `dict_connect` opens through `shared/db.py`; `psycopg`, the env-driven DB config, the schema-name checks and `dict_connect_dsn` gone |
+| `shared/instrument.py` | `shared/instrument.py` | plan 5.2 edit 8: the serving-name table, `SCORING_MODELS`, the endpoint rates and `gpu_rate_per_min` gone; `configured_model()` reads `LLM_MODEL`; `model_of`, `weights_of`, `same_weights`, `is_measured_model` keep their names over the one name |
+| `shared/llm_client.py` | `shared/llm_client.py` | plan 5.2 edit 8: the server and the model from `LLM_BASE_URL` and `LLM_MODEL`, a Bearer header from `LLM_API_KEY` only; the by-host key lookup, the OpenRouter provider pin, the dedicated-endpoint names and the Fireworks scale-up retries gone; thinking off with both spellings |
