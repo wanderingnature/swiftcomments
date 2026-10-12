@@ -1,0 +1,60 @@
+# ASK 1 — the span asks for work to be done but names no action and subject.
+# Without one of these the span is a disposition ("please reconsider", "I urge
+# you to reject") and ASK is 0. The doc's list (reduced-ask-scoring-instrument.md,
+# ASK level 1) with its inflections written out: the matcher is exact-phrase,
+# not stemming.
+study
+studied
+studying
+studies
+analyze
+analyzed
+analyzing
+analyses
+analysis
+consider
+considered
+considering
+consideration
+look
+looked
+looking
+review
+reviewed
+reviewing
+assess
+assessed
+assessing
+assessment
+evaluate
+evaluated
+evaluating
+evaluation
+examine
+examined
+examining
+disclose
+disclosed
+disclosing
+disclosure
+explain
+explained
+explaining
+quantify
+quantified
+quantifying
+prepare
+prepared
+preparing
+conduct
+conducted
+conducting
+address
+addressed
+addressing
+reconcile
+reconciled
+reconciling
+identify
+identified
+identifying

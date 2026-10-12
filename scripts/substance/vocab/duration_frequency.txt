@@ -1,0 +1,30 @@
+# STAND 2 — the connection to this place carries a duration or a frequency.
+# The numeric forms ("for 20 years", "since 1994", "3 times a year") are
+# matched by the numeric tests in grade.py, not from this list.
+decades
+a decade
+generations
+my whole life
+all my life
+lifelong
+every year
+every season
+every fall
+every spring
+every summer
+every winter
+every month
+every week
+annually
+seasonally
+yearly
+monthly
+weekly
+daily
+regularly
+each year
+each season
+each fall
+each spring
+each summer
+each winter

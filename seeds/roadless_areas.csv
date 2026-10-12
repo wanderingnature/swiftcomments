@@ -1,0 +1,2332 @@
+id,name,forest,state,state_name,acres
+1,Bald Mountain,Pisgah National Forest,NC,North Carolina,11085
+2,Balsam Cone,Pisgah National Forest,NC,North Carolina,10591
+3,Woods Mountain,Pisgah National Forest,NC,North Carolina,9602
+4,South Mills River,Pisgah National Forest,NC,North Carolina,8588
+5,Snowbird,Nantahala National Forest,NC,North Carolina,8489
+6,Cheoah Bald,Nantahala National Forest,NC,North Carolina,7795
+7,Jarrett Creek,Pisgah National Forest,NC,North Carolina,7485
+8,Harper Creek,Pisgah National Forest,NC,North Carolina,7325
+9,Dobson Knob,Pisgah National Forest,NC,North Carolina,6111
+10,Lost Cove,Pisgah National Forest,NC,North Carolina,5944
+11,Mackey Mountain,Pisgah National Forest,NC,North Carolina,5934
+12,Sheep Ridge Addition,Croatan National Forest,NC,North Carolina,5808
+13,Laurel Mountain,Pisgah National Forest,NC,North Carolina,5683
+14,Juneau-Skagway Icefield,Tongass National Forest,AK,Alaska,1187268
+15,Oakey Mountain,Talladega National Forest,AL,Alabama,6129
+16,Pedestal Rocks,Ozark-St. Francis National Forest,AR,Arkansas,21957
+17,Pinaleno,Coronado National Forest,AZ,Arizona,130920
+18,Boundary Peak (CA),Inyo National Forest,CA,California,210884
+19,Hermosa,San Juan National Forest,CO,Colorado,148103
+20,Pinhook,Osceola National Forest,FL,Florida,15405
+21,Pink Knob,Chattahoochee National Forest,GA,Georgia,12127
+22,Boulder - White Clouds,Sawtooth National Forest,ID,Idaho,322653
+23,Burke Branch,Shawnee National Forest,IL,Illinois,6231
+24,Mogan Ridge,Hoosier National Forest,IN,Indiana,8435
+25,Wolfpen,Daniel Boone National Forest,KY,Kentucky,2835
+26,Saline Bayou W & S River Corridor,Kisatchie National Forest,LA,Louisiana,5355
+27,Caribou - Speckled Ext,White Mountain National Forest,ME,Maine,5988
+28,Fibre,Hiawatha National Forest,MI,Michigan,7432
+29,Kawishiwi Lake To Sawbill,Superior National Forest,MN,Minnesota,15305
+30,Big Creek Rare II Study Area,Mark Twain National Forest,MO,Missouri,9277
+31,Sandy Creek Rare Ii Area,Homochitto National Forest,MS,Mississippi,2620
+32,Bear - Marshall - Scapegoat - Swan,Lewis and Clark National Forest,MT,Montana,344022
+33,Tusquitee Bald,Nantahala National Forest,NC,North Carolina,13670
+34,Wild River,White Mountain National Forest,NH,New Hampshire,46878
+35,Contiguous To Black & Aldo Leopold Wilderness,Gila National Forest,NM,New Mexico,111883
+36,South Schell,Humboldt-Toiyabe National Forest,NV,Nevada,125614
+37,Beech Creek,Ouachita National Forest,OK,Oklahoma,8303
+38,South Kalmiopsis,Siskiyou National Forests,OR,Oregon,104477
+39,Tracy Ridge,Allegheny National Forest,PA,Pennsylvania,9034
+40,Catfish Lake North,Croatan National Forest,NC,North Carolina,11299
+41,El Toro Area,Caribbean National Forest,PR,Puerto Rico,12584
+42,Bee Cove,Sumter National Forest,SC,South Carolina,3025
+43,Indian Creek,Buffalo Gap National Grassland,SD,South Dakota,24666
+44,Bald Mountain,Cherokee National Forest,TN,Tennessee,11743
+45,Big Creek,National Forests in Texas,TX,Texas,1447
+46,0419020,Ashley National Forest,UT,Utah,355684
+47,Little River,George Washington National Forest,VA,Virginia,27292
+48,Devil's Den 09083,Green Mountain and Finger Lakes National Forests,VT,Vermont,9169
+49,Sawtooth,Okanogan National Forest,WA,Washington,122194
+50,09159 - Thornapple,Chequamegon-Nicolet National Forest,WI,Wisconsin,9744
+51,Seneca Creek,Monongahela National Forest,WV,West Virginia,22287
+52,Grayback Ridge,Bridger-Teton National Forest,WY,Wyoming,295113
+53,Hellhole,Umatilla National Forest,OR,Oregon,65679
+54,College Fiord,Chugach National Forest,AK,Alaska,1130818
+55,Bering Lake,Chugach National Forest,AK,Alaska,965076
+56,Nellie Juan,Chugach National Forest,AK,Alaska,713697
+57,Taku-Snettisham,Tongass National Forest,AK,Alaska,664928
+58,Chichagof,Tongass National Forest,AK,Alaska,555858
+59,Spires,Tongass National Forest,AK,Alaska,533746
+60,Brabazon Addition,Tongass National Forest,AK,Alaska,498819
+61,Tasnuna River,Chugach National Forest,AK,Alaska,348866
+62,Yakutat Forelands,Tongass National Forest,AK,Alaska,323648
+63,Blue Mountain,Talladega National Forest,AL,Alabama,4986
+64,Cheaha B,Talladega National Forest,AL,Alabama,741
+65,Reed Brake,Talladega National Forest,AL,Alabama,621
+66,Cheaha A,Talladega National Forest,AL,Alabama,236
+67,East Fork,Ozark-St. Francis National Forest,AR,Arkansas,13037
+68,Blue Mountain,Ouachita National Forest,AR,Arkansas,9755
+69,Dismal Creek,Ozark-St. Francis National Forest,AR,Arkansas,9160
+70,Gee Creek,Ozark-St. Francis National Forest,AR,Arkansas,7957
+71,Indian Creek,Ozark-St. Francis National Forest,AR,Arkansas,7855
+72,Penhook,Ozark-St. Francis National Forest,AR,Arkansas,6566
+73,Brush Heap,Ouachita National Forest,AR,Arkansas,4205
+74,Little Blakely,Ouachita National Forest,AR,Arkansas,3342
+76,Chiricahua,Coronado National Forest,AZ,Arizona,76876
+77,Lower San Francisco,Apache-Sitgreaves National Forests,AZ,Arizona,59310
+78,Tumacacori,Coronado National Forest,AZ,Arizona,44594
+79,Painted Bluffs,Apache-Sitgreaves National Forests,AZ,Arizona,43118
+80,Lime Creek,Tonto National Forest,AZ,Arizona,42568
+81,Butterfly Roadless Area,Coronado National Forest,AZ,Arizona,42296
+82,Boulder,Tonto National Forest,AZ,Arizona,40359
+83,Sheridan Mountain,Prescott National Forest,AZ,Arizona,37600
+84,Mitchell Peak,Apache-Sitgreaves National Forests,AZ,Arizona,35398
+85,Sespe - Frazier,Los Padres National Forest,CA,California,106910
+86,Paiute,Inyo National Forest,CA,California,58712
+87,Carson - Iceberg,Stanislaus National Forest,CA,California,56430
+88,Rincon,Sequoia National Forest,CA,California,54610
+89,Siskiyou,Klamath National Forest,CA,California,54039
+90,Coyote Southeast,Inyo National Forest,CA,California,53159
+91,Kings River,Sierra National Forest,CA,California,52999
+92,Glass Mountain,Inyo National Forest,CA,California,52867
+93,Fox Mountain,Los Padres National Forest,CA,California,52072
+94,San Miguel,San Juan National Forest,CO,Colorado,64263
+95,Pagoda Peak,Routt National Forest,CO,Colorado,57676
+96,Storm Peak,San Juan National Forest,CO,Colorado,57617
+97,Bennet Mountain / Blowout / Willow Creek / Lion Point / Greenie Mountain,Rio Grande National Forest,CO,Colorado,52029
+98,Troublesome South,Routt National Forest,CO,Colorado,47359
+99,Bristol Head,Rio Grande National Forest,CO,Colorado,46087
+100,Comanche Peak Adjacent Area,Arapaho & Roosevelt National Forests,CO,Colorado,44158
+101,Gum Bay,Apalachicola National Forest,FL,Florida,11645
+102,Long Bay,Apalachicola National Forest,FL,Florida,5726
+103,Clear Lake,Apalachicola National Forest,FL,Florida,5592
+104,Alexander Springs Creek,Ocala National Forest,FL,Florida,2954
+105,Impassable Bay,Osceola National Forest,FL,Florida,2789
+106,Natural Area Wsa,Osceola National Forest,FL,Florida,2543
+107,Savannah,Apalachicola National Forest,FL,Florida,1927
+108,Farles Prairie,Ocala National Forest,FL,Florida,1901
+109,Lance Creek,Chattahoochee National Forest,GA,Georgia,9025
+110,Kelly Ridge,Chattahoochee National Forest,GA,Georgia,8325
+111,Sarah's Creek,Chattahoochee National Forest,GA,Georgia,6888
+112,Joe Gap,Chattahoochee National Forest,GA,Georgia,5321
+113,Rocky Mountain,Chattahoochee National Forest,GA,Georgia,4269
+114,Helton Creek,Chattahoochee National Forest,GA,Georgia,2348
+115,Boggs Creek,Chattahoochee National Forest,GA,Georgia,2073
+116,Big Mountain,Chattahoochee National Forest,GA,Georgia,1974
+117,Turner Creek,Chattahoochee National Forest,GA,Georgia,1495
+118,Lemhi Range,Salmon-Challis National Forest,ID,Idaho,308533
+119,Smoky Mountains,Sawtooth National Forest,ID,Idaho,304149
+120,Bighorn - Weitas,Nez Perce-Clearwater National Forest,ID,Idaho,254845
+121,Secesh,Payette National Forest,ID,Idaho,248088
+122,Peace Rock,Boise National Forest,ID,Idaho,191734
+123,Pioneer Mountains,Salmon-Challis National Forest,ID,Idaho,172460
+124,Hoodoo,Nez Perce-Clearwater National Forest,ID,Idaho,153868
+125,Italian Peak,Caribou-Targhee National Forest,ID,Idaho,141158
+126,Boulder - White Clouds,Salmon-Challis National Forest,ID,Idaho,139297
+127,Ripple Hollow,Shawnee National Forest,IL,Illinois,3788
+128,Burden Falls,Shawnee National Forest,IL,Illinois,485
+129,Bay Creek,Shawnee National Forest,IL,Illinois,120
+130,Eagle Creek,Shawnee National Forest,IL,Illinois,38
+131,Clear Springs,Shawnee National Forest,IL,Illinois,11
+132,Cunningham Brake Research Natural Area,Kisatchie National Forest,LA,Louisiana,1797
+133,Norwich Plains Revised Roadless Area,Ottawa National Forest,MI,Michigan,4360
+134,Bear Swamp,Huron-Manistee National Forest,MI,Michigan,3915
+135,Government Island,Hiawatha National Forest,MI,Michigan,225
+136,Delirium,Hiawatha National Forest,MI,Michigan,190
+137,Round Island,Hiawatha National Forest,MI,Michigan,2
+138,Brule Lake - Eagle Mountain,Superior National Forest,MN,Minnesota,12380
+139,Baker - Homer - Brule Lakes,Superior National Forest,MN,Minnesota,6712
+140,Phantom Lake,Superior National Forest,MN,Minnesota,6521
+141,Tait Lake,Superior National Forest,MN,Minnesota,6327
+142,Cabin Creek,Superior National Forest,MN,Minnesota,6071
+143,Mississippi Creek,Superior National Forest,MN,Minnesota,5717
+144,Little Indian Sioux,Superior National Forest,MN,Minnesota,996
+145,Hegman Lakes,Superior National Forest,MN,Minnesota,675
+146,Wood Lake,Superior National Forest,MN,Minnesota,596
+147,Swan Creek Rare II Study Area,Mark Twain National Forest,MO,Missouri,7310
+148,Spring Creek Rare II Study Area,Mark Twain National Forest,MO,Missouri,4899
+149,Anderson Mountain Rare II Study Area,Mark Twain National Forest,MO,Missouri,2741
+150,Irish Rare II Study Area,Mark Twain National Forest,MO,Missouri,1226
+151,Bmss Ra 1485,Flathead National Forest,MT,Montana,334275
+152,West Pioneer,Beaverhead-Deerlodge National Forest,MT,Montana,248631
+153,North Absaroka,Gallatin National Forest,MT,Montana,159075
+154,East Pioneer,Beaverhead-Deerlodge National Forest,MT,Montana,145082
+155,Hyalite - Porcupine - Buffalo Horn Wilderness Study Area,Gallatin National Forest,MT,Montana,143991
+156,West Big Hole,Beaverhead-Deerlodge National Forest,MT,Montana,133563
+157,Madison,Gallatin National Forest,MT,Montana,127859
+158,Bear - Marshall - Scapegoat - Swan,Lolo National Forest,MT,Montana,118485
+159,Selway - Bitterroot (01067),Bitterroot National Forest,MT,Montana,114953
+160,Magpie,Dakota Prairie Grasslands,ND,North Dakota,21281
+161,Bullion Butte,Dakota Prairie Grasslands,ND,North Dakota,19877
+162,Collar / Bennett - Cottonwood,Dakota Prairie Grasslands,ND,North Dakota,19697
+163,Strom - Hanson,Dakota Prairie Grasslands,ND,North Dakota,18957
+164,Kinley Plateau,Dakota Prairie Grasslands,ND,North Dakota,16900
+165,Sheyenne,Dakota Prairie Grasslands,ND,North Dakota,14537
+166,Twin Buttes,Dakota Prairie Grasslands,ND,North Dakota,13492
+167,Durler,Dakota Prairie Grasslands,ND,North Dakota,12464
+168,Lone Butte,Dakota Prairie Grasslands,ND,North Dakota,11465
+169,Pemigewasset,White Mountain National Forest,NH,New Hampshire,32255
+170,Kilkenny,White Mountain National Forest,NH,New Hampshire,28766
+171,Carr Mountain,White Mountain National Forest,NH,New Hampshire,17110
+172,Sandwich Range,White Mountain National Forest,NH,New Hampshire,16797
+173,Pemigewasset Ext,White Mountain National Forest,NH,New Hampshire,15840
+174,Great Gulf Ext.,White Mountain National Forest,NH,New Hampshire,15110
+175,Mt. Wolf - Gordon Pond,White Mountain National Forest,NH,New Hampshire,11846
+176,Presidential - Dry River Ext,White Mountain National Forest,NH,New Hampshire,10555
+177,Dartmouth Range,White Mountain National Forest,NH,New Hampshire,9233
+178,Devils Creek,Gila National Forest,NM,New Mexico,89916
+179,Contiguous To Gila Wilderness & Primitive Area,Gila National Forest,NM,New Mexico,79049
+180,Apache Kid Contiguous,Cibola National Forest,NM,New Mexico,67542
+181,Sawyers Peak,Gila National Forest,NM,New Mexico,59743
+182,Columbine - Hondo Wilderness Study Area,Carson National Forest,NM,New Mexico,43739
+183,Peloncillo (NM),Coronado National Forest,NM,New Mexico,43339
+184,West Face Sacramento Mountains,Lincoln National Forest,NM,New Mexico,41176
+185,Scott Mesa,Cibola National Forest,NM,New Mexico,39515
+186,Frisco Box,Gila National Forest,NM,New Mexico,38979
+187,Georges Canyon,Humboldt-Toiyabe National Forest,NV,Nevada,108551
+188,Toiyabe Range,Humboldt-Toiyabe National Forest,NV,Nevada,99225
+189,Pine Grove South,Humboldt-Toiyabe National Forest,NV,Nevada,88945
+190,Table Mtn. - East,Humboldt-Toiyabe National Forest,NV,Nevada,87789
+191,Arc Dome - Secret Bsn,Humboldt-Toiyabe National Forest,NV,Nevada,74782
+192,Pearl Peak,Humboldt-Toiyabe National Forest,NV,Nevada,71405
+193,Excelsior Mtns.,Humboldt-Toiyabe National Forest,NV,Nevada,69071
+194,Quinn,Humboldt-Toiyabe National Forest,NV,Nevada,62459
+195,Santa Rosa,Humboldt-Toiyabe National Forest,NV,Nevada,54555
+196,North Kalmiopsis,Siskiyou National Forests,OR,Oregon,91560
+197,Lord Flat Somers Point,Wallowa-Whitman National Forest,OR,Oregon,67738
+198,Twin Mountain,Wallowa-Whitman National Forest,OR,Oregon,58533
+199,Walla Walla River,Umatilla National Forest,OR,Oregon,34416
+200,Snake River,Wallowa-Whitman National Forest,OR,Oregon,31229
+201,Imnaha Face,Wallowa-Whitman National Forest,OR,Oregon,29575
+202,Roaring River,Mt. Hood National Forest,OR,Oregon,27316
+203,Maiden Peak,Deschutes National Forest,OR,Oregon,26432
+204,Allegheny Front,Allegheny National Forest,PA,Pennsylvania,7430
+205,Clarion River,Allegheny National Forest,PA,Pennsylvania,3821
+206,Cornplanter,Allegheny National Forest,PA,Pennsylvania,2929
+207,Minister Valley,Allegheny National Forest,PA,Pennsylvania,1417
+208,Hearts Content,Allegheny National Forest,PA,Pennsylvania,221
+209,Verbeck Island,Allegheny National Forest,PA,Pennsylvania,14
+210,Mameyes Area,Caribbean National Forest,PR,Puerto Rico,11150
+211,Big Mountain,Sumter National Forest,SC,South Carolina,2337
+212,Hellhole Ext,Francis Marion National Forest,SC,South Carolina,891
+213,Wambaw Ext,Francis Marion National Forest,SC,South Carolina,527
+214,Ellicott Rock 2,Sumter National Forest,SC,South Carolina,517
+215,Ellicott Rock 1,Sumter National Forest,SC,South Carolina,301
+216,Red Shirt,Buffalo Gap National Grassland,SD,South Dakota,17007
+217,South Fork,Dakota Prairie Grasslands,SD,South Dakota,7653
+218,Cheyenne River,Buffalo Gap National Grassland,SD,South Dakota,7572
+219,Twin Butte Creek,Dakota Prairie Grasslands,SD,South Dakota,6700
+220,Jim Wilson Canyon,Buffalo Gap National Grassland,SD,South Dakota,6024
+221,Beaver Park,Black Hills National Forest,SD,South Dakota,5010
+222,First Black Canyon,Buffalo Gap National Grassland,SD,South Dakota,4965
+223,Flint Mill Gap,Cherokee National Forest,TN,Tennessee,9494
+224,Upper Bald River,Cherokee National Forest,TN,Tennessee,9202
+225,Brushy Ridge,Cherokee National Forest,TN,Tennessee,7469
+226,Sycamore Creek,Cherokee National Forest,TN,Tennessee,6984
+227,Big Laurel Branch Addition,Cherokee National Forest,TN,Tennessee,5577
+228,Stone Mountain,Cherokee National Forest,TN,Tennessee,5367
+229,Beaver Dam Creek,Cherokee National Forest,TN,Tennessee,5070
+230,Rogers Ridge,Cherokee National Forest,TN,Tennessee,4738
+231,Devil's Backbone,Cherokee National Forest,TN,Tennessee,4287
+232,Big Woods,National Forests in Texas,TX,Texas,1320
+233,Winters Bayou,National Forests in Texas,TX,Texas,730
+234,Little Lake Creek,National Forests in Texas,TX,Texas,596
+235,Lakes,Wasatch-Cache National Forest,UT,Utah,121967
+236,Boulder Mtn. / Boulder Top / Deer Lake,Dixie National Forest,UT,Utah,110690
+237,High Uintas (UT),Wasatch-Cache National Forest,UT,Utah,102398
+238,Casto Bluff,Dixie National Forest,UT,Utah,87466
+239,Beehive Peak,Fishlake National Forest,UT,Utah,59137
+240,Muddy Creek - Nelson Mt.,Manti-Lasal National Forest,UT,Utah,59034
+241,Pine Valley Mountains,Dixie National Forest,UT,Utah,57673
+242,Long Neck Mesa / Steep Creek / Oak Creek - Steep Creek / Oak,Dixie National Forest,UT,Utah,55489
+243,Oak Creek,Fishlake National Forest,UT,Utah,54053
+244,Bear Creek,Jefferson National Forest,VA,Virginia,18274
+245,Jerkemtight,George Washington National Forest,VA,Virginia,16687
+246,Oliver Mountain,George Washington National Forest,VA,Virginia,13090
+247,Ramseys Draft Addition,George Washington National Forest,VA,Virginia,12781
+248,Gum Run,George Washington National Forest,VA,Virginia,12620
+249,Big Schloss (VA),George Washington National Forest,VA,Virginia,12375
+250,Southern Massanutten,George Washington National Forest,VA,Virginia,11985
+251,Broad Run,Jefferson National Forest,VA,Virginia,10971
+252,Oak Knob,George Washington National Forest,VA,Virginia,10882
+253,Wilder Mountain 09082,Green Mountain and Finger Lakes National Forests,VT,Vermont,8759
+254,Woodford 09086,Green Mountain and Finger Lakes National Forests,VT,Vermont,2456
+255,Griffith Lake 09084,Green Mountain and Finger Lakes National Forests,VT,Vermont,1833
+256,Bread Loaf,Green Mountain and Finger Lakes National Forests,VT,Vermont,1768
+257,Lye Brook Addition 09085,Green Mountain and Finger Lakes National Forests,VT,Vermont,1111
+258,Liberty Bell,Okanogan National Forest,WA,Washington,108495
+259,Chelan,Wenatchee National Forest,WA,Washington,74650
+260,Teanaway,Wenatchee National Forest,WA,Washington,72849
+261,Entiat,Wenatchee National Forest,WA,Washington,72617
+262,Long Swamp,Okanogan National Forest,WA,Washington,66344
+263,Alpine Lakes Adj.,Wenatchee National Forest,WA,Washington,57104
+264,Mt. Baker Noisy - Diobsud,Mt Baker-Snoqualmie National Forest,WA,Washington,56039
+265,Dark Divide,Gifford Pinchot National Forest,WA,Washington,52483
+266,Glacier Peak K,Mt Baker-Snoqualmie National Forest,WA,Washington,47269
+267,09177 - Le Roy Creek,Chequamegon-Nicolet National Forest,WI,Wisconsin,8138
+268,09162 - Moose,Chequamegon-Nicolet National Forest,WI,Wisconsin,6161
+269,09157 - Chase Creek,Chequamegon-Nicolet National Forest,WI,Wisconsin,6140
+270,09011 - Flynn Lake Study Area,Chequamegon-Nicolet National Forest,WI,Wisconsin,5951
+271,09164 - Tea Lake,Chequamegon-Nicolet National Forest,WI,Wisconsin,5510
+272,09161 - Gates Lake,Chequamegon-Nicolet National Forest,WI,Wisconsin,5255
+273,09182 - Pentoga Road,Chequamegon-Nicolet National Forest,WI,Wisconsin,5008
+274,09166 - East Torch,Chequamegon-Nicolet National Forest,WI,Wisconsin,4647
+275,09154 - St. Peters Dome,Chequamegon-Nicolet National Forest,WI,Wisconsin,4002
+276,Middle Mountain,Monongahela National Forest,WV,West Virginia,19020
+277,Dolly Sods Roaring Plain,Monongahela National Forest,WV,West Virginia,13392
+278,Gauley Mountain,Monongahela National Forest,WV,West Virginia,13285
+279,Cranberry Addition,Monongahela National Forest,WV,West Virginia,11123
+280,Little Allegheny Mountain,Monongahela National Forest,WV,West Virginia,10514
+281,Mcgowan Mountain,Monongahela National Forest,WV,West Virginia,10504
+282,Marlin Mountain,Monongahela National Forest,WV,West Virginia,9344
+283,Big Schloss (WV),George Washington National Forest,WV,West Virginia,8375
+284,Tea Creek Mountain,Monongahela National Forest,WV,West Virginia,8295
+285,Salt River Range,Bridger-Teton National Forest,WY,Wyoming,235661
+286,Lake Alice - Commissary Ridge,Bridger-Teton National Forest,WY,Wyoming,166707
+287,Spread Creek - Gros Ventre River,Bridger-Teton National Forest,WY,Wyoming,166097
+288,West Slope Winds,Bridger-Teton National Forest,WY,Wyoming,143252
+289,Little Bighorn,Bighorn National Forest,WY,Wyoming,133949
+290,Cloud Peak Contiguous,Bighorn National Forest,WY,Wyoming,113757
+291,Gros Ventre Mountains,Bridger-Teton National Forest,WY,Wyoming,106418
+292,South Beartooth Highway,Shoshone National Forest,WY,Wyoming,105570
+293,North Baranof,Tongass National Forest,AK,Alaska,314089
+294,Kenai Mountains,Chugach National Forest,AK,Alaska,306600
+295,Fidalgo-Gravina,Chugach National Forest,AK,Alaska,257968
+296,Sheridan Glacier,Chugach National Forest,AK,Alaska,224683
+297,Resurrection,Chugach National Forest,AK,Alaska,224615
+298,South Kupreanof,Tongass National Forest,AK,Alaska,216816
+299,North Revilla,Tongass National Forest,AK,Alaska,215430
+300,Kenai Lake,Chugach National Forest,AK,Alaska,213172
+301,Montague,Chugach National Forest,AK,Alaska,204875
+302,Chilkat-West Lynn Canal,Tongass National Forest,AK,Alaska,199772
+303,Hurricane Creek,Ozark-St. Francis National Forest,AR,Arkansas,2279
+304,Clifty Canyon,Ozark-St. Francis National Forest,AR,Arkansas,1963
+305,Bear Mountain,Ouachita National Forest,AR,Arkansas,1910
+306,Devils Canyon,Ozark-St. Francis National Forest,AR,Arkansas,1877
+307,Richland Creek,Ozark-St. Francis National Forest,AR,Arkansas,571
+308,Pipestem,Apache-Sitgreaves National Forests,AZ,Arizona,34598
+309,Hot Air,Apache-Sitgreaves National Forests,AZ,Arizona,31712
+310,Sunset,Apache-Sitgreaves National Forests,AZ,Arizona,28948
+311,Galiuro,Coronado National Forest,AZ,Arizona,28333
+312,Blind Indian Creek,Prescott National Forest,AZ,Arizona,26847
+313,Oracle Roadless,Coronado National Forest,AZ,Arizona,22365
+314,Salt House,Apache-Sitgreaves National Forests,AZ,Arizona,21848
+315,Whetstone,Coronado National Forest,AZ,Arizona,20728
+316,Burro Canyon,Kaibab National Forest,AZ,Arizona,19928
+317,Hackberry,Coconino National Forest,AZ,Arizona,17885
+318,Sawmill - Badlands,Los Padres National Forest,CA,California,51362
+319,Orleans Mtn.,Klamath National Forest,CA,California,49090
+320,Excelsior (CA),Inyo National Forest,CA,California,45607
+321,Channell,Sequoia National Forest,CA,California,45429
+322,South Sierra,Inyo National Forest,CA,California,41853
+323,Woolstaff,Sequoia National Forest,CA,California,41445
+324,Antimony,Los Padres National Forest,CA,California,40911
+325,Kangaroo,Klamath National Forest,CA,California,40617
+326,Soldier Canyon,Inyo National Forest,CA,California,40589
+327,Chico,Sequoia National Forest,CA,California,39836
+328,Pole Mountain / Finger Mesa,Rio Grande National Forest,CO,Colorado,43863
+329,Long Park,Routt National Forest,CO,Colorado,42100
+330,Piedra Area Adjacent,San Juan National Forest,CO,Colorado,40841
+331,Kreutzer-Princeton,Pike & San Isabel National Forests,CO,Colorado,39897
+332,Red Table,White River National Forest,CO,Colorado,39122
+333,Mount Antero,Pike & San Isabel National Forests,CO,Colorado,38745
+334,Williams Fork Ptarmingan Adjacent,Arapaho & Roosevelt National Forests,CO,Colorado,36351
+335,Dome Peak,Routt National Forest,CO,Colorado,35716
+336,Big Ridge to South Fork A,White River National Forest,CO,Colorado,35360
+337,Ben Gap,Chattahoochee National Forest,GA,Georgia,1292
+338,Patterson Gap,Chattahoochee National Forest,GA,Georgia,1186
+339,Cedar Mountain,Chattahoochee National Forest,GA,Georgia,1083
+340,Tate Branch,Chattahoochee National Forest,GA,Georgia,1069
+341,Indian Grave Gap,Chattahoochee National Forest,GA,Georgia,1020
+342,Miller Creek,Chattahoochee National Forest,GA,Georgia,701
+343,Ellicott Rock Addition,Chattahoochee National Forest,GA,Georgia,690
+344,Tripp Branch,Chattahoochee National Forest,GA,Georgia,615
+345,Wilson Cove,Chattahoochee National Forest,GA,Georgia,545
+346,Ken Mountain,Chattahoochee National Forest,GA,Georgia,527
+347,Needles,Payette National Forest,ID,Idaho,131279
+348,Borah Peak,Salmon-Challis National Forest,ID,Idaho,130463
+349,Mallard-Larkins,Idaho Panhandle National Forests,ID,Idaho,129363
+350,Mallard-Larkins,Nez Perce-Clearwater National Forest,ID,Idaho,126312
+351,Palisades,Caribou-Targhee National Forest,ID,Idaho,122002
+352,Pioneer Mountains,Sawtooth National Forest,ID,Idaho,119563
+353,Ten Mile/Black Warrior,Boise National Forest,ID,Idaho,118813
+354,Bear Creek,Caribou-Targhee National Forest,ID,Idaho,118582
+355,North Lochsa Slope,Nez Perce-Clearwater National Forest,ID,Idaho,117662
+356,West Meadow Creek,Nez Perce-Clearwater National Forest,ID,Idaho,115949
+357,Baldpate Lake,Superior National Forest,MN,Minnesota,486
+358,South Kawishiwi River,Superior National Forest,MN,Minnesota,136
+359,Moose Portage III,Superior National Forest,MN,Minnesota,82
+360,Elmwood Island,Chippewa National Forest,MN,Minnesota,42
+361,Big Island,Chippewa National Forest,MN,Minnesota,25
+362,Potato Island,Chippewa National Forest,MN,Minnesota,10
+363,Hoodoo,Lolo National Forest,MT,Montana,105162
+364,Allan Mountain (01946),Bitterroot National Forest,MT,Montana,104184
+365,Snowcrest Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,97649
+366,Freezeout Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,97305
+367,Middle Mtn. / Tobacco Roots,Beaverhead-Deerlodge National Forest,MT,Montana,96487
+368,Italian Peak,Beaverhead-Deerlodge National Forest,MT,Montana,90401
+369,Big Snowy Mountains Wsa,Lewis and Clark National Forest,MT,Montana,88003
+370,Tenderfoot - Deep Creek,Lewis and Clark National Forest,MT,Montana,85614
+371,Crazy Mountain,Gallatin National Forest,MT,Montana,82093
+372,Middle Fork Judith Wsa,Lewis and Clark National Forest,MT,Montana,81131
+373,Wilson Creek,Pisgah National Forest,NC,North Carolina,4863
+374,Boteler Peak,Nantahala National Forest,NC,North Carolina,4205
+375,Bearwallow,Pisgah National Forest,NC,North Carolina,4113
+376,Wesser Bald,Nantahala National Forest,NC,North Carolina,4061
+377,Overflow Creek,Nantahala National Forest,NC,North Carolina,3379
+378,Bell Lake,Dakota Prairie Grasslands,ND,North Dakota,11265
+379,Long X Divide,Dakota Prairie Grasslands,ND,North Dakota,10099
+380,Tracy Mountain,Dakota Prairie Grasslands,ND,North Dakota,9756
+381,Mcleod,Dakota Prairie Grasslands,ND,North Dakota,9117
+382,Blacktail,Dakota Prairie Grasslands,ND,North Dakota,8620
+383,Ponderosa Pine,Dakota Prairie Grasslands,ND,North Dakota,7471
+384,Easy Hill,Dakota Prairie Grasslands,ND,North Dakota,7344
+385,Scairt Woman,Dakota Prairie Grasslands,ND,North Dakota,6099
+386,Dawsons Waterhole,Dakota Prairie Grasslands,ND,North Dakota,6087
+387,Wannagan,Dakota Prairie Grasslands,ND,North Dakota,6026
+388,Kinsman Mountain,White Mountain National Forest,NH,New Hampshire,8999
+389,Cherry Mountain,White Mountain National Forest,NH,New Hampshire,8766
+390,Kearsarge,White Mountain National Forest,NH,New Hampshire,4554
+391,Waterville,White Mountain National Forest,NH,New Hampshire,4312
+392,Jobildunk,White Mountain National Forest,NH,New Hampshire,3660
+393,Ryan Hill,Cibola National Forest,NM,New Mexico,34201
+394,Meadow Creek,Gila National Forest,NM,New Mexico,34167
+395,Eagle Peak,Gila National Forest,NM,New Mexico,34016
+396,Thompson Peak,Santa Fe National Forest,NM,New Mexico,33001
+397,El Invierno,Santa Fe National Forest,NM,New Mexico,29927
+398,Dry Creek,Gila National Forest,NM,New Mexico,26719
+399,Lower San Francisco,Gila National Forest,NM,New Mexico,26460
+400,Little Dog And Pup Canyons,Lincoln National Forest,NM,New Mexico,25412
+401,Aspen Mountain,Gila National Forest,NM,New Mexico,23784
+402,Gila Box,Gila National Forest,NM,New Mexico,23759
+403,Long Valley,Humboldt-Toiyabe National Forest,NV,Nevada,50472
+404,Toquima Cave,Humboldt-Toiyabe National Forest,NV,Nevada,43147
+405,Bald Mtn.,Humboldt-Toiyabe National Forest,NV,Nevada,41598
+406,North Shoshone Peak,Humboldt-Toiyabe National Forest,NV,Nevada,40667
+407,South Fork Quinn,Humboldt-Toiyabe National Forest,NV,Nevada,40535
+408,Butler,Humboldt-Toiyabe National Forest,NV,Nevada,39470
+409,Mt.  Ardivey,Humboldt-Toiyabe National Forest,NV,Nevada,37984
+410,Iron Spring,Humboldt-Toiyabe National Forest,NV,Nevada,36737
+411,Shellback,Humboldt-Toiyabe National Forest,NV,Nevada,36455
+412,Huntoon,Humboldt-Toiyabe National Forest,NV,Nevada,36281
+413,West - South Bachelor,Deschutes National Forest,OR,Oregon,25994
+414,Joseph Canyon,Wallowa-Whitman National Forest,OR,Oregon,24288
+415,Crane Mountain,Fremont National Forest,OR,Oregon,23096
+416,Lake Fork,Wallowa-Whitman National Forest,OR,Oregon,21936
+417,Mcclellan Mountain,Malheur National Forest,OR,Oregon,21213
+418,Glacier Mountain,Malheur National Forest,OR,Oregon,20661
+419,Wildhorse,Wallowa-Whitman National Forest,OR,Oregon,20308
+420,North Paulina,Deschutes National Forest,OR,Oregon,19670
+421,Cook Ridge,Wallowa-Whitman National Forest,OR,Oregon,19617
+422,Mountain Sheep,Wallowa-Whitman National Forest,OR,Oregon,19457
+423,Slide Hollow,Cherokee National Forest,TN,Tennessee,4057
+424,London Bridge Branch,Cherokee National Forest,TN,Tennessee,3387
+425,Sampson Mountain Addition,Cherokee National Forest,TN,Tennessee,3064
+426,Bald River Gorge Addition,Cherokee National Forest,TN,Tennessee,1728
+427,Joyce Kilmer Slickrock Add.,Cherokee National Forest,TN,Tennessee,1396
+428,Little Frog Addition NW,Cherokee National Forest,TN,Tennessee,628
+429,Big Frog Addition,Cherokee National Forest,TN,Tennessee,369
+430,Little Frog Addition NE,Cherokee National Forest,TN,Tennessee,321
+431,North Pavant,Fishlake National Forest,UT,Utah,53262
+432,418024,Uinta National Forest,UT,Utah,51699
+433,0401012,Ashley National Forest,UT,Utah,46400
+434,Pavant,Fishlake National Forest,UT,Utah,42560
+435,Mt.  Naomi,Wasatch-Cache National Forest,UT,Utah,41922
+436,Tushar Mountain,Fishlake National Forest,UT,Utah,39992
+437,Deer Creek,Dixie National Forest,UT,Utah,39818
+438,Stansbury Mountains,Wasatch-Cache National Forest,UT,Utah,39696
+439,0401005,Ashley National Forest,UT,Utah,38930
+440,0401002,Ashley National Forest,UT,Utah,36113
+441,Mill Mountain,George Washington National Forest,VA,Virginia,10840
+442,Little Alleghany,George Washington National Forest,VA,Virginia,10215
+443,Laurel Fork,George Washington National Forest,VA,Virginia,9967
+444,Crawford Mountain,George Washington National Forest,VA,Virginia,9892
+445,Little Walker Mountain,Jefferson National Forest,VA,Virginia,9818
+446,Northern Massanutten,George Washington National Forest,VA,Virginia,9444
+447,Elliott Knob,George Washington National Forest,VA,Virginia,9380
+448,Price Mountain,Jefferson National Forest,VA,Virginia,9119
+449,Hunting Camp Little Wolf Creek,Jefferson National Forest,VA,Virginia,8953
+450,Mt.  Pleasant,George Washington National Forest,VA,Virginia,8933
+451,Eagle Rock,Mt Baker-Snoqualmie National Forest,WA,Washington,34064
+452,Abercrombie - Hooknose,Colville National Forest,WA,Washington,33862
+453,Stormy Mtn.,Wenatchee National Forest,WA,Washington,32612
+454,Boulder River,Mt Baker-Snoqualmie National Forest,WA,Washington,32563
+455,Rock Creek,Wenatchee National Forest,WA,Washington,32239
+456,Profanity,Colville National Forest,WA,Washington,28944
+457,Granite Mountain,Okanogan National Forest,WA,Washington,27428
+458,Glacier Peak J,Mt Baker-Snoqualmie National Forest,WA,Washington,26482
+459,Taneum,Wenatchee National Forest,WA,Washington,26140
+460,Mt. Baker West,Mt Baker-Snoqualmie National Forest,WA,Washington,25390
+461,09012 - Round Lake Study Area,Chequamegon-Nicolet National Forest,WI,Wisconsin,3707
+462,09180 - Perch Lake,Chequamegon-Nicolet National Forest,WI,Wisconsin,2390
+463,09181 - Foursection,Chequamegon-Nicolet National Forest,WI,Wisconsin,2037
+464,09186 - Shelp Lake,Chequamegon-Nicolet National Forest,WI,Wisconsin,285
+465,09183 - Shoe Lake Islands,Chequamegon-Nicolet National Forest,WI,Wisconsin,7
+466,09184 - Wheeler Lake Islands,Chequamegon-Nicolet National Forest,WI,Wisconsin,5
+467,Cheat Mountain,Monongahela National Forest,WV,West Virginia,8191
+468,Little Mountain,Monongahela National Forest,WV,West Virginia,8172
+469,Canaan Loop,Monongahela National Forest,WV,West Virginia,7867
+470,Dry River (WV),George Washington National Forest,WV,West Virginia,7331
+471,East Fork Of Greenbrier,Monongahela National Forest,WV,West Virginia,7167
+472,Falls Of Hills Creek,Monongahela National Forest,WV,West Virginia,6925
+473,North Mountain Hopeville,Monongahela National Forest,WV,West Virginia,6525
+474,Turkey Mountain,Monongahela National Forest,WV,West Virginia,6421
+475,Spice Run,Monongahela National Forest,WV,West Virginia,6251
+476,Mottesheard (WV),Jefferson National Forest,WV,West Virginia,3964
+477,Horse Creek Mesa,Bighorn National Forest,WY,Wyoming,77808
+478,Franc's Peak,Shoshone National Forest,WY,Wyoming,68561
+479,South Fork,Shoshone National Forest,WY,Wyoming,64903
+480,Walker Prairie,Bighorn National Forest,WY,Wyoming,62434
+481,Wilderness Study Area,Targhee National Forest,WY,Wyoming,51961
+482,Mosquito Lake - Seven Lakes,Bridger-Teton National Forest,WY,Wyoming,51950
+483,Middle Fork,Shoshone National Forest,WY,Wyoming,51772
+484,Wood River,Shoshone National Forest,WY,Wyoming,50638
+485,Rock Creek,Bighorn National Forest,WY,Wyoming,48657
+486,West Slope Tetons,Targhee National Forest,WY,Wyoming,47448
+487,Dolly Ann,George Washington National Forest,VA,Virginia,7855
+489,North Mountain,Jefferson National Forest,VA,Virginia,8377
+490,Three Sisters,George Washington National Forest,VA,Virginia,8149
+491,Kelley Mountain,George Washington National Forest,VA,Virginia,7590
+492,Beards Mountain,George Washington National Forest,VA,Virginia,7505
+493,Adams Peak,George Washington National Forest,VA,Virginia,7135
+494,Seng Mountain,Jefferson National Forest,VA,Virginia,6428
+495,Long Spur,Jefferson National Forest,VA,Virginia,6417
+496,Brush Mountain,Jefferson National Forest,VA,Virginia,6002
+497,The Priest,George Washington National Forest,VA,Virginia,5737
+498,Skidmore,George Washington National Forest,VA,Virginia,5641
+499,Brush Mountain East,Jefferson National Forest,VA,Virginia,4916
+500,Patterson Mountain,Jefferson National Forest,VA,Virginia,4865
+501,North Fork Pound,Jefferson National Forest,VA,Virginia,4757
+502,Horse Heaven,Jefferson National Forest,VA,Virginia,4748
+503,Three Ridges,George Washington National Forest,VA,Virginia,4745
+504,Hoop Hole,Jefferson National Forest,VA,Virginia,4652
+505,Raccoon Branch,Jefferson National Forest,VA,Virginia,4388
+506,Brushy Mountain,Jefferson National Forest,VA,Virginia,4168
+507,Garden Mountain,Jefferson National Forest,VA,Virginia,3960
+508,Mountain Lake Addition B (VA),Jefferson National Forest,VA,Virginia,3405
+509,Chunky Gal (addition),Nantahala National Forest,NC,North Carolina,3336
+510,Beartown Addition B,Jefferson National Forest,VA,Virginia,2985
+511,Pond Pine B,Croatan National Forest,NC,North Carolina,2961
+512,Peters Mountain Addition B,Jefferson National Forest,VA,Virginia,2909
+513,Linville Gorge Addition,Pisgah National Forest,NC,North Carolina,2809
+514,Craggy Mountain,Pisgah National Forest,NC,North Carolina,2657
+515,Sam Knob (addition),Pisgah National Forest,NC,North Carolina,2576
+516,Little Dry Run Addition,Jefferson National Forest,VA,Virginia,2204
+517,The Friars,George Washington National Forest,VA,Virginia,2035
+518,Graveyard Ridge (addition),Pisgah National Forest,NC,North Carolina,1958
+519,Shawvers Run Addition,Jefferson National Forest,VA,Virginia,1927
+520,Middle Prong Addition,Pisgah National Forest,NC,North Carolina,1852
+521,Little Wilson Creek Addition B,Jefferson National Forest,VA,Virginia,1725
+522,Mountain Lake Addition A,Jefferson National Forest,VA,Virginia,1469
+523,Saint Marys Addition,George Washington National Forest,VA,Virginia,1454
+524,Beartown Addition A,Jefferson National Forest,VA,Virginia,1370
+525,Peters Mountain Addition A (VA),Jefferson National Forest,VA,Virginia,1268
+526,Yellowhammer Branch (add.),Nantahala National Forest,NC,North Carolina,1255
+527,Big Indian (addition),Nantahala National Forest,NC,North Carolina,1155
+528,Rough Mountian Addition,George Washington National Forest,VA,Virginia,1142
+529,James River Addition,Jefferson National Forest,VA,Virginia,1140
+530,Beaver Dam Creek,Jefferson National Forest,VA,Virginia,1135
+531,Barkers Creek (addition),Nantahala National Forest,NC,North Carolina,975
+532,New London Bridge Branch,Jefferson National Forest,VA,Virginia,844
+533,Cherry Cove (addition),Nantahala National Forest,NC,North Carolina,836
+534,Lewis Fork Addition,Jefferson National Forest,VA,Virginia,749
+535,Barbours Creek Addition,Jefferson National Forest,VA,Virginia,733
+536,Little Indian (addition),Nantahala National Forest,NC,North Carolina,640
+537,Sharptop Ridge (addition),Nantahala National Forest,NC,North Carolina,600
+538,Mountain Lake Addition C,Jefferson National Forest,VA,Virginia,494
+539,Shoal Branch,Chattahoochee National Forest,GA,Georgia,413
+540,Pocosin Addition,Croatan National Forest,NC,North Carolina,286
+541,Catfish Lake South - A,Croatan National Forest,NC,North Carolina,217
+542,Kimberling Creek Addition B,Jefferson National Forest,VA,Virginia,196
+543,Duck Branch,Chattahoochee National Forest,GA,Georgia,194
+544,Slide Hollow,Pisgah National Forest,NC,North Carolina,193
+545,Rogers Run,Jefferson National Forest,VA,Virginia,181
+546,Catfish Lake South - B,Croatan National Forest,NC,North Carolina,172
+547,Foster Branch,Chattahoochee National Forest,GA,Georgia,171
+548,Kimberling Creek Addition A,Jefferson National Forest,VA,Virginia,89
+549,Little Wilson Creek Addition A,Jefferson National Forest,VA,Virginia,78
+1844,Bradfield,Tongass National Forest,AK,Alaska,199016
+1845,Twenty Mile,Chugach National Forest,AK,Alaska,198775
+1846,Eudora,Tongass National Forest,AK,Alaska,195022
+1847,Cleveland,Tongass National Forest,AK,Alaska,189447
+1848,Harding,Tongass National Forest,AK,Alaska,174349
+1849,Windham-Port Houghton,Tongass National Forest,AK,Alaska,161952
+1850,Johnson Pass,Chugach National Forest,AK,Alaska,152508
+1851,Quartz,Tongass National Forest,AK,Alaska,143003
+1852,Hinchinbrook-Hawkins,Chugach National Forest,AK,Alaska,136110
+1853,Cone,Tongass National Forest,AK,Alaska,128454
+1854,Hyder,Tongass National Forest,AK,Alaska,121723
+1855,Port Alexander,Tongass National Forest,AK,Alaska,120681
+1856,Prince William Sound Is.,Chugach National Forest,AK,Alaska,118698
+1857,North Kupreanof,Tongass National Forest,AK,Alaska,114660
+1858,Sitka Urban,Tongass National Forest,AK,Alaska,112003
+1859,Dall Island,Tongass National Forest,AK,Alaska,105780
+1860,North Cleveland,Tongass National Forest,AK,Alaska,105288
+1861,Juneau Urban,Tongass National Forest,AK,Alaska,101581
+1862,Outer Islands,Tongass National Forest,AK,Alaska,99862
+1863,Copper River Wetlands,Chugach National Forest,AK,Alaska,85972
+1864,South Wyoming Range,Bridger-Teton National Forest,WY,Wyoming,85776
+1865,McKenzie,Tongass National Forest,AK,Alaska,83103
+1866,Hoonah Sound,Tongass National Forest,AK,Alaska,79764
+1867,Aaron,Tongass National Forest,AK,Alaska,78719
+1868,Rocky Pass,Tongass National Forest,AK,Alaska,78163
+1869,Soda Bay,Tongass National Forest,AK,Alaska,78091
+1870,Whitetail / Haystack,Beaverhead-Deerlodge National Forest,MT,Montana,76328
+1871,Elkhorn,Helena National Forest,MT,Montana,75468
+1872,Thorne River,Tongass National Forest,AK,Alaska,72983
+1873,Madan,Tongass National Forest,AK,Alaska,68553
+1874,Redoubt,Tongass National Forest,AK,Alaska,68347
+1875,Sullivan,Tongass National Forest,AK,Alaska,67323
+1876,Quigg,Lolo National Forest,MT,Montana,67267
+1877,Sapphires,Beaverhead-Deerlodge National Forest,MT,Montana,66619
+1878,Kogish,Tongass National Forest,AK,Alaska,65216
+1879,Blue Joint (mwsa) (01941),Bitterroot National Forest,MT,Montana,64764
+1880,Silver King,Beaverhead-Deerlodge National Forest,MT,Montana,64289
+1881,Kosciusko,Tongass National Forest,AK,Alaska,64134
+1882,South Kuiu,Tongass National Forest,AK,Alaska,62452
+1883,Tash Peak,Beaverhead-Deerlodge National Forest,MT,Montana,61312
+1884,Flint Range / Dolus Lakes,Beaverhead-Deerlodge National Forest,MT,Montana,59213
+1885,South Kruzof,Tongass National Forest,AK,Alaska,55193
+1886,Mansfield Peninsula,Tongass National Forest,AK,Alaska,54991
+1887,Game Creek,Tongass National Forest,AK,Alaska,54469
+1888,Scotchman Peaks (MT),Kootenai National Forest,MT,Montana,53909
+1889,Nutkwa,Tongass National Forest,AK,Alaska,53735
+1890,Boston Bar,Chugach National Forest,AK,Alaska,53617
+1891,Mosman,Tongass National Forest,AK,Alaska,53492
+1892,Thompson Seton RA 1483,Flathead National Forest,MT,Montana,52235
+1893,North Big Hole,Beaverhead-Deerlodge National Forest,MT,Montana,52227
+1894,Karta,Tongass National Forest,AK,Alaska,52117
+1895,South Revilla,Tongass National Forest,AK,Alaska,52105
+1896,Sarkar,Tongass National Forest,AK,Alaska,51908
+1897,Gallatin Fringe,Gallatin National Forest,MT,Montana,51571
+1898,Bear - Marshall - Scapegoat - Swan,Helena National Forest,MT,Montana,51360
+1899,Big Horn Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,50846
+1900,Cabinet Face East #671,Kootenai National Forest,MT,Montana,50326
+1901,Nevada Mountain,Helena National Forest,MT,Montana,50135
+1902,Castle,Tongass National Forest,AK,Alaska,49289
+1903,Ten Lakes #683,Kootenai National Forest,MT,Montana,48545
+1904,Fanshaw,Tongass National Forest,AK,Alaska,48248
+1905,Gannett Hills - Spring Creek,Bridger-Teton National Forest,WY,Wyoming,45462
+1906,Duke,Tongass National Forest,AK,Alaska,45091
+1907,Bridger,Gallatin National Forest,MT,Montana,45059
+1908,Freshwater Bay,Tongass National Forest,AK,Alaska,44933
+1909,Pilgrim Creek,Lewis and Clark National Forest,MT,Montana,44608
+1910,Sukkwan,Tongass National Forest,AK,Alaska,44369
+1911,Stony Mountain,Bitterroot National Forest,MT,Montana,44057
+1912,Trout Creek,Shoshone National Forest,WY,Wyoming,44034
+1913,Wapiti Valley South,Shoshone National Forest,WY,Wyoming,43517
+1914,Sapphire,Bitterroot National Forest,MT,Montana,43303
+1915,Big Baldy,Lewis and Clark National Forest,MT,Montana,43135
+1916,Garfield Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,41891
+1917,Mt.  Bushnell,Lolo National Forest,MT,Montana,41798
+1918,North Etolin,Tongass National Forest,AK,Alaska,40993
+1919,Frosty,Tongass National Forest,AK,Alaska,39941
+1920,Black Butte,Beaverhead-Deerlodge National Forest,MT,Montana,39160
+1921,North Fork American River,Tahoe National Forest,CA,California,38495
+1922,Bluff Mountain,Lewis and Clark National Forest,MT,Montana,38060
+1923,Twelvemile,Tongass National Forest,AK,Alaska,37940
+1924,North Fork Smith,Six Rivers National Forest,CA,California,37898
+1925,Cherry Peak,Lolo National Forest,MT,Montana,37862
+1926,Sheep Mountain - Stateline,Lolo National Forest,MT,Montana,37844
+1927,West Girard,Shasta-Trinity National Forest,CA,California,37516
+1928,Devils Canyon,Bighorn National Forest,WY,Wyoming,37416
+1929,Gravina,Tongass National Forest,AK,Alaska,37381
+1930,Cube Iron - Silcox,Lolo National Forest,MT,Montana,36998
+1931,Camden,Tongass National Forest,AK,Alaska,36793
+1932,Anan,Tongass National Forest,AK,Alaska,36666
+1933,South Zarembo,Tongass National Forest,AK,Alaska,36285
+1934,418016,Uinta National Forest,UT,Utah,35240
+1935,Cabin Creek Wildlife Management Area Ocd,Gallatin National Forest,MT,Montana,35048
+1936,Buckhorn Ridge (MT),Kootenai National Forest,MT,Montana,34716
+1937,Dinkey Lakes,Sierra National Forest,CA,California,34171
+1938,418028,Uinta National Forest,UT,Utah,34002
+1939,Lionhead,Gallatin National Forest,MT,Montana,33549
+1940,Mt.  High,Lewis and Clark National Forest,MT,Montana,33484
+1941,Mckenzie Canyon,Beaverhead-Deerlodge National Forest,MT,Montana,33350
+1942,North Kruzof,Tongass National Forest,AK,Alaska,33146
+1943,Stony Mountain,Lolo National Forest,MT,Montana,32796
+1944,Ruby - Lamoille Cyn,Humboldt-Toiyabe National Forest,NV,Nevada,32771
+1945,418025,Uinta National Forest,UT,Utah,32698
+1946,Black Canyon,Inyo National Forest,CA,California,32421
+1947,Middleman Mountain / Hedges Mountain,Helena National Forest,MT,Montana,32306
+1948,Copper Mtns.,Humboldt-Toiyabe National Forest,NV,Nevada,31945
+1949,Moody Wash,Dixie National Forest,UT,Utah,31835
+1950,Fleecer,Beaverhead-Deerlodge National Forest,MT,Montana,31585
+1951,Sheep Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,31584
+1952,Rock Canyon,Humboldt-Toiyabe National Forest,NV,Nevada,31552
+1953,Spanish Peak,Humboldt-Toiyabe National Forest,NV,Nevada,31520
+1954,Anderson Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,31501
+1955,Security,Tongass National Forest,AK,Alaska,31428
+1956,Windy Mountain,Shoshone National Forest,WY,Wyoming,31283
+1957,East Fork Quinn,Humboldt-Toiyabe National Forest,NV,Nevada,30977
+1958,Saulsbury,Humboldt-Toiyabe National Forest,NV,Nevada,30957
+1959,Signal Peak,Fishlake National Forest,UT,Utah,30889
+1960,Trout Creek,Kootenai National Forest,MT,Montana,30851
+1961,Snake - Chokecherry,Humboldt-Toiyabe National Forest,NV,Nevada,30845
+1962,North Schell,Humboldt-Toiyabe National Forest,NV,Nevada,30773
+1963,East Mountain,Manti-Lasal National Forest,UT,Utah,30705
+1964,Devil Gulch,Sierra National Forest,CA,California,30490
+1965,0401009,Ashley National Forest,UT,Utah,30378
+1966,Red Mountain,Humboldt-Toiyabe National Forest,NV,Nevada,30242
+1967,Dairy Fork,Manti-Lasal National Forest,UT,Utah,30222
+1968,Sulphur Creek,Shoshone National Forest,WY,Wyoming,30221
+1969,0401011,Ashley National Forest,UT,Utah,30062
+1970,Fish Canyon,Angeles National Forest,CA,California,29886
+1971,Dunoir Special Management Unit,Shoshone National Forest,WY,Wyoming,29719
+1972,Roderick #684,Kootenai National Forest,MT,Montana,29677
+1973,Snowy Range,Medicine Bow-Routt National Forest,WY,Wyoming,29660
+1974,Allen Peak #185,Kootenai National Forest,MT,Montana,29638
+1975,Warm Springs,Humboldt-Toiyabe National Forest,NV,Nevada,29540
+1976,Castle Mountains,Lewis and Clark National Forest,MT,Montana,29409
+1977,Thompson Seton #483,Kootenai National Forest,MT,Montana,29379
+1978,Pattison,Shasta-Trinity National Forest,CA,California,29299
+1979,Revilla,Tongass National Forest,AK,Alaska,29298
+1980,Middle Fork,Plumas National Forest,CA,California,29278
+1981,Camas Creek,Helena National Forest,MT,Montana,29191
+1982,Sanpitch,Manti-Lasal National Forest,UT,Utah,29129
+1983,Chips Creek,Lassen National Forest,CA,California,29089
+1984,Wild Horse Mtn. (CA),Humboldt-Toiyabe National Forest,CA,California,28822
+1985,Birch Creek,Inyo National Forest,CA,California,28816
+1986,Laramie Peak,Medicine Bow-Routt National Forest,WY,Wyoming,28608
+1987,Wildcat,Humboldt-Toiyabe National Forest,NV,Nevada,28565
+1988,Lovell Summit South,Humboldt-Toiyabe National Forest,NV,Nevada,28455
+1989,Big Bear Creek,Manti-Lasal National Forest,UT,Utah,28440
+1990,Hilgard Mountain,Fishlake National Forest,UT,Utah,28389
+1991,Greenhorn Creek,Sequoia National Forest,CA,California,28226
+1992,Mono,Los Padres National Forest,CA,California,28141
+1993,Douglas Island,Tongass National Forest,AK,Alaska,28065
+1994,East Girard,Shasta-Trinity National Forest,CA,California,27894
+1995,Electric Peak,Helena National Forest,MT,Montana,27872
+1996,Mill Creek,Sequoia National Forest,CA,California,27643
+1997,East Kuiu,Tongass National Forest,AK,Alaska,27611
+1998,Bunker Hill,Humboldt-Toiyabe National Forest,NV,Nevada,27569
+1999,Bay of Pillars,Tongass National Forest,AK,Alaska,27492
+2000,Dark Valley,Dixie National Forest,UT,Utah,27481
+2001,Chugach-3,Chugach National Forest,AK,Alaska,27386
+2002,Thousand Lake Mountain,Fishlake National Forest,UT,Utah,27267
+2003,Mcgregor - Thompson,Lolo National Forest,MT,Montana,27211
+2004,Greens Creek,Tongass National Forest,AK,Alaska,27177
+2005,Snake - Murphy,Humboldt-Toiyabe National Forest,NV,Nevada,27064
+2006,Tinemaha,Inyo National Forest,CA,California,27060
+2007,Iceberg - Mill Creek,Humboldt-Toiyabe National Forest,CA,California,26988
+2008,0401014,Ashley National Forest,UT,Utah,26903
+2009,El Capitan,Tongass National Forest,AK,Alaska,26693
+2010,Pleasant View,Angeles National Forest,CA,California,26395
+2011,South Etolin,Tongass National Forest,AK,Alaska,26293
+2012,Mcaffie,Humboldt-Toiyabe National Forest,NV,Nevada,26110
+2013,Grindstone,Mendocino National Forest,CA,California,26031
+2014,Butler Mtn.,Humboldt-Toiyabe National Forest,NV,Nevada,25878
+2015,Lavas,Modoc National Forest,CA,California,25864
+2016,Lindenberg,Tongass National Forest,AK,Alaska,25855
+2017,418012,Uinta National Forest,UT,Utah,25758
+2018,Little Goose,Bighorn National Forest,WY,Wyoming,25558
+2019,Cove Creek,Fishlake National Forest,UT,Utah,25555
+2020,Cataract,Kootenai National Forest,MT,Montana,25446
+2021,White Pine Mtn.,Humboldt-Toiyabe National Forest,NV,Nevada,25244
+2022,Fishlake Mountain,Fishlake National Forest,UT,Utah,25217
+2023,John Town / Horse Creek,Dakota Prairie Grasslands,ND,North Dakota,25125
+2024,Bear Rocks,Bighorn National Forest,WY,Wyoming,25023
+2025,Damon Butte,Modoc National Forest,CA,California,25022
+2026,Crazy Mountains,Lewis and Clark National Forest,MT,Montana,24942
+2027,White Rock Mtn,Humboldt-Toiyabe National Forest,NV,Nevada,24917
+2028,0418033,Ashley National Forest,UT,Utah,24909
+2029,Mt. Baker Ma,Mt Baker-Snoqualmie National Forest,WA,Washington,24847
+2030,Line Creek Plateau,Custer National Forest,MT,Montana,24825
+2031,Pacific Creek - Blackrock Creek,Bridger-Teton National Forest,WY,Wyoming,24658
+2032,South Shoshone Peak,Humboldt-Toiyabe National Forest,NV,Nevada,24528
+2033,North Hills,Dixie National Forest,UT,Utah,24480
+2034,Devils Gulch,Wenatchee National Forest,WA,Washington,24419
+2035,Highwoods,Lewis and Clark National Forest,MT,Montana,24378
+2036,Price River,Manti-Lasal National Forest,UT,Utah,24349
+2037,Pyramid,Eldorado National Forest,CA,California,24347
+2038,Circleville Mountain,Fishlake National Forest,UT,Utah,24142
+2039,Four Mile,Humboldt-Toiyabe National Forest,NV,Nevada,24093
+2040,Temple Peak,Wasatch-Cache National Forest,UT,Utah,24081
+2041,Tollgate - Sheep,Lewis and Clark National Forest,MT,Montana,24044
+2042,Pompey,Gifford Pinchot National Forest,WA,Washington,23985
+2043,Raft River,Sawtooth National Forest,UT,Utah,23969
+2044,White Mountain,Fishlake National Forest,UT,Utah,23939
+2046,Deep Creek,San Bernardino National Forest,CA,California,23869
+2047,Deadhorse Ridge Ra 1128,Flathead National Forest,MT,Montana,23648
+2048,Snoozer,Klamath National Forest,CA,California,23414
+2049,Trabuco,Cleveland National Forest,CA,California,23341
+2050,Boulger - Black Canyon,Manti-Lasal National Forest,UT,Utah,23286
+2051,Bald Snow,Colville National Forest,WA,Washington,23198
+2052,Elk Creek,Mendocino National Forest,CA,California,23182
+2053,Wahoo Mountain,Gila National Forest,NM,New Mexico,23122
+2054,Rhine,Tongass National Forest,AK,Alaska,23010
+2055,Salmon Bay,Tongass National Forest,AK,Alaska,22793
+2056,Thorp Mtn.,Wenatchee National Forest,WA,Washington,22717
+2057,Steves Mountain,Fishlake National Forest,UT,Utah,22649
+2058,Jobs Peak (CA),Humboldt-Toiyabe National Forest,CA,California,22642
+2059,Cow Creek,Shasta-Trinity National Forest,CA,California,22627
+2060,Marysvale Peak,Fishlake National Forest,UT,Utah,22624
+2061,Cedar Knoll,Manti-Lasal National Forest,UT,Utah,22502
+2062,Twin Lakes,Wenatchee National Forest,WA,Washington,22496
+2063,San Joaquin,Sierra National Forest,CA,California,22474
+2064,Northumberland,Humboldt-Toiyabe National Forest,NV,Nevada,22464
+2065,Piney Creek,Bighorn National Forest,WY,Wyoming,22240
+2066,Horse Mountain - Mans Peak,Manti-Lasal National Forest,UT,Utah,22159
+2067,Hay Lakes,Dixie National Forest,UT,Utah,22144
+2068,Levan Peak,Manti-Lasal National Forest,UT,Utah,22092
+2069,Moses,Sequoia National Forest,CA,California,22077
+2070,Tiffany,Okanogan National Forest,WA,Washington,22045
+2071,Chinquapin,Shasta-Trinity National Forest,CA,California,22040
+2072,0401010,Ashley National Forest,UT,Utah,21886
+2073,Boundary Peak (NV),Inyo National Forest,NV,Nevada,21851
+2074,Ishi,Lassen National Forest,CA,California,21805
+2075,Russian,Klamath National Forest,CA,California,21771
+2076,Alta T - East B,Humboldt-Toiyabe National Forest,NV,Nevada,21732
+2077,West Schell,Humboldt-Toiyabe National Forest,NV,Nevada,21656
+2078,Blue Mountain,Manti-Lasal National Forest,UT,Utah,21648
+2079,Chugach-8,Chugach National Forest,AK,Alaska,21559
+2080,Sleeping Child (x1074),Bitterroot National Forest,MT,Montana,21433
+2081,Nugent Park - Hams Fork Ridge,Bridger-Teton National Forest,WY,Wyoming,21241
+2082,Santa Cruz,Los Padres National Forest,CA,California,21182
+2083,Telephone Draw,Shoshone National Forest,WY,Wyoming,21122
+2084,Sheep Mountain,Angeles National Forest,CA,California,21098
+2085,North Absaroka,Custer National Forest,MT,Montana,21063
+2086,Wellington Hills,Humboldt-Toiyabe National Forest,NV,Nevada,21009
+2087,South Guadalupe Mountains,Lincoln National Forest,NM,New Mexico,20930
+2088,Tragedy - Elephants Back,Eldorado National Forest,CA,California,20866
+2089,Mt.  Jackson,Humboldt-Toiyabe National Forest,CA,California,20721
+2090,Savory Mountain,Humboldt-Toiyabe National Forest,NV,Nevada,20570
+2091,Tenakee Ridge,Tongass National Forest,AK,Alaska,20527
+2092,Mt. Etna,Humboldt-Toiyabe National Forest,NV,Nevada,20527
+2093,Cayuse Mountain,Helena National Forest,MT,Montana,20146
+2094,Highlands,Beaverhead-Deerlodge National Forest,MT,Montana,20044
+2095,Solomon Basin,Fishlake National Forest,UT,Utah,19963
+2096,Chugach-17,Chugach National Forest,AK,Alaska,19954
+2097,Cherry Lakes,Beaverhead-Deerlodge National Forest,MT,Montana,19945
+2098,Suemez Island,Tongass National Forest,AK,Alaska,19903
+2099,Madre Mountain,Cibola National Forest,NM,New Mexico,19839
+2100,Joe Lott,Fishlake National Forest,UT,Utah,19826
+2101,Rattlesnake,Humboldt-Toiyabe National Forest,NV,Nevada,19672
+2102,San Joaquin,Inyo National Forest,CA,California,19662
+2103,Cuyama,Los Padres National Forest,CA,California,19631
+2104,418017,Uinta National Forest,UT,Utah,19631
+2105,Diable,Los Padres National Forest,CA,California,19597
+2106,Table Cliffs - Henderson Canyon,Dixie National Forest,UT,Utah,19581
+2107,Hell Hole,Gila National Forest,NM,New Mexico,19553
+2108,Five Mile,Tongass National Forest,AK,Alaska,19459
+2109,Cattle Gulch,Beaverhead-Deerlodge National Forest,MT,Montana,19390
+2110,Buttermilk,Humboldt-Toiyabe National Forest,NV,Nevada,19373
+2111,Nason Ridge,Wenatchee National Forest,WA,Washington,19329
+2112,Glacier Peak B,Mt Baker-Snoqualmie National Forest,WA,Washington,19328
+2113,Galena #677,Kootenai National Forest,MT,Montana,19300
+2114,Sweetwater (CA),Humboldt-Toiyabe National Forest,CA,California,19241
+2115,Leigh Creek,Bighorn National Forest,WY,Wyoming,19180
+2116,418002,Uinta National Forest,UT,Utah,19152
+2117,Grouse Lakes,Tahoe National Forest,CA,California,19085
+2118,Big Lava Bed,Gifford Pinchot National Forest,WA,Washington,19043
+2119,Crystal,Tongass National Forest,AK,Alaska,18972
+2120,Steele Swamp,Modoc National Forest,CA,California,18958
+2121,Mt.  Logan North,Wasatch-Cache National Forest,UT,Utah,18930
+2122,Portuguese,Klamath National Forest,CA,California,18915
+2123,Rock Creek,Medicine Bow-Routt National Forest,WY,Wyoming,18874
+2124,Siskiyou B,Six Rivers National Forest,CA,California,18871
+2125,Paradise Peak,Humboldt-Toiyabe National Forest,NV,Nevada,18717
+2126,Quilcene,Olympic National Forest,WA,Washington,18656
+2127,White Ledge,Los Padres National Forest,CA,California,18632
+2128,Anaconda Hill,Helena National Forest,MT,Montana,18546
+2129,Mt. Bailey,Umpqua National Forest,OR,Oregon,18401
+2130,Southeast Wrangell,Tongass National Forest,AK,Alaska,18377
+2131,Wapiti Valley North,Shoshone National Forest,WY,Wyoming,18345
+2132,Biddlecome - Rock Canyon,Manti-Lasal National Forest,UT,Utah,18198
+2133,418031,Uinta National Forest,UT,Utah,18173
+2134,Cottonwood,Humboldt-Toiyabe National Forest,NV,Nevada,18161
+2135,Bank Springs,Humboldt-Toiyabe National Forest,NV,Nevada,18126
+2136,North Fork Malheur,Malheur National Forest,OR,Oregon,18069
+2137,418009,Uinta National Forest,UT,Utah,18064
+2138,Willard,Wasatch-Cache National Forest,UT,Utah,18059
+2139,Electric Peak,Beaverhead-Deerlodge National Forest,MT,Montana,17997
+2140,Wodouglas Adj.,Wenatchee National Forest,WA,Washington,17977
+2141,East Yuba,Tahoe National Forest,CA,California,17968
+2142,Cow Creek,Thunder Basin National Grassland,WY,Wyoming,17917
+2143,Caples Creek,Eldorado National Forest,CA,California,17854
+2144,Spring Creek,Lewis and Clark National Forest,MT,Montana,17840
+2145,Charleston - Carpenter,Humboldt-Toiyabe National Forest,NV,Nevada,17828
+2146,Tuchuck Ra 1482,Flathead National Forest,MT,Montana,17730
+2147,Monument Ridge,Bridger-Teton National Forest,WY,Wyoming,17720
+2148,Mollens Hollow,Wasatch-Cache National Forest,UT,Utah,17690
+2149,Atchinson,Dixie National Forest,UT,Utah,17655
+2150,Sheep Mountain,Medicine Bow-Routt National Forest,WY,Wyoming,17626
+2151,Salmon - Huckleberry,Mt. Hood National Forest,OR,Oregon,17570
+2152,Buffalo Peak,Medicine Bow-Routt National Forest,WY,Wyoming,17560
+2153,Big Horseshoe,Manti-Lasal National Forest,UT,Utah,17557
+2154,Apache Mountain,Gila National Forest,NM,New Mexico,17506
+2155,Blue Slide,Wenatchee National Forest,WA,Washington,17505
+2156,Mt. Um Plateau - Mt Terrill,Fishlake National Forest,UT,Utah,17490
+2157,Tongue River Breaks,Custer National Forest,MT,Montana,17481
+2158,418015,Uinta National Forest,UT,Utah,17289
+2159,418022,Uinta National Forest,UT,Utah,17289
+2160,Carrizo Mountain,Lincoln National Forest,NM,New Mexico,17280
+2161,Tuolumne River,Stanislaus National Forest,CA,California,17217
+2162,Red Lodge Creek Hellroaring,Custer National Forest,MT,Montana,17210
+2163,Orleans Mtn. B,Six Rivers National Forest,CA,California,17183
+2164,Buckhorn,Wallowa-Whitman National Forest,OR,Oregon,17180
+2165,Hog Ranch,Dixie National Forest,UT,Utah,17130
+2166,Pasayten Rim,Okanogan National Forest,WA,Washington,17074
+2167,Dexter Canyon,Inyo National Forest,CA,California,17053
+2168,Dry Lakes,Los Padres National Forest,CA,California,17043
+2169,Mt.  Logan South,Wasatch-Cache National Forest,UT,Utah,17014
+2170,Patricks Knob - North Cutoff,Lolo National Forest,MT,Montana,16970
+2171,San Jose,Cibola National Forest,NM,New Mexico,16950
+2172,Mazatzal,Tonto National Forest,AZ,Arizona,16942
+2173,Reservation Divide,Lolo National Forest,MT,Montana,16908
+2174,Tucson Mountain,Lincoln National Forest,NM,New Mexico,16905
+2175,Mt. Baker North,Mt Baker-Snoqualmie National Forest,WA,Washington,16873
+2176,Eagle,Mt. Hood National Forest,OR,Oregon,16841
+2177,Beartooth Proposed Wilderness,Shoshone National Forest,WY,Wyoming,16837
+2178,Hellgate Gulch,Helena National Forest,MT,Montana,16821
+2179,Black Mountain,Los Padres National Forest,CA,California,16818
+2180,Reef,Shoshone National Forest,WY,Wyoming,16817
+2181,Upper South Fork,Wasatch-Cache National Forest,UT,Utah,16811
+2182,Upper Situk,Tongass National Forest,AK,Alaska,16789
+2183,South Fork,Shasta-Trinity National Forest,CA,California,16786
+2184,Oak Creek,Manti-Lasal National Forest,UT,Utah,16769
+2185,Mahogany Ridge,Humboldt-Toiyabe National Forest,NV,Nevada,16765
+2186,Mogotsu,Dixie National Forest,UT,Utah,16762
+2187,418041,Uinta National Forest,UT,Utah,16751
+2188,Mill Creek Watershed (WA),Umatilla National Forest,WA,Washington,16747
+2189,Missionary,Tongass National Forest,AK,Alaska,16675
+2190,418004,Uinta National Forest,UT,Utah,16661
+2191,Thatcher,Mendocino National Forest,CA,California,16652
+2192,Taylor Creek,Gila National Forest,NM,New Mexico,16639
+2193,Cove Mountain,Dixie National Forest,UT,Utah,16632
+2194,Thomes Creek,Mendocino National Forest,CA,California,16616
+2195,South Fork - Tower,Umatilla National Forest,OR,Oregon,16570
+2196,Hammond - Notch Canyon,Manti-Lasal National Forest,UT,Utah,16566
+2197,Mokelumne - Hawkins Pk,Humboldt-Toiyabe National Forest,CA,California,16535
+2198,0401007,Ashley National Forest,UT,Utah,16483
+2199,Rock Canyon,Dixie National Forest,UT,Utah,16457
+2200,Asotin Creek,Umatilla National Forest,WA,Washington,16433
+2201,Bonanza King,Shasta-Trinity National Forest,CA,California,16402
+2202,Mt.  Baldy,Helena National Forest,MT,Montana,16362
+2203,Fishtail Saddleback,Custer National Forest,MT,Montana,16359
+2204,Hicks Mountain,Humboldt-Toiyabe National Forest,NV,Nevada,16334
+2205,Labonte Canyon,Medicine Bow-Routt National Forest,WY,Wyoming,16281
+2206,Devils Rock,Shasta-Trinity National Forest,CA,California,16209
+2207,Sheep Divide,Wallowa-Whitman National Forest,OR,Oregon,16201
+2208,Petty Mountain,Lolo National Forest,MT,Montana,16178
+2209,Eagle,Stanislaus National Forest,CA,California,16116
+2210,West Yuba,Tahoe National Forest,CA,California,16059
+2211,Burdette,Lolo National Forest,MT,Montana,16018
+2212,Greenhorn Mountain,Malheur National Forest,OR,Oregon,15936
+2213,Ward Mountain,Humboldt-Toiyabe National Forest,NV,Nevada,15927
+2214,Vigilante,Beaverhead-Deerlodge National Forest,MT,Montana,15893
+2215,Wheeler Ridge,Inyo National Forest,CA,California,15744
+2216,Fourmile Hill,Humboldt-Toiyabe National Forest,NV,Nevada,15718
+2217,Mt. Hicks,Humboldt-Toiyabe National Forest,NV,Nevada,15698
+2218,Calf - Copeland Creek,Umpqua National Forest,OR,Oregon,15696
+2219,Sawtooth,Lewis and Clark National Forest,MT,Montana,15693
+2220,418029,Uinta National Forest,UT,Utah,15673
+2221,0401008,Ashley National Forest,UT,Utah,15616
+2222,Orleans Mtn. C,Six Rivers National Forest,CA,California,15589
+2223,Magic Mountain,Angeles National Forest,CA,California,15542
+2224,Hell Hole,Apache-Sitgreaves National Forests,AZ,Arizona,15512
+2225,Point Augusta,Tongass National Forest,AK,Alaska,15482
+2226,Black Butte,Mendocino National Forest,CA,California,15461
+2227,Coal Ridge Ra 1127,Flathead National Forest,MT,Montana,15429
+2228,418032,Uinta National Forest,UT,Utah,15397
+2229,Chucksney Mountain,Willamette National Forest,OR,Oregon,15369
+2230,Northwest Peaks,Kootenai National Forest,MT,Montana,15358
+2231,Freel,Lake Tahoe Basin Management Unit,CA,California,15327
+2232,Mckay Creek #676,Kootenai National Forest,MT,Montana,15323
+2233,Wenatchee Creek,Umatilla National Forest,WA,Washington,15315
+2234,Highwood Baldy,Lewis and Clark National Forest,MT,Montana,15305
+2235,Waldo - Fuji,Willamette National Forest,OR,Oregon,15273
+2236,Goldfield,Tonto National Forest,AZ,Arizona,15257
+2237,Chineese Camp (NV),Humboldt-Toiyabe National Forest,NV,Nevada,15207
+2238,Glacier Peak I,Mt Baker-Snoqualmie National Forest,WA,Washington,15175
+2239,Log Cabin Saddlebag,Inyo National Forest,CA,California,15165
+2240,Jake Hollow,Dixie National Forest,UT,Utah,15146
+2241,Black Mtn.,Sequoia National Forest,CA,California,15102
+2242,Dobie Flat,Modoc National Forest,CA,California,15079
+2243,Gold Hill West #176,Kootenai National Forest,MT,Montana,15079
+2244,Right Hand Fork Logan,Wasatch-Cache National Forest,UT,Utah,15023
+2245,Castle Peak,Tahoe National Forest,CA,California,14974
+2246,Granulated Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,14950
+2247,South Mountain,Manti-Lasal National Forest,UT,Utah,14949
+2248,Lava Beds,Dixie National Forest,UT,Utah,14944
+2249,Sourdough Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,14933
+2250,Solider,Six Rivers National Forest,CA,California,14918
+2251,Bullion - Delano,Fishlake National Forest,UT,Utah,14917
+2252,Condor Point,Los Padres National Forest,CA,California,14897
+2253,Bend Watershed,Deschutes National Forest,OR,Oregon,14829
+2254,Moriah - West Slope,Humboldt-Toiyabe National Forest,NV,Nevada,14737
+2255,Middle Kruzof,Tongass National Forest,AK,Alaska,14724
+2256,Saddle Mountain #168,Kootenai National Forest,MT,Montana,14675
+2257,Stanley Mountain,Los Padres National Forest,CA,California,14674
+2258,418013,Uinta National Forest,UT,Utah,14643
+2259,Dark - Woodenshoe Canyon,Manti-Lasal National Forest,UT,Utah,14551
+2260,Pressentin,Mt Baker-Snoqualmie National Forest,WA,Washington,14545
+2261,Barren Creek #183,Kootenai National Forest,MT,Montana,14534
+2262,Cutca Valley,Cleveland National Forest,CA,California,14530
+2263,Happy Valley,Dixie National Forest,UT,Utah,14458
+2264,Snow Mountain,Mendocino National Forest,CA,California,14457
+2265,Mayfield,Lassen National Forest,CA,California,14444
+2266,0401015,Ashley National Forest,UT,Utah,14424
+2267,Shasta Costa,Siskiyou National Forests,OR,Oregon,14420
+2268,Kangaroo (OR),Rogue River National Forests,OR,Oregon,14390
+2269,Lolo Creek,Lolo National Forest,MT,Montana,14335
+2270,Bear Canyon,Los Padres National Forest,CA,California,14328
+2271,Emerine,Beaverhead-Deerlodge National Forest,MT,Montana,14282
+2272,South Wrangell,Tongass National Forest,AK,Alaska,14242
+2273,Dardanelles,Lake Tahoe Basin Management Unit,CA,California,14215
+2274,Little Sheep Mountain,Bridger-Teton National Forest,WY,Wyoming,14192
+2275,Fritsche,Prescott National Forest,AZ,Arizona,14190
+2276,Malduce Buckhorn,Los Padres National Forest,CA,California,14177
+2277,Pyramid Peak A,San Bernardino National Forest,CA,California,14177
+2278,Lookout Mountain,Ochoco National Forest,OR,Oregon,14115
+2279,Horseshoe Springs,Los Padres National Forest,CA,California,14089
+2280,Glacier Peak L,Mt Baker-Snoqualmie National Forest,WA,Washington,14084
+2281,Capitan Mountains,Lincoln National Forest,NM,New Mexico,14069
+2282,Blanco Mtn.,Inyo National Forest,CA,California,14049
+2283,418026,Uinta National Forest,UT,Utah,14038
+2284,La Brea,Los Padres National Forest,CA,California,14031
+2285,Allen Canyon - Dry Wash,Manti-Lasal National Forest,UT,Utah,13992
+2286,Datil,Cibola National Forest,NM,New Mexico,13958
+2287,City Creek,Fishlake National Forest,UT,Utah,13939
+2288,Hebo 1a,Siuslaw National Forest,OR,Oregon,13930
+2289,Teepee - Spring Creek,Lolo National Forest,MT,Montana,13902
+2290,418027,Uinta National Forest,UT,Utah,13884
+2291,White Knoll,Manti-Lasal National Forest,UT,Utah,13778
+2292,Lpoor Canyon,Los Padres National Forest,CA,California,13762
+2293,Rouse Hill,San Bernardino National Forest,CA,California,13745
+2294,Lone Butte,Beaverhead-Deerlodge National Forest,MT,Montana,13725
+2295,Cabinet Face West #670,Kootenai National Forest,MT,Montana,13692
+2296,Hoover - Rickey Pk,Humboldt-Toiyabe National Forest,CA,California,13652
+2297,Reservoir,Wallowa-Whitman National Forest,OR,Oregon,13641
+2298,Horse Valley,Dixie National Forest,UT,Utah,13624
+2299,Guadalupe,Cibola National Forest,NM,New Mexico,13619
+2300,Mokelumne - Mt. Bullion,Humboldt-Toiyabe National Forest,CA,California,13614
+2301,Mt. Henry #666,Kootenai National Forest,MT,Montana,13603
+2302,Deadhorse Rim,Fremont National Forest,OR,Oregon,13496
+2303,Grassy Top,Idaho Panhandle National Forests,WA,Washington,13485
+2304,South Siegel - South Cutoff,Lolo National Forest,MT,Montana,13474
+2305,Winchester,Coronado National Forest,AZ,Arizona,13459
+2306,Sitka Sound,Tongass National Forest,AK,Alaska,13459
+2307,Pecos,Carson National Forest,NM,New Mexico,13436
+2308,Independence Creek,Inyo National Forest,CA,California,13436
+2309,Central Wrangell,Tongass National Forest,AK,Alaska,13397
+2310,Chugach-13,Chugach National Forest,AK,Alaska,13337
+2311,Mirada Pime,Los Padres National Forest,CA,California,13302
+2312,418011,Uinta National Forest,UT,Utah,13253
+2313,Middle Fork,Medicine Bow-Routt National Forest,WY,Wyoming,13238
+2314,Trap Bay,Tongass National Forest,AK,Alaska,13237
+2315,Gallinas,Santa Fe National Forest,NM,New Mexico,13208
+2316,Ruby - South,Humboldt-Toiyabe National Forest,NV,Nevada,13195
+2317,Higgins Mountain,Mt Baker-Snoqualmie National Forest,WA,Washington,13185
+2318,Stoddard Mountain,Dixie National Forest,UT,Utah,13165
+2319,Peloncillo (AZ),Coronado National Forest,AZ,Arizona,13162
+2320,Centerfire,Apache-Sitgreaves National Forests,AZ,Arizona,13130
+2321,Mt. Hood Additions,Mt. Hood National Forest,OR,Oregon,13061
+2322,Twin Sisters,Colville National Forest,WA,Washington,13051
+2323,Nolan,Gila National Forest,NM,New Mexico,13051
+2324,Shay Mountain,Manti-Lasal National Forest,UT,Utah,13032
+2325,Pyramids,Fishlake National Forest,UT,Utah,13020
+2326,Beaver Creek,Wallowa-Whitman National Forest,OR,Oregon,12973
+2327,Sears Flat,Modoc National Forest,CA,California,12963
+2328,Larch,Mt. Hood National Forest,OR,Oregon,12961
+2329,Fishhook,Dixie National Forest,UT,Utah,12959
+2330,Chips Creek,Plumas National Forest,CA,California,12940
+2331,Mt. Hefty Ra 1481,Flathead National Forest,MT,Montana,12938
+2332,Gunnysack,Medicine Bow-Routt National Forest,WY,Wyoming,12890
+2333,0401024,Ashley National Forest,UT,Utah,12882
+2334,Munger Mountain,Bridger-Teton National Forest,WY,Wyoming,12827
+2335,Silver King,Lolo National Forest,MT,Montana,12816
+2336,Arch Canyon,Manti-Lasal National Forest,UT,Utah,12777
+2337,Siouxon,Gifford Pinchot National Forest,WA,Washington,12773
+2338,Largo,Gila National Forest,NM,New Mexico,12731
+2339,Quigg,Beaverhead-Deerlodge National Forest,MT,Montana,12712
+2340,Stark Mountain,Lolo National Forest,MT,Montana,12601
+2341,Box Canyon,Lewis and Clark National Forest,MT,Montana,12584
+2342,Marble Point,Lolo National Forest,MT,Montana,12581
+2343,Angel Peak North,Humboldt-Toiyabe National Forest,NV,Nevada,12577
+2344,Grief Hill,Prescott National Forest,AZ,Arizona,12535
+2345,Ruby - Segunda,Humboldt-Toiyabe National Forest,NV,Nevada,12532
+2346,Pine Mtn.,Humboldt-Toiyabe National Forest,NV,Nevada,12519
+2347,Upper Tucannon,Umatilla National Forest,WA,Washington,12485
+2348,Clackamas Mountain,Okanogan National Forest,WA,Washington,12478
+2349,Mt. Johns Peak - Mt Alice,Fishlake National Forest,UT,Utah,12469
+2350,Wayne Wonderland,Fishlake National Forest,UT,Utah,12395
+2351,Specimen Creek,Helena National Forest,MT,Montana,12368
+2352,Scotchman Peaks,Idaho Panhandle National Forests,MT,Montana,12357
+2353,Duck Creek,Thunder Basin National Grassland,WY,Wyoming,12343
+2354,Faulkner,Humboldt-Toiyabe National Forest,NV,Nevada,12310
+2355,Slate Mtn.,Sequoia National Forest,CA,California,12299
+2356,Grande Ronde,Umatilla National Forest,OR,Oregon,12296
+2357,Thirteenmile,Colville National Forest,WA,Washington,12294
+2358,Juncal,Los Padres National Forest,CA,California,12289
+2359,Arnold Mesa,Prescott National Forest,AZ,Arizona,12286
+2360,Dry Cabin,Malheur National Forest,OR,Oregon,12274
+2361,Machesna Mountain,Los Padres National Forest,CA,California,12271
+2362,Martin Ridge,Humboldt-Toiyabe National Forest,NV,Nevada,12241
+2363,Oat Mtn.,Sequoia National Forest,CA,California,12223
+2364,Dixie Butte,Malheur National Forest,OR,Oregon,12208
+2365,Duck Creek Mtns.,Humboldt-Toiyabe National Forest,NV,Nevada,12165
+2366,Langdon,Fishlake National Forest,UT,Utah,12160
+2367,Ogden Mountain,Helena National Forest,MT,Montana,12148
+2368,Boulder Park,Wallowa-Whitman National Forest,OR,Oregon,12141
+2369,King Mountain,Custer National Forest,MT,Montana,12134
+2370,Blue Creek Rare I,Six Rivers National Forest,CA,California,12134
+2371,Grommund Creek,Bighorn National Forest,WY,Wyoming,12089
+2372,Nuck Woodward,Manti-Lasal National Forest,UT,Utah,12081
+2373,Nordhoff,Los Padres National Forest,CA,California,12031
+2374,Panther,Shasta-Trinity National Forest,CA,California,12016
+2375,White Sage,Humboldt-Toiyabe National Forest,NV,Nevada,11993
+2376,Long Meadow,Humboldt-Toiyabe National Forest,CA,California,11967
+2377,Barker Valley,Cleveland National Forest,CA,California,11940
+2378,Ship Mountain,Six Rivers National Forest,CA,California,11936
+2379,Woodpecker,Sequoia National Forest,CA,California,11936
+2380,Cucamonga B,San Bernardino National Forest,CA,California,11933
+2381,Coyote North,Inyo National Forest,CA,California,11932
+2382,0401013,Ashley National Forest,UT,Utah,11909
+2383,Salmo - Priest B,Colville National Forest,WA,Washington,11869
+2384,Sam's Canyon,Humboldt-Toiyabe National Forest,NV,Nevada,11869
+2385,Big Rocks,Los Padres National Forest,CA,California,11866
+2386,Beaver Lake,Beaverhead-Deerlodge National Forest,MT,Montana,11863
+2387,Black River Canyon,Apache-Sitgreaves National Forests,AZ,Arizona,11817
+2388,Dog Valley,Fishlake National Forest,UT,Utah,11810
+2389,Upper Grande Ronde,Wallowa-Whitman National Forest,OR,Oregon,11723
+2390,Deer Mountain,Mendocino National Forest,CA,California,11716
+2391,418006,Uinta National Forest,UT,Utah,11714
+2392,0401001,Ashley National Forest,UT,Utah,11705
+2393,Mt. Bidwell,Modoc National Forest,CA,California,11687
+2394,Copleys,Fishlake National Forest,UT,Utah,11683
+2395,Myrtle Silvies,Malheur National Forest,OR,Oregon,11679
+2396,Lewis Peak,Wasatch-Cache National Forest,UT,Utah,11616
+2397,Lazyman Gulch,Helena National Forest,MT,Montana,11614
+2398,Sawmill Creek,Lewis and Clark National Forest,MT,Montana,11588
+2399,Bennion Creek,Manti-Lasal National Forest,UT,Utah,11584
+2400,White Pine South,Humboldt-Toiyabe National Forest,NV,Nevada,11562
+2401,Bell Quinby,Shasta-Trinity National Forest,CA,California,11556
+2402,Ortega Peak,Lincoln National Forest,NM,New Mexico,11545
+2403,Sugarloaf,Inyo National Forest,NV,Nevada,11534
+2404,Little French C,Shasta-Trinity National Forest,CA,California,11529
+2405,Bull Canyon,Carson National Forest,NM,New Mexico,11512
+2406,Little Creek,Fishlake National Forest,UT,Utah,11479
+2407,Backbone,Shasta-Trinity National Forest,CA,California,11466
+2408,Slide Creek,Six Rivers National Forest,CA,California,11458
+2409,Slide Ridge,Wenatchee National Forest,WA,Washington,11430
+2410,Wagon Tongue,Gila National Forest,NM,New Mexico,11411
+2411,Mahogany Range,Wasatch-Cache National Forest,UT,Utah,11409
+2412,Rock Creek,Ochoco National Forest,OR,Oregon,11396
+2413,Charleston - Macks Cyn,Humboldt-Toiyabe National Forest,NV,Nevada,11378
+2414,Raywood Flat B,San Bernardino National Forest,CA,California,11373
+2415,Cherry Creek,Tonto National Forest,AZ,Arizona,11371
+2416,Carroll,Tongass National Forest,AK,Alaska,11366
+2417,Blue Lake,Gifford Pinchot National Forest,WA,Washington,11359
+2418,Nipple Butte,Malheur National Forest,OR,Oregon,11354
+2419,Brock Spring,Humboldt-Toiyabe National Forest,NV,Nevada,11324
+2420,Wilhoites,Humboldt-Toiyabe National Forest,NV,Nevada,11297
+2421,Wonoga Pk.,Inyo National Forest,CA,California,11272
+2422,North Fork Middle Fork American River,Tahoe National Forest,CA,California,11245
+2423,Huckleberry,Wallowa-Whitman National Forest,OR,Oregon,11238
+2424,418018,Uinta National Forest,UT,Utah,11218
+2425,Wildhorse,Humboldt-Toiyabe National Forest,NV,Nevada,11204
+2426,Grant - Irwin,Humboldt-Toiyabe National Forest,NV,Nevada,11196
+2427,Greenhorn Mtn.,Umatilla National Forest,OR,Oregon,11191
+2428,Hydaburg,Tongass National Forest,AK,Alaska,11171
+2429,Manastash,Wenatchee National Forest,WA,Washington,11155
+2430,Humboldt - South,Humboldt-Toiyabe National Forest,NV,Nevada,11152
+2431,Metolius Breaks,Deschutes National Forest,OR,Oregon,11141
+2432,Myrtle Lake,Wenatchee National Forest,WA,Washington,11133
+2433,Woronkofski,Tongass National Forest,AK,Alaska,11114
+2434,Flagstaff Mountain #690,Kootenai National Forest,MT,Montana,11114
+2435,Los Machos Hills,Los Padres National Forest,CA,California,11112
+2436,Libby Flats,Medicine Bow-Routt National Forest,WY,Wyoming,11107
+2437,Green Rocks,Tongass National Forest,AK,Alaska,11093
+2438,Dome,Stanislaus National Forest,CA,California,11085
+2439,South Quinault,Olympic National Forest,WA,Washington,11081
+2440,Salt Creek,Angeles National Forest,CA,California,11022
+2441,Black Spring,Humboldt-Toiyabe National Forest,NV,Nevada,11016
+2442,Deschutes / Steelhead Canyon,Ochoco National Forest,OR,Oregon,11001
+2443,Headwaters / Pine Park Bench / Pine Park,Dixie National Forest,UT,Utah,10942
+2444,Pat O'hara,Shoshone National Forest,WY,Wyoming,10912
+2445,Farmington,Wasatch-Cache National Forest,UT,Utah,10912
+2446,418003,Uinta National Forest,UT,Utah,10912
+2447,Bull Valley,Dixie National Forest,UT,Utah,10911
+2448,Point Craven,Tongass National Forest,AK,Alaska,10906
+2449,Mt. Bonaparte,Okanogan National Forest,WA,Washington,10891
+2450,Keku,Tongass National Forest,AK,Alaska,10869
+2451,East Zarembo,Tongass National Forest,AK,Alaska,10847
+2452,Tenmile,Siuslaw National Forest,OR,Oregon,10818
+2453,Chico Peak,Gallatin National Forest,MT,Montana,10744
+2454,Lampson,Humboldt-Toiyabe National Forest,NV,Nevada,10730
+2455,Cabin Creek,Humboldt-Toiyabe National Forest,NV,Nevada,10706
+2456,Burnt Mountain,Custer National Forest,MT,Montana,10698
+2457,Deadhorse,Wallowa-Whitman National Forest,OR,Oregon,10690
+2458,Black Canyon,Prescott National Forest,AZ,Arizona,10683
+2459,Johnson,Klamath National Forest,CA,California,10652
+2460,Grider,Klamath National Forest,CA,California,10647
+2461,Coleman Rim,Fremont National Forest,OR,Oregon,10638
+2462,Heather Lake,Wenatchee National Forest,WA,Washington,10628
+2463,South Fork,Humboldt-Toiyabe National Forest,NV,Nevada,10619
+2464,Bull Valley,Fishlake National Forest,UT,Utah,10594
+2465,Middle Dragoon Roadless,Coronado National Forest,AZ,Arizona,10543
+2466,New Home Bench,Dixie National Forest,UT,Utah,10513
+2467,0401004,Ashley National Forest,UT,Utah,10510
+2468,Singer Peak,Medicine Bow-Routt National Forest,WY,Wyoming,10498
+2469,Willow Springs,Umatilla National Forest,WA,Washington,10414
+2470,North Dobbins,Humboldt-Toiyabe National Forest,NV,Nevada,10411
+2471,Miller Hills,Thunder Basin National Grassland,WY,Wyoming,10377
+2472,Sibley Lake,Bighorn National Forest,WY,Wyoming,10367
+2473,Granite Mountain,Lewis and Clark National Forest,MT,Montana,10338
+2474,Staunton Ridge,Humboldt-Toiyabe National Forest,NV,Nevada,10328
+2475,Grassy Top,Colville National Forest,WA,Washington,10302
+2476,West Wrangell,Tongass National Forest,AK,Alaska,10291
+2477,Twelve Mile Creek,Manti-Lasal National Forest,UT,Utah,10234
+2478,Glacier Peak H,Mt Baker-Snoqualmie National Forest,WA,Washington,10213
+2479,Norse Peak,Wenatchee National Forest,WA,Washington,10169
+2480,Ruby - Marsh,Humboldt-Toiyabe National Forest,NV,Nevada,10164
+2481,Jupiter Ridge,Olympic National Forest,WA,Washington,10148
+2482,Harvey Creek,Colville National Forest,WA,Washington,10140
+2483,Woewodski,Tongass National Forest,AK,Alaska,10136
+2484,South Brock,Humboldt-Toiyabe National Forest,NV,Nevada,10136
+2485,South Huckleberry,Colville National Forest,WA,Washington,10117
+2486,Phillips Ridge,Bridger-Teton National Forest,WY,Wyoming,10108
+2487,Calf Creek,Lewis and Clark National Forest,MT,Montana,10108
+2488,Soldier,Modoc National Forest,CA,California,10102
+2489,Currant - East Slope,Humboldt-Toiyabe National Forest,NV,Nevada,10101
+2490,Hideout Creek,Bighorn National Forest,WY,Wyoming,10096
+2491,Government Mountain #673,Kootenai National Forest,MT,Montana,10090
+2492,Gilt Edge - Silver Creek,Lolo National Forest,MT,Montana,10055
+2493,Hazelton Peaks,Bighorn National Forest,WY,Wyoming,10029
+2494,Sycamore Springs,Sierra National Forest,CA,California,10015
+2495,Zulu #166,Kootenai National Forest,MT,Montana,10010
+2496,City Creek,San Bernardino National Forest,CA,California,9997
+2497,Indian Creek,Humboldt-Toiyabe National Forest,NV,Nevada,9996
+2498,Mt.  Olympus,Wasatch-Cache National Forest,UT,Utah,9982
+2499,Red Canyon North,Dixie National Forest,UT,Utah,9973
+2500,Devil's Gate (CA),Humboldt-Toiyabe National Forest,CA,California,9946
+2501,Cottonwood Creek,Ochoco National Forest,OR,Oregon,9934
+2502,Little Snake,Medicine Bow-Routt National Forest,WY,Wyoming,9920
+2503,Andrews Mtn.,Inyo National Forest,CA,California,9912
+2504,Windy Valley,Siskiyou National Forests,OR,Oregon,9903
+2505,Cooper,Humboldt-Toiyabe National Forest,NV,Nevada,9889
+2506,Buck Creek,Fremont National Forest,OR,Oregon,9887
+2507,Tule,Angeles National Forest,CA,California,9861
+2508,Calder,Tongass National Forest,AK,Alaska,9857
+2509,Canyon Creek,Gila National Forest,NM,New Mexico,9824
+2510,Hancock,Dixie National Forest,UT,Utah,9809
+2511,North Mountain,Bridger-Teton National Forest,WY,Wyoming,9798
+2512,Mt. Hoffman,Modoc National Forest,CA,California,9780
+2513,Middle Fork Judith,Lewis and Clark National Forest,MT,Montana,9714
+2514,Utley Butte,Malheur National Forest,OR,Oregon,9700
+2515,418037,Uinta National Forest,UT,Utah,9694
+2516,Willis Canyon,Kaibab National Forest,AZ,Arizona,9688
+2517,418014,Uinta National Forest,UT,Utah,9683
+2518,Black Canyon,Okanogan National Forest,WA,Washington,9681
+2519,Mt.  Aire,Wasatch-Cache National Forest,UT,Utah,9681
+2520,Benton Range,Inyo National Forest,CA,California,9637
+2521,Maiden Peak,Willamette National Forest,OR,Oregon,9627
+2522,Mt. Peale,Manti-Lasal National Forest,UT,Utah,9623
+2523,Cook Mountain,Custer National Forest,MT,Montana,9621
+2524,Sky Lakes B,Winema National Forest,OR,Oregon,9615
+2525,Pennock Mountain,Medicine Bow-Routt National Forest,WY,Wyoming,9599
+2526,Agnew,Sequoia National Forest,CA,California,9561
+2527,Salt Creek,Six Rivers National Forest,CA,California,9505
+2528,Basin Creek,Beaverhead-Deerlodge National Forest,MT,Montana,9500
+2529,418043,Uinta National Forest,UT,Utah,9493
+2530,Hat Mtn.,Modoc National Forest,CA,California,9478
+2531,Sierra Negra Rare II Study Area,Carson National Forest,NM,New Mexico,9470
+2532,Polk Springs,Lassen National Forest,CA,California,9466
+2533,Gordon Meadows,Willamette National Forest,OR,Oregon,9463
+2534,Cataract,Lolo National Forest,MT,Montana,9442
+2535,Bear Mountain,Medicine Bow-Routt National Forest,WY,Wyoming,9440
+2536,Padre Canyon,Coconino National Forest,AZ,Arizona,9431
+2537,Mcdonald Peak,Rogue River National Forests,OR,Oregon,9431
+2538,Swan Creek Mountain,Wasatch-Cache National Forest,UT,Utah,9390
+2539,Elkhorn,Willamette National Forest,OR,Oregon,9380
+2540,418008,Uinta National Forest,UT,Utah,9367
+2541,Marysville,Humboldt-Toiyabe National Forest,NV,Nevada,9365
+2542,Heart Lake,Lassen National Forest,CA,California,9349
+2543,Goat Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,9348
+2544,Alta T - North,Humboldt-Toiyabe National Forest,NV,Nevada,9325
+2545,Storm Lake,Beaverhead-Deerlodge National Forest,MT,Montana,9324
+2546,Upper Skokomish,Olympic National Forest,WA,Washington,9311
+2547,Deadhorse Point,Humboldt-Toiyabe National Forest,NV,Nevada,9305
+2548,Tibadore,Fishlake National Forest,UT,Utah,9266
+2549,Crater Mountain,Helena National Forest,MT,Montana,9265
+2550,Big Snowies,Lewis and Clark National Forest,MT,Montana,9258
+2551,Lost Water Canyon,Custer National Forest,MT,Montana,9251
+2552,Skeleton Glade,Mendocino National Forest,CA,California,9237
+2553,Tope Creek,Wallowa-Whitman National Forest,OR,Oregon,9237
+2554,North Siegel,Lolo National Forest,MT,Montana,9208
+2555,Lookout Peak,Fishlake National Forest,UT,Utah,9195
+2556,Pilot Creek,Six Rivers National Forest,CA,California,9192
+2557,Norse Peak,Mt Baker-Snoqualmie National Forest,WA,Washington,9167
+2558,Horse Mesa,Tonto National Forest,AZ,Arizona,9146
+2559,Fales,Humboldt-Toiyabe National Forest,CA,California,9138
+2560,Christoval,Tongass National Forest,AK,Alaska,9129
+2561,Berray Mountain #672,Kootenai National Forest,MT,Montana,9119
+2562,Marston Face # 172,Kootenai National Forest,MT,Montana,9098
+2563,Big Ridge,Kaibab National Forest,AZ,Arizona,9087
+2564,Tequepis,Los Padres National Forest,CA,California,9080
+2565,South Paulina,Deschutes National Forest,OR,Oregon,9074
+2566,Marshall Peak,Lolo National Forest,MT,Montana,9069
+2567,Condrey Mountain,Rogue River National Forests,CA,California,9068
+2568,Tom Martin,Klamath National Forest,CA,California,9031
+2569,Monkey Creek,Six Rivers National Forest,CA,California,9017
+2570,Clearwater,Mt Baker-Snoqualmie National Forest,WA,Washington,9017
+2571,Horse Creek Ridge,San Bernardino National Forest,CA,California,8969
+2572,Huckleberry Mountain #699,Kootenai National Forest,MT,Montana,8965
+2573,Hungry Mountain,Idaho Panhandle National Forests,WA,Washington,8955
+2574,Big Log,Helena National Forest,MT,Montana,8954
+2575,Jefferies Canyon,Lincoln National Forest,NM,New Mexico,8934
+2576,Last Chance Canyon,Lincoln National Forest,NM,New Mexico,8934
+2577,North Faulkner,Humboldt-Toiyabe National Forest,NV,Nevada,8933
+2578,Santa Teresa,Coronado National Forest,AZ,Arizona,8929
+2579,Cedar Bench,Dixie National Forest,UT,Utah,8915
+2580,Upper East Fork,Beaverhead-Deerlodge National Forest,MT,Montana,8905
+2581,Snowbird,Humboldt-Toiyabe National Forest,NV,Nevada,8859
+2582,Boulder Mountain,Wasatch-Cache National Forest,UT,Utah,8852
+2583,Bull Of The Woods,Mt. Hood National Forest,OR,Oregon,8843
+2584,Jarbidge - Sun Creek,Humboldt-Toiyabe National Forest,NV,Nevada,8823
+2585,Call Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,8796
+2586,East Mitkof,Tongass National Forest,AK,Alaska,8795
+2587,Copper Mountain,Siskiyou National Forests,OR,Oregon,8789
+2588,Circle Wash,Humboldt-Toiyabe National Forest,NV,Nevada,8787
+2589,Masket Peak,Humboldt-Toiyabe National Forest,NV,Nevada,8778
+2590,Poverty Creek,Gila National Forest,NM,New Mexico,8770
+2591,Laurel Mcgee,Inyo National Forest,CA,California,8770
+2592,Pine Grove North,Humboldt-Toiyabe National Forest,NV,Nevada,8749
+2593,Elk Mountain,Humboldt-Toiyabe National Forest,NV,Nevada,8732
+2594,Hungry Ridge,Okanogan National Forest,WA,Washington,8708
+2595,Tumwater,Gifford Pinchot National Forest,WA,Washington,8676
+2596,Flat Canyon,Fishlake National Forest,UT,Utah,8663
+2597,Barton Creek,Humboldt-Toiyabe National Forest,NV,Nevada,8651
+2598,Cub Creek,Lassen National Forest,CA,California,8643
+2599,Antelope - West 1,Humboldt-Toiyabe National Forest,NV,Nevada,8642
+2600,Alamo Canyon,Santa Fe National Forest,NM,New Mexico,8639
+2601,Duncan Canyon,Tahoe National Forest,CA,California,8621
+2602,Pollywog,Santa Fe National Forest,NM,New Mexico,8557
+2603,Ward Eagle,Lolo National Forest,MT,Montana,8556
+2604,Quartz,Wenatchee National Forest,WA,Washington,8550
+2605,Grant - Wiregrass,Humboldt-Toiyabe National Forest,NV,Nevada,8541
+2606,Parsnip,Modoc National Forest,CA,California,8485
+2607,Rough Creek,Humboldt-Toiyabe National Forest,NV,Nevada,8476
+2608,Jerico Mountain,Helena National Forest,MT,Montana,8445
+2609,North Fork Smith,Lewis and Clark National Forest,MT,Montana,8444
+2610,East Beegum,Shasta-Trinity National Forest,CA,California,8425
+2611,Mt.  Emily,Wallowa-Whitman National Forest,OR,Oregon,8421
+2612,Huston Park Addition,Medicine Bow-Routt National Forest,WY,Wyoming,8409
+2613,Coldwater,Cleveland National Forest,CA,California,8402
+2614,Mineral Canyon,Dixie National Forest,UT,Utah,8402
+2615,Manzanita,Tongass National Forest,AK,Alaska,8401
+2616,Sheridan Pass,Shoshone National Forest,WY,Wyoming,8394
+2617,Tw Mountain,Lewis and Clark National Forest,MT,Montana,8388
+2618,Burnt Lava Flow,Modoc National Forest,CA,California,8387
+2619,Alma Copper,Mt Baker-Snoqualmie National Forest,WA,Washington,8382
+2620,Castle Ridge,Wallowa-Whitman National Forest,OR,Oregon,8377
+2621,0401023,Ashley National Forest,UT,Utah,8352
+2622,Mcgath Lake - Auger Hole,Dixie National Forest,UT,Utah,8334
+2623,Little Popo Agie,Shoshone National Forest,WY,Wyoming,8333
+2624,Glacier Peak G,Mt Baker-Snoqualmie National Forest,WA,Washington,8326
+2625,North Horn,Manti-Lasal National Forest,UT,Utah,8307
+2626,Mytoge,Fishlake National Forest,UT,Utah,8286
+2627,Bearhead Peak,Santa Fe National Forest,NM,New Mexico,8277
+2628,Cow Creek Mountain,Medicine Bow-Routt National Forest,WY,Wyoming,8276
+2629,Standard Peak Ra 1129,Flathead National Forest,MT,Montana,8262
+2630,Lincoln Gulch,Helena National Forest,MT,Montana,8250
+2631,West Fork Yaak #694,Kootenai National Forest,MT,Montana,8237
+2632,Ruin Canyon,Manti-Lasal National Forest,UT,Utah,8219
+2633,Butt Mtn.,Lassen National Forest,CA,California,8217
+2634,Little West Fork Blacks,Wasatch-Cache National Forest,UT,Utah,8209
+2635,Camuesa,Los Padres National Forest,CA,California,8209
+2636,Sugarloaf,San Bernardino National Forest,CA,California,8206
+2637,North Francis,Wasatch-Cache National Forest,UT,Utah,8148
+2638,Lemitas,Santa Fe National Forest,NM,New Mexico,8129
+2639,Bear Creek,Beaverhead-Deerlodge National Forest,MT,Montana,8123
+2640,Chugach-12,Chugach National Forest,AK,Alaska,8116
+2641,Hanan Trail,Fremont National Forest,OR,Oregon,8111
+2642,Dardanelles,Eldorado National Forest,CA,California,8110
+2643,Echo Mountain,Willamette National Forest,OR,Oregon,8098
+2644,Hixon Flat,San Bernardino National Forest,CA,California,8095
+2645,North Wrangell,Tongass National Forest,AK,Alaska,8091
+2646,Mclennon Mountain,Willamette National Forest,OR,Oregon,8085
+2647,Barney Riley,Humboldt-Toiyabe National Forest,CA,California,8083
+2648,North Rocky Canyon,Lincoln National Forest,NM,New Mexico,8068
+2649,Evans Gulch,Lolo National Forest,MT,Montana,8059
+2650,White Cap,Cibola National Forest,NM,New Mexico,8036
+2651,Red Mountain,Angeles National Forest,CA,California,8034
+2652,Juan de Gabaldon Grant,Santa Fe National Forest,NM,New Mexico,8023
+2653,Kane Mountain,Dixie National Forest,UT,Utah,8013
+2654,Widdop Mountain,Wasatch-Cache National Forest,UT,Utah,8011
+2655,South Sierra,Sequoia National Forest,CA,California,8008
+2656,Birch Creek,Manti-Lasal National Forest,UT,Utah,8004
+2657,Little Grayback,Rogue River National Forests,OR,Oregon,7986
+2658,Canyon Creek,Wenatchee National Forest,WA,Washington,7983
+2659,Bear Creek,Gifford Pinchot National Forest,WA,Washington,7980
+2660,Happy Valley,Coronado National Forest,AZ,Arizona,7972
+2661,Canjilon Mtn.,Carson National Forest,NM,New Mexico,7972
+2662,Bell Meadow,Stanislaus National Forest,CA,California,7968
+2663,Platte River Addition,Medicine Bow-Routt National Forest,WY,Wyoming,7962
+2664,Silver Creek,Ochoco National Forest,OR,Oregon,7952
+2665,Sand Creek,Black Hills National Forest,WY,Wyoming,7950
+2666,Hogsback,Wasatch-Cache National Forest,UT,Utah,7936
+2667,Connell Mountains,Prescott National Forest,AZ,Arizona,7926
+2668,Vincenti,Humboldt-Toiyabe National Forest,NV,Nevada,7920
+2669,Nihwik Mountain,Siskiyou National Forests,OR,Oregon,7904
+2670,Mill Peak,San Bernardino National Forest,CA,California,7884
+2671,Paine Gulch,Lewis and Clark National Forest,MT,Montana,7875
+2672,Pennsylvania Hill,Humboldt-Toiyabe National Forest,NV,Nevada,7869
+2673,North Mountain,Stanislaus National Forest,CA,California,7856
+2674,Garcia Mountain,Los Padres National Forest,CA,California,7850
+2675,Mill Creek Watershed (OR),Umatilla National Forest,OR,Oregon,7820
+2676,Devils Cave Ridge,Humboldt-Toiyabe National Forest,NV,Nevada,7791
+2677,Lobdell Summit,Humboldt-Toiyabe National Forest,NV,Nevada,7791
+2678,Jackson Creek,Okanogan National Forest,WA,Washington,7791
+2679,Sierra Ancha Wilderness Contiguous,Tonto National Forest,AZ,Arizona,7787
+2680,Silver Star,Gifford Pinchot National Forest,WA,Washington,7779
+2681,Saginaw Creek,Beaverhead-Deerlodge National Forest,MT,Montana,7776
+2682,Mt. Vida,Modoc National Forest,CA,California,7771
+2683,Pyramid,Lake Tahoe Basin Management Unit,CA,California,7758
+2684,Excelsior (NV),Inyo National Forest,NV,Nevada,7744
+2685,Hot Springs Butte,Humboldt-Toiyabe National Forest,NV,Nevada,7729
+2686,Dry,Modoc National Forest,CA,California,7726
+2687,Flag Creek,Malheur National Forest,OR,Oregon,7716
+2688,Skookum,Umatilla National Forest,OR,Oregon,7704
+2689,Robinson,Humboldt-Toiyabe National Forest,NV,Nevada,7688
+2690,Three Sisters,Deschutes National Forest,OR,Oregon,7687
+2691,Deep Wells,Inyo National Forest,CA,California,7681
+2692,Deep Creek,Lolo National Forest,MT,Montana,7669
+2693,Last,Umpqua National Forest,OR,Oregon,7666
+2694,Ash Creek,Prescott National Forest,AZ,Arizona,7663
+2695,Tehama Creek,Humboldt-Toiyabe National Forest,NV,Nevada,7656
+2696,0401006,Ashley National Forest,UT,Utah,7645
+2697,East Wrangell,Tongass National Forest,AK,Alaska,7630
+2698,Smith Umpqua,Siuslaw National Forest,OR,Oregon,7622
+2699,Kasaan,Tongass National Forest,AK,Alaska,7611
+2700,Olallie,Mt. Hood National Forest,OR,Oregon,7607
+2701,Mill Creek,Lassen National Forest,CA,California,7587
+2702,Horseshoe,Gifford Pinchot National Forest,WA,Washington,7579
+2703,Sundance Ridge,Lolo National Forest,MT,Montana,7558
+2704,Ruby - Smith Ck,Humboldt-Toiyabe National Forest,NV,Nevada,7553
+2705,Cajon,San Bernardino National Forest,CA,California,7548
+2706,Canyon Creek,Shoshone National Forest,WY,Wyoming,7530
+2707,Big Creek #701,Kootenai National Forest,MT,Montana,7530
+2708,Gotchen Creek,Gifford Pinchot National Forest,WA,Washington,7518
+2709,Kinney,Rogue River National Forests,OR,Oregon,7505
+2710,The Hub,Gila National Forest,NM,New Mexico,7498
+2711,Devils Gate (NV),Humboldt-Toiyabe National Forest,NV,Nevada,7485
+2712,Bunker Creek,Dixie National Forest,UT,Utah,7474
+2713,Chalk Peak,Los Padres National Forest,CA,California,7472
+2714,Woods,Humboldt-Toiyabe National Forest,NV,Nevada,7467
+2715,East Fork Encampment,Medicine Bow-Routt National Forest,WY,Wyoming,7445
+2716,Grizzly Peak #667,Kootenai National Forest,MT,Montana,7441
+2717,Bear Valley Peak,Dixie National Forest,UT,Utah,7438
+2718,Fairview,Umpqua National Forest,OR,Oregon,7417
+2719,Middle Yuba,Tahoe National Forest,CA,California,7379
+2720,Stagecoach,Humboldt-Toiyabe National Forest,NV,Nevada,7377
+2721,Kasaan Bay,Tongass National Forest,AK,Alaska,7363
+2722,Cornpatch,Willamette National Forest,OR,Oregon,7346
+2723,Togwotee Pass,Shoshone National Forest,WY,Wyoming,7344
+2724,Irish Gulch,Helena National Forest,MT,Montana,7321
+2725,Red Peak,Humboldt-Toiyabe National Forest,NV,Nevada,7319
+2726,Bearwallows,Deschutes National Forest,OR,Oregon,7317
+2727,Middle Santiam,Willamette National Forest,OR,Oregon,7316
+2728,Shuteye,Sierra National Forest,CA,California,7313
+2729,418042,Uinta National Forest,UT,Utah,7313
+2730,0401027,Ashley National Forest,UT,Utah,7312
+2731,Malheur River,Malheur National Forest,OR,Oregon,7283
+2732,Quatal,Los Padres National Forest,CA,California,7253
+2733,Strawberry Peak,Angeles National Forest,CA,California,7245
+2734,Groundhog,Humboldt-Toiyabe National Forest,NV,Nevada,7232
+2735,Mt. Eddy,Shasta-Trinity National Forest,CA,California,7232
+2736,Coconino Rim,Kaibab National Forest,AZ,Arizona,7213
+2737,Briscoe,Mendocino National Forest,CA,California,7212
+2738,Brushy Mountain,Gila National Forest,NM,New Mexico,7199
+2739,Pyramid Peak B,San Bernardino National Forest,CA,California,7194
+2740,Clear Creek,Sawtooth National Forest,UT,Utah,7188
+2741,Big Sandstone,Medicine Bow-Routt National Forest,WY,Wyoming,7180
+2742,Lightning,Olympic National Forest,WA,Washington,7179
+2743,San Dimas,Angeles National Forest,CA,California,7160
+2744,Hoover - Green Ck No,Humboldt-Toiyabe National Forest,CA,California,7155
+2745,Candian River,Cibola National Forest,NM,New Mexico,7149
+2746,Devils Tower,Helena National Forest,MT,Montana,7144
+2747,Hoodoo,Colville National Forest,WA,Washington,7142
+2748,Neka Bay,Tongass National Forest,AK,Alaska,7142
+2749,Red Point,Kaibab National Forest,AZ,Arizona,7139
+2750,White Mountain,Manti-Lasal National Forest,UT,Utah,7132
+2751,Kangaroo,Siskiyou National Forests,OR,Oregon,7117
+2752,Mono Craters,Inyo National Forest,CA,California,7115
+2753,0401031,Ashley National Forest,UT,Utah,7110
+2754,Clarkston Mtn.,Caribou National Forest,UT,Utah,7099
+2755,Tolan Creek (x1070),Bitterroot National Forest,MT,Montana,7090
+2756,Campbell Lake,Medicine Bow-Routt National Forest,WY,Wyoming,7088
+2757,Sherwood,Rogue River National Forests,OR,Oregon,7069
+2758,Reynolds,Humboldt-Toiyabe National Forest,NV,Nevada,7064
+2759,Charlton,Deschutes National Forest,OR,Oregon,7047
+2760,Robinson Mountain #164,Kootenai National Forest,MT,Montana,7030
+2761,Four Eyes Canyon,Beaverhead-Deerlodge National Forest,MT,Montana,7029
+2762,Rolfson - Staker,Manti-Lasal National Forest,UT,Utah,7018
+2763,Campbell Blue,Apache-Sitgreaves National Forests,AZ,Arizona,7003
+2764,Little Eagle Meadows,Wallowa-Whitman National Forest,OR,Oregon,6984
+2765,Mt.  Raymond,Sierra National Forest,CA,California,6965
+2766,Cahuilla Mountain,San Bernardino National Forest,CA,California,6952
+2767,Chicken Spring,Humboldt-Toiyabe National Forest,NV,Nevada,6947
+2768,Burch Creek,Wasatch-Cache National Forest,UT,Utah,6938
+2769,Watterson,Inyo National Forest,CA,California,6922
+2770,Boulder Basin,Humboldt-Toiyabe National Forest,NV,Nevada,6912
+2771,Meadow Creek - Upper North Fork,Lolo National Forest,MT,Montana,6906
+2772,Marble Point,Wallowa-Whitman National Forest,OR,Oregon,6874
+2773,Texas Butte,Umatilla National Forest,OR,Oregon,6871
+2774,San Sevaine,San Bernardino National Forest,CA,California,6866
+2775,Wiley,Humboldt-Toiyabe National Forest,NV,Nevada,6864
+2776,North Brock,Humboldt-Toiyabe National Forest,NV,Nevada,6863
+2777,418019,Uinta National Forest,UT,Utah,6854
+2778,Red Hills,Thunder Basin National Grassland,WY,Wyoming,6842
+2779,T Bar,Gila National Forest,NM,New Mexico,6823
+2780,418007,Uinta National Forest,UT,Utah,6816
+2781,Silver King - Falls Creek,Helena National Forest,MT,Montana,6811
+2782,Stone Canyon,Gila National Forest,NM,New Mexico,6801
+2783,El Lagunito,Santa Fe National Forest,NM,New Mexico,6799
+2784,West Zarembo,Tongass National Forest,AK,Alaska,6786
+2785,Crystal Creek,San Bernardino National Forest,CA,California,6783
+2786,Limpy Rock,Umpqua National Forest,OR,Oregon,6782
+2787,Nolan,Apache-Sitgreaves National Forests,AZ,Arizona,6780
+2788,East Fork Elk #678,Kootenai National Forest,MT,Montana,6767
+2789,Shaketable,Malheur National Forest,OR,Oregon,6764
+2790,Cottonwood,Dixie National Forest,UT,Utah,6754
+2791,Ruby - Secret Pk.,Humboldt-Toiyabe National Forest,NV,Nevada,6749
+2792,Musinia Peak,Fishlake National Forest,UT,Utah,6746
+2793,Grassy Mountain,Helena National Forest,MT,Montana,6740
+2794,Rogue - Umpqua Divide,Rogue River National Forests,OR,Oregon,6728
+2795,Canton Creek,Umpqua National Forest,OR,Oregon,6721
+2796,Alexander Creek #696,Kootenai National Forest,MT,Montana,6719
+2797,0401029,Ashley National Forest,UT,Utah,6718
+2798,Illinois Creek,Medicine Bow-Routt National Forest,WY,Wyoming,6711
+2799,Yamsay Mt.,Winema National Forest,OR,Oregon,6699
+2800,Bridger Peak,Medicine Bow-Routt National Forest,WY,Wyoming,6697
+2801,Brown Mountain,Rogue River National Forests,OR,Oregon,6694
+2802,Bitter Lick,Rogue River National Forests,OR,Oregon,6678
+2803,Mcneeley #675,Kootenai National Forest,MT,Montana,6657
+2804,Mt. Lassic,Six Rivers National Forest,CA,California,6643
+2805,"Mt. Washington, West",Willamette National Forest,OR,Oregon,6641
+2806,Slate Creek,Shasta-Trinity National Forest,CA,California,6636
+2807,Antelope,Humboldt-Toiyabe National Forest,NV,Nevada,6632
+2808,Pogonip Ridge,Humboldt-Toiyabe National Forest,NV,Nevada,6629
+2809,Callahan Flow,Modoc National Forest,CA,California,6618
+2810,Big Canyon,Modoc National Forest,CA,California,6615
+2811,Green Mountain,Ochoco National Forest,OR,Oregon,6613
+2812,North Carp,Beaverhead-Deerlodge National Forest,MT,Montana,6600
+2813,Underwood,Six Rivers National Forest,CA,California,6591
+2814,Mt. Baker South,Mt Baker-Snoqualmie National Forest,WA,Washington,6570
+2815,Lincoln,Lake Tahoe Basin Management Unit,NV,Nevada,6556
+2816,Eagle,Shasta-Trinity National Forest,CA,California,6553
+2817,Elk Mountain,Gila National Forest,NM,New Mexico,6550
+2818,Granite Chief,Tahoe National Forest,CA,California,6546
+2819,Doyle Creek,Bighorn National Forest,WY,Wyoming,6542
+2820,Angel Peak South,Humboldt-Toiyabe National Forest,NV,Nevada,6540
+2821,Elkhorn,Humboldt-Toiyabe National Forest,NV,Nevada,6533
+2822,Black,Klamath National Forest,CA,California,6530
+2823,Pine Mountain Wilderness Contiguous,Tonto National Forest,AZ,Arizona,6518
+2824,Jefferson Ridge,Olympic National Forest,WA,Washington,6512
+2825,Salt Gulch,Shasta-Trinity National Forest,CA,California,6511
+2826,Downs,Thunder Basin National Grassland,WY,Wyoming,6510
+2827,Hidden Lake,Mt Baker-Snoqualmie National Forest,WA,Washington,6489
+2828,Baldy Mountain,Lolo National Forest,MT,Montana,6482
+2829,Eagle Peak,Cleveland National Forest,CA,California,6481
+2830,0401032,Ashley National Forest,UT,Utah,6471
+2831,Maple Peak,Lolo National Forest,MT,Montana,6469
+2832,Gold Hill #668,Kootenai National Forest,MT,Montana,6455
+2833,Upper Catherine Creek,Wallowa-Whitman National Forest,OR,Oregon,6446
+2834,Gentry Mountain,Manti-Lasal National Forest,UT,Utah,6441
+2835,Sherman Peak,Humboldt-Toiyabe National Forest,NV,Nevada,6433
+2836,Jenneman Peak,Humboldt-Toiyabe National Forest,NV,Nevada,6431
+2837,Baldy Mountain,Malheur National Forest,OR,Oregon,6416
+2838,Deep Creek,Medicine Bow-Routt National Forest,WY,Wyoming,6411
+2839,Mt. Hagen,Willamette National Forest,OR,Oregon,6406
+2840,Black Mountain,Manti-Lasal National Forest,UT,Utah,6390
+2841,Horse Heaven,Humboldt-Toiyabe National Forest,NV,Nevada,6385
+2842,Walker Mountain,Coconino National Forest,AZ,Arizona,6382
+2843,Circle Mountain,San Bernardino National Forest,CA,California,6375
+2844,Mt. Taylor,Cibola National Forest,NM,New Mexico,6355
+2845,North Kuiu,Tongass National Forest,AK,Alaska,6353
+2846,Public Grove,Wasatch-Cache National Forest,UT,Utah,6341
+2847,Dixon Mountain,Gifford Pinchot National Forest,WA,Washington,6339
+2848,Elephant Buttes,Humboldt-Toiyabe National Forest,NV,Nevada,6338
+2849,Wobbly,Gifford Pinchot National Forest,WA,Washington,6335
+2850,Drift Creek,Siuslaw National Forest,OR,Oregon,6333
+2851,Blade Creek,Humboldt-Toiyabe National Forest,NV,Nevada,6331
+2852,Garden Point,Lolo National Forest,MT,Montana,6322
+2853,Benchmark Ra 1126,Flathead National Forest,MT,Montana,6318
+2854,0401036,Ashley National Forest,WY,Wyoming,6309
+2855,Dennison Peak,Sequoia National Forest,CA,California,6293
+2856,Polvadera Peak,Santa Fe National Forest,NM,New Mexico,6291
+2857,Arroyo Montoso,Santa Fe National Forest,NM,New Mexico,6284
+2858,O'Neil Creek,Beaverhead-Deerlodge National Forest,MT,Montana,6279
+2859,Coal Hollow,Manti-Lasal National Forest,UT,Utah,6269
+2860,Powley,Modoc National Forest,CA,California,6268
+2861,418021,Uinta National Forest,UT,Utah,6255
+2862,Mowry Peak,Medicine Bow-Routt National Forest,WY,Wyoming,6244
+2863,Grizzly Peak,Plumas National Forest,CA,California,6222
+2864,"Mt. Jefferson, North",Willamette National Forest,OR,Oregon,6219
+2865,Warm Spring Creek,Shoshone National Forest,WY,Wyoming,6216
+2866,0401019,Ashley National Forest,WY,Wyoming,6202
+2867,East Fork,Shasta-Trinity National Forest,CA,California,6201
+2868,Cerro Alesna,Cibola National Forest,NM,New Mexico,6184
+2869,Arroyo de la Presa,Santa Fe National Forest,NM,New Mexico,6178
+2870,Pass Creek,Shoshone National Forest,WY,Wyoming,6172
+2871,Hellsgate,Tonto National Forest,AZ,Arizona,6171
+2872,418034,Uinta National Forest,UT,Utah,6170
+2873,Trumbull Peak,Stanislaus National Forest,CA,California,6164
+2874,0401018,Ashley National Forest,WY,Wyoming,6157
+2875,Twin Peaks,Wasatch-Cache National Forest,UT,Utah,6157
+2876,Rat Trap Spring,Humboldt-Toiyabe National Forest,NV,Nevada,6156
+2877,Grantsville,Humboldt-Toiyabe National Forest,NV,Nevada,6156
+2878,South Ridge,Okanogan National Forest,WA,Washington,6151
+2879,Cave Creek,Humboldt-Toiyabe National Forest,NV,Nevada,6145
+2880,Neka Mountain,Tongass National Forest,AK,Alaska,6138
+2881,Ranger Cabin,Cibola National Forest,NM,New Mexico,6124
+2882,Youngsville,Santa Fe National Forest,NM,New Mexico,6122
+2883,Goat Rocks Adj,Wenatchee National Forest,WA,Washington,6108
+2884,Guaje Canyon,Santa Fe National Forest,NM,New Mexico,6104
+2885,Ferguson Ridge,Sierra National Forest,CA,California,6104
+2886,Santa Rita,Coronado National Forest,AZ,Arizona,6078
+2887,West Yuba,Plumas National Forest,CA,California,6071
+2888,Pine Grove Summit,Humboldt-Toiyabe National Forest,NV,Nevada,6070
+2889,Virgin Canyon,Santa Fe National Forest,NM,New Mexico,6068
+2890,Bulldog Rock,Umpqua National Forest,OR,Oregon,6056
+2891,Twin Lakes,Mt. Hood National Forest,OR,Oregon,6055
+2892,Mt. Arvine,Fishlake National Forest,UT,Utah,6054
+2893,Straight Canyon,Manti-Lasal National Forest,UT,Utah,6017
+2894,Headwaters Sunlight Creek,Shoshone National Forest,WY,Wyoming,6016
+2895,Soldier Creek,Medicine Bow-Routt National Forest,WY,Wyoming,5997
+2896,Horseshoe Ridge,Umatilla National Forest,OR,Oregon,5996
+2897,Lava,Lassen National Forest,CA,California,5978
+2898,Knox Mtn.,Modoc National Forest,CA,California,5975
+2899,Kangaroo (CA),Rogue River National Forests,CA,California,5969
+2900,Black Cross,Tonto National Forest,AZ,Arizona,5966
+2901,Brattain Butte,Fremont National Forest,OR,Oregon,5959
+2902,Caliente,Cleveland National Forest,CA,California,5953
+2903,Potato Mountain,Siskiyou National Forests,OR,Oregon,5950
+2904,Sweetwater (NV),Humboldt-Toiyabe National Forest,NV,Nevada,5946
+2905,Bench Mark,Shoshone National Forest,WY,Wyoming,5940
+2906,Seyler Peak,Humboldt-Toiyabe National Forest,NV,Nevada,5938
+2907,Spangler,Umatilla National Forest,WA,Washington,5936
+2908,French Creek,Medicine Bow-Routt National Forest,WY,Wyoming,5928
+2909,White Chuck Mountain,Mt Baker-Snoqualmie National Forest,WA,Washington,5923
+2910,Briggs,Siskiyou National Forests,OR,Oregon,5920
+2911,Wells Mountain,Shasta-Trinity National Forest,CA,California,5919
+2912,Donegan,Umpqua National Forest,OR,Oregon,5914
+2913,Eagle Park,Lewis and Clark National Forest,MT,Montana,5912
+2914,Reister Canyon,Mendocino National Forest,CA,California,5897
+2915,Mother Hubbard,Gila National Forest,NM,New Mexico,5895
+2916,Battle Creek,Medicine Bow-Routt National Forest,WY,Wyoming,5890
+2917,Spencer Ridge,Gifford Pinchot National Forest,WA,Washington,5880
+2918,Strawberry Creek,Medicine Bow-Routt National Forest,WY,Wyoming,5880
+2919,Fox Creek,Malheur National Forest,OR,Oregon,5846
+2920,Williams Creek,Umpqua National Forest,OR,Oregon,5844
+2921,Flat Creek,Humboldt-Toiyabe National Forest,NV,Nevada,5843
+2922,Robinson Peak,Humboldt-Toiyabe National Forest,CA,California,5835
+2923,Bald Mountain,Tahoe National Forest,CA,California,5832
+2924,San Pedro Parks,Santa Fe National Forest,NM,New Mexico,5824
+2925,Tepusquet Peak,Los Padres National Forest,CA,California,5821
+2926,Muldoon,Prescott National Forest,AZ,Arizona,5821
+2927,Homestead,Wallowa-Whitman National Forest,OR,Oregon,5817
+2928,Grant - Lower Scofield,Humboldt-Toiyabe National Forest,NV,Nevada,5816
+2929,Fred Burr,Beaverhead-Deerlodge National Forest,MT,Montana,5814
+2930,Tahkenitch,Siuslaw National Forest,OR,Oregon,5799
+2931,Mckinney,Humboldt-Toiyabe National Forest,NV,Nevada,5790
+2932,Drake - Mcdowell,Fremont National Forest,OR,Oregon,5767
+2933,Mt.  Emily,Siskiyou National Forests,OR,Oregon,5764
+2934,Solomon Creek,Medicine Bow-Routt National Forest,WY,Wyoming,5756
+2935,Goat Spring,Cibola National Forest,NM,New Mexico,5755
+2936,Monument Rock,Wallowa-Whitman National Forest,OR,Oregon,5749
+2937,Brushy Springs,Gila National Forest,NM,New Mexico,5735
+2938,Horton,Inyo National Forest,CA,California,5717
+2939,418001,Uinta National Forest,UT,Utah,5697
+2940,0401016,Ashley National Forest,UT,Utah,5695
+2941,Ferguson,Fishlake National Forest,UT,Utah,5690
+2942,Aurora Crater,Humboldt-Toiyabe National Forest,NV,Nevada,5689
+2943,Horse Mdw.,Inyo National Forest,CA,California,5687
+2944,West Walker (NV),Humboldt-Toiyabe National Forest,NV,Nevada,5683
+2945,Grassy Knob,Siskiyou National Forests,OR,Oregon,5672
+2946,Rock Creek - Green Fork,Wasatch-Cache National Forest,UT,Utah,5660
+2947,Cave Canyon,Dixie National Forest,UT,Utah,5657
+2948,Northwest Peaks,Idaho Panhandle National Forests,MT,Montana,5654
+2949,Arc Dome - Ophir,Humboldt-Toiyabe National Forest,NV,Nevada,5652
+2950,Grande Ronde,Wallowa-Whitman National Forest,OR,Oregon,5650
+2951,Mystic (NV),Humboldt-Toiyabe National Forest,NV,Nevada,5644
+2952,Whitestone,Tongass National Forest,AK,Alaska,5638
+2953,Sugar Pine,Wasatch-Cache National Forest,UT,Utah,5600
+2954,Ellis Canyon,Helena National Forest,MT,Montana,5578
+2955,Cougar Bluff,Umpqua National Forest,OR,Oregon,5574
+2956,Chevelon Canyon,Apache-Sitgreaves National Forests,AZ,Arizona,5573
+2957,Clear Creek,Lolo National Forest,MT,Montana,5538
+2958,Fish Lake C,Humboldt-Toiyabe National Forest,NV,Nevada,5538
+2959,Jaussaud Corral,Umatilla National Forest,OR,Oregon,5535
+2960,Packsaddle,Siskiyou National Forests,OR,Oregon,5522
+2961,Jumpoff Joe,Umatilla National Forest,OR,Oregon,5516
+2962,Antler,Fremont National Forest,OR,Oregon,5498
+2963,418044,Uinta National Forest,UT,Utah,5495
+2964,Little Sandstone,Medicine Bow-Routt National Forest,WY,Wyoming,5483
+2965,Little Cottonwood,Bridger-Teton National Forest,WY,Wyoming,5468
+2966,0401035,Ashley National Forest,WY,Wyoming,5465
+2967,Pine Creek,Malheur National Forest,OR,Oregon,5462
+2968,Lebeau RA 1507,Flathead National Forest,MT,Montana,5450
+2969,Wind Creek,Mt. Hood National Forest,OR,Oregon,5438
+2970,Table Mtn. - Barley Ck.,Humboldt-Toiyabe National Forest,NV,Nevada,5424
+2971,De La Guerra,Los Padres National Forest,CA,California,5418
+2972,Bruce Mountain,Bighorn National Forest,WY,Wyoming,5417
+2973,Opal Creek,Willamette National Forest,OR,Oregon,5417
+2974,Pavlof-East Point,Tongass National Forest,AK,Alaska,5399
+2975,Pecos WS River,Santa Fe National Forest,NM,New Mexico,5396
+2976,Potamus,Umatilla National Forest,OR,Oregon,5389
+2977,"Mt. Jefferson, South",Willamette National Forest,OR,Oregon,5366
+2978,Currant - Sawmill,Humboldt-Toiyabe National Forest,NV,Nevada,5364
+2979,Devils Gap #698,Kootenai National Forest,MT,Montana,5353
+2980,Gibson,Wasatch-Cache National Forest,UT,Utah,5350
+2981,Charnock,Humboldt-Toiyabe National Forest,NV,Nevada,5348
+2982,Eightmile,Humboldt-Toiyabe National Forest,NV,Nevada,5332
+2983,Ratz,Tongass National Forest,AK,Alaska,5325
+2984,Venlo,Dakota Prairie Grasslands,ND,North Dakota,5317
+2985,Lone Cliff West #674a,Kootenai National Forest,MT,Montana,5315
+2986,Woahink,Siuslaw National Forest,OR,Oregon,5309
+2987,Caja,Santa Fe National Forest,NM,New Mexico,5304
+2988,Cimarron Hills,Coconino National Forest,AZ,Arizona,5303
+2989,Ladd,Cleveland National Forest,CA,California,5300
+2990,Timber Butte,Beaverhead-Deerlodge National Forest,MT,Montana,5300
+2991,Sill Hill,Cleveland National Forest,CA,California,5294
+2992,South Fork Mountain,Idaho Panhandle National Forests,WA,Washington,5290
+2993,Ruby - Thompson,Humboldt-Toiyabe National Forest,NV,Nevada,5289
+2994,Beartooth,Gallatin National Forest,MT,Montana,5285
+2995,Mt.  Logan West,Wasatch-Cache National Forest,UT,Utah,5285
+2996,Adams Peak,Plumas National Forest,CA,California,5283
+2997,Steven's Springs,Humboldt-Toiyabe National Forest,NV,Nevada,5282
+2998,Arroyo de los Frijoles,Santa Fe National Forest,NM,New Mexico,5277
+2999,Lion Ridge,Sequoia National Forest,CA,California,5265
+3000,Jarbidge - Pete Basin,Humboldt-Toiyabe National Forest,NV,Nevada,5247
+3001,Cruces Basin,Carson National Forest,NM,New Mexico,5244
+3002,Strawberry,Gifford Pinchot National Forest,WA,Washington,5244
+3003,Little Sheep,Wallowa-Whitman National Forest,OR,Oregon,5238
+3004,Hall Natural Area,Inyo National Forest,CA,California,5236
+3005,Penney Ridge,Shasta-Trinity National Forest,CA,California,5226
+3006,Matilija,Los Padres National Forest,CA,California,5218
+3007,Wildcat Knolls,Manti-Lasal National Forest,UT,Utah,5209
+3008,West Beegum,Shasta-Trinity National Forest,CA,California,5198
+3009,Kelly,Six Rivers National Forest,CA,California,5195
+3010,Potosi,Beaverhead-Deerlodge National Forest,MT,Montana,5194
+3011,Sleeping Giant,Shoshone National Forest,WY,Wyoming,5176
+3012,0401021,Ashley National Forest,WY,Wyoming,5152
+3013,Potosi,Humboldt-Toiyabe National Forest,NV,Nevada,5145
+3014,Quosatana,Siskiyou National Forests,OR,Oregon,5141
+3015,Lone Cliff Smeads #674,Kootenai National Forest,MT,Montana,5118
+3016,Black Butte,Los Padres National Forest,CA,California,5116
+3017,Delamere,Dakota Prairie Grasslands,ND,North Dakota,5087
+3018,King,Humboldt-Toiyabe National Forest,NV,Nevada,5083
+3019,H A Divide,Thunder Basin National Grassland,WY,Wyoming,5063
+3020,Hoover - Virginia Lks,Humboldt-Toiyabe National Forest,CA,California,5050
+3021,Miller,Humboldt-Toiyabe National Forest,NV,Nevada,5043
+3022,0401003,Ashley National Forest,UT,Utah,5034
+3023,Rich Mountain (OK),Ouachita National Forest,OK,Oklahoma,5030
+3024,West Silver Creek,Humboldt-Toiyabe National Forest,NV,Nevada,5028
+3025,Moose Lake,Willamette National Forest,OR,Oregon,5013
+3026,Indian Creek,Klamath National Forest,CA,California,5011
+3027,Dog Creek,Shasta-Trinity National Forest,CA,California,5001
+3028,Marble Falls,Humboldt-Toiyabe National Forest,NV,Nevada,5000
+3029,Encampment River Addition,Medicine Bow-Routt National Forest,WY,Wyoming,4996
+3030,Waldo,Deschutes National Forest,OR,Oregon,4973
+3031,Picacho,Tonto National Forest,AZ,Arizona,4969
+3032,Wild Cattle Mtn,Lassen National Forest,CA,California,4965
+3033,La Panza,Los Padres National Forest,CA,California,4954
+3034,Aldrich Mountain,Malheur National Forest,OR,Oregon,4925
+3035,Moonlight Dome,Olympic National Forest,WA,Washington,4919
+3036,No Name,Cleveland National Forest,CA,California,4897
+3037,Jarbidge - Biroth Rdg,Humboldt-Toiyabe National Forest,NV,Nevada,4887
+3038,Meadow Creek,Umatilla National Forest,WA,Washington,4882
+3039,Rubicon,Eldorado National Forest,CA,California,4872
+3040,Lookingglass,Umatilla National Forest,OR,Oregon,4859
+3041,Musinia Peak,Manti-Lasal National Forest,UT,Utah,4838
+3042,Grant - Bruno,Humboldt-Toiyabe National Forest,NV,Nevada,4828
+3043,Dry Canyon Breaks,Colville National Forest,WA,Washington,4821
+3044,Fisher Gulch B,Shasta-Trinity National Forest,CA,California,4791
+3045,Rose - Evans,Humboldt-Toiyabe National Forest,NV,Nevada,4782
+3046,Behm Islands,Tongass National Forest,AK,Alaska,4777
+3047,Riley Ridge,Bridger-Teton National Forest,WY,Wyoming,4765
+3048,Castle Rock,Shoshone National Forest,WY,Wyoming,4748
+3049,Kashevarof Islands,Tongass National Forest,AK,Alaska,4747
+3050,Wilson Creek,Humboldt-Toiyabe National Forest,NV,Nevada,4732
+3051,Arroyo Seco,Angeles National Forest,CA,California,4703
+3052,Lion Rock,Wenatchee National Forest,WA,Washington,4692
+3053,Bald Rock,Plumas National Forest,CA,California,4675
+3054,Charleston - Clark,Humboldt-Toiyabe National Forest,NV,Nevada,4674
+3055,Jackson Creek Appendage,Umpqua National Forest,OR,Oregon,4673
+3056,Castle Rock Appendage,Umpqua National Forest,OR,Oregon,4649
+3057,Snake - Hatchery,Humboldt-Toiyabe National Forest,NV,Nevada,4627
+3058,Ukonom Creek,Klamath National Forest,CA,California,4621
+3059,Green Mountain,Olympic National Forest,WA,Washington,4617
+3060,Kettle Mtn.,Shasta-Trinity National Forest,CA,California,4589
+3061,Grant - Rimrock,Humboldt-Toiyabe National Forest,NV,Nevada,4560
+3062,Boulder Canyon,Coconino National Forest,AZ,Arizona,4554
+3063,Board Camp,Six Rivers National Forest,CA,California,4527
+3064,Heliotrope,Manti-Lasal National Forest,UT,Utah,4526
+3065,Cougar Mountain,Colville National Forest,WA,Washington,4525
+3066,Bourbon,Gifford Pinchot National Forest,WA,Washington,4512
+3067,Naneum,Wenatchee National Forest,WA,Washington,4508
+3068,Mt. Jefferson,Beaverhead-Deerlodge National Forest,MT,Montana,4482
+3069,Steward Basin,Humboldt-Toiyabe National Forest,NV,Nevada,4475
+3070,Heartbreak Ridge,San Bernardino National Forest,CA,California,4455
+3071,Mt. Bidwell,Fremont National Forest,OR,Oregon,4449
+3072,Silver Hill,Humboldt-Toiyabe National Forest,CA,California,4423
+3073,North Mt. Emily,Umatilla National Forest,OR,Oregon,4416
+3074,Arc Dome - Cow Cyn,Humboldt-Toiyabe National Forest,NV,Nevada,4410
+3075,Westfork,Angeles National Forest,CA,California,4407
+3076,Waterhouse,Stanislaus National Forest,CA,California,4394
+3077,Comales Canyon,Carson National Forest,NM,New Mexico,4389
+3078,"Mt. Washington, South",Willamette National Forest,OR,Oregon,4375
+3079,Rugged Ridge,Olympic National Forest,WA,Washington,4358
+3080,Chineese Camp (CA),Humboldt-Toiyabe National Forest,CA,California,4339
+3081,Lamb Canyon,Wasatch-Cache National Forest,UT,Utah,4337
+3082,1978 Administratively Endorsed Wilderness Proposal,Gila National Forest,NM,New Mexico,4286
+3083,Big Butte Shinbone,Mendocino National Forest,CA,California,4265
+3084,Carson Lake,Shoshone National Forest,WY,Wyoming,4264
+3085,Sespe - Frazier,Angeles National Forest,CA,California,4254
+3086,Table Mtn.,Inyo National Forest,CA,California,4215
+3087,Arc Dome - Mahogany,Humboldt-Toiyabe National Forest,NV,Nevada,4208
+3088,Chama WS River,Santa Fe National Forest,NM,New Mexico,4168
+3089,Larken Lake,Humboldt-Toiyabe National Forest,NV,Nevada,4159
+3090,Snake - Big Wash,Humboldt-Toiyabe National Forest,NV,Nevada,4146
+3091,Lost Peak,Dixie National Forest,UT,Utah,4141
+3092,Cucamonga C,San Bernardino National Forest,CA,California,4106
+3093,Timbered Crater,Lassen National Forest,CA,California,4096
+3094,Prospect,Lassen National Forest,CA,California,4078
+3095,Table Mtn. - W. Valley B,Humboldt-Toiyabe National Forest,NV,Nevada,4071
+3096,Taytáy Creek,Umatilla National Forest,OR,Oregon,4047
+3097,Peralta Ridge,Santa Fe National Forest,NM,New Mexico,4027
+3098,Bodie Mountain,Okanogan National Forest,WA,Washington,3941
+3099,Sky Lakes A,Winema National Forest,OR,Oregon,3940
+3100,Canones Creek,Santa Fe National Forest,NM,New Mexico,3938
+3101,Long Draw,Okanogan National Forest,WA,Washington,3922
+3102,Chanchelulla,Shasta-Trinity National Forest,CA,California,3915
+3103,Jumpoff Joe,Malheur National Forest,OR,Oregon,3889
+3104,Mt. Reba,Stanislaus National Forest,CA,California,3869
+3105,Keddie Ridge,Lassen National Forest,CA,California,3864
+3106,Packsaddle,Six Rivers National Forest,CA,California,3862
+3107,Arc Dome - Carvers,Humboldt-Toiyabe National Forest,NV,Nevada,3846
+3108,Rancho Viejo,Santa Fe National Forest,NM,New Mexico,3827
+3109,Grant - Troy,Humboldt-Toiyabe National Forest,NV,Nevada,3826
+3110,Chugach-7,Chugach National Forest,AK,Alaska,3804
+3111,Hardesty Mountain,Willamette National Forest,OR,Oregon,3754
+3112,Snake - Mt. Washington,Humboldt-Toiyabe National Forest,NV,Nevada,3749
+3113,Bangs,Colville National Forest,WA,Washington,3746
+3114,Red Canyon South,Dixie National Forest,UT,Utah,3736
+3115,Prairie Mountain,Mt Baker-Snoqualmie National Forest,WA,Washington,3715
+3116,Willard Estelle #173,Kootenai National Forest,MT,Montana,3714
+3117,Rose - Galena,Humboldt-Toiyabe National Forest,NV,Nevada,3711
+3118,Currant - Blackrock,Humboldt-Toiyabe National Forest,NV,Nevada,3694
+3119,Dixon Mountain,Beaverhead-Deerlodge National Forest,MT,Montana,3674
+3120,Arc Dome - Blank Mtn.,Humboldt-Toiyabe National Forest,NV,Nevada,3662
+3121,Raymond Peak,Stanislaus National Forest,CA,California,3646
+3122,Rock Creek West,Inyo National Forest,CA,California,3626
+3123,Jarbidge - Cottonwood,Humboldt-Toiyabe National Forest,NV,Nevada,3610
+3124,Wilderness Contiguous,Mendocino National Forest,CA,California,3606
+3125,Little Grass Mountain,Idaho Panhandle National Forests,WA,Washington,3601
+3126,Maple Peak,Kootenai National Forest,MT,Montana,3581
+3127,Latir Peak,Carson National Forest,NM,New Mexico,3573
+3128,Mt. Baldy,Olympic National Forest,WA,Washington,3557
+3129,Mt. Zion,Olympic National Forest,WA,Washington,3544
+3130,Pueblo Mesa,Santa Fe National Forest,NM,New Mexico,3540
+3131,North Big Hole,Bitterroot National Forest,MT,Montana,3483
+3132,Taytáy Creek,Wallowa-Whitman National Forest,OR,Oregon,3480
+3133,Cortright,Gifford Pinchot National Forest,WA,Washington,3462
+3134,Alta T - West,Humboldt-Toiyabe National Forest,NV,Nevada,3445
+3135,Roberts #691,Kootenai National Forest,MT,Montana,3444
+3136,Cypress,Lassen National Forest,CA,California,3380
+3137,South Francis,Wasatch-Cache National Forest,UT,Utah,3374
+3138,Rogue,Siskiyou National Forests,OR,Oregon,3367
+3139,Piney Pass,Shoshone National Forest,WY,Wyoming,3356
+3140,Devils Garden,Lassen National Forest,CA,California,3335
+3141,Middle Francis,Wasatch-Cache National Forest,UT,Utah,3296
+3142,Lower Rincon,Coronado National Forest,AZ,Arizona,3278
+3143,Grant - Scofield,Humboldt-Toiyabe National Forest,NV,Nevada,3265
+3144,Jarbidge - Canyon Ck,Humboldt-Toiyabe National Forest,NV,Nevada,3258
+3145,Grass Mountain,Santa Fe National Forest,NM,New Mexico,3254
+3146,Culp,Lincoln National Forest,NM,New Mexico,3251
+3147,Dry Canyon,Gallatin National Forest,MT,Montana,3242
+3148,Glady Fork,Monongahela National Forest,WV,West Virginia,3239
+3149,Kelsey,Klamath National Forest,CA,California,3237
+3150,Callahan Flow,Klamath National Forest,CA,California,3231
+3151,Waldo - Salmon Creek,Willamette National Forest,OR,Oregon,3195
+3152,Gum Hill,Dixie National Forest,UT,Utah,3180
+3153,Box - Death Hollow,Dixie National Forest,UT,Utah,3175
+3154,East Dunoir,Shoshone National Forest,WY,Wyoming,3175
+3155,Night,Stanislaus National Forest,CA,California,3173
+3156,Fourth Of July Spr (NV),Humboldt-Toiyabe National Forest,NV,Nevada,3145
+3157,Sherwin,Inyo National Forest,CA,California,3140
+3158,Pine Mountain Wilderness Contiguous,Prescott National Forest,AZ,Arizona,3129
+3159,Brown Mt.,Winema National Forest,OR,Oregon,3117
+3160,Nobletts,Wasatch-Cache National Forest,UT,Utah,3116
+3161,Cactus Springs B,San Bernardino National Forest,CA,California,3106
+3162,Leonard Canyon,Apache-Sitgreaves National Forests,AZ,Arizona,3071
+3163,Underwood,Shasta-Trinity National Forest,CA,California,3046
+3164,Domeland Add.,Sequoia National Forest,CA,California,3046
+3165,Stirling - Wheeler,Humboldt-Toiyabe National Forest,NV,Nevada,3044
+3166,Siskiyou,Siskiyou National Forests,CA,California,3035
+3167,Charlton Butte,Willamette National Forest,OR,Oregon,3031
+3168,Jackson Creek,Colville National Forest,WA,Washington,3003
+3169,Waldo - Lake,Willamette National Forest,OR,Oregon,2993
+3170,Red Mountain,Gifford Pinchot National Forest,WA,Washington,2992
+3171,Upper Rincon Roadless,Coronado National Forest,AZ,Arizona,2991
+3172,Buckhorn Ridge,Idaho Panhandle National Forests,MT,Montana,2943
+3173,Salome,Tonto National Forest,AZ,Arizona,2932
+3174,Condrey Mtn.,Klamath National Forest,CA,California,2923
+3175,Rattlesnake,Lolo National Forest,MT,Montana,2881
+3176,Jacks Canyon,Coconino National Forest,AZ,Arizona,2858
+3177,The Cove 1,Humboldt-Toiyabe National Forest,NV,Nevada,2847
+3178,Rio Medio,Santa Fe National Forest,NM,New Mexico,2844
+3179,Oser Mesa,Carson National Forest,NM,New Mexico,2840
+3180,Little Creek,Wallowa-Whitman National Forest,OR,Oregon,2815
+3181,Mt. Shasta B,Shasta-Trinity National Forest,CA,California,2809
+3182,Chugach-4,Chugach National Forest,AK,Alaska,2797
+3183,South Dunoir,Shoshone National Forest,WY,Wyoming,2749
+3184,Jarbidge - West Fork,Humboldt-Toiyabe National Forest,NV,Nevada,2725
+3185,Arc Dome - South Jet,Humboldt-Toiyabe National Forest,NV,Nevada,2716
+3186,Stirling - Big Thunder,Humboldt-Toiyabe National Forest,NV,Nevada,2699
+3187,Fourth Of July Spr (CA),Humboldt-Toiyabe National Forest,CA,California,2689
+3188,Wheeler Peak Wilderness,Carson National Forest,NM,New Mexico,2677
+3189,Poison Hole,Eldorado National Forest,CA,California,2627
+3190,Hardesty Mountain,Umpqua National Forest,OR,Oregon,2597
+3191,Mottesheard (VA),Jefferson National Forest,VA,Virginia,2596
+3192,Waldo - Many Praries,Willamette National Forest,OR,Oregon,2585
+3193,Rich Mountain (AR),Ouachita National Forest,AR,Arkansas,2581
+3194,Rose - Whites Canyon,Humboldt-Toiyabe National Forest,NV,Nevada,2568
+3195,West Dunoir,Shoshone National Forest,WY,Wyoming,2542
+3196,Upper Dragoon Roadless,Coronado National Forest,AZ,Arizona,2533
+3197,San Gabriel Add,Angeles National Forest,CA,California,2527
+3198,Raymond Peak,Eldorado National Forest,CA,California,2518
+3199,Reef,Gallatin National Forest,MT,Montana,2500
+3200,Polvadera,Santa Fe National Forest,NM,New Mexico,2487
+3201,Falls,Santa Fe National Forest,NM,New Mexico,2477
+3202,Bear Camp Flat,Modoc National Forest,CA,California,2471
+3203,Stirling - Jaybird,Humboldt-Toiyabe National Forest,NV,Nevada,2468
+3204,Bodie Mountain,Colville National Forest,WA,Washington,2467
+3205,Charleston - Mcfarland,Humboldt-Toiyabe National Forest,NV,Nevada,2465
+3206,Sherwood,Umpqua National Forest,OR,Oregon,2449
+3207,Onion Springs,Lassen National Forest,CA,California,2421
+3208,Shingle Buttes,Humboldt-Toiyabe National Forest,NV,Nevada,2418
+3209,North Lake,Inyo National Forest,CA,California,2406
+3210,Jennie Lake,Sequoia National Forest,CA,California,2388
+3211,South Midway,Gifford Pinchot National Forest,WA,Washington,2384
+3212,Savage Run Addition,Medicine Bow-Routt National Forest,WY,Wyoming,2368
+3213,Rose - Davis Mdw.,Humboldt-Toiyabe National Forest,NV,Nevada,2361
+3214,Arc Dome - Illinois,Humboldt-Toiyabe National Forest,NV,Nevada,2356
+3215,Holy Ghost,Santa Fe National Forest,NM,New Mexico,2352
+3216,Jarbidge - Three Day,Humboldt-Toiyabe National Forest,NV,Nevada,2346
+3217,Moriah - Hendrys Ck.,Humboldt-Toiyabe National Forest,NV,Nevada,2345
+3218,W. Boundary,Winema National Forest,OR,Oregon,2345
+3219,Ruby - Cold Ck,Humboldt-Toiyabe National Forest,NV,Nevada,2339
+3220,Box Canyon,Gallatin National Forest,MT,Montana,2292
+3221,Arc Dome - North Jet,Humboldt-Toiyabe National Forest,NV,Nevada,2286
+3222,Mt.  Jefferson,Deschutes National Forest,OR,Oregon,2282
+3223,Thirsty Creek Appendage,Umpqua National Forest,OR,Oregon,2255
+3224,Buckeye Ridge,Humboldt-Toiyabe National Forest,CA,California,2241
+3225,Tuchuck #664,Kootenai National Forest,MT,Montana,2239
+3226,West Adams,Gifford Pinchot National Forest,WA,Washington,2238
+3227,0419022,Ashley National Forest,UT,Utah,2232
+3228,Carlton Ridge,Gifford Pinchot National Forest,WA,Washington,2190
+3229,Mother Hubbard,Apache-Sitgreaves National Forests,AZ,Arizona,2177
+3230,Rendija,Santa Fe National Forest,NM,New Mexico,2176
+3231,Snow Mountain,Lassen National Forest,CA,California,2165
+3232,Red Lake,Gifford Pinchot National Forest,WA,Washington,2162
+3233,Mt. Olsen,Inyo National Forest,CA,California,2161
+3234,Roaring River,Willamette National Forest,OR,Oregon,2128
+3235,La Madre - Trout,Humboldt-Toiyabe National Forest,NV,Nevada,2101
+3236,Manzana,Los Padres National Forest,CA,California,2101
+3237,Umpqua Spit,Siuslaw National Forest,OR,Oregon,2090
+3238,Grapevine,Lincoln National Forest,NM,New Mexico,2086
+3239,Suntop,Mt Baker-Snoqualmie National Forest,WA,Washington,2058
+3240,Kadin,Tongass National Forest,AK,Alaska,2035
+3241,Chambers,Gifford Pinchot National Forest,WA,Washington,2006
+3242,Sinkard,Humboldt-Toiyabe National Forest,CA,California,2004
+3243,Rolling Grounds Appendage,Umpqua National Forest,OR,Oregon,1987
+3244,Contiguous To Blue Range Wilderness,Gila National Forest,NM,New Mexico,1980
+3245,Antelope - West 2,Humboldt-Toiyabe National Forest,NV,Nevada,1969
+3246,Holter,Helena National Forest,MT,Montana,1965
+3247,Lick Creek,Wallowa-Whitman National Forest,OR,Oregon,1956
+3248,Cdo Wsa,Coronado National Forest,AZ,Arizona,1955
+3249,White Pine,Wasatch-Cache National Forest,UT,Utah,1942
+3250,North Stirling,Humboldt-Toiyabe National Forest,NV,Nevada,1929
+3251,Black Canyon,Santa Fe National Forest,NM,New Mexico,1922
+3252,Deep Creek / Avery Creek Addition,Nantahala National Forest,NC,North Carolina,1908
+3253,West Of Woodbine,Custer National Forest,MT,Montana,1905
+3254,Mesa Alta,Santa Fe National Forest,NM,New Mexico,1868
+3255,Valle Del Toro,Santa Fe National Forest,NM,New Mexico,1862
+3256,Oakes Peak,Mt Baker-Snoqualmie National Forest,WA,Washington,1857
+3257,Skimmerhorn Appendage,Umpqua National Forest,OR,Oregon,1820
+3258,Barton Spring,Humboldt-Toiyabe National Forest,NV,Nevada,1760
+3259,Jet Wash,Humboldt-Toiyabe National Forest,NV,Nevada,1731
+3260,The Cove 3,Humboldt-Toiyabe National Forest,NV,Nevada,1728
+3261,Wellsville,Wasatch-Cache National Forest,UT,Utah,1717
+3262,W - T Three,Umatilla National Forest,OR,Oregon,1705
+3263,418040,Uinta National Forest,UT,Utah,1702
+3264,Roc Creek IRA,Manti-Lasal National Forest,UT,Utah,1684
+3265,Shackleford,Klamath National Forest,CA,California,1679
+3266,Quinn Canyon Springs,Humboldt-Toiyabe National Forest,NV,Nevada,1678
+3267,French Pete (a),Willamette National Forest,OR,Oregon,1668
+3268,Castle Crags B,Shasta-Trinity National Forest,CA,California,1619
+3269,East Clear Creek,Coconino National Forest,AZ,Arizona,1613
+3270,Hurricane Creek,Wallowa-Whitman National Forest,OR,Oregon,1606
+3271,Mcdonald Basin,Fishlake National Forest,UT,Utah,1585
+3272,Moriah - Silver Creek,Humboldt-Toiyabe National Forest,NV,Nevada,1582
+3273,Hoover - North,Humboldt-Toiyabe National Forest,CA,California,1574
+3274,Iceberg - Slinkard,Humboldt-Toiyabe National Forest,CA,California,1551
+3275,Nichols Reservoir,Santa Fe National Forest,NM,New Mexico,1518
+3276,Petes Well,Humboldt-Toiyabe National Forest,NV,Nevada,1513
+3277,Jarbidge - Sawmill Rdg,Humboldt-Toiyabe National Forest,NV,Nevada,1512
+3278,Crapo,Klamath National Forest,CA,California,1487
+3279,Wildhorse,Cleveland National Forest,CA,California,1483
+3280,Willow Creek,Santa Fe National Forest,NM,New Mexico,1477
+3281,0401025,Ashley National Forest,UT,Utah,1471
+3282,West Fork Elk #692,Kootenai National Forest,MT,Montana,1467
+3283,Stirling - Johnnie,Humboldt-Toiyabe National Forest,NV,Nevada,1449
+3284,Wild Horse Mtn. (NV),Humboldt-Toiyabe National Forest,NV,Nevada,1399
+3285,Bear Mountain,Santa Fe National Forest,NM,New Mexico,1387
+3286,Fish Creek Appendage,Umpqua National Forest,OR,Oregon,1377
+3287,South Rim,Dixie National Forest,UT,Utah,1372
+3288,Gold Creek,Willamette National Forest,OR,Oregon,1364
+3289,Humboldt - Trout Cr,Humboldt-Toiyabe National Forest,NV,Nevada,1346
+3290,Jobs Peak (NV),Humboldt-Toiyabe National Forest,NV,Nevada,1342
+3291,Mt. Gmt Area H,Custer National Forest,MT,Montana,1335
+3292,Lake,Mt. Hood National Forest,OR,Oregon,1327
+3293,Chugach-1,Chugach National Forest,AK,Alaska,1317
+3294,"Diamond Peak, North",Willamette National Forest,OR,Oregon,1317
+3295,Little Pine,Los Padres National Forest,CA,California,1315
+3296,Wonderful Peak,Lolo National Forest,MT,Montana,1313
+3297,Barbershop Canyon,Coconino National Forest,AZ,Arizona,1311
+3298,Inyan Kara,Black Hills National Forest,WY,Wyoming,1310
+3299,Kalmiopsis Addition,Siskiyou National Forests,OR,Oregon,1308
+3300,Chama Wilderness,Santa Fe National Forest,NM,New Mexico,1295
+3301,Enchanted Lakes,Santa Fe National Forest,NM,New Mexico,1276
+3302,Humboldt - Winchell,Humboldt-Toiyabe National Forest,NV,Nevada,1272
+3303,Cow Creek,Six Rivers National Forest,CA,California,1271
+3304,Crane Mtn.,Modoc National Forest,CA,California,1269
+3305,Chippewa #682,Kootenai National Forest,MT,Montana,1262
+3306,Lebeau #507,Kootenai National Forest,MT,Montana,1259
+3307,Cucamonga  A,Angeles National Forest,CA,California,1249
+3308,Marsh,Winema National Forest,OR,Oregon,1226
+3309,Madison Creek,Olympic National Forest,WA,Washington,1223
+3310,Wallace,Humboldt-Toiyabe National Forest,NV,Nevada,1208
+3311,Backbone,Gifford Pinchot National Forest,WA,Washington,1201
+3312,Jarbidge - Person Ck,Humboldt-Toiyabe National Forest,NV,Nevada,1187
+3313,French Pete (b),Willamette National Forest,OR,Oregon,1186
+3314,Waldo - Moolack,Willamette National Forest,OR,Oregon,1183
+3315,Glacier Peak M,Mt Baker-Snoqualmie National Forest,WA,Washington,1172
+3316,Laurel Fork,Monongahela National Forest,WV,West Virginia,1172
+3317,Rose - Iceland,Humboldt-Toiyabe National Forest,CA,California,1171
+3318,West Fork,Angeles National Forest,CA,California,1169
+3319,Laughing Water,Gifford Pinchot National Forest,WA,Washington,1167
+3320,0401037,Ashley National Forest,UT,Utah,1166
+3321,Lower Dragoon Roadless,Coronado National Forest,AZ,Arizona,1165
+3322,Coal Creek Bluff,Gifford Pinchot National Forest,WA,Washington,1164
+3323,Rose - Verdi,Humboldt-Toiyabe National Forest,NV,Nevada,1155
+3324,Fawn Lake,Eldorado National Forest,CA,California,1153
+3325,Mt. Thielsen,Winema National Forest,OR,Oregon,1153
+3326,Stirling - West E,Humboldt-Toiyabe National Forest,NV,Nevada,1145
+3327,White Pass,Gifford Pinchot National Forest,WA,Washington,1145
+3328,Beartooth,Custer National Forest,MT,Montana,1142
+3329,Bottle Summit,Humboldt-Toiyabe National Forest,NV,Nevada,1137
+3330,Trail Lake,Lassen National Forest,CA,California,1124
+3331,Cerro La Jara,Santa Fe National Forest,NM,New Mexico,1122
+3332,Palisades,Targhee National Forest,WY,Wyoming,1121
+3333,Oso Vallecitos,Santa Fe National Forest,NM,New Mexico,1116
+3334,Needle Creek (01066),Bitterroot National Forest,MT,Montana,1110
+3335,Aspen,Winema National Forest,OR,Oregon,1107
+3336,Cherry Lake,Stanislaus National Forest,CA,California,1106
+3337,Big Butte Shinbone,Six Rivers National Forest,CA,California,1102
+3338,Currant - Duckwater E,Humboldt-Toiyabe National Forest,NV,Nevada,1101
+3339,Packwood Lake,Gifford Pinchot National Forest,WA,Washington,1084
+3340,Snake - Peacock Cyn,Humboldt-Toiyabe National Forest,NV,Nevada,1069
+3341,Welcome Creek,Lolo National Forest,MT,Montana,1063
+3342,Silver Creek,Mt Baker-Snoqualmie National Forest,WA,Washington,1051
+3343,Siskiyou A,Six Rivers National Forest,CA,California,1017
+3344,Murphy Glade,Shasta-Trinity National Forest,CA,California,1015
+3345,Pacheco Canyon,Santa Fe National Forest,NM,New Mexico,1012
+3346,Humboldt - Angel Lk,Humboldt-Toiyabe National Forest,NV,Nevada,1008
+3347,Hoover - Emma Lake,Humboldt-Toiyabe National Forest,CA,California,1007
+3348,Grace Tract,Santa Fe National Forest,NM,New Mexico,999
+3349,"Mt. Washington, North",Willamette National Forest,OR,Oregon,997
+3350,Ignaciao Chavez Contiguous,Cibola National Forest,NM,New Mexico,993
+3351,Lower Terrace,Humboldt-Toiyabe National Forest,NV,Nevada,992
+3352,Roaded Donut,Chugach National Forest,AK,Alaska,968
+3353,0401034,Ashley National Forest,UT,Utah,967
+3354,Catalina St. Pk. Roadless Area,Coronado National Forest,AZ,Arizona,951
+3355,Salmo - Priest A,Colville National Forest,WA,Washington,932
+3356,Lonesome Meadow Appendage,Umpqua National Forest,OR,Oregon,930
+3357,North Fork Smith,Siskiyou National Forests,OR,Oregon,917
+3358,Hackberry,Prescott National Forest,AZ,Arizona,914
+3359,Bear Mountain,Los Padres National Forest,CA,California,913
+3360,Escudilla Mountain,Apache-Sitgreaves National Forests,AZ,Arizona,885
+3361,Deer Creek,Gifford Pinchot National Forest,WA,Washington,882
+3362,Bear Wallow,Apache-Sitgreaves National Forests,AZ,Arizona,878
+3363,Lone Peak Contiguous,Wasatch-Cache National Forest,UT,Utah,874
+3364,Black Butte,Custer National Forest,MT,Montana,871
+3365,Rose - Bronco,Humboldt-Toiyabe National Forest,NV,Nevada,868
+3366,Jarbidge - Coon Ck,Humboldt-Toiyabe National Forest,NV,Nevada,866
+3367,Whisky Creek,Inyo National Forest,CA,California,865
+3368,Salmo - Priest C,Colville National Forest,WA,Washington,864
+3369,Box Camp,Klamath National Forest,CA,California,858
+3370,Rose - Alum Creek,Humboldt-Toiyabe National Forest,NV,Nevada,853
+3371,Badger Creek,Mt. Hood National Forest,OR,Oregon,847
+3372,Republic Mountain,Gallatin National Forest,MT,Montana,836
+3373,Mystic (CA),Humboldt-Toiyabe National Forest,CA,California,836
+3374,Nessie,Inyo National Forest,CA,California,830
+3375,Weaver Bally,Shasta-Trinity National Forest,CA,California,829
+3376,Tioga Lake,Inyo National Forest,CA,California,829
+3377,Mccurdy,Humboldt-Toiyabe National Forest,NV,Nevada,822
+3378,Badlands,Winema National Forest,OR,Oregon,822
+3379,Mmw Addition RA 01500,Flathead National Forest,MT,Montana,817
+3380,Little Tesuque,Santa Fe National Forest,NM,New Mexico,815
+3381,Tesuque Creek,Santa Fe National Forest,NM,New Mexico,810
+3382,Rock Creek,Kootenai National Forest,MT,Montana,806
+3383,Mt. Hoffman,Klamath National Forest,CA,California,802
+3384,Chugach-22,Chugach National Forest,AK,Alaska,801
+3385,Huckleberry,Willamette National Forest,OR,Oregon,793
+3386,Clara Peak,Santa Fe National Forest,NM,New Mexico,788
+3387,Cranberry Glades Botanical Area,Monongahela National Forest,WV,West Virginia,785
+3388,Cliff Dwellers Pasture,Manti-Lasal National Forest,UT,Utah,780
+3389,Lower Jacks Canyon,Coconino National Forest,AZ,Arizona,777
+3390,Humboldt - Checkers SW,Humboldt-Toiyabe National Forest,NV,Nevada,770
+3391,N. Boundary,Winema National Forest,OR,Oregon,769
+3392,Snake - Pole Cyn,Humboldt-Toiyabe National Forest,NV,Nevada,766
+3393,Capital Reef,Dixie National Forest,UT,Utah,763
+3394,Shakespeare Point,Dixie National Forest,UT,Utah,753
+3395,Jarbidge - Slide Ck,Humboldt-Toiyabe National Forest,NV,Nevada,752
+3396,North Mount Emily,Wallowa-Whitman National Forest,OR,Oregon,752
+3397,Medicine Creek Appendage,Umpqua National Forest,OR,Oregon,745
+3398,Stirling - Clark B,Humboldt-Toiyabe National Forest,NV,Nevada,741
+3399,Jacks Creek,Santa Fe National Forest,NM,New Mexico,740
+3400,Scodies,Sequoia National Forest,CA,California,725
+3401,Moriah - Big Canyon,Humboldt-Toiyabe National Forest,NV,Nevada,722
+3402,Dunns Bluff,Wallowa-Whitman National Forest,OR,Oregon,718
+3403,Ladrones Mesa RNA,Santa Fe National Forest,NM,New Mexico,701
+3404,Monarch,Sierra National Forest,CA,California,697
+3405,Bucks Lake,Plumas National Forest,CA,California,680
+3406,Mt. Shasta A,Shasta-Trinity National Forest,CA,California,676
+3407,Chugach-2,Chugach National Forest,AK,Alaska,671
+3408,Moriah - Red Ledge,Humboldt-Toiyabe National Forest,NV,Nevada,670
+3409,High Uintas (WY),Wasatch-Cache National Forest,WY,Wyoming,664
+3410,Jarbidge - Seventysix,Humboldt-Toiyabe National Forest,NV,Nevada,659
+3411,Dry Fork,Monongahela National Forest,WV,West Virginia,657
+3412,Stevens Peak,Lolo National Forest,MT,Montana,647
+3413,Humboldt - Checkers NE,Humboldt-Toiyabe National Forest,NV,Nevada,640
+3414,Humboldt - Checkers SE,Humboldt-Toiyabe National Forest,NV,Nevada,640
+3415,Chugach-21,Chugach National Forest,AK,Alaska,634
+3416,Hoover - Mt.olsen,Humboldt-Toiyabe National Forest,CA,California,624
+3417,Mmw Addition RA 01502,Flathead National Forest,MT,Montana,624
+3418,Cube Iron #784,Kootenai National Forest,MT,Montana,623
+3419,Walupt,Gifford Pinchot National Forest,WA,Washington,618
+3420,Swift Creek (01065),Bitterroot National Forest,MT,Montana,613
+3421,Mokelumne - Spratt,Humboldt-Toiyabe National Forest,CA,California,613
+3422,Ruby - Horse Mtn.,Humboldt-Toiyabe National Forest,NV,Nevada,613
+3423,Grant - Wadsworth,Humboldt-Toiyabe National Forest,NV,Nevada,610
+3424,Hoover - Cattle Ck,Humboldt-Toiyabe National Forest,CA,California,598
+3425,Wesner Spring,Santa Fe National Forest,NM,New Mexico,598
+3426,Granite Chief N,Lake Tahoe Basin Management Unit,CA,California,593
+3427,Lolo Creek,Bitterroot National Forest,MT,Montana,581
+3428,Jacobs (fs),Klamath National Forest,CA,California,577
+3429,China Springs B,Shasta-Trinity National Forest,CA,California,568
+3430,Flem (FS),Klamath National Forest,CA,California,567
+3431,Granite Chief S,Lake Tahoe Basin Management Unit,CA,California,567
+3432,Hoover - Valley Ridge,Humboldt-Toiyabe National Forest,CA,California,564
+3433,Lost Water Canyon Rna,Custer National Forest,MT,Montana,561
+3434,Bulldog Rock,Willamette National Forest,OR,Oregon,559
+3435,Mountain Lake Addition B (WV),Jefferson National Forest,WV,West Virginia,557
+3436,Lakes Basin,Tahoe National Forest,CA,California,557
+3437,Ione Valley,Humboldt-Toiyabe National Forest,NV,Nevada,552
+3438,Potts - B,Humboldt-Toiyabe National Forest,NV,Nevada,551
+3439,Rose - Northeast,Humboldt-Toiyabe National Forest,NV,Nevada,550
+3440,Buttermilk,Inyo National Forest,CA,California,542
+3441,0401030,Ashley National Forest,UT,Utah,531
+3442,Mt. Rose Roadless,Lake Tahoe Basin Management Unit,NV,Nevada,524
+3443,Forks,Humboldt-Toiyabe National Forest,NV,Nevada,520
+3444,Devil's Garden,Winema National Forest,OR,Oregon,512
+3445,Currant - Box Spr.,Humboldt-Toiyabe National Forest,NV,Nevada,508
+3446,Lonesome Lake,Mt Baker-Snoqualmie National Forest,WA,Washington,505
+3447,Chugach-6,Chugach National Forest,AK,Alaska,503
+3448,Pine Creek,Cleveland National Forest,CA,California,503
+3449,Mcdonald,Olympic National Forest,WA,Washington,501
+3450,West Walker (CA),Humboldt-Toiyabe National Forest,CA,California,495
+3451,Frog Camp,Willamette National Forest,OR,Oregon,491
+3452,Redcap Addition Rare I,Six Rivers National Forest,CA,California,489
+3453,Bull - Of - The - Woods,Carson National Forest,NM,New Mexico,488
+3454,Canada Bonito RNA,Santa Fe National Forest,NM,New Mexico,487
+3455,Hellhole,Wallowa-Whitman National Forest,OR,Oregon,487
+3456,Fake Pass,Tongass National Forest,AK,Alaska,479
+3457,Maestas,Santa Fe National Forest,NM,New Mexico,475
+3458,Lost Lake,Santa Fe National Forest,NM,New Mexico,469
+3459,Swan River Island RA LIFAA,Flathead National Forest,MT,Montana,465
+3460,Humboldt - Wiseman,Humboldt-Toiyabe National Forest,NV,Nevada,459
+3461,Granite Peak,San Bernardino National Forest,CA,California,450
+3462,Wapiti Valley East,Shoshone National Forest,WY,Wyoming,449
+3463,0401028,Ashley National Forest,UT,Utah,446
+3464,Angry Mountain,Gifford Pinchot National Forest,WA,Washington,445
+3465,Humboldt - 4th Boulder,Humboldt-Toiyabe National Forest,NV,Nevada,444
+3466,Boulder,Klamath National Forest,CA,California,435
+3467,Humboldt - Hall Cr,Humboldt-Toiyabe National Forest,NV,Nevada,434
+3468,Clackamas Mountain,Colville National Forest,WA,Washington,433
+3469,Arc Dome - Leadbetter,Humboldt-Toiyabe National Forest,NV,Nevada,416
+3470,Currant - Duckwater A,Humboldt-Toiyabe National Forest,NV,Nevada,410
+3471,Jarbidge - Little Res,Humboldt-Toiyabe National Forest,NV,Nevada,409
+3472,Mule Creek,Siskiyou National Forests,OR,Oregon,405
+3473,0401026,Ashley National Forest,UT,Utah,398
+3474,Lake Eleanor,Shasta-Trinity National Forest,CA,California,397
+3475,Moriah - Rye Grass B,Humboldt-Toiyabe National Forest,NV,Nevada,392
+3476,Glacier Peak A,Mt Baker-Snoqualmie National Forest,WA,Washington,390
+3477,Proposed Line Creek Prna,Custer National Forest,MT,Montana,389
+3478,McClure Reservoir,Santa Fe National Forest,NM,New Mexico,375
+3479,Menagerie (rooster Rock),Willamette National Forest,OR,Oregon,374
+3480,Rose - Gray Creek,Humboldt-Toiyabe National Forest,NV,Nevada,366
+3481,Clover,Winema National Forest,OR,Oregon,365
+3482,Rose - Dutch Louie,Humboldt-Toiyabe National Forest,NV,Nevada,363
+3483,Rose - Thomas Mdw.,Humboldt-Toiyabe National Forest,NV,Nevada,358
+3484,Stump Creek,Caribou National Forest,UT,Utah,355
+3485,Peters Mountain Addition A (WV),Jefferson National Forest,WV,West Virginia,343
+3486,Mmw Addition RA 01501,Flathead National Forest,MT,Montana,342
+3487,Tolmie Creek,Mt Baker-Snoqualmie National Forest,WA,Washington,340
+3488,Snake - Can Young N,Humboldt-Toiyabe National Forest,NV,Nevada,336
+3489,Mosquito Creek,Willamette National Forest,OR,Oregon,335
+3490,Mill,Modoc National Forest,CA,California,321
+3491,South Kalmiopsis,Six Rivers National Forest,CA,California,321
+3492,Snake - Lincoln Cyn,Humboldt-Toiyabe National Forest,NV,Nevada,314
+3493,Continental Divide National Scenic Trail,Bitterroot National Forest,MT,Montana,312
+3494,Chugach-16,Chugach National Forest,AK,Alaska,312
+3495,Rose - Big Meadows,Humboldt-Toiyabe National Forest,NV,Nevada,311
+3496,Nevahbe Ridge,Inyo National Forest,CA,California,302
+3497,Jarbidge - Pockets,Humboldt-Toiyabe National Forest,NV,Nevada,299
+3498,Moriah - Rhodes Cyn. E,Humboldt-Toiyabe National Forest,NV,Nevada,298
+3499,Iceberg - Silver Mtn.,Humboldt-Toiyabe National Forest,CA,California,294
+3500,Mt. Shasta C,Shasta-Trinity National Forest,CA,California,292
+3501,Teton Corridor Trailheads,Bridger-Teton National Forest,WY,Wyoming,286
+3502,La Madre - Prospect,Humboldt-Toiyabe National Forest,NV,Nevada,278
+3503,Grant - Horse Spr.,Humboldt-Toiyabe National Forest,NV,Nevada,274
+3504,Mokelumne - Pleasant,Humboldt-Toiyabe National Forest,CA,California,272
+3505,Woodchuck,Sierra National Forest,CA,California,267
+3506,Ruby - Box Canyon,Humboldt-Toiyabe National Forest,NV,Nevada,262
+3507,Ebbetts,Humboldt-Toiyabe National Forest,CA,California,255
+3508,Humboldt - Honeyman,Humboldt-Toiyabe National Forest,NV,Nevada,253
+3509,Arnold Mesa,Tonto National Forest,AZ,Arizona,249
+3510,Winegar Hole,Targhee National Forest,WY,Wyoming,247
+3511,Moriah - Rock Cyn. E,Humboldt-Toiyabe National Forest,NV,Nevada,246
+3512,Waldo - Koch,Willamette National Forest,OR,Oregon,245
+3513,Black Cinder,Lassen National Forest,CA,California,239
+3514,Muse,Klamath National Forest,CA,California,238
+3515,Moriah - Rye Grass D,Humboldt-Toiyabe National Forest,NV,Nevada,230
+3516,Morey - North,Humboldt-Toiyabe National Forest,NV,Nevada,230
+3517,Iceberg - Rodriquez,Humboldt-Toiyabe National Forest,CA,California,229
+3518,Humboldt - 2nd Boulder,Humboldt-Toiyabe National Forest,NV,Nevada,229
+3519,Timbered Cinder Cone,Dixie National Forest,UT,Utah,225
+3520,Ghost Town,Santa Fe National Forest,NM,New Mexico,219
+3521,Mokelumne - Charity,Humboldt-Toiyabe National Forest,CA,California,202
+3522,Mt. Harkness,Lassen National Forest,CA,California,197
+3523,Stirling - West A,Humboldt-Toiyabe National Forest,NV,Nevada,196
+3524,Currant - Duckwater C,Humboldt-Toiyabe National Forest,NV,Nevada,192
+3525,Humboldt - Rockwall,Humboldt-Toiyabe National Forest,NV,Nevada,186
+3526,Chugach-14,Chugach National Forest,AK,Alaska,184
+3527,North Boundary,Shoshone National Forest,WY,Wyoming,182
+3528,Potts - A,Humboldt-Toiyabe National Forest,NV,Nevada,180
+3529,Bitter Lick,Umpqua National Forest,OR,Oregon,179
+3530,Grant - Little Deer Sp,Humboldt-Toiyabe National Forest,NV,Nevada,177
+3531,Black Canyon,Wenatchee National Forest,WA,Washington,176
+3532,Iceberg - Wolf Ck Lk,Humboldt-Toiyabe National Forest,CA,California,175
+3533,Mt. Jefferson Addition,Mt. Hood National Forest,OR,Oregon,162
+3534,Grant - Cherry Cyn,Humboldt-Toiyabe National Forest,NV,Nevada,160
+3535,Currant - Broom,Humboldt-Toiyabe National Forest,NV,Nevada,158
+3536,Ruby - Baxter,Humboldt-Toiyabe National Forest,NV,Nevada,153
+3537,Pipestem / Lower San Francisco,Apache-Sitgreaves National Forests,AZ,Arizona,152
+3538,Currant - Duckwater D,Humboldt-Toiyabe National Forest,NV,Nevada,151
+3539,Upper Romero Wsr,Coronado National Forest,AZ,Arizona,150
+3540,Table Mtn. - Mosquito,Humboldt-Toiyabe National Forest,NV,Nevada,150
+3541,Mmw Addition RA 01504,Flathead National Forest,MT,Montana,150
+3542,Rose - Hunter Lk No,Humboldt-Toiyabe National Forest,NV,Nevada,149
+3543,Odessa,Winema National Forest,OR,Oregon,146
+3544,Rose - North Notch,Humboldt-Toiyabe National Forest,NV,Nevada,141
+3545,Humboldt - North Fk.,Humboldt-Toiyabe National Forest,NV,Nevada,139
+3546,Table Mtn. - Barley Ranch,Humboldt-Toiyabe National Forest,NV,Nevada,138
+3547,Mmw Addition RA 01506,Flathead National Forest,MT,Montana,138
+3548,Cub (fs),Klamath National Forest,CA,California,135
+3549,Stirling - West D,Humboldt-Toiyabe National Forest,NV,Nevada,134
+3550,Salt Springs,Eldorado National Forest,CA,California,133
+3551,Chugach-20,Chugach National Forest,AK,Alaska,132
+3552,Greenhorn,Wallowa-Whitman National Forest,OR,Oregon,131
+3553,Exit Glacier Donut,Chugach National Forest,AK,Alaska,126
+3554,Grant - Burnt Cyn,Humboldt-Toiyabe National Forest,NV,Nevada,126
+3555,Stirling - Clark A,Humboldt-Toiyabe National Forest,NV,Nevada,125
+3556,Granite Peak,Shasta-Trinity National Forest,CA,California,122
+3557,Upper Terrace,Humboldt-Toiyabe National Forest,NV,Nevada,120
+3558,Table Mtn. - W. Valley A,Humboldt-Toiyabe National Forest,NV,Nevada,119
+3559,Chugach-5,Chugach National Forest,AK,Alaska,114
+3560,Alta T - East A,Humboldt-Toiyabe National Forest,NV,Nevada,114
+3561,Cedar Grove,Malheur National Forest,OR,Oregon,114
+3562,Castle Crags A,Shasta-Trinity National Forest,CA,California,113
+3563,Chugach-10,Chugach National Forest,AK,Alaska,112
+3564,Moriah - Smith Ck. W,Humboldt-Toiyabe National Forest,NV,Nevada,110
+3565,Dixie,Dixie National Forest,UT,Utah,109
+3566,Chugach-11,Chugach National Forest,AK,Alaska,104
+3567,Moriah - Smith Ck. N,Humboldt-Toiyabe National Forest,NV,Nevada,103
+3568,Hoover - Twin Lakes,Humboldt-Toiyabe National Forest,CA,California,102
+3569,Rock Creek,Custer National Forest,MT,Montana,100
+3570,Mmw Addition RA 01505,Flathead National Forest,MT,Montana,100
+3571,Arc Dome - Pablo,Humboldt-Toiyabe National Forest,NV,Nevada,99
+3572,Moriah - Rhodes Cyn. W,Humboldt-Toiyabe National Forest,NV,Nevada,99
+3573,Moriah - Horse Canyon,Humboldt-Toiyabe National Forest,NV,Nevada,99
+3574,Moriah - Chalk Spr.,Humboldt-Toiyabe National Forest,NV,Nevada,94
+3575,Ione,Humboldt-Toiyabe National Forest,NV,Nevada,94
+3576,"Diamond Peak, South",Willamette National Forest,OR,Oregon,93
+3577,Hoover - East,Humboldt-Toiyabe National Forest,CA,California,91
+3578,Stirling - West B,Humboldt-Toiyabe National Forest,NV,Nevada,88
+3579,Hobo Gulch,Shasta-Trinity National Forest,CA,California,88
+3580,Fish Lake A,Humboldt-Toiyabe National Forest,NV,Nevada,86
+3581,Rose - Hunter West,Humboldt-Toiyabe National Forest,NV,Nevada,80
+3582,Sparks Creek,Santa Fe National Forest,NM,New Mexico,80
+3583,Snake - Pole Ck,Humboldt-Toiyabe National Forest,NV,Nevada,79
+3584,Humboldt - Lizzies,Humboldt-Toiyabe National Forest,NV,Nevada,70
+3585,Ruby - Joe Billy,Humboldt-Toiyabe National Forest,NV,Nevada,67
+3586,Rainbow Falls,Willamette National Forest,OR,Oregon,65
+3587,San Mateo Canyon,Cleveland National Forest,CA,California,65
+3588,Moriah - Rye Grass A,Humboldt-Toiyabe National Forest,NV,Nevada,61
+3589,Stoveleg Gap,Shasta-Trinity National Forest,CA,California,61
+3590,Middle Romero WSR,Coronado National Forest,AZ,Arizona,60
+3591,Orleans Mtn.,Shasta-Trinity National Forest,CA,California,57
+3592,Chugach-15,Chugach National Forest,AK,Alaska,56
+3593,Rose - Hunter East,Humboldt-Toiyabe National Forest,NV,Nevada,54
+3594,Fish Lake B,Humboldt-Toiyabe National Forest,NV,Nevada,53
+3595,Bull Of The Woods,Willamette National Forest,OR,Oregon,53
+3596,Cactus Springs A,San Bernardino National Forest,CA,California,53
+3597,Halfway Camp,Humboldt-Toiyabe National Forest,CA,California,52
+3598,Humboldt - Franklin,Humboldt-Toiyabe National Forest,NV,Nevada,52
+3599,Tower,Wallowa-Whitman National Forest,OR,Oregon,52
+3600,The Cove 2,Humboldt-Toiyabe National Forest,NV,Nevada,51
+3601,Moriah - Old Mans Cyn.,Humboldt-Toiyabe National Forest,NV,Nevada,50
+3602,Mmw Addition RA 01503,Flathead National Forest,MT,Montana,50
+3603,Bakeoven Ridge,Shasta-Trinity National Forest,CA,California,46
+3604,Moriah - Smith Ck. S,Humboldt-Toiyabe National Forest,NV,Nevada,45
+3605,Raywood Flat A,San Bernardino National Forest,CA,California,41
+3606,Stirling - West C,Humboldt-Toiyabe National Forest,NV,Nevada,36
+3607,Snake - Cedar Spur,Humboldt-Toiyabe National Forest,NV,Nevada,35
+3608,Waterhouse A,Humboldt-Toiyabe National Forest,CA,California,33
+3609,Snake - Lexington C,Humboldt-Toiyabe National Forest,NV,Nevada,31
+3610,Chugach-9,Chugach National Forest,AK,Alaska,29
+3611,Chugach-18,Chugach National Forest,AK,Alaska,26
+3612,Takelma Creek,Siskiyou National Forests,OR,Oregon,25
+3613,China Springs A,Shasta-Trinity National Forest,CA,California,25
+3614,Granger,Modoc National Forest,CA,California,23
+3615,Moriah - Rye Grass C,Humboldt-Toiyabe National Forest,NV,Nevada,23
+3616,Currant - Duckwater B,Humboldt-Toiyabe National Forest,NV,Nevada,22
+3617,Chugach-19,Chugach National Forest,AK,Alaska,18
+3618,Rose - Hunter Lk. West,Humboldt-Toiyabe National Forest,NV,Nevada,14
+3619,Mokelumne - IXL Mine B,Humboldt-Toiyabe National Forest,CA,California,14
+3620,Lower Romero WSR,Coronado National Forest,AZ,Arizona,10
+3621,Pepperdine,Modoc National Forest,CA,California,10
+3622,Waterhouse B,Humboldt-Toiyabe National Forest,CA,California,10
+3623,Snake - Can Young S,Humboldt-Toiyabe National Forest,NV,Nevada,10
+3624,Rose - Summit,Humboldt-Toiyabe National Forest,NV,Nevada,9
+3625,Arc Dome - Twin,Humboldt-Toiyabe National Forest,NV,Nevada,8
+3626,Snake - Lexington B,Humboldt-Toiyabe National Forest,NV,Nevada,8
+3627,Mokelumne - IXL Mine A,Humboldt-Toiyabe National Forest,CA,California,5
+3628,Dry River (VA),George Washington National Forest,VA,Virginia,1

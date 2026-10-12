@@ -1,0 +1,9 @@
+# flags.attachments_referenced
+attached
+attachment
+attachments
+enclosed
+enclosure
+see the attached
+appended
+appendix attached

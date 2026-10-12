@@ -1,0 +1,27 @@
+# EVID 2 — a first-person observation. Counts at 2 only with a date form
+# beside it (see grade.py); a dated observation stays at 2 even though it
+# holds a year.
+i have seen
+i've seen
+i saw
+i observed
+i have observed
+i've observed
+i watched
+i have watched
+i've watched
+i documented
+i have documented
+i photographed
+i measured
+i counted
+i found
+i have found
+we saw
+we observed
+we have observed
+we documented
+we have documented
+we counted
+we measured
+we photographed
