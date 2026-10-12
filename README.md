@@ -26,7 +26,8 @@ no service of ours.
 - For the attachments (step 8): `pdftotext` and `pdfinfo` from poppler, and `textutil`
   (macOS, for docx and rtf).
 - A model server, run locally, for the four steps that read a language model: see
-  `docs/model-server.md`. The model is Qwen3.8-27B.
+  `docs/model-server.md`. The model is Qwen3.8-27B. Tested on Apple Silicon with LM
+  Studio headless through `lms`; ollama and vLLM are documented, not yet verified.
 - A MinerU server for the OCR of scanned attachments: see `docs/mineru.md`.
 - Disk: about 20 GB for the attachments, and the SQLite file.
 
