@@ -18,3 +18,11 @@ csv/*.csv
 attachments/
 data/
 .env
+
+# Run artifacts of the stance step and the batch tools
+logs/
+batch_requests/
+analysis_results/
+batch_stats/
+sql_batches/
+organic/
