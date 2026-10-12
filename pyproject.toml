@@ -4,4 +4,19 @@ version = "0.1.0"
 description = "Public Comment Analysis Method"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "python-dotenv",
+    "requests",
+    "numpy",
+    "mmh3",
+    "bitarray",
+    "pyahocorasick",
+    "langdetect",
+    "spacy",
+    "en-core-web-md @ https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.8.0/en_core_web_md-3.8.0-py3-none-any.whl",
+    "tqdm",
+    "rich",
+]
+
+[dependency-groups]
+dev = ["pytest"]

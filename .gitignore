@@ -11,3 +11,10 @@ wheels/
 
 # csv files
 csv/mv4-z8fw-q5jx.csv
+
+# The analysis inputs and outputs: the extracted bulk download, the fetched
+# attachments, the SQLite file and the reader's environment
+csv/*.csv
+attachments/
+data/
+.env
