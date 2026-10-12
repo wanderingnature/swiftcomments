@@ -127,6 +127,6 @@ the originals with the remarks that only made sense there edited out.
 
 ## Status
 
-The repository is being built in phases. At this commit it holds the skeleton: the
-dependencies, the environment file, the Makefile naming every target, and the pages on
-the two servers. The schema, the loader and the steps follow, one commit each.
+The repository is being built in phases. At this commit it holds the skeleton, the
+seeds, the schema and the loader: `make schema` creates the file and `make corpus`
+loads the docket. The nine steps follow, one commit per file.

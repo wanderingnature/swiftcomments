@@ -20,3 +20,9 @@ the commit that added it says what changed.
 | `docs/reviews/campaign-organisations-2026-10-11.md` | `docs/reviews/campaign-organisations-2026-10-11.md` | copied, at the path `campaign_organisations.py` reads |
 | `docs/reviews/attachment-bundles-by-organisation-2026-10-08.md` | `docs/reviews/attachment-bundles-by-organisation-2026-10-08.md` | copied, at the path `attachment_accounting.py` reads |
 | `tests/fixtures/authority_family_key.csv` | `roadless.authority_family_key(citation)` on DEV over every `legal_authority` and `comment_authorities` citation, 447 distinct, read once on 2026-10-12 | new file; the oracle for the Python port of the function |
+| `schema/roadless.sql` | `db/project_template/01, 02, 09, 10, 11, 12, 13, 22, 23, 24, 25, 28`; `db/migrations_pending/roadless_dynamic_views.sql`, `roadless_comment_group_analysis_comment_id.sql`, `roadless_attachment_ocr.sql`, `substance_screen.sql`, `substance_answerability.sql` (+ `_view_gated`), `roadless_comment_organisation.sql`, `roadless_family_organisation.sql`, `roadless_vocabulary.sql` | written for SQLite, the tables the steps write and the views they read only (plan 4.3); the translations are listed in the file's header; `comment` and `attachment_file` are new |
+| `shared/db.py` | new; `authority_family_key` is `roadless.authority_family_key` of `db/migrations_pending/roadless_dynamic_views.sql`, pattern for pattern | the one SQLite-aware module (plan 5.2) |
+| `scripts/make_schema.py` | new | creates the file from the DDL, loads the profile seeds and the vocabulary |
+| `tests/test_db.py` | new; the three regexes are `CITATION_RE`, `DEFICIENCY_RE`, `FIRSTPERSON_RE` of `scripts/substance/floor_filter.py` | |
+| `scripts/load_csv.py` | new (plan 3.1) | the loader of the bulk download |
+| `tests/test_load_csv.py`, `tests/fixtures/bulk_cut.csv` | new; the fixture is twenty records of the bulk download | |
