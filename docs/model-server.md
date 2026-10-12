@@ -36,6 +36,14 @@ The measured repeatability of the substance instrument on this model is 65 of 10
 readings identical between two runs, so two runs of the pipeline do not match row for
 row. The method's pages say what that means for the figures.
 
+## What was tested
+
+The code was tested on Apple Silicon with LM Studio running headless through `lms`,
+the path below. The ollama and vLLM sections are written from their documentation and
+have not been run against this pipeline; other local servers may behave differently,
+in the thinking switch, structured output or the model's name. They will be verified
+when there is a chance.
+
 ## LM Studio, with `lms`
 
 The path this repository was built and run with. Download LM Studio from
