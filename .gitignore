@@ -8,3 +8,6 @@ wheels/
 
 # Virtual environments
 .venv
+
+# csv files
+csv/mv4-z8fw-q5jx.csv
