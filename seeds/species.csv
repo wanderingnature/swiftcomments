@@ -1,0 +1,358 @@
+id,primary_common_name,scientific_name,usesa_code,rounded_g_rank,area_count,state_count,states
+6,Wyoming Toad,Anaxyrus baxteri,E,G1,2,2,"SD, WY"
+47,Jemez Mountains Salamander,Plethodon neomexicanus,E,G1,21,1,NM
+48,Cheat Mountain Salamander,Plethodon nettingi,T,G1,7,1,WV
+50,Shenandoah Salamander,Plethodon shenandoah,E,G1,1,1,VA
+53,Southern Mountain Yellow-legged Frog,Rana muscosa,E,G1,56,1,CA
+54,Oregon Spotted Frog,Rana pretiosa,T,G2,27,3,"OR, SD, WA"
+74,Florida Scrub Jay,Aphelocoma coerulescens,T,G2,2,1,FL
+83,Rufa Red Knot,Calidris canutus rufa,T,T2,46,9,"AR, MI, MT, NC, ND, OK, SC, SD, TX"
+92,Masked Bobwhite,Colinus virginianus ridgwayi,E,T1,1,1,AZ
+102,Northern Aplomado Falcon,Falco femoralis septentrionalis,"E, XN",T2,41,2,"AZ, NM"
+108,Whooping Crane,Grus americana,"E, XN",G1,117,14,"AL, CO, FL, GA, ID, IL, IN, NC, ND, SD, TN, TX, WI, WY"
+109,California Condor,Gymnogyps californianus,"E, XN",G1,349,10,"AZ, CA, ID, NM, NV, OR, SD, UT, WA, WY"
+121,Eastern Black Rail,Laterallus jamaicensis jamaicensis,T,T1,29,8,"AR, CO, FL, NC, OK, SC, SD, TX"
+154,Light-footed Ridgway's Rail,Rallus obsoletus levipes,E,T1,3,1,CA
+166,Northern Spotted Owl,Strix occidentalis caurina,T,T3,293,5,"CA, ID, OR, SD, WA"
+179,Sonoran Pronghorn,Antilocapra americana sonoriensis,"E, XN",T1,1,1,AZ
+185,Blue Whale,Balaenoptera musculus,E,G3,2,1,CA
+190,Mexican Wolf,Canis lupus baileyi,"E, XN",T2,144,2,"AZ, NM"
+198,Giant Kangaroo Rat,Dipodomys ingens,E,G1,15,1,CA
+200,San Bernardino Kangaroo Rat,Dipodomys merriami parvus,E,T1,15,1,CA
+204,Tipton Kangaroo Rat,Dipodomys nitratoides nitratoides,E,T1,3,1,CA
+215,Carolina Northern Flying Squirrel,Glaucomys sabrinus coloratus,E,T2,26,3,"NC, TN, VA"
+242,Black-footed Ferret,Mustela nigripes,"E, XN",G1,3,3,"ID, SD, TX"
+258,Jaguar,Panthera onca,E,G4,8,2,"AZ, NM"
+314,Mt. Graham Red Squirrel,Tamiasciurus fremonti grahamensis,E,T1,1,1,AZ
+328,Northern Idaho Ground Squirrel,Urocitellus brunneus,T,G2,2,2,"ID, SD"
+344,New Mexico Ridge-nosed Rattlesnake,Crotalus willardi obscurus,T,T1,1,1,NM
+348,Blunt-nosed Leopard Lizard,Gambelia sila,E,G1,1,1,CA
+367,Brown Gartersnake,Thamnophis eques megalops,T,T3,14,2,"AZ, NM"
+371,Coachella Fringe-toed Lizard,Uma inornata,T,G1,1,1,CA
+378,Loggerhead Sea Turtle,Caretta caretta,"E, T",G3,1,1,NC
+388,Sonoyta Mud Turtle,Kinosternon sonoriense longifemorale,E,T1,1,1,AZ
+408,Warner Sucker,Catostomus warnerensis,T,G1,4,3,"CA, OR, SD"
+409,Shortnose Sucker,Chasmistes brevirostris,E,G1,32,3,"CA, OR, SD"
+410,Cui-ui,Chasmistes cujus,E,G1,15,1,NV
+424,White River Springfish,Crenichthys baileyi baileyi,E,T1,17,2,"NV, SD"
+425,Hiko White River Springfish,Crenichthys baileyi grandis,E,T1,17,2,"NV, SD"
+430,Beautiful Shiner,Cyprinella formosa,T,G3,1,1,NM
+434,Devil's Hole Pupfish,Cyprinodon diabolis,E,G1,15,1,NV
+438,Desert Pupfish,Cyprinodon macularius,E,G1,8,2,"AZ, CA"
+443,Owens Pupfish,Cyprinodon radiosus,E,G1,33,2,"CA, NV"
+448,Lost River Sucker,Deltistes luxatus,E,G2,32,3,"CA, OR, SD"
+452,Pahrump Poolfish,Empetrichthys latos,E,G1,22,2,"NV, SD"
+455,Desert Dace,Eremichthys acros,T,G1,1,1,SD
+486,Unarmored Threespine Stickleback,Gasterosteus aculeatus williamsoni,E,T1,10,1,CA
+495,Humpback Chub,Gila cypha,T,G1,101,6,"CO, ID, SD, TX, UT, WY"
+496,Sonora Chub,Gila ditaenia,T,G2,1,1,AZ
+497,Bonytail,Gila elegans,E,G1,101,6,"CO, ID, SD, TX, UT, WY"
+499,Chihuahua Chub,Gila nigrescens,T,G1,3,1,NM
+500,Yaqui Chub,Gila purpurea,E,G1,2,2,"AZ, NM"
+501,Virgin River Chub,Gila seminuda,E,G1,1,1,UT
+514,White River Spinedace,Lepidomeda albivallis,E,G1,17,2,"NV, SD"
+516,Little Colorado Spinedace,Lepidomeda vittata,T,G1,3,1,AZ
+520,Peppered Chub,Macrhybopsis tetranema,E,G1,2,2,"SD, TX"
+530,Etowah Darter,Nothonotus etowahae,E,G2,1,1,GA
+535,Smoky Madtom,Noturus baileyi,"E, XN",G1,3,1,TN
+537,Yellowfin Madtom,Noturus flavipinnis,"T, XN",G1,12,4,"ID, NC, TN, VA"
+566,Santa Ana Sucker,Pantosteus santaanae,T,G1,4,1,CA
+567,Amber Darter,Percina antesella,E,G1,4,1,GA
+571,Conasauga Logperch,Percina jenkinsi,E,G1,3,1,GA
+576,Woundfin,Plagopterus argentissimus,"E, XN",G1,8,2,"AZ, NM"
+582,Colorado Pikeminnow,Ptychocheilus lucius,"E, XN",G1,101,6,"CO, ID, SD, TX, UT, WY"
+591,Independence Valley Speckled Dace,Rhinichthys osculus lethoporus,E,T1,1,1,SD
+593,Clover Valley Speckled Dace,Rhinichthys osculus oligoporus,E,T1,11,2,"NV, SD"
+595,Kendall Warm Springs Dace,Rhinichthys osculus thermalis,E,T1,5,3,"ID, SD, WY"
+621,Razorback Sucker,Xyrauchen texanus,"E, PT",G1,106,7,"AZ, CO, ID, SD, TX, UT, WY"
+633,Appalachian Elktoe,Alasmidonta raveneliana,E,G1,1,1,NC
+636,Fat Threeridge,Amblema neislerii,"E, PDL",G1,1,1,FL
+638,Ouachita Rock Pocketbook,Arcidens wheeleri,E,G1,1,1,OK
+640,Fanshell,Cyprogenia stegaria,"E, XN",G1,3,3,"ID, IL, IN"
+641,Dromedary Pearlymussel,Dromus dromas,"E, XN",G1,1,1,ID
+642,Chipola Slabshell,Elliptio chipolaensis,"T, PDL",G1,1,1,FL
+649,Cumberlandian Combshell,Epioblasma brevidens,"E, XN",G1,1,1,ID
+650,Oyster Mussel,Epioblasma capsaeformis,"E, XN",G1,1,1,ID
+655,Northern Riffleshell,Epioblasma rangiana,E,G1,1,1,PA
+656,Snuffbox,Epioblasma triquetra,E,G2,2,2,"ID, KY"
+658,Shiny Pigtoe,Fusconaia cor,"E, XN",G1,6,2,"ID, VA"
+659,Finerayed Pigtoe,Fusconaia cuneolus,"E, XN",G1,6,2,"ID, VA"
+661,Atlantic Pigtoe,Fusconaia masoni,T,G1,4,1,VA
+662,Cracking Pearlymussel,Hemistena lata,"E, XN",G1,1,1,ID
+663,Pink Mucket,Lampsilis abrupta,E,G1,5,5,"ID, IL, IN, NC, TN"
+667,Neosho Mucket,Lampsilis rafinesqueana,E,G1,1,1,SD
+669,Speckled Pocketbook,Lampsilis streckeri,E,G2,1,1,AR
+677,Coosa Moccasinshell,Medionidus parvulus,E,G1,5,2,"AL, GA"
+678,Ochlockonee Moccasinshell,Medionidus simpsonianus,E,G1,2,1,FL
+682,Round Hickorynut,Obovaria subrotunda,T,G3,2,2,"ID, KY"
+684,James Spinymussel,Parvaspina collina,E,G1,16,2,"VA, WV"
+686,Littlewing Pearlymussel,Pegias fabula,E,G1,1,1,ID
+688,Orangefoot Pimpleback,Plethobasus cooperianus,"E, XN",G1,2,2,"ID, IL"
+690,Clubshell,Pleurobema clava,"E, XN",G1,2,2,"IL, PA"
+692,Southern Pigtoe,Pleurobema georgianum,E,G1,7,2,"AL, GA"
+693,Georgia Pigtoe,Pleurobema hanleyianum,E,G1,3,1,GA
+695,Ovate Clubshell,Pleurobema perovatum,E,G1,1,1,AL
+703,Texas Hornshell,Popenaias popeii,E,G1,4,1,NM
+710,Triangular Kidneyshell,Ptychobranchus greenii,E,G1,5,2,"AL, GA"
+714,Winged Mapleleaf,Quadrula fragosa,"E, XN",G1,1,1,OK
+719,Cumberland Rockshell,Theliderma intermedia,"E, XN",G1,1,1,ID
+720,Appalachian Rockshell,Theliderma sparsa,"E, XN",G1,1,1,ID
+726,Texas Fawnsfoot,Truncilla macrodon,T,G1,1,1,TX
+744,Anthony's Riversnail,Athearnia anthonyi,"E, XN",G1,6,2,"NC, TN"
+805,Banbury Springs Limpet,Idaholanx fresti,E,G1,1,1,SD
+853,Snake River Physa,Physella natricina,E,G1,1,1,SD
+888,Bruneau Hot Springsnail,Pyrgulopsis bruneauensis,E,G1,22,2,"NV, SD"
+894,Chupadera Springsnail,Pyrgulopsis chupaderae,E,G1,1,1,NM
+941,Socorro Springsnail,Pyrgulopsis neomexicana,E,G1,1,1,NM
+987,Bliss Rapids Snail,Taylorconcha serpenticola,T,G1,1,1,SD
+1377,Noonday Globe,Patera nantahala,T,G1,2,1,NC
+1644,Benton County Cave Crayfish,Cambarus aculabrum,E,G1,1,1,SD
+1681,Shasta Crayfish,Pacifastacus fortis,E,G1,4,2,"CA, SD"
+1728,Riverside Fairy Shrimp,Streptocephalus woottoni,E,G1,22,1,CA
+1801,Rusty-patched Bumble Bee,Bombus affinis,E,G2,31,2,"VA, WV"
+1803,Franklin Bumble Bee,Bombus franklini,E,G1,75,3,"CA, OR, SD"
+2328,Taylor's Checkerspot,Euphydryas editha taylori,E,T1,1,1,WA
+2339,Pawnee Montane Skipper,Hesperia leonardus montana,T,T1,1,1,SD
+2368,Mitchell's Satyr,Neonympha mitchellii mitchellii,E,T2,1,1,AL
+2399,Carson Wandering Skipper,Pseudocopaeodes eunus obscurus,E,T1,8,2,"CA, NV"
+2402,Laguna Mountains Skipper,Pyrgus ruralis lagunae,E,T1,2,1,CA
+2462,Kern Primrose Sphinx Moth,Euproserpinus euterpe,T,G1,6,1,CA
+2767,Mist Forestfly,Lednia tumana,T,G1,1,1,MT
+2797,Glacier Forestfly,Zapada glacier,T,G1,5,4,"ID, MT, SD, WY"
+2834,Hine's Emerald,Somatochlora hineana,E,G2,3,2,"MI, MO"
+3277,Spruce-fir Moss Spider,Microhexura montivaga,E,G2,7,1,NC
+3544,Florida Torreya,Torreya taxifolia,E,G1,1,1,LA
+3557,Munz's Onion,Allium munzii,E,G1,3,1,CA
+3704,Small Whorled Pogonia,Isotria medeoloides,T,G2,88,7,"GA, ME, NC, SC, TN, VA, WV"
+3719,Western Lily,Lilium occidentale,E,G1,1,1,OR
+3739,California Orcutt Grass,Orcuttia californica,E,G1,20,1,CA
+3754,Western Prairie White-fringed Orchid,Platanthera praeclara,T,G3,40,6,"CO, ID, ND, SD, TX, WY"
+3835,Ute Ladies'-tresses,Spiranthes diluvialis,"T, PDL",G2,118,7,"CO, ID, MT, SD, TX, UT, WY"
+3869,Green's Awnless Orcutt Grass,Tuctoria greenei,E,G1,25,3,"CA, OR, SD"
+3890,San Diego Thornmint,Acanthomintha ilicifolia,T,G1,4,1,CA
+3932,San Diego Ragweed,Ambrosia pumila,E,G1,6,1,CA
+3960,Georgia Rockcress,Arabis georgiana,T,G1,3,1,AL
+3965,Dwarf Bear-poppy,Arctomecon humilis,E,G1,2,1,UT
+3993,Marsh Sandwort,Arenaria paludicola,E,G1,1,1,CA
+4014,Welsh's Milkweed,Asclepias welshii,T,G1,2,1,AZ
+4017,Cushenbury Milkvetch,Astragalus albens,E,G1,3,1,CA
+4018,Shivwits Milkvetch,Astragalus ampullarioides,E,G1,1,1,UT
+4020,Applegate's Milkvetch,Astragalus applegatei,E,G1,1,1,SD
+4051,Fish Slough Milkvetch,Astragalus lentiginosus var. piscinensis,T,T1,3,1,CA
+4058,Osterhout's Milkvetch,Astragalus osterhoutii,E,G1,3,2,"CO, SD"
+4064,Ventura Marsh Milkvetch,Astragalus pycnostachyus var. lanosissimus,E,T1,2,1,CA
+4081,San Jacinto Valley Crownscale,Atriplex coronata var. notatior,E,T1,1,1,CA
+4093,Encinitis Baccharis,Baccharis vanessae,T,G1,2,1,CA
+4102,Nevin's Barberry,Berberis nevinii,E,G1,36,1,CA
+4107,Virginia Roundleaf Birch,Betula uber,T,G1,2,1,VA
+4188,Ash Grey Indian-paintbrush,Castilleja cinerea,T,G1,5,1,CA
+4198,Glowing Indian-paintbrush,Castilleja ornata,E,G1,1,1,NM
+4206,California Jewelflower,Caulanthus californicus,E,G1,14,1,CA
+4216,Vail Lake Ceanothus,Ceanothus ophiochilus,T,G1,2,1,CA
+4286,Sacramento Mountains Thistle,Cirsium vinaceum,T,G1,7,1,NM
+4497,Slender-horned Spineflower,Dodecahema leptoceras,E,G1,31,1,CA
+4546,Santa Monica Mountains Dudleya,Dudleya cymosa ssp. ovatifolia,T,T1,3,1,CA
+4570,Bear Valley Sandwort,Eremogone ursina,T,G1,2,1,CA
+4572,Santa Ana River Woolstar,Eriastrum densifolium ssp. sanctorum,E,T1,2,1,CA
+4646,Cushenbury Buckwheat,Eriogonum ovalifolium var. vineum,E,T1,2,1,CA
+4648,Clay-loving Wild Buckwheat,Eriogonum pelinophilum,E,G1,1,1,SD
+4656,Tiehm's Buckwheat,Eriogonum tiehmii,E,G1,1,1,NV
+4664,San Diego Button-celery,Eryngium aristulatum var. parishii,E,T1,5,1,CA
+4671,Arizona Eryngo,Eryngium sparganophyllum,E,G1,19,2,"AZ, NM"
+4780,Showy Stickseed,Hackelia venusta,E,G1,2,1,WA
+4833,Neches River Rosemallow,Hibiscus dasycalyx,T,G1,1,1,TX
+4854,Mountain Golden-heather,Hudsonia montana,T,G1,5,1,NC
+4878,Holy Ghost Ipomopsis,Ipomopsis sancti-spiritus,E,G1,14,1,NM
+4927,Burke's Goldfields,Lasthenia burkei,E,G1,7,1,CA
+4928,Contra Costa Goldfields,Lasthenia conjugens,E,G1,7,1,CA
+4949,Barneby's Pepper-grass,Lepidium barnebyanum,E,G1,3,2,"SD, UT"
+4974,Shippee Meadowfoam,Limnanthes floccosa ssp. californica,E,T1,1,1,CA
+5022,Agate Desert Lomatium,Lomatium cookii,E,G1,1,1,OR
+5041,Lassicus Lupine,Lupinus constancei,E,G1,3,1,CA
+5151,Macfarlane's Four-o'clock,Mirabilis macfarlanei,T,G1,8,1,OR
+5240,Fassett's Locoweed,Oxytropis campestris var. chartacea,T,T1,1,1,WI
+5262,Beardless Cinchweed,Pectis imberbis,E,G3,2,1,AZ
+5275,Parachute Penstemon,Penstemon debilis,T,G1,1,1,SD
+5284,Kremmling Beardtongue,Penstemon penlandii,E,G1,3,2,"CO, SD"
+5298,Clay Phacelia,Phacelia argillacea,E,G1,11,2,"SD, UT"
+5323,Yreka Phlox,Phlox hirsuta,E,G1,7,2,"CA, SD"
+5367,Piceance Twinpod,Physaria obcordata,T,G1,1,1,SD
+5383,Ruth's Silk-grass,Pityopsis ruthii,E,G1,3,1,TN
+5440,Maguire's Primrose,Primula maguirei,T,G1,9,2,"SD, UT"
+5443,San Joaquin Adobe Sunburst,Pseudobahia peirsonii,T,G1,2,1,CA
+5565,Pariette Cactus,Sclerocactus brevispinus,T,G1,2,2,"SD, UT"
+5611,Wanatchee Mountains Checker-mallow,Sidalcea oregana var. calva,E,T1,4,1,WA
+5612,Pedate Checker-mallow,Sidalcea pedata,E,G1,2,1,CA
+5625,Spalding's Campion,Silene spaldingii,T,G2,52,5,"ID, MT, OR, SD, WA"
+5640,Short's Goldenrod,Solidago shortii,E,G1,1,1,ID
+5697,California Dandelion,Taraxacum californicum,E,G1,2,1,CA
+5734,Howell's Spectacular Thelypody,Thelypodium howellii ssp. spectabilis,T,T1,1,1,ID
+5735,Slender-petal Thelypody,Thelypodium stenopetalum,E,G1,1,1,CA
+5752,Showy Indian Clover,Trifolium amoenum,E,G1,6,1,CA
+5813,Desert Yellowhead,Yermo xanthocephalus,T,G1,2,2,"ID, SD"
+6184,California Tiger Salamander,Ambystoma californiense,"E, T",G3,9,1,CA
+6185,Frosted Flatwoods Salamander,Ambystoma cingulatum,T,G1,4,1,FL
+6188,Arroyo Toad,Anaxyrus californicus,E,G1,49,1,CA
+6189,Yosemite Toad,Anaxyrus canorus,T,G2,47,1,CA
+6202,Ozark Hellbender,Cryptobranchus alleganiensis bishopi,E,T1,3,2,"AR, MO"
+6216,Chiricahua Leopard Frog,Lithobates chiricahuensis,T,G3,8,2,"AZ, NM"
+6218,Neuse River Waterdog,Necturus lewisi,T,G2,1,1,NC
+6237,California Red-legged Frog,Rana draytonii,T,G2,68,1,CA
+6240,Sierra Nevada Yellow-legged Frog,Rana sierrae,E,G2,106,2,"CA, NV"
+6275,Gunnison Sage-Grouse,Centrocercus minimus,T,G2,1,1,SD
+6285,Southwestern Willow Flycatcher,Empidonax traillii extimus,E,T2,273,7,"AZ, CA, CO, NM, NV, SD, UT"
+6327,Coastal California Gnatcatcher,Polioptila californica californica,T,T3,36,1,CA
+6329,Hawaiian Petrel,Pterodroma sandwichensis,E,G1,4,1,OR
+6333,Snail Kite,Rostrhamus sociabilis plumbeus,E,T2,2,1,FL
+6335,Golden-cheeked Warbler,Setophaga chrysoparia,E,G3,1,1,TX
+6341,California Least Tern,Sternula antillarum browni,E,T2,24,2,"AZ, CA"
+6346,Least Bell's Vireo,Vireo bellii pusillus,E,T2,82,1,CA
+6358,Fin Whale,Balaenoptera physalus,E,G3,2,1,AK
+6366,Utah Prairie Dog,Cynomys parvidens,T,G2,48,2,"SD, UT"
+6390,Mexican Long-nosed Bat,Leptonycteris nivalis,E,G3,1,1,NM
+6411,Indiana Myotis,Myotis sodalis,E,G2,165,16,"AL, AR, GA, ID, IL, IN, KY, MI, MO, NC, OK, SD, TN, VA, VT, WV"
+6432,Sierra Nevada Bighorn Sheep,Ovis canadensis sierrae,E,T2,27,1,CA
+6483,Kit Fox - San Joaquin Valley Population,Vulpes macrotis mutica,E,T2,24,1,CA
+6486,Preble's Meadow Jumping Mouse,Zapus hudsonius preblei,T,T2,6,4,"CO, ID, SD, WY"
+6525,Louisiana Pinesnake,Pituophis ruthveni,T,G1,2,1,LA
+6549,Bog Turtle,Glyptemys muhlenbergii,"T, SAT",G2,49,4,"GA, NC, SC, TN"
+6556,Suwannee Alligator Snapping Turtle,Macrochelys suwanniensis,T,G2,1,1,FL
+6579,June Sucker,Chasmistes liorus,T,G2,1,1,SD
+6591,Railroad Valley Springfish,Crenichthys nevadae,T,G1,31,2,"NV, SD"
+6592,Blue Shiner,Cyprinella caerulea,T,G2,4,2,"AL, GA"
+6604,Spotfin Chub,Erimonax monachus,"T, XN",G2,8,2,"NC, TN"
+6617,Cherokee Darter,Etheostoma scotti,T,G2,1,1,GA
+6618,Kentucky Arrow Darter,Etheostoma spilotum,T,G2,3,3,"ID, KY, VA"
+6621,Tidewater Goby,Eucyclogobius newberryi,"E, PT",G3,9,1,CA
+6627,Gila Chub,Gila intermedia,"E, PDL",G2,50,2,"AZ, NM"
+6646,Spikedace,Meda fulgida,E,G2,55,2,"AZ, NM"
+6667,Neosho Madtom,Noturus placidus,T,G2,1,1,SD
+6720,Goldline Darter,Percina aurolineata,T,G2,4,1,GA
+6727,Leopard Darter,Percina pantherina,T,G2,1,1,OK
+6729,Sickle Darter,Percina williamsi,T,G2,1,1,ID
+6743,Pallid Sturgeon,Scaphirhynchus albus,E,G2,40,7,"CO, ID, IL, MT, SD, TX, WY"
+6749,Loach Minnow,Tiaroga cobitis,E,G2,53,2,"AZ, NM"
+6769,Spectaclecase,Cumberlandia monodonta,E,G2,4,3,"ID, IL, TN"
+6771,Western Fanshell,Cyprogenia aberti,T,G1,6,3,"AR, MO, SD"
+6778,Purple Bankclimber,Elliptoideus sloatianus,T,G2,3,1,FL
+6788,Arkansas Fatmucket,Lampsilis powellii,T,G2,1,1,AR
+6792,Alabama Moccasinshell,Medionidus acutissimus,T,G2,3,1,GA
+6798,Sheepnose,Plethobasus cyphyus,E,G2,2,2,"ID, IL"
+6802,Slabside Pearlymussel,Pleuronaia dolabelloides,E,G2,8,3,"ID, TN, VA"
+6804,Fluted Kidneyshell,Ptychobranchus subtentus,E,G2,10,3,"ID, TN, VA"
+7265,Big Creek Crayfish,Faxonius peruncus,T,G1,1,1,MO
+7266,St. Francis River Crayfish,Faxonius quadruncus,T,G1,1,1,MO
+7294,Conservancy Fairy Shrimp,Branchinecta conservatio,E,G2,80,2,"CA, SD"
+7299,San Diego Fairy Shrimp,Branchinecta sandiegonensis,E,G2,5,1,CA
+7685,Dakota Skipper,Hesperia dacotae,T,G2,12,1,ND
+8828,Whitebark Pine,Pinus albicaulis,T,G3,687,9,"CA, ID, MT, NV, OR, SD, TX, WA, WY"
+8882,Threadleaf Brodiaea,Brodiaea filifolia,T,G2,13,1,CA
+8931,Golden Sedge,Carex lutea,E,G2,1,1,SC
+8940,Navajo Sedge,Carex specuicola,T,G2,12,2,"SD, UT"
+9002,Gentner's Fritillary,Fritillaria gentneri,E,G2,9,3,"CA, OR, SD"
+9010,Harper's Beauty,Harperocallis flava,E,G2,2,1,FL
+9017,Purple Amole,Hooveria purpurea,T,G2,3,1,CA
+9060,Slender Orcutt Grass,Orcuttia tenuis,T,G2,26,3,"CA, OR, SD"
+9077,White Fringeless Orchid,Platanthera integrilabia,T,G2,22,5,"AL, GA, NC, SC, TN"
+9078,Eastern Prairie White-fringed Orchid,Platanthera leucophaea,T,G2,1,1,ID
+9087,San Bernardino Bluegrass,Poa atropurpurea,E,G2,2,1,CA
+9120,Bunched Arrowhead,Sagittaria fasciculata,E,G2,1,1,NC
+9174,Tennessee Yellow-eyed-grass,Xyris tennesseensis,E,G2,6,2,"AL, GA"
+9181,Large-fruit Sand-verbena,Abronia macrocarpa,E,G2,1,1,TX
+9280,Sacramento Prickly-poppy,Argemone pleiacantha ssp. pinnatisecta,E,T2,7,1,NM
+9297,Mead's Milkweed,Asclepias meadii,T,G2,3,3,"ID, IL, MO"
+9314,Braunton's Milkvetch,Astragalus brauntonii,E,G2,13,1,CA
+9400,Triple-rib Milkvetch,Astragalus tricarinatus,E,G2,2,1,CA
+9465,Decurrent False Aster,Boltonia decurrens,T,G2,1,1,ID
+9468,Shale Barren Rockcress,Borodinia serotina,E,G2,2,2,"VA, WV"
+9589,Pygmy Fringetree,Chionanthus pygmaeus,E,G2,1,1,FL
+9630,Dune Thistle,Cirsium pitcheri,T,G3,5,1,MI
+9633,Wright's Marsh Thistle,Cirsium wrightii,T,G2,2,1,NM
+9648,Springville Clarkia,Clarkia springvillensis,T,G2,5,1,CA
+9670,Sweet-scented Pigeonwings,Clitoria fragrans,T,G2,1,1,FL
+9705,Pima Pineapple Cactus,Coryphantha scheeri var. robustispina,E,T2,2,1,AZ
+9916,Smooth Purple Coneflower,Echinacea laevigata,T,G2,17,3,"GA, SC, VA"
+9925,Kuenzler's Hedgehog Cactus,Echinocereus fendleri var. kuenzleri,T,T2,10,1,NM
+9980,Parish's Daisy,Erigeron parishii,T,G2,3,1,CA
+9985,Rhizome Fleabane,Erigeron rhizomatus,T,G2,8,1,NM
+10029,Southern Mountain Buckwheat,Eriogonum kennedyi var. austromontanum,T,T2,6,1,CA
+10135,Mosquito Range Mustard,Eutrema penlandii,T,G2,2,2,"SD, TX"
+10186,Spreading Avens,Geum radiatum,E,G2,12,2,"NC, TN"
+10204,Patagonia Mountain Leather-petal,Graptopetalum bartramii,T,G2,11,1,AZ
+10231,Todsen's False Pennyroyal,Hedeoma todsenii,E,G2,1,1,NM
+10242,Pecos Sunflower,Helianthus paradoxus,T,G2,8,1,NM
+10306,Prairie Dawn,Hymenoxys texana,E,G2,1,1,TX
+10344,Webber Ivesia,Ivesia webberi,T,G2,21,2,"CA, NV"
+10417,Slick-spot Pepper-grass,Lepidium papilliferum,T,G2,1,1,SD
+10440,Heller's Blazingstar,Liatris helleri,T,G2,9,3,"NC, VA, WV"
+10446,Cienega False Rush,Lilaeopsis schaffneriana var. recurva,E,T2,14,2,"AZ, NM"
+10545,White Birds-in-a-nest,Macbridea alba,T,G2,3,1,FL
+10624,San Joaquin Woollythread,Monolopia congdonii,E,G2,3,1,CA
+10634,Spreading Navarretia,Navarretia fossalis,T,G2,28,1,CA
+10750,San Rafael Cactus,Pediocactus despainii,E,G2,12,2,"SD, UT"
+10754,Siler Pincushion Cactus,Pediocactus sileri,T,G2,1,1,UT
+10755,Winkler's Pincushion Cactus,Pediocactus winkleri,T,G2,4,2,"SD, UT"
+10784,Blowout Penstemon,Penstemon haydenii,E,G2,2,2,"ID, SD"
+10826,Silvery Phacelia,Phacelia argentea,T,G2,1,1,OR
+10829,North Park Phacelia,Phacelia formosula,"E, PDL",G2,2,2,"CO, SD"
+10850,DeBeque Phacelia,Phacelia submutica,T,G2,1,1,SD
+10892,Globe Bladderpod,Physaria globosa,E,G2,2,2,"ID, KY"
+10914,Violet-flowered Butterwort,Pinguicula ionantha,T,G2,3,1,FL
+11117,Green Pitcherplant,Sarracenia oreophila,E,G2,11,2,"GA, NC"
+11136,American Chaffseed,Schwalbea americana,E,G2,2,1,SC
+11146,Uinta Basin Hookless Cactus,Sclerocactus wetlandicus,T,G2,2,2,"SD, UT"
+11148,Wright's Fishhook Cactus,Sclerocactus wrightiae,E,G2,7,2,"SD, UT"
+11156,Florida Skullcap,Scutellaria floridana,T,G2,1,1,FL
+11228,Blue Ridge Goldenrod,Solidago spithamaea,T,G2,11,1,NC
+11247,Virginia Spiraea,Spiraea virginiana,T,G2,25,5,"ID, NC, TN, VA, WV"
+11347,Last Chance Townsend-daisy,Townsendia aprica,T,G2,21,2,"SD, UT"
+11889,Eastern Hellbender,Cryptobranchus alleganiensis alleganiensis,"E, PE",T2,66,7,"GA, ID, KY, NC, PA, TN, VA"
+11997,Piping Plover,Charadrius melodus,"E, T",G3,76,12,"AR, CO, ID, MI, NC, ND, NM, OK, SC, SD, TX, WY"
+12034,Cactus Ferruginous Pygmy-owl,Glaucidium brasilianum cactorum,T,T2,20,1,AZ
+12060,Red-cockaded Woodpecker,Leuconotopicus borealis,T,G3,10,5,"FL, LA, NC, SC, TX"
+12114,Yuma Ridgway's Rail,Rallus obsoletus yumanensis,E,T3,4,1,AZ
+12133,Mexican Spotted Owl,Strix occidentalis lucida,T,T3,316,6,"AZ, CO, NM, SD, TX, UT"
+12208,Steller Sea Lion,Eumetopias jubatus,"E, DL",G3,67,2,"AK, OR"
+12252,Gray Myotis,Myotis grisescens,E,G3,145,14,"AL, AR, GA, ID, IL, IN, KY, MO, NC, SC, SD, TN, VA, WV"
+12256,Northern Myotis,Myotis septentrionalis,E,G2,292,27,"AL, AR, GA, ID, IL, IN, KY, LA, ME, MI, MN, MO, MS, MT, NC, ND, NH, OK, PA, SC, SD, TN, VA, VT, WI, WV, WY"
+12358,Eastern Indigo Snake,Drymarchon couperi,T,G2,9,1,FL
+12397,Eastern Massasauga,Sistrurus catenatus,T,G3,2,2,"ID, MI"
+12405,Narrow-headed Gartersnake,Thamnophis rufipunctatus,T,G3,32,2,"AZ, NM"
+12416,Green Sea Turtle,Chelonia mydas,"E, T",G4,7,3,"AK, NC, SC"
+12421,Mojave Desert Tortoise,Gopherus agassizii,T,G2,32,3,"CA, NV, UT"
+12498,Candy Darter,Etheostoma osburni,E,G3,18,2,"VA, WV"
+12550,Sharpnose Shiner,Notropis oxyrhynchus,E,G3,1,1,TX
+12557,Little Kern Golden Trout,Oncorhynchus aguabonita whitei,T,T3,1,1,CA
+12686,Longsolid,Fusconaia subrotunda,T,G3,15,6,"ID, IL, IN, NC, PA, TN"
+12688,Finelined Pocketbook,Hamiota altilis,T,G3,9,2,"AL, GA"
+12703,Southern Clubshell,Pleurobema decisum,E,G3,6,2,"AL, GA"
+12704,Fat Pocketbook,Potamilus capax,E,G3,2,2,"ID, IL"
+12994,Black Abalone,Haliotis cracherodii,E,G3,4,1,CA
+13090,Vernal Pool Fairy Shrimp,Branchinecta lynchi,T,G3,129,2,"CA, SD"
+13101,Madison Cave Isopod,Antrolana lira,T,G3,1,1,VA
+13469,American Burying Beetle,Nicrophorus americanus,"T, XN",G3,4,4,"AR, ID, OK, SD"
+15866,Swamp-pink,Helonias bullata,T,G3,21,4,"GA, NC, SC, VA"
+15881,Dwarf Lake Iris,Iris lacustris,T,G3,2,1,MI
+16039,Northeastern Bulrush,Scirpus ancistrochaetus,"E, PDL",G3,22,2,"VA, WV"
+16069,Navasota Ladies'-tresses,Spiranthes parksii,E,G3,1,1,TX
+16264,Red Mountain Rockcress,Arabis mcdonaldiana,E,G3,12,3,"CA, OR, SD"
+16412,Heliotrope Milkvetch,Astragalus montii,T,G3,7,2,"SD, UT"
+17015,Jones' Cycladenia,Cycladenia humilis var. jonesii,T,T3,12,2,"SD, UT"
+17584,Virginia Sneezeweed,Helenium virginicum,"T, PDL",G3,6,2,"MO, VA"
+17818,Pondberry,Lindera melissifolia,E,G3,2,1,SC
+18481,Missouri Bladderpod,Physaria filiformis,T,G3,5,3,"AR, MO, SD"
+18504,Kodachrome Bladderpod,Physaria tumulosa,E,G3,1,1,UT
+19727,Rock Gnome Lichen,Cetradonia linearis,E,G3,4,1,NC
+22977,Yaqui Catfish,Ictalurus pricei,T,G2,2,2,"AZ, NM"
+27079,Vernal Pool Tadpole Shrimp,Lepidurus packardi,E,G3,77,2,"CA, SD"
+34306,Large-flower Skullcap,Scutellaria montana,T,G4,2,1,GA
+39850,Big Sandy Crayfish,Cambarus callainus,T,G2,2,2,"ID, VA"
+52830,Dixie Valley Toad,Anaxyrus williamsi,E,G1,1,1,SD
+60564,Sperm Whale,Physeter macrocephalus,E,G3,1,1,AK
+79608,Capa Rosa,Callicarpa ampla,E,G1,2,1,PR
+80579,Uvillo,Eugenia haematocarpa,E,G2,2,1,PR
+81281,Mount Rainier White-tailed Ptarmigan,Lagopus leucura rainierensis,T,T2,64,1,WA
+82414,Aceitillo,Pleodendron macranthum,E,G1,2,1,PR
+83110,Malheur Wire-lettuce,Stephanomeria malheurensis,E,GH,1,1,SD
+83141,Palo de Jazmin,Styrax portoricensis,E,G1,2,1,PR
+83235,Palo Colorado,Ternstroemia luquillensis,E,G1,2,1,PR

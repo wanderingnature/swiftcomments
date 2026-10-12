@@ -1,0 +1,209 @@
+seed_id,type,display,citation,case_name,match_keys,cite_role,status,summary,mention_count
+50aefa42-8a7b-4c01-9107-8bac75193794,case,Seminole Nation v. United States,316 U.S. 286,Seminole Nation v. United States,316 u.s. 286|seminole nation v. united states,operative,verified_in_force,,0
+9ac3cdb2-2b0c-4850-ba6b-58d239e15c05,case,California ex rel. Lockyer v. U.S. Department of Agriculture,575 F.3d 999,California ex rel. Lockyer v. U.S. Department of Agriculture,575 f.3d 999|california ex rel. lockyer v. u.s. department of agriculture,operative,verified_in_force,,0
+6b32e125-f557-4f0f-8667-1abdc3a9ac19,case,"Baltimore Gas & Electric Co. v. Natural Resources Defense Council, Inc.",462 U.S. 87,"Baltimore Gas & Electric Co. v. Natural Resources Defense Council, Inc.","462 u.s. 87|baltimore gas & electric co. v. natural resources defense council, inc.",operative,verified_in_force,"Multiple sources including Justia, the Library of Congress official reporter PDF, and FindLaw confirm that 462 U.S. 87 (1983) is Baltimore Gas & Electric Co. v. Natural Resources Defense Council, Inc.",0
+1d33106d-07c3-4ff0-95cd-eb84dab24ebb,case,Blue Mountains Biodiversity Project v. Blackwood,161 F.3d 1208,Blue Mountains Biodiversity Project v. Blackwood,161 f.3d 1208|blue mountains biodiversity project v. blackwood,operative,verified_in_force,"Multiple sources confirm 161 F.3d 1208 is Blue Mountains Biodiversity Project v. Blackwood, 9th Cir. 1998.",0
+f271497f-b3b5-4cc8-bced-013b53c36d24,case,California v. Block,690 F.2d 753,California v. Block,690 f.2d 753|california v. block,operative,verified_in_force,Multiple sources confirm 690 F.2d 753 (9th Cir. 1982) is California v. Block.,0
+4fc5a82f-e312-4fa5-b0f9-c825b53b83a5,case,"Citizens Against Burlington, Inc. v. Busey",938 F.2d 190,"Citizens Against Burlington, Inc. v. Busey","938 f.2d 190|citizens against burlington, inc. v. busey",operative,verified_in_force,"CourtListener confirms 938 F.2d 190 corresponds to Citizens Against Burlington, Inc. v. Busey, D.C. Cir. 1991.",0
+f743aada-2061-45e1-9ffe-f8529471efd7,case,Citizens to Preserve Overton Park v. Volpe,401 U.S. 402,Citizens to Preserve Overton Park v. Volpe,401 u.s. 402|citizens to preserve overton park v. volpe,operative,verified_in_force,Justia and Oyez confirm 401 U.S. 402 (1971) corresponds to Citizens to Preserve Overton Park v. Volpe.,0
+ebe48bb3-ed7a-4cd1-8280-c3b32573ae44,case,Colorado Envtl. Coalition v. Dombeck,185 F.3d 1162,Colorado Envtl. Coalition v. Dombeck,185 f.3d 1162|colorado envtl. coalition v. dombeck,operative,verified_in_force,"The search result explicitly cites 'Colorado Envtl. Coalition v. Dombeck, 185 F.3d 1162, 1167 (10th Cir.1999)', confirming the citation matches the claimed case name.",0
+51769c4b-beba-49f3-86f3-40718f5c0836,case,Connecticut Light and Power Co. v. Nuclear Regulatory Commission,673 F.2d 525,Connecticut Light and Power Co. v. Nuclear Regulatory Commission,673 f.2d 525|connecticut light and power co. v. nuclear regulatory commission,operative,verified_in_force,"The citation 673 F.2d 525 corresponds to Connecticut Light and Power Co. v. Nuclear Regulatory Commission, 218 U.S.App.D.C. 134 (D.C. Cir. 1982), confirmed by multiple sources. The claimed name 'Power Co' is consistent with this case (Connecticut Light and Power Co.).",0
+9538ae69-1cad-49ec-9549-e25f1cefca5d,case,County of Suffolk v. Secretary of Interior,562 F.2d 1368,County of Suffolk v. Secretary of Interior,562 f.2d 1368|county of suffolk v. secretary of interior,operative,verified_in_force,"Multiple sources confirm 562 F.2d 1368 (2d Cir. 1977) is County of Suffolk v. Secretary of Interior, matching the claimed case name.",0
+12385267-e0ea-4130-81b7-87f2a25750d7,case,Delaware Riverkeeper Network v. Federal Energy Regulatory Commission,753 F.3d 1304,Delaware Riverkeeper Network v. Federal Energy Regulatory Commission,753 f.3d 1304|delaware riverkeeper network v. federal energy regulatory commission,operative,verified_in_force,"Multiple sources confirm 753 F.3d 1304 (D.C. Cir. 2014) is Delaware Riverkeeper Network v. FERC, matching the claimed 'Riverkeeper Network' case.",0
+b412c3a7-826e-43a3-b22f-4498b5e6e93d,case,Department of Homeland Security v. Regents of the University of California,591 U.S. ___,Department of Homeland Security v. Regents of the University of California,591 u.s. ___|department of homeland security v. regents of the university of california,operative,verified_in_force,"Multiple sources (Justia, Oyez, Cornell LII, SCOTUSblog) confirm this case, decided in 2020, corresponds to Department of Homeland Security v. Regents of the University of California, No. 18-587, which is reported at 591 U.S. ___ in the U.S. Reports.",0
+91a1af12-c74e-4728-aeae-b913a041d8cc,case,Department of Transportation v. Public Citizen,541 U.S. 752,Department of Transportation v. Public Citizen,541 u.s. 752|department of transportation v. public citizen,operative,verified_in_force,"Multiple primary and secondary sources confirm 541 U.S. 752 (2004) is Department of Transportation v. Public Citizen, matching the claimed case name 'Public Citizen'.",0
+02b1f863-32a2-48ff-b24a-997ac6a82f1c,case,"FCC v. Fox Television Stations, Inc.",556 U.S. 502,"FCC v. Fox Television Stations, Inc.","556 u.s. 502|fcc v. fox television stations, inc.",operative,verified_in_force,"Multiple sources including Justia confirm 556 U.S. 502 (2009) is FCC v. Fox Television Stations, Inc.",0
+6da5e87a-b7c0-4872-a8c3-606ed3aac0f3,case,Half Moon Bay Fishermans' Marketing Ass'n v. Carlucci,857 F.2d 505,Half Moon Bay Fishermans' Marketing Ass'n v. Carlucci,857 f.2d 505|half moon bay fishermans' marketing ass'n v. carlucci,operative,verified_in_force,"Multiple independent legal sources (court briefs, an appellate court order, and a law review-style citation index) consistently cite 857 F.2d 505 (9th Cir. 1988) as Half Moon Bay Fishermans' Marketing Ass'n v. Carlucci, confirming this is a real, identifiable case. One Justia volume-listing snippet appeared to associate the page with a different case name (Johnson v. District 2 Marine Engineers), but this appears to be a pagination/listing artifact rather than a reliable citation match, given the overwhelming consistency of the other seven independent sources.",0
+877fe3fe-9272-466b-8778-8d9ad944a17d,case,Idaho Sporting Congress v. Rittenhouse,305 F.3d 957,Idaho Sporting Congress v. Rittenhouse,305 f.3d 957|idaho sporting congress v. rittenhouse,operative,verified_in_force,"Search result confirms citation refers to Idaho Sporting Congress v. Rittenhouse, 305 F.3d 957 (9th Cir. 2002).",0
+47bd96be-66e5-42d3-9106-9da6ccd44f10,case,Idaho Sporting Congress v. Thomas,137 F.3d 1146,Idaho Sporting Congress v. Thomas,137 f.3d 1146|idaho sporting congress v. thomas,operative,verified_in_force,Multiple sources confirm 137 F.3d 1146 (9th Cir. 1998) is Idaho Sporting Congress (and American Wildlands) v. Jack Ward Thomas et al.,0
+1f9f5c2b-1aa3-40f3-aece-0cddfe65b3bb,case,Kern v. U.S. Bureau of Land Management,284 F.3d 1062,Kern v. U.S. Bureau of Land Management,284 f.3d 1062|kern v. u.s. bureau of land management,operative,verified_in_force,"Multiple sources confirm this citation refers to Kern v. U.S. Bureau of Land Management, decided by the Ninth Circuit on March 22, 2002.",0
+59e54444-c058-44c9-9d99-d38c3d86481f,case,Klamath-Siskiyou Wildlands Ctr. v. Bureau of Land Mgmt.,387 F.3d 989,Klamath-Siskiyou Wildlands Ctr. v. Bureau of Land Mgmt.,387 f.3d 989|klamath-siskiyou wildlands ctr. v. bureau of land mgmt.,operative,verified_in_force,"Multiple sources confirm 387 F.3d 989 (9th Cir. 2004) is Klamath-Siskiyou Wildlands Ctr. v. Bureau of Land Mgmt., which matches the claimed 'Siskiyou Wildlands Ctr' case name.",0
+ca725b92-2adc-48a4-b2b8-aa3967117fbc,case,Kootenai Tribe of Idaho v. Veneman,313 F.3d 1094,Kootenai Tribe of Idaho v. Veneman,313 f.3d 1094|kootenai tribe of idaho v. veneman,operative,verified_in_force,"Confirmed by 9th Circuit opinion referencing 'Kootenai Tribe v. Veneman, 313 F.3d 1094 (9th Cir. 2002)'.",0
+6929c7f4-809f-46b0-b6a2-988ea19aef8e,case,Kunaknana v. Clark,742 F.2d 1145,Kunaknana v. Clark,742 f.2d 1145|kunaknana v. clark,operative,verified_in_force,"A federal district court opinion directly cites 'Kunaknana v. Clark, 742 F.2d 1145, 1152 (9th Cir.1984)', confirming the citation matches the claimed case name.",0
+aa01afe6-d263-48e1-b81b-e082c9699db7,case,Lands Council v. McNair,537 F.3d 981,Lands Council v. McNair,537 f.3d 981|lands council v. mcnair,operative,verified_in_force,"Multiple sources confirm 537 F.3d 981 (9th Cir. 2008) (en banc) is Lands Council v. McNair, matching the claimed case name 'Lands Council'.",0
+902263f8-d0cd-43ef-9949-04a70253ce6a,case,Lands Council v. Powell,395 F.3d 1019,Lands Council v. Powell,395 f.3d 1019|lands council v. powell,operative,verified_in_force,"Search result [2] cites 'Lands Council v. Powell, 395 F.3d 1019, 1030 (9th Cir. 2005)', confirming the citation matches the claimed case name.",0
+67ab9ca0-2b2c-44de-a2c1-2d66e85800f1,case,Lujan v. National Wildlife Federation,497 U.S. 871,Lujan v. National Wildlife Federation,497 u.s. 871|lujan v. national wildlife federation,operative,verified_in_force,"Verified: 497 U.S. 871 is Lujan v. National Wildlife Federation (1990); the originally claimed name was the defendant party only — a mechanically extracted fragment, which is a match, not a mismatch (registry correction after verifier judgment-standard fix).",0
+35ab1fbf-9cf7-423f-860a-d15828a1e79d,case,Marsh v. Oregon Natural Resources Council,490 U.S. 360,Marsh v. Oregon Natural Resources Council,490 u.s. 360|marsh v. oregon natural resources council,operative,verified_in_force,"Verified: 490 U.S. 360 is Marsh v. Oregon Natural Resources Council (1989); the originally claimed name was the defendant party only — a mechanically extracted fragment, which is a match, not a mismatch (registry correction after verifier judgment-standard fix).",0
+5ee4b444-ed54-45d5-8244-e2c65c839c86,case,Metcalf v. Daley,214 F.3d 1135,Metcalf v. Daley,214 f.3d 1135|metcalf v. daley,operative,verified_in_force,"Justia result confirms 214 F.3d 1135 is the case involving Jack Metcalf and NEPA claims against federal defendants (Daley), matching the claimed case name Metcalf v. Daley.",0
+c4903267-e9a9-481f-b119-8c1b50c067cf,case,Motor Vehicle Mfrs. Ass'n v. State Farm Mut. Auto. Ins. Co.,463 U.S. 29,Motor Vehicle Mfrs. Ass'n v. State Farm Mut. Auto. Ins. Co.,463 u.s. 29|motor vehicle mfrs. ass'n v. state farm mut. auto. ins. co.,operative,verified_in_force,"The citation 463 U.S. 29 (1983) corresponds to Motor Vehicle Mfrs. Ass'n v. State Farm Mut. Auto. Ins. Co., confirmed by the official U.S. Reports (via Library of Congress and govinfo.gov) and multiple secondary sources. The claimed short name 'State Farm Mut' matches the second party in this case.",0
+c2ae4d92-a809-4c61-a762-473e71d215e4,case,Muckleshoot Indian Tribe v. U.S. Forest Service,177 F.3d 800,Muckleshoot Indian Tribe v. U.S. Forest Service,177 f.3d 800|muckleshoot indian tribe v. u.s. forest service,operative,verified_in_force,Multiple sources confirm 177 F.3d 800 (9th Cir. 1999) is Muckleshoot Indian Tribe v. U.S. Forest Service.,0
+ef8e35ac-1235-412f-9843-b6e753049b07,case,Native Ecosystems Council v. United States Forest Service,428 F.3d 1233,Native Ecosystems Council v. United States Forest Service,428 f.3d 1233|native ecosystems council v. united states forest service,operative,verified_in_force,"Multiple sources confirm 428 F.3d 1233 (9th Cir. 2005) is Native Ecosystems Council v. United States Forest Service, matching the claimed case name.",0
+5c47da79-4ec4-455e-9fae-68d0f82cd7ec,case,Native Ecosystems Council v. Weldon,697 F.3d 1043,Native Ecosystems Council v. Weldon,697 f.3d 1043|native ecosystems council v. weldon,operative,verified_in_force,Multiple Ninth Circuit sources cite 697 F.3d 1043 as Native Ecosystems Council v. Weldon (9th Cir. 2012).,0
+e4c7c8cd-0fd2-47ce-9569-dd2da234bea1,case,Neighbors of Cuddy Mountain v. United States Forest Service,137 F.3d 1372,Neighbors of Cuddy Mountain v. United States Forest Service,137 f.3d 1372|neighbors of cuddy mountain v. united states forest service,operative,verified_in_force,"Multiple sources confirm the citation 137 F.3d 1372 corresponds to Neighbors of Cuddy Mountain v. United States Forest Service, decided by the Ninth Circuit on March 4, 1998.",0
+af1b2eb8-271f-46fd-89e9-382fc952dd7e,case,"Northern Plains Resource Council, Inc. v. Surface Transportation Board",668 F.3d 1067,"Northern Plains Resource Council, Inc. v. Surface Transportation Board","668 f.3d 1067|northern plains resource council, inc. v. surface transportation board",operative,verified_in_force,"Multiple sources confirm 668 F.3d 1067 (9th Cir. 2011) is Northern Plains Resource Council, Inc. v. Surface Transportation Board, matching the claimed case name.",0
+780b5b4b-b1d5-4fb8-b91d-ac1b5fb86772,case,Organized Village of Kake v. United States Department of Agriculture,795 F.3d 956,Organized Village of Kake v. United States Department of Agriculture,795 f.3d 956|organized village of kake v. united states department of agriculture,operative,verified_in_force,"The citation is confirmed by multiple authoritative sources, including court documents and legal databases. The case is Organized Village of Kake v. U.S. Department of Agriculture, decided by the Ninth Circuit in 2015.",0
+59a91452-90a9-47e1-8a8a-64c6884323d3,case,Pacific Rivers Council v. Thomas,30 F.3d 1050,Pacific Rivers Council v. Thomas,30 f.3d 1050|pacific rivers council v. thomas,operative,verified_in_force,"Multiple sources confirm 30 F.3d 1050 (9th Cir. 1994) is Pacific Rivers Council v. Thomas, matching the claimed case name.",0
+49bfe2d2-55b9-4546-8e8d-fd365d82ce49,case,Perez v. Mortgage Bankers Ass'n,575 U.S. 92,Perez v. Mortgage Bankers Ass'n,575 u.s. 92|perez v. mortgage bankers ass'n,operative,verified_in_force,Justia confirms 575 U.S. 92 corresponds to Perez v. Mortgage Bankers Ass'n (2015).,0
+ce1da860-c894-4656-b19f-c3c0dd57e7eb,case,Pit River Tribe v. United States Forest Service,469 F.3d 768,Pit River Tribe v. United States Forest Service,469 f.3d 768|pit river tribe v. united states forest service,operative,verified_in_force,Justia confirms 469 F.3d 768 is the Ninth Circuit's 2006 decision in Pit River Tribe v. U.S. Forest Service (Native Coalition for Medicine Lake et al.).,0
+9552d890-8e3b-437e-9f15-a56f74d16911,case,Robertson v. Methow Valley Citizens Council,490 U.S. 332,Robertson v. Methow Valley Citizens Council,490 u.s. 332|robertson v. methow valley citizens council,operative,verified_in_force,"The citation 490 U.S. 332 (1989) corresponds to Robertson v. Methow Valley Citizens Council, confirmed by multiple sources including Justia, Oyez, and Ballotpedia.",0
+bca4137b-7ed7-4550-b459-06a54eafcdb3,case,Seattle Audubon Soc'y v. Moseley,80 F.3d 1401,Seattle Audubon Soc'y v. Moseley,80 f.3d 1401|seattle audubon soc'y v. moseley,operative,verified_in_force,Multiple sources confirm 80 F.3d 1401 (9th Cir. 1996) is Seattle Audubon Soc'y v. Moseley.,0
+b596c4bd-7bd6-4889-ab56-b2ad6b9b5a6a,case,"Seven County Infrastructure Coalition v. Eagle County, Colorado",145 S. Ct. 1497,"Seven County Infrastructure Coalition v. Eagle County, Colorado","145 s. ct. 1497|seven county infrastructure coalition v. eagle county (2025)|seven county infrastructure coalition v. eagle county, colorado",operative,verified_in_force,NEPA scope is limited to environmental effects of the project within the acting agency's regulatory authority; effects of separate upstream/downstream projects need not be analyzed.,0
+cbc01351-193c-458e-b8d8-0ea26e20b140,case,"Seven County Infrastructure Coalition v. Eagle County, Colorado",605 U.S. ___,"Seven County Infrastructure Coalition v. Eagle County, Colorado","605 u.s. ___|seven county infrastructure coalition v. eagle county, colorado",operative,asserted,"Justia and Oyez confirm 605 U.S. ___ (2025) corresponds to Seven County Infrastructure Coalition v. Eagle County, Colorado, matching the claimed case name. | Volume history: model-memory drafts wrote 604 and 606; corrected to 605 (supremecourt.gov slip op, Justia).",0
+c1da9f6e-4111-448c-8af9-bf3bb7b2a535,case,Sierra Club v. Marsh,872 F.2d 497,Sierra Club v. Marsh,872 f.2d 497|sierra club v. marsh,operative,verified_in_force,"Multiple District of Maine decisions cite 872 F.2d 497 (1st Cir. 1989) as Sierra Club v. Marsh, confirming the citation resolves to that case.",0
+9e2f59dc-1e96-4baa-89f5-c9683ea94a01,case,Simmons v. United States Army Corps of Engineers,120 F.3d 664,Simmons v. United States Army Corps of Engineers,120 f.3d 664|simmons v. united states army corps of engineers,operative,verified_in_force,"Multiple sources confirm 120 F.3d 664 is Simmons v. United States Army Corps of Engineers, 7th Cir. 1997.",0
+3fbcecd2-85dd-4932-9494-302c8b052e40,case,State of Ohio v. United States Department of the Interior,880 F.2d 432,State of Ohio v. United States Department of the Interior,880 f.2d 432|state of ohio v. united states department of the interior,operative,verified_in_force,"Justia confirms 880 F.2d 432 is State of Ohio v. United States Department of the Interior, matching the claimed case name.",0
+c0dff789-4f89-420d-971e-8e82b48ceaa5,case,"Vermont Yankee Nuclear Power Corp. v. Natural Resources Defense Council, Inc.",435 U.S. 519,"Vermont Yankee Nuclear Power Corp. v. Natural Resources Defense Council, Inc.","435 u.s. 519|vermont yankee nuclear power corp. v. natural resources defense council, inc.",operative,verified_in_force,"Multiple sources including Justia and the Library of Congress official reporter PDF confirm 435 U.S. 519 (1978) is Vermont Yankee Nuclear Power Corp. v. Natural Resources Defense Council, Inc.",0
+fe6816ab-e5fd-4718-8894-ed5e8542cbc2,executive_order,Executive Order 12898,Executive Order 12898,,executive order 12898,operative,verified_rescinded,Federal Actions to Address Environmental Justice in Minority Populations and Low-Income Populations (1994),0
+01f5df4f-4a6b-4f91-937d-ee4032969b6b,executive_order,Executive Order 13007,Executive Order 13007,,executive order 13007,operative,verified_in_force,,0
+6a34a007-0c31-46fb-b7d4-b888e188ac5f,executive_order,Executive Order 13175,Executive Order 13175,,executive order 13175,operative,verified_in_force,,0
+d5c3ff0e-d49e-4f37-8b18-5af6099cad72,executive_order,Executive Order 13751,Executive Order 13751,,executive order 13751,operative,verified_in_force,,0
+d62a4c09-934d-40dc-8b0b-44d74aaedfbd,executive_order,Executive Order 14153,Executive Order 14153,,executive order 14153,operative,verified_in_force,,0
+516ff234-eb5f-4cb1-967b-f2a44542cf69,executive_order,Executive Order 14154,Executive Order 14154,,executive order 14154,operative,verified_in_force,,0
+e001f680-4c92-4236-b60c-6e2c83e36bda,executive_order,Executive Order 14156,Executive Order 14156,,executive order 14156,operative,verified_in_force,,0
+00b5cc3e-9873-4a04-9294-f9d8e6ef06dc,executive_order,Executive Order 14192,Executive Order 14192,,executive order 14192,operative,verified_in_force,,0
+229cded8-9099-458f-aaa1-5e0f7f1b2431,executive_order,Executive Order 14225,Executive Order 14225,,executive order 14225,operative,verified_in_force,,0
+d0769fc8-df65-4a67-a6c6-e9036e4b9f61,executive_order,Executive Order 14241,Executive Order 14241,,executive order 14241,operative,verified_in_force,,0
+ffc0a668-72f9-45d2-b363-80465cfada76,executive_order,Executive Order 14261,Executive Order 14261,,executive order 14261,operative,verified_in_force,,0
+d91bcedd-ce59-480b-b807-9c90c5984e1f,guidance,EPA Interim Framework (2025),,,epa interim framework (2025),operative,verified_rescinded,Environmental justice review obligations continue under the EPA interim framework notwithstanding the CEQ rescission.,0
+1ab9dd84-96c6-4321-840e-ee256fe8c204,regulation,30 CFR 700,30 CFR 700,,30 cfr 700,operative,verified_rescinded,,0
+0a4abca8-be2e-4d69-8c7e-4402050a4395,regulation,36 CFR 212,36 CFR 212,,36 cfr 212,operative,verified_in_force,,0
+fa0444d3-4deb-49a0-b027-d19c65568612,regulation,36 CFR 212.1,36 CFR 212.1,,36 cfr 212.1,operative,verified_in_force,,0
+100261ec-d663-4d5d-91c3-f7776264aa0e,regulation,36 CFR 212.51,36 CFR 212.51,,36 cfr 212.51,operative,verified_in_force,,0
+5e937aaf-5293-4c57-92bf-cf008926dd85,regulation,36 CFR 219,36 CFR 219,,36 cfr 219,operative,verified_in_force,,0
+e9da5f6e-060c-4095-9a88-df646acdae58,regulation,36 CFR 219.1(g),36 CFR 219.1(g),,36 cfr 219.1(g),operative,verified_in_force,,0
+13707963-d2d0-41a4-9f6b-6601e3d70697,regulation,36 CFR 219.10(b)(1),36 CFR 219.10(b)(1),,36 cfr 219.10(b)(1),operative,verified_superseded,,0
+80c4b8f9-157c-4614-a0bb-393cec80db0d,regulation,36 CFR 219.10(b)(1)(i),36 CFR 219.10(b)(1)(i),,36 cfr 219.10(b)(1)(i),operative,verified_superseded,,0
+07ab5294-f432-44a8-8cd1-d06b2576d629,regulation,36 CFR 219.13(a),36 CFR 219.13(a),,36 cfr 219.13(a),operative,verified_in_force,,0
+c46c03cd-11c0-49be-b9d9-d74ef713ca8f,regulation,36 CFR 219.13(b)(6),36 CFR 219.13(b)(6),,36 cfr 219.13(b)(6),operative,verified_in_force,,0
+264d375a-dbc3-40f4-bd60-d74f40369edc,regulation,36 CFR 219.13(c),36 CFR 219.13(c),,36 cfr 219.13(c),operative,verified_in_force,,0
+b93fcf26-e07b-4771-b833-1cb60223fca1,regulation,36 CFR 219.19,36 CFR 219.19,,36 cfr 219.19,operative,verified_superseded,,0
+30e9f139-c00b-4f60-aef3-21837ac612a5,regulation,36 CFR 219.19(a),36 CFR 219.19(a),,36 cfr 219.19(a),operative,verified_superseded,,0
+92ce7c7a-8db6-4aab-9bc5-c81db4b3a929,regulation,36 CFR 219.23,36 CFR 219.23,,36 cfr 219.23,operative,verified_superseded,,0
+bdf668e8-3a41-44d0-8dd8-6bf2e43507da,regulation,36 CFR 219.27(a),36 CFR 219.27(a),,36 cfr 219.27(a),operative,verified_superseded,,0
+c04db8f1-706c-4510-b1bf-0adecc7b1a8b,regulation,36 CFR 219.3,36 CFR 219.3,,36 cfr 219.3,operative,verified_in_force,,0
+e739a123-c0bf-45bc-9656-e39f61d36320,regulation,36 CFR 219.4,36 CFR 219.4,,36 cfr 219.4,operative,verified_in_force,,0
+d51ab22b-8264-4dee-a6ce-2f3c73b59b8e,regulation,36 CFR 219.4(3),36 CFR 219.4(3),,36 cfr 219.4(3),operative,verified_in_force,,0
+79a2f8c7-852e-45e5-89a2-4af714888ea0,regulation,36 CFR 219.4(a),36 CFR 219.4(a),,36 cfr 219.4(a),operative,verified_in_force,,0
+3dcfd579-cb92-493a-a96f-44c6a6072df3,regulation,36 CFR 219.4(a)(1)(v),36 CFR 219.4(a)(1)(v),,36 cfr 219.4(a)(1)(v),operative,verified_in_force,,0
+fb748ef2-8d8f-4623-9b28-1d1a961a464c,regulation,36 CFR 219.4(a)(2),36 CFR 219.4(a)(2),,36 cfr 219.4(a)(2),operative,verified_in_force,,0
+0de74034-a414-4c4f-a382-1285db231bb9,regulation,36 CFR 219.7(a),36 CFR 219.7(a),,36 cfr 219.7(a),operative,verified_in_force,,0
+14e07043-b1f9-41df-be46-e759156e5d5a,regulation,36 CFR 219.7(c)(2),36 CFR 219.7(c)(2),,36 cfr 219.7(c)(2),operative,verified_in_force,,0
+f6683dc7-2615-4c21-8050-895def6c951d,regulation,36 CFR 219.7(d),36 CFR 219.7(d),,36 cfr 219.7(d),operative,verified_in_force,,0
+6a8e9dd7-47d1-4eaf-b2cf-68596d5d23e6,regulation,36 CFR 219.8,36 CFR 219.8,,36 cfr 219.8,operative,verified_in_force,,0
+29eeb976-9f6d-4a19-876e-1805f1a3a25a,regulation,36 CFR 219.8(a),36 CFR 219.8(a),,36 cfr 219.8(a),operative,verified_in_force,,0
+df846e44-3701-4605-a206-7e9ed69d9b1a,regulation,36 CFR 219.8(a)(2),36 CFR 219.8(a)(2),,36 cfr 219.8(a)(2),operative,verified_in_force,,0
+4294d3e4-3058-4b3f-a499-d4e126298528,regulation,36 CFR 219.9,36 CFR 219.9,,36 cfr 219.9,operative,verified_in_force,,0
+c51d7c5f-83e1-434f-acdd-14dda3104c6d,regulation,36 CFR 219.9(b),36 CFR 219.9(b),,36 cfr 219.9(b),operative,verified_in_force,,0
+12681cdb-39bf-492b-8618-2fc9113193cb,regulation,36 CFR 219.9(c),36 CFR 219.9(c),,36 cfr 219.9(c),operative,verified_in_force,,0
+5811dea4-c89f-4378-9119-470a0794164d,regulation,36 CFR 223,36 CFR 223,,36 cfr 223,operative,verified_in_force,,0
+bea1f44b-7655-4357-86bc-8b0bf9682ad1,regulation,36 CFR 228,36 CFR 228,,36 cfr 228,operative,verified_in_force,,0
+7e8e6185-6bf6-4121-b99e-7969e975bb47,regulation,36 CFR 251.110,36 CFR 251.110,,36 cfr 251.110,operative,verified_in_force,,0
+574aca69-fa69-47f2-8c73-db983276193b,regulation,36 CFR 251.110(d),36 CFR 251.110(d),,36 cfr 251.110(d),operative,verified_in_force,,0
+b579742c-70b3-4769-b22b-3c79d5a3c245,regulation,36 CFR 251.50(d),36 CFR 251.50(d),,36 cfr 251.50(d),operative,verified_in_force,,0
+b7a1c399-49e4-4485-b2b6-d920ee50a4fa,regulation,36 CFR 251.54,36 CFR 251.54,,36 cfr 251.54,operative,verified_in_force,,0
+6e91a1a2-42f4-4b1c-a591-63fc1622e37f,regulation,36 CFR 284.13(b),36 CFR 284.13(b),,36 cfr 284.13(b),operative,asserted,,0
+27363907-6b8e-46dd-a88d-c733dcd0c9ce,regulation,36 CFR 293.12(b),36 CFR 293.12(b),,36 cfr 293.12(b),operative,verified_in_force,,0
+806b9e9d-ecbb-48b5-a8ee-0a2ea5f8858b,regulation,36 CFR 294,36 CFR 294,,36 cfr 294,operative,verified_in_force,,0
+6180562c-f7a1-4668-a168-16274d8edd5f,regulation,36 CFR 294.11,36 CFR 294.11,,36 cfr 294.11,operative,verified_in_force,,0
+e3f179ea-3409-45b4-97a3-1821ed15665c,regulation,36 CFR 294.12,36 CFR 294.12,,36 cfr 294.12,operative,verified_in_force,,0
+3d902f9d-32e9-4832-8d8b-fea246a99364,regulation,36 CFR 294.12(b),36 CFR 294.12(b),,36 cfr 294.12(b),operative,verified_in_force,,0
+a0dbbc58-789f-4f37-bcc2-9193b5dffd30,regulation,36 CFR 294.12(b)(1),36 CFR 294.12(b)(1),,36 cfr 294.12(b)(1),operative,verified_in_force,,0
+4390a5f5-4ea0-4efa-a993-6d318dbfe46f,regulation,36 CFR 294.12(b)(3),36 CFR 294.12(b)(3),,36 cfr 294.12(b)(3),operative,verified_in_force,,0
+bb09697a-1747-45fd-816a-51d6b512038c,regulation,36 CFR 294.12(b)(8),36 CFR 294.12(b)(8),,36 cfr 294.12(b)(8),operative,verified_in_force,,0
+5f9c165a-9436-4905-aae3-ad4cac633e5f,regulation,36 CFR 294.13,36 CFR 294.13,,36 cfr 294.13,operative,verified_in_force,,0
+298f304d-2d5a-4546-8489-c992039f845b,regulation,36 CFR 294.13(b),36 CFR 294.13(b),,36 cfr 294.13(b),operative,verified_in_force,,0
+182cb4d3-5eaa-4735-b969-8f0e3b947d22,regulation,36 CFR 294.13(b)(1),36 CFR 294.13(b)(1),,36 cfr 294.13(b)(1),operative,verified_in_force,,0
+97c2d9a6-6c14-4b59-99c2-4cab801d6a42,regulation,36 CFR 294.13(b)(2),36 CFR 294.13(b)(2),,36 cfr 294.13(b)(2),operative,verified_in_force,,0
+e5288772-14eb-411c-bca3-5422bca4d7ec,regulation,36 CFR 294.14(b),36 CFR 294.14(b),,36 cfr 294.14(b),operative,verified_in_force,,0
+170d3081-ca69-471b-8618-6a5a6d96e972,regulation,36 CFR 296.18,36 CFR 296.18,,36 cfr 296.18,operative,verified_in_force,,0
+926898d6-062e-419b-be42-77209934689f,regulation,36 CFR 60.4,36 CFR 60.4,,36 cfr 60.4,operative,verified_in_force,,0
+29c4ae3b-0708-4d9e-8f9e-412d04b0af3e,regulation,36 CFR 800,36 CFR 800,,36 cfr 800,operative,verified_in_force,,0
+bcb4ae87-5eed-4e5c-b313-9923f820c0cd,regulation,36 CFR 800.6,36 CFR 800.6,,36 cfr 800.6,operative,verified_in_force,,0
+b9dafd55-8b25-4d7f-8509-3c91cdafe27d,regulation,39 CFR 219.9,39 CFR 219.9,,39 cfr 219.9,operative,verified_in_force,,0
+03a8c2c7-7f63-4667-81c0-3c84b3ce5f36,regulation,40 CFR 1500,40 CFR 1500,,40 cfr 1500,operative,verified_rescinded,,0
+a2cff4af-1460-468d-ac4b-7c68763b0832,regulation,40 CFR 1501.11,40 CFR 1501.11,,40 cfr 1501.11,operative,verified_in_force,,0
+5e430b1e-6550-456f-a2da-503c800dcd5e,regulation,40 CFR 1501.3(b),40 CFR 1501.3(b),,40 cfr 1501.3(b),operative,verified_superseded,,0
+0648a1bd-d157-480b-ba27-df1685f5eab9,regulation,40 CFR 1501.8,40 CFR 1501.8,,40 cfr 1501.8,operative,verified_in_force,,0
+8e8225fa-0245-4758-b36b-56e7cd7dce11,regulation,40 CFR 1501.9,40 CFR 1501.9,,40 cfr 1501.9,operative,verified_rescinded,,0
+3bb2b960-9764-4672-9934-0c49dd033e09,regulation,40 CFR 1502.14,40 CFR 1502.14,,40 cfr 1502.14,operative,verified_in_force,,0
+65a48fed-937d-4de1-8803-4e9b3e531457,regulation,40 CFR 1502.9(a),40 CFR 1502.9(a),,40 cfr 1502.9(a),operative,verified_rescinded,,0
+f04cba8b-dc48-49d0-b0c9-b239a71fbc9b,regulation,40 CFR 1503.4,40 CFR 1503.4,,40 cfr 1503.4,operative,verified_rescinded,,0
+42459d1f-c57d-4a04-b2af-1c48640c7df0,regulation,40 CFR 1505.2,40 CFR 1505.2,,40 cfr 1505.2,operative,verified_in_force,,0
+e5719277-1091-4196-9259-0b1b8f3f8347,regulation,40 CFR 1505.2(b),40 CFR 1505.2(b),,40 cfr 1505.2(b),operative,verified_rescinded,,0
+67ef6b36-2927-42e5-bd67-a61f6fbf9937,regulation,40 CFR 1508.1(g),40 CFR 1508.1(g),,40 cfr 1508.1(g),operative,verified_rescinded,,0
+73559d5f-1ec5-4753-99c7-41eced55947a,regulation,40 CFR 1508.4,40 CFR 1508.4,,40 cfr 1508.4,operative,verified_rescinded,,0
+bbffb539-0429-4d6c-a8f9-7a7d3cfc8150,regulation,43 CFR 3400,43 CFR 3400,,43 cfr 3400,operative,verified_in_force,,0
+19466068-5500-414b-915a-4d269d673e14,regulation,50 CFR 402,50 CFR 402,,50 cfr 402,operative,verified_in_force,,0
+99e7139b-93f3-4b46-bc8b-a6042e4cec23,regulation,65 FR 16053,65 FR 16053,,65 fr 16053,operative,verified_in_force,,0
+dcd7f114-dae8-4fd3-b7f7-3bbedbdc11a7,regulation,66 FR 3244,66 FR 3244,,66 fr 3244,operative,verified_in_force,,0
+cee4c0df-bd6c-453d-ba86-3724addbcee1,regulation,66 FR 3254,66 FR 3254,,66 fr 3254,operative,verified_in_force,,0
+d52b1439-e5eb-4b73-93e8-3a8cbdc31c1b,regulation,66 FR 3272,66 FR 3272,,66 fr 3272,operative,verified_in_force,,0
+67f1fb97-1488-4556-9f61-ee2915ac8f5a,regulation,66 FR 3273,66 FR 3273,,66 fr 3273,operative,verified_in_force,,0
+9d78f1cf-a6fe-4856-b8a3-5ef9ec2098fb,regulation,7 CFR 1.28,7 CFR 1.28,,7 cfr 1.28,operative,verified_in_force,,0
+852e2fb5-3355-45af-8b33-276ef243928e,regulation,7 CFR 1.7(b),7 CFR 1.7(b),,7 cfr 1.7(b),operative,verified_in_force,,0
+60aa5b7a-12b5-4174-9604-8e29743dab63,regulation,7 CFR 1.9(e),7 CFR 1.9(e),,7 cfr 1.9(e),operative,verified_in_force,,0
+1b469a96-7738-4800-a2b7-812137799720,regulation,7 CFR 1b,7 CFR 1b,,7 cfr 1b,operative,verified_in_force,,0
+6f2d4c2e-a535-45c4-bb7c-91823bbb63ff,regulation,7 CFR 1b.11(a)(12),7 CFR 1b.11(a)(12),,7 cfr 1b.11(a)(12),operative,verified_in_force,,0
+c861b7f1-bf0d-4e84-ac67-4a7326dd6f89,regulation,7 CFR 1b.11(a)(23),7 CFR 1b.11(a)(23),,7 cfr 1b.11(a)(23),operative,verified_in_force,,0
+df887b99-e0ae-4bdd-940f-c1626d501f38,regulation,7 CFR 1b.11(a)(53),7 CFR 1b.11(a)(53),,7 cfr 1b.11(a)(53),operative,verified_in_force,,0
+5d7bf4ce-cdb7-4a3c-bfa2-b460307808e3,regulation,7 CFR 1b.2(f)(3)(ii),7 CFR 1b.2(f)(3)(ii),,7 cfr 1b.2(f)(3)(ii),operative,verified_in_force,,0
+064c8a3a-fa31-4375-b031-764a3518f28e,regulation,7 CFR 1b.7(h),7 CFR 1b.7(h),,7 cfr 1b.7(h),operative,verified_in_force,,0
+ad471390-82c5-42bc-b3b8-7709ce9947c1,regulation,7 CFR 1b.7(h)(3)(iv),7 CFR 1b.7(h)(3)(iv),,7 cfr 1b.7(h)(3)(iv),operative,verified_in_force,,0
+7e4deb9a-b9a8-4bee-b2c5-5b00e92babd3,regulation,7 CFR 1b.7(n),7 CFR 1b.7(n),,7 cfr 1b.7(n),operative,verified_in_force,,0
+cdfe17a3-bb28-4048-a3b9-b3f32b052d3a,regulation,7 CFR 1b.9,7 CFR 1b.9,,7 cfr 1b.9,operative,verified_in_force,,0
+cc8fe01b-ec15-4673-b1c2-6caff16d57a5,regulation,70 FR 25654,70 FR 25654,,70 fr 25654,operative,verified_in_force,,0
+57a3d779-b531-48cf-bde9-9836063da7db,regulation,73 FR 53820,73 FR 53820,,73 fr 53820,operative,verified_in_force,,0
+a26c1528-ca58-4124-837a-d25384d8253a,regulation,84 FR 52598,84 FR 52598,,84 fr 52598,operative,verified_in_force,,0
+e75cb226-06a2-439a-b492-a30369b17ecd,regulation,84 FR 55522,84 FR 55522,,84 fr 55522,operative,verified_in_force,,0
+e5673a3d-5dc1-4a3e-8247-f67f1f0c1b68,regulation,85 FR 68688,85 FR 68688,,85 fr 68688,operative,verified_in_force,,0
+27bf7e3f-2af5-4013-aa89-b76083555f3a,regulation,85 FR 68689,85 FR 68689,,85 fr 68689,operative,asserted,,0
+c3ea9c0b-e19c-4385-b9b5-e8acbe3f812d,regulation,85 FR 68692,85 FR 68692,,85 fr 68692,operative,verified_in_force,,0
+1dfc798e-23d6-42a2-8d27-95d3373c5767,regulation,85 FR 81144,85 FR 81144,,85 fr 81144,operative,verified_in_force,,0
+8aa71a70-79d5-4cb8-afbf-fdc2376c8c5c,regulation,88 FR 11600,88 FR 11600,,88 fr 11600,operative,verified_in_force,,0
+21609e8f-f81a-4d56-a163-3624589bc2d2,regulation,88 FR 5252,88 FR 5252,,88 fr 5252,operative,verified_in_force,,0
+df85244c-3343-4e68-b780-d026f859118d,regulation,88 FR 5254,88 FR 5254,,88 fr 5254,operative,asserted,,0
+9faa9f28-5648-48c7-8adb-5b20030bdfd8,regulation,89 FR 45815,89 FR 45815,,89 fr 45815,operative,verified_in_force,,0
+48c663e3-46f4-4134-ae28-fbe8f1fe2d46,regulation,89 FR 85294,89 FR 85294,,89 fr 85294,operative,verified_in_force,,0
+0d135ed6-8073-44c4-8404-7979aa661c93,regulation,90 FR 42179,90 FR 42179,,90 fr 42179,operative,verified_in_force,,0
+80024dad-7ff5-4f51-ade4-801fb92d4d52,regulation,91 FR 8316,91 FR 8316,,91 fr 8316,operative,verified_in_force,,0
+00c78760-c0f4-423e-bf77-feffcc074a54,regulation,"CEQ NEPA Regulations Rescission (Jan 8, 2026)",40 CFR 1500-1508,,"40 cfr 1500-1508|ceq nepa regulations rescission (jan 8, 2026)",historical,verified_rescinded,The Council on Environmental Quality's NEPA regulations were rescinded. No binding government-wide CEQ regulations apply; agency NEPA procedures and the statute itself govern.,0
+bc741a6d-f7bd-47a7-9d70-42d63b97693d,statute,16 USC 1131,16 USC 1131,,16 usc 1131,operative,verified_in_force,,0
+9404cdbc-620a-45a1-919e-6e445384d895,statute,16 USC 1271,16 USC 1271,,16 usc 1271,operative,verified_in_force,,0
+537e80a0-5f76-40e3-9591-53a7bac04ef9,statute,16 USC 1531,16 USC 1531,,16 usc 1531,operative,verified_in_force,,0
+10b19144-b75b-4da6-910f-77696e1ccabd,statute,16 USC 1532(5),16 USC 1532(5),,16 usc 1532(5),operative,verified_in_force,,0
+c4fc3522-9f8b-41ce-ab69-28366b639429,statute,16 USC 1600,16 USC 1600,,16 usc 1600,operative,verified_in_force,,0
+991f64f2-2cf6-402e-a962-b9f1517fd161,statute,16 USC 1604,16 USC 1604,,16 usc 1604,operative,verified_in_force,,0
+cdb6bd2a-70c0-48c6-a316-9dd36a741123,statute,16 USC 1604(a),16 USC 1604(a),,16 usc 1604(a),operative,verified_in_force,,0
+43c03992-f123-45ed-a3ee-ffbaeb439e03,statute,16 USC 1604(e)(1),16 USC 1604(e)(1),,16 usc 1604(e)(1),operative,verified_in_force,,0
+e9377d04-d9dc-44b4-8b25-15442d155711,statute,16 USC 1604(f),16 USC 1604(f),,16 usc 1604(f),operative,verified_in_force,,0
+0e3313fb-12a9-4963-9dd4-c5a3c808ab59,statute,16 USC 1604(f)(5),16 USC 1604(f)(5),,16 usc 1604(f)(5),operative,verified_in_force,,0
+bba3c052-889d-4384-bd0b-78541bddd389,statute,16 USC 1604(g)(3),16 USC 1604(g)(3),,16 usc 1604(g)(3),operative,verified_in_force,,0
+4f3f1078-c09b-46aa-837c-653b1f0455e5,statute,16 USC 1608,16 USC 1608,,16 usc 1608,operative,verified_in_force,,0
+4069aea7-105c-4639-99fb-4cea8adc0c41,statute,16 USC 1801,16 USC 1801,,16 usc 1801,operative,verified_in_force,,0
+e4a5a2b8-748f-4c73-82e0-93da128c2202,statute,16 USC 3101,16 USC 3101,,16 usc 3101,operative,verified_in_force,,0
+546f3e86-6393-4325-bdab-fa9d58b4bd3d,statute,16 USC 3111,16 USC 3111,,16 usc 3111,operative,verified_in_force,,0
+12d6ad79-11c2-4761-bc81-361ab3ce76f6,statute,16 USC 3120,16 USC 3120,,16 usc 3120,operative,verified_in_force,,0
+3034578f-e3d5-4493-b42a-326c2043a216,statute,16 USC 3120(a),16 USC 3120(a),,16 usc 3120(a),operative,verified_in_force,,0
+ee2fb852-974e-4651-9d42-35e9337dd95d,statute,16 USC 3170(b),16 USC 3170(b),,16 usc 3170(b),operative,verified_in_force,,0
+4aa1621c-ed2b-4f7c-a3f7-7bb175399a63,statute,16 USC 470h,16 USC 470h,,16 usc 470h,operative,verified_superseded,,0
+d85e4046-7667-4f97-992a-f85bbfa94de2,statute,16 USC 472,16 USC 472,,16 usc 472,operative,verified_in_force,,0
+dcaf6830-e234-42b2-a576-2f6bd5f507f0,statute,16 USC 482,16 USC 482,,16 usc 482,operative,verified_in_force,,0
+bae15f84-e61b-4509-92a8-2eacf2c75ca1,statute,16 USC 528,16 USC 528,,16 usc 528,operative,verified_in_force,,0
+81624f73-570c-4e8e-847f-08e972773361,statute,16 USC 539d,16 USC 539d,,16 usc 539d,operative,verified_in_force,,0
+365fac22-42a1-412a-9af4-297c6624ae8f,statute,16 USC 6511,16 USC 6511,,16 usc 6511,operative,verified_in_force,,0
+7a0f60bd-be28-4e74-9995-c47eda93b6ec,statute,16 USC 6511(16),16 USC 6511(16),,16 usc 6511(16),operative,verified_in_force,,0
+38b3ff7d-e64a-4d67-ab4b-e68199c38ad9,statute,16 USC 703,16 USC 703,,16 usc 703,operative,verified_in_force,,0
+d2790dc4-d4af-4b8c-9b01-0cee74c371f9,statute,17 Stat. 91,17 Stat. 91,,17 stat. 91,operative,verified_in_force,,0
+e6cbff06-c351-4397-bd18-6493d82fd56e,statute,23 USC 101(a),23 USC 101(a),,23 usc 101(a),operative,verified_in_force,,0
+08debc47-599d-4109-ac5b-70a2d3820152,statute,23 USC 201,23 USC 201,,23 usc 201,operative,verified_in_force,,0
+3c16171f-aae5-42b6-bda5-c9a82f90283b,statute,23 USC 317,23 USC 317,,23 usc 317,operative,verified_in_force,,0
+a2c1c584-ff2b-4095-a9de-95f2818e21c5,statute,25 USC 3056,25 USC 3056,,25 usc 3056,operative,verified_in_force,,0
+b597e0c4-9e32-405f-b4ed-339ac1d8ea19,statute,25 USC 5301,25 USC 5301,,25 usc 5301,operative,verified_in_force,,0
+6e65007c-18c3-4076-8262-50c648ae9f34,statute,33 USC 1251,33 USC 1251,,33 usc 1251,operative,verified_in_force,,0
+4409fd2c-98f1-473a-a910-35c7a86503a5,statute,42 USC 4321,42 USC 4321,,42 usc 4321,operative,verified_in_force,,0
+d923f824-2880-4903-9657-f4d0c72359e2,statute,42 USC 4331(b),42 USC 4331(b),,42 usc 4331(b),operative,verified_in_force,,0
+893dec08-6ec9-46c6-b99a-3beec15b8ff1,statute,42 USC 4332(2),42 USC 4332(2),,42 usc 4332(2),operative,verified_in_force,,0
+947a53ac-b7fa-4396-bf87-5909fcf63812,statute,42 USC 4336(b)(3),42 USC 4336(b)(3),,42 usc 4336(b)(3),operative,verified_in_force,,0
+19bb3e11-de6a-4e09-a00b-4e69f049a651,statute,42 USC 4336e,42 USC 4336e,,42 usc 4336e,operative,verified_in_force,,0
+3d589cbc-624b-4eab-bc43-0710fc288ab4,statute,42 USC 4336e(11),42 USC 4336e(11),,42 usc 4336e(11),operative,verified_in_force,,0
+325f3e1e-5bf7-4cff-8eb2-89f65ab80993,statute,42 USC 7401,42 USC 7401,,42 usc 7401,operative,verified_in_force,,0
+a2a217e3-5fea-466a-9618-d9594a77754a,statute,42 USC 7491,42 USC 7491,,42 usc 7491,operative,verified_in_force,,0
+646d4bc9-1b6e-4ba0-bc87-a44103613df8,statute,43 USC 1601,43 USC 1601,,43 usc 1601,operative,verified_in_force,,0
+48f11cd8-fa60-40c1-9e02-d70c503e3a98,statute,5 USC 551,5 USC 551,,5 usc 551,operative,verified_in_force,,0
+e6578a82-17b9-4398-a16a-49ca3a24438f,statute,5 USC 552,5 USC 552,,5 usc 552,operative,verified_in_force,,0
+35bef309-0eb0-4267-91ff-ffae237ef031,statute,5 USC 553(e),5 USC 553(e),,5 usc 553(e),operative,verified_in_force,,0
+2ea4e5ec-9384-4c0d-ad04-00d8cc48cbc2,statute,54 USC 300101,54 USC 300101,,54 usc 300101,operative,verified_in_force,,0
+7253e658-d7f9-4aea-ae1a-f6714745c5b4,statute,54 USC 300308,54 USC 300308,,54 usc 300308,operative,verified_in_force,,0
+53ae84bb-0273-466d-a2f0-af51827e8857,statute,54 USC 307103,54 USC 307103,,54 usc 307103,operative,verified_in_force,,0
+2faeeae6-d05f-4044-ac14-c9eeb132193c,statute,Fiscal Responsibility Act (FRA) limits,42 USC 4336a,,42 usc 4336a|fiscal responsibility act (fra) limits,operative,verified_in_force,"EIS documents are constrained to 150 pages (300 for proposals of extraordinary complexity), a 2-year completion target, and reliance on data no older than 5 years absent justification.",0
+77a31b75-38c0-40ed-9fac-e2d622521c56,statute,Pub. L. 88-577,Pub. L. 88-577,,pub. l. 88-577,operative,verified_in_force,,0

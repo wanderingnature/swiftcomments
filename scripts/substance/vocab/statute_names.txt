@@ -1,0 +1,37 @@
+# EVID 0 — a statute named in prose. The rubric: court cases, statutes and
+# regulations are not evidence and earn no EVID at any level. The entity pass
+# only tags citation FORM ("33 U.S.C. 1344"), so a comment that names the law
+# in words escaped the test entirely — Sonnet was credited EVID 2 for "each
+# such placement constitutes a regulated discharge under Clean Water Act
+# Section 404" on the capitalized word "Clean".
+#
+# Statute and treaty names only. A rule or document name belongs in
+# document_names.txt, which stops it naming a source without zeroing the span.
+clean water act
+cwa
+clean air act
+national environmental policy act
+nepa
+endangered species act
+esa
+administrative procedure act
+apa
+wilderness act
+national forest management act
+nfma
+federal land policy and management act
+flpma
+multiple-use sustained-yield act
+national historic preservation act
+antiquities act
+federal advisory committee act
+freedom of information act
+migratory bird treaty act
+bald and golden eagle protection act
+american indian religious freedom act
+native american graves protection and repatriation act
+archaeological resources protection act
+healthy forests restoration act
+equal access to justice act
+organic administration act
+weeks act

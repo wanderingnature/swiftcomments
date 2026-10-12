@@ -1,0 +1,16 @@
+species
+habitat
+wildlife
+connectivity
+biodiversity
+endangered
+threatened
+elk
+grizzly
+salmon
+trout
+lynx
+owl
+old growth
+old-growth
+migration corridor
