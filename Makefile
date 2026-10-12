@@ -44,8 +44,8 @@ tag:  ## step 4: the reference lists; the strict and loose passes; the citation 
 	$(PY) scripts/entity_tagging/load_references.py --project roadless
 	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode strict
 	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode loose
-	$(PY) scripts/entity_tagging/resolve_citations.py --project roadless
-	$(PY) scripts/entity_tagging/adjudicate_bare_words.py --project roadless
+	$(PY) scripts/entity_tagging/resolve_citations.py --project roadless --kind both --limit 0
+	$(PY) scripts/entity_tagging/adjudicate_bare_words.py --project roadless --limit 0
 	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode strict
 
 floor:  ## step 6: the floor filter
