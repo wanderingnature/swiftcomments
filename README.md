@@ -26,7 +26,7 @@ no service of ours.
 - For the attachments (step 8): poppler, whose `pdftotext` and `pdfinfo` read the PDFs.
   Debian and Ubuntu: `sudo apt install poppler-utils`. Fedora and RHEL:
   `sudo dnf install poppler-utils`. macOS with Homebrew: `brew install poppler`.
-  The docx and rtf files are read with `textutil` on macOS.
+  The docx and rtf files are read by `python-docx` and `striprtf`, which `uv sync` installs.
 - A model server, run locally, for the four steps that read a language model: see
   `docs/model-server.md`. The model is Qwen3.8-27B. Tested on Apple Silicon with LM
   Studio headless through `lms`; ollama and vLLM are documented, not yet verified.
