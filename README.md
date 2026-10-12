@@ -76,10 +76,10 @@ tokeniser strips markup and unescapes first.
 
 | step | instrument | model | what it took on this docket |
 |---|---|---|---|
-| stance | `roadless_rescission_v2`, one call per group | Qwen3.8-27B | 44,555 calls; 60.6 M tokens in, 9.4 M out |
-| citation afterstep | `resolve_citations.py`, `adjudicate_bare_words.py` | Qwen3.8-27B | 302 resolutions |
-| substance | v3, `score_comments.py` over class A | Qwen3.8-27B | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
-| roster | `roster-v1`, `organisation_roster.py` | Qwen3.8-27B | 3,002 letters read |
+| stance | `roadless_rescission_v2`, one call per group | `qwen/qwen3.8-27b` | 44,555 calls; 60.6 M tokens in, 9.4 M out |
+| citation afterstep | `resolve_citations.py`, `adjudicate_bare_words.py` | `qwen/qwen3.8-27b` | 302 resolutions |
+| substance | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
+| roster | `roster-v1`, `organisation_roster.py` | `qwen/qwen3.8-27b` | 3,002 letters read |
 
 Two runs of a model step do not match row for row, and the figures downstream of a
 model step are not expected to.
