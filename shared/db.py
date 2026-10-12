@@ -38,8 +38,36 @@ def require_sqlite() -> None:
             "Use a Python built against a newer SQLite.")
 
 
+class Cursor(sqlite3.Cursor):
+    """A cursor that is a context manager, as psycopg's is, so the ported
+    `with conn.cursor() as cur:` blocks stand."""
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.close()
+        return False
+
+
+class Connection(sqlite3.Connection):
+    """sqlite3.Connection with the two psycopg conveniences the ported scripts use:
+    cursors that are context managers, and `closed`."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.closed = False
+
+    def cursor(self, factory=Cursor):
+        return super().cursor(factory)
+
+    def close(self):
+        super().close()
+        self.closed = True
+
+
 def connect(path: Path | str = DB_PATH, *, create: bool = False,
-            check_same_thread: bool = True) -> sqlite3.Connection:
+            check_same_thread: bool = True) -> Connection:
     """Open the analysis database with the PRAGMAs of plan 4.1 and the functions
     registered. `create` is for make_schema.py alone: every other caller needs the
     file to exist already."""
@@ -47,7 +75,7 @@ def connect(path: Path | str = DB_PATH, *, create: bool = False,
     path = Path(path)
     if not create and not path.exists():
         raise SystemExit(f"{path} does not exist: run `make schema` first.")
-    conn = sqlite3.connect(path, check_same_thread=check_same_thread)
+    conn = sqlite3.connect(path, check_same_thread=check_same_thread, factory=Connection)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode = WAL")
     conn.execute("PRAGMA synchronous = NORMAL")
