@@ -16,6 +16,7 @@ SQL calls are registered on the connection:
 The file is created by scripts/make_schema.py (connect(create=True)); a step that
 finds no file stops with the command that makes one.
 """
+import contextlib
 import hashlib
 import re
 import sqlite3
@@ -63,6 +64,35 @@ class Connection(sqlite3.Connection):
     def close(self):
         super().close()
         self.closed = True
+
+    @contextlib.contextmanager
+    def transaction(self, force_rollback: bool = False):
+        """`with conn.transaction():` — a transaction, or a savepoint
+        inside one, committed on exit and rolled back on an exception (or
+        always, with force_rollback, as the tests use it)."""
+        if self.in_transaction:
+            name = f"sp_{id(self)}_{self.total_changes}"
+            self.execute(f"SAVEPOINT {name}")
+            try:
+                yield self
+            except BaseException:
+                self.execute(f"ROLLBACK TO {name}")
+                self.execute(f"RELEASE {name}")
+                raise
+            if force_rollback:
+                self.execute(f"ROLLBACK TO {name}")
+            self.execute(f"RELEASE {name}")
+            return
+        self.execute("BEGIN")
+        try:
+            yield self
+        except BaseException:
+            self.rollback()
+            raise
+        if force_rollback:
+            self.rollback()
+        else:
+            self.commit()
 
 
 def connect(path: Path | str = DB_PATH, *, create: bool = False,
