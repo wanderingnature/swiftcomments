@@ -59,3 +59,4 @@ the commit that added it says what changed.
 | `scripts/substance/families_incremental.py`, `tests/substance/test_families_incremental.py` | the same paths | as `families.py`; the `&&` array overlap as an `EXISTS` over `json_each`; `UPDATE ... FROM` kept (SQLite 3.33) with `AS` on the alias and `CAST` for `::float8`; the test copied byte for byte |
 | `scripts/substance/build_comment_groups.py` | `scripts/substance/build_comment_groups.py` | the seven-table `TRUNCATE` as seven `DELETE`s; `= ANY` as `json_each`; `now()`; `%s` to `?`; `SET CONSTRAINTS ALL DEFERRED` as `PRAGMA defer_foreign_keys = ON` |
 | `scripts/substance/grade.py`, `tests/substance/test_grade.py` | the same paths | the places list read from `seeds/entity_tagging/seed_places.csv` (`db/seeds/` is `seeds/`, plan 2); the test copied byte for byte |
+| `scripts/parse_multi_batch_results.py` | `scripts/parse_multi_batch_results.py` | copied, byte for byte |
