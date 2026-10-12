@@ -62,3 +62,4 @@ the commit that added it says what changed.
 | `scripts/parse_multi_batch_results.py` | `scripts/parse_multi_batch_results.py` | copied, byte for byte |
 | `scripts/generate_batch_sql.py` | `scripts/generate_batch_sql.py` | copied, byte for byte |
 | `scripts/generate_batch_fromfile.py` | `scripts/generate_batch_fromfile.py` | psycopg gone; `%s` to `?`; `= ANY` as `json_each`; the run timestamp bound as ISO-8601 text; the "next step" line names `reclassify_groups.py` in place of `classify_run.py` on a named box (plan 5.2 edit 8) |
+| `scripts/load_classifications.py` | `scripts/load_classifications.py` | psycopg gone; `%s` and `%(name)s`; `= ANY` as `json_each`; `NOW()`; `date_trunc` and `to_timestamp` as `strftime`; `supporting_phrases` written as JSON text; `WHERE true` before the one `INSERT ... SELECT ... FROM src ON CONFLICT` that had no WHERE, which SQLite's parser needs; the schema name gone from three messages |
