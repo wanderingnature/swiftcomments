@@ -130,5 +130,8 @@ the originals with the remarks that only made sense there edited out.
 ## Status
 
 The repository is being built in phases. At this commit it holds the skeleton, the
-seeds, the schema and the loader: `make schema` creates the file and `make corpus`
-loads the docket. The nine steps follow, one commit per file.
+seeds, the schema, the loader and the steps through the stance run: `make schema`,
+`make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`, `make floor`,
+`make groups`, `make screen` and `make stance` are ported. The scoring, the
+answerability rating, the attachments, the organisations and the facts table follow,
+one commit per file.
