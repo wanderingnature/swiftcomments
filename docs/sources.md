@@ -31,3 +31,16 @@ the commit that added it says what changed.
 | `shared/project_context.py` | `shared/project_context.py` | plan 4.2: a dataclass of constants in place of the registry row; `render_sql` renders `{analysis}.` and `{src}.` to nothing; `db_config` is the SQLite path and `dict_connect` opens through `shared/db.py`; `psycopg`, the env-driven DB config, the schema-name checks and `dict_connect_dsn` gone |
 | `shared/instrument.py` | `shared/instrument.py` | plan 5.2 edit 8: the serving-name table, `SCORING_MODELS`, the endpoint rates and `gpu_rate_per_min` gone; `configured_model()` reads `LLM_MODEL`; `model_of`, `weights_of`, `same_weights`, `is_measured_model` keep their names over the one name |
 | `shared/llm_client.py` | `shared/llm_client.py` | plan 5.2 edit 8: the server and the model from `LLM_BASE_URL` and `LLM_MODEL`, a Bearer header from `LLM_API_KEY` only; the by-host key lookup, the OpenRouter provider pin, the dedicated-endpoint names and the Fireworks scale-up retries gone; thinking off with both spellings |
+| `comments_db/src/__init__.py`, `src/utils/__init__.py`, `src/extractors/__init__.py`, `src/preprocessing/__init__.py` | the same paths | copied (the package markers) |
+| `comments_db/src/utils/logger.py` | `comments_db/src/utils/logger.py` | copied, byte for byte |
+| `comments_db/src/config.py` | `comments_db/src/config.py` | copied, byte for byte |
+| `comments_db/src/preprocessing/text_processor.py` | `comments_db/src/preprocessing/text_processor.py` | copied, byte for byte |
+| `comments_db/src/extractors/long_ngram_extractor.py` | `comments_db/src/extractors/long_ngram_extractor.py` | copied, byte for byte |
+| `tests/substance/test_long_ngram_extractor.py` | `tests/substance/test_long_ngram_extractor.py` | copied, byte for byte |
+| `comments_db/src/utils/database.py` | `comments_db/src/utils/database.py` | plan 5.2 edit 5: trimmed to `DatabaseConnection`, the cursor helpers and the four dedup helpers; `psycopg` and `pgvector` gone, connections through `shared/db.py`; `%(name)s` to `:name`, `NOW()` to `CURRENT_TIMESTAMP`, `LEFT` to `substr` |
+| `src/__init__.py`, `src/pipeline/__init__.py`, `src/utils/__init__.py` | the same paths | copied |
+| `src/pipeline/paths.py` | `src/pipeline/paths.py` | copied, byte for byte |
+| `src/utils/logging_config.py` | `src/utils/logging_config.py` | copied, byte for byte |
+| `src/pipeline/profile.py` | `src/pipeline/profile.py` | connection through `shared/db.py`, `%s` to `?`, `IS NOT DISTINCT FROM` to `IS`, `model_parameters` parsed from JSON text; the two error messages name `make schema` instead of the rtca seed |
+| `comments_db/scripts/deduplicate_comments.py` | `comments_db/scripts/deduplicate_comments.py` | copied, byte for byte (its SQL lives in `database.py`) |
+| `comments_db/scripts/deduplicate_middle_content.py` | `comments_db/scripts/deduplicate_middle_content.py` | `%s` and `%(name)s` placeholders; the timestamp bound as ISO-8601 text; and the rtca defect at line 39, `_one` calling itself, replaced by `cur.fetchone()` (reported for rtca) |
