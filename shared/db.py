@@ -147,8 +147,31 @@ def authority_family_key(citation) -> str | None:
     return c
 
 
+class _Stddev:
+    """PostgreSQL's STDDEV: the sample standard deviation, NULL under two values."""
+
+    def __init__(self):
+        self.n = 0
+        self.mean = 0.0
+        self.m2 = 0.0
+
+    def step(self, value):
+        if value is None:
+            return
+        self.n += 1
+        delta = value - self.mean
+        self.mean += delta / self.n
+        self.m2 += delta * (value - self.mean)
+
+    def finalize(self):
+        if self.n < 2:
+            return None
+        return (self.m2 / (self.n - 1)) ** 0.5
+
+
 def register_functions(conn: sqlite3.Connection) -> None:
     conn.create_function("regexp", 2, regexp, deterministic=True)
     conn.create_function("regexp_count", 2, regexp_count, deterministic=True)
     conn.create_function("md5", 1, md5, deterministic=True)
     conn.create_function("authority_family_key", 1, authority_family_key, deterministic=True)
+    conn.create_aggregate("stddev", 1, _Stddev)
