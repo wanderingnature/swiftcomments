@@ -61,3 +61,4 @@ the commit that added it says what changed.
 | `scripts/substance/grade.py`, `tests/substance/test_grade.py` | the same paths | the places list read from `seeds/entity_tagging/seed_places.csv` (`db/seeds/` is `seeds/`, plan 2); the test copied byte for byte |
 | `scripts/parse_multi_batch_results.py` | `scripts/parse_multi_batch_results.py` | copied, byte for byte |
 | `scripts/generate_batch_sql.py` | `scripts/generate_batch_sql.py` | copied, byte for byte |
+| `scripts/generate_batch_fromfile.py` | `scripts/generate_batch_fromfile.py` | psycopg gone; `%s` to `?`; `= ANY` as `json_each`; the run timestamp bound as ISO-8601 text; the "next step" line names `reclassify_groups.py` in place of `classify_run.py` on a named box (plan 5.2 edit 8) |
