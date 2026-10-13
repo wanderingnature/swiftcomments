@@ -16,7 +16,7 @@ DB  := data/roadless.sqlite
 help:  ## the targets, in run order
 	@grep -E '^[a-z]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-12s %s\n", $$1, $$2}'
 
-all: schema corpus fetch dedup ngrams ner tag floor groups screen stance score assemble rate text attachments orgs facts check  ## every step, in order
+all: schema corpus dedup ngrams ner tag floor groups screen stance score assemble rate fetch text attachments orgs facts check  ## every step, in order
 
 schema:  ## create data/roadless.sqlite from schema/roadless.sql and load the seeds; refuses SQLite < 3.38
 	$(PY) scripts/make_schema.py
@@ -30,9 +30,6 @@ $(DB):
 
 corpus: $(CSV) $(DB)  ## step 1: load the bulk download; 390,064 comments, 19,903 attachment files
 	$(PY) scripts/load_csv.py $(CSV)
-
-fetch:  ## step 8: fetch the 19,903 attachment files (19 GB) from downloads.regulations.gov
-	$(PY) scripts/collect_attachments.py --project roadless
 
 dedup:  ## step 2: exact and body hashes
 	$(PY) comments_db/scripts/deduplicate_comments.py --project roadless
@@ -71,6 +68,9 @@ assemble:  ## step 6: campaign inheritance and the delta rows; LAW from the cita
 
 rate:  ## step 7: the answerability rating
 	$(PY) scripts/substance/answerability.py --project roadless --write
+
+fetch:  ## step 8: fetch the 19,903 attachment files (19 GB) from downloads.regulations.gov; steps 1 to 7 need none of them
+	$(PY) scripts/collect_attachments.py --project roadless
 
 text:  ## step 8: extract the text of every fetched file
 	$(PY) scripts/attachment_text.py --project roadless --write

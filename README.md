@@ -48,34 +48,47 @@ make schema              # creates data/roadless.sqlite and loads the seeds
 
 `.env.example` documents every variable the pipeline reads.
 
-## The nine steps
+## The nine steps, in the order they run
 
-| step | what | target |
-|---|---|---|
-| 1 corpus | one row per record of the docket; one row per attachment file | `make corpus` |
-| 2 copies | exact and body hashes; 6 to 8 word n-grams; near-duplicate groups; text families; the partition of every comment into one group; the campaign-letter / own-text split | `make dedup`, `make ngrams`, `make groups` |
-| 3 stance | SUPPORT, OPPOSE or NEUTRAL, one reading per group, copied to its members | `make stance` (model); `make stance LIMIT=200` for a pilot of 200 groups first |
-| 4 entities | legal authorities, cited references, forests, roadless areas, species, ZIP codes, by dictionary | `make tag` |
-| 5 named entities | spaCy NER, read by steps 6 | `make ner` |
-| 6 substance | the floor, the screens, the v3 reading of every comment with text of its own, the grading, inheritance along the campaigns, LAW | `make floor`, `make screen`, `make score` (model), `make assemble` |
-| 7 answerability | A0 to A3 from the stored dimensions | `make rate` |
-| 8 attachments | fetch every file; extract its text; OCR the scans that can hold a letter; what each file is, what each comment counts as, who filed each letter | `make fetch`, `make text`, `make attachments` (roster: model) |
-| 9 campaign organisations | who ran each campaign, on four bases | `make orgs` |
-
-The table is by step; the run order is different, because the floor precedes the
-families and the groups precede the stance. `make all` is that order, from the empty
-file to the check:
+Run the targets top to bottom. Each prints what it is about to do, its progress and
+the row counts it wrote, and each resumes where it stopped. The step numbers are the
+method's; the run order interleaves them, because the floor precedes the families and
+the groups precede the stance.
 
 ```
-make schema corpus fetch dedup ngrams ner tag floor groups screen stance score assemble rate text attachments orgs facts check
+make corpus       step 1  one row per record of the docket; one row per attachment file
+make dedup        step 2  exact and body hashes: the copies
+make ngrams       step 2  6 to 8 word n-grams; the near-duplicate groups
+make ner          step 5  spaCy named entities, read by the floor and the screen
+make tag          step 4  legal authorities, cited references, forests, roadless areas, species, ZIP codes, by dictionary
+make floor        step 6  the floor: which comments have substance to read
+make groups       step 2  the text families; every comment in one group; the campaign-letter / own-text split
+make screen       step 6  the mechanical screens: class A, B1, B2
+make stance       step 3  SUPPORT, OPPOSE or NEUTRAL, one reading per group, copied to its members (model)
+make score        step 6  the v3 reading of every class A comment (model)
+make assemble     step 6  inheritance along the campaigns, the delta rows, LAW from the citations
+make rate         step 7  answerability, A0 to A3
 ```
 
-`make corpus` creates the file itself if `make schema` has not run. Each target prints
-the row counts it wrote, and each resumes where it stopped. The model steps are the
-long ones: on one local server the substance reading runs for days. Run a model step
-as a pilot before the full run: `make stance LIMIT=200` sends 200 groups, stores and
-loads their replies, prints the counts and exits, and its closing lines give the
-`--resume` command that sends the rest.
+That is the method's reading of the comments, and it stands on its own: no target
+above reads an attachment. The attachments are the rest, 19 GB fetched from
+regulations.gov and read for what each file is and who filed each letter:
+
+```
+make fetch        step 8  fetch every attachment file
+make text         step 8  extract the text of every fetched file
+make attachments  step 8  what each file is; OCR of the scans that can hold a letter; what each comment counts as; who filed each letter (roster: model)
+make orgs         step 9  who ran each campaign, on four bases
+make facts                one row per comment
+make check                every figure beside checks/expected.json
+```
+
+`make all` is all of it in this order, after `make schema`; `make corpus` creates the
+file itself if `make schema` has not run. The model steps are the long ones: on one
+local server the substance reading runs for days. Run a model step as a pilot before
+the full run: `make stance LIMIT=200` sends 200 groups, stores and loads their
+replies, prints the counts and exits, and its closing lines give the `--resume`
+command that sends the rest.
 
 ## Checking on a run
 

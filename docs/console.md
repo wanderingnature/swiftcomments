@@ -17,7 +17,8 @@ file.
 
 ## The four pages
 
-**Steps.** Every `make` target in run order, each with the rows it has written: the
+**Steps.** Every `make` target in the README's run order, the attachments last, each
+with the rows it has written: the
 corpus's records and files, the hashes, the n-grams and near-duplicate groups, the
 named entities by type, the six entity tables by strict and loose mode, the floor's
 survivors and its four detectors, the families and the group partition by kind, the

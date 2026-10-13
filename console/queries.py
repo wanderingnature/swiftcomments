@@ -30,12 +30,6 @@ STEPS = [
         "breakdowns": [],
     },
     {
-        "target": "fetch",
-        "what": "step 8: every attachment file fetched from regulations.gov into attachments/",
-        "figures": [],
-        "breakdowns": [],
-    },
-    {
         "target": "dedup",
         "what": "step 2: exact and body hashes",
         "figures": [
@@ -224,6 +218,13 @@ STEPS = [
              " WHERE run_id = (SELECT max(run_id) FROM answerability_run)"
              " GROUP BY a_level ORDER BY a_level"),
         ],
+    },
+    {
+        "target": "fetch",
+        "what": "step 8: every attachment file fetched from regulations.gov into attachments/;"
+                " steps 1 to 7 read none of them",
+        "figures": [],
+        "breakdowns": [],
     },
     {
         "target": "text",
