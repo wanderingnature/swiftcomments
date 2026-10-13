@@ -52,7 +52,7 @@ update it with the seed (the test says when they differ).
 
 **What is sent.** One call per class A comment: the instrument as the system prompt,
 the text of `docs/instruments/substantive-scoring-v3.md` between its heading
-`## System prompt` and the line `# SECTION D` (the label above the heading and the
+`# System prompt` and the line `# SECTION D` (the label above the heading and the
 deployment notes below the line are not sent), and as the user message the comment's
 own text, or the campaign's shared text for an exemplar reading. The reply is
 constrained to `docs/instruments/substantive-scoring-v3.schema.json`.
@@ -69,7 +69,7 @@ carries is `instrument_version` on `substance_scores`.
 
 **What is sent.** One call per letter: a comment's own-letter attachment, or, for a
 bundle of submissions with no letter of its own, the first page of its first enclosed
-file. The text under the heading `## System prompt` in
+file. The text under the heading `# System prompt` in
 `docs/instruments/organisation-roster-v1.md` is the system prompt, and the letter's
 text, headed by the comment id, the user message. The reply is constrained to
 `docs/instruments/organisation-roster-v1.schema.json`.
@@ -77,7 +77,7 @@ text, headed by the comment id, the user message. The reply is constrained to
 **Where it lives.** Those two files; `scripts/organisation_roster.py` reads them by
 path at every run.
 
-**To edit.** Edit the text under `## System prompt`, and the schema if the reply
+**To edit.** Edit the text under `# System prompt`, and the schema if the reply
 changes shape. The roster's rows carry `instrument_version` on
 `comment_organisation`; change the version string in the script when the prompt
 changes, so the rows say which prompt made them. Then the roster with a `LIMIT`.

@@ -6,7 +6,7 @@ with the comment's own text as the user message; the reply must match
 `substantive-scoring-v3.schema.json`. This label and the deployment notes are for the
 person running the step, not sent. `../prompts.md` says how to change the prompt.
 
-## System prompt
+# System prompt
 
 You read one public comment on a federal agency action. You copy five short passages from it and make five judgments about them. You are not judging whether the comment is persuasive, well written, or right.
 

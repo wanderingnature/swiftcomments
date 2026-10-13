@@ -37,12 +37,17 @@ def test_stance_page_is_the_seeded_prompt(tmp_path):
     n_topics = conn.execute("SELECT count(*) FROM topics WHERE is_active").fetchone()[0]
     conn.close()
     page = STANCE_PAGE.read_text(encoding="utf-8")
+    # The system prompt is one paragraph, shown as a quoted block so it wraps; the
+    # user template keeps its line breaks and indentation in a fenced block.
+    quoted = [line[2:] for line in page.splitlines() if line.startswith("> ")]
+    assert quoted == [row["system_prompt"]]
     blocks = _fenced(page)
-    assert len(blocks) == 2, "the page holds the system prompt and the user template, fenced"
-    assert blocks[0] == row["system_prompt"]
-    assert blocks[1] == row["user_prompt_template"]
+    assert len(blocks) == 1, "the page holds the user template fenced, once"
+    assert blocks[0] == row["user_prompt_template"]
     assert f"`{row['prompt_name']}`" in page
     assert f"the {n_topics} active" in page
+    assert page.startswith("# This is the prompt for step 3, the stance (`make stance`)")
+    assert "\n# System prompt\n" in page and "\n# User template\n" in page
 
 
 def test_substance_and_roster_instruments_are_where_the_scripts_read_them():
@@ -58,13 +63,14 @@ def test_substance_and_roster_instruments_are_where_the_scripts_read_them():
     # and for the substance instrument before SECTION D (plan 5.2 edit 13). The
     # scripts find both markers by first occurrence, so the labels must not contain
     # them: the slices below are taken the same way.
+    marker = "\n# System prompt\n"
     text = (INSTRUMENTS / "substantive-scoring-v3.md").read_text(encoding="utf-8")
     assert text.startswith("# This is the prompt for step 6, the substance reading (`make score`)")
-    start, end = text.index("## System prompt"), text.index("# SECTION D")
+    start, end = text.index(marker), text.index("# SECTION D")
     assert start < end
-    prompt = text[start + len("## System prompt"):end].strip()
+    prompt = text[start + len(marker):end].strip()
     assert prompt.startswith("You read one public comment on a federal agency action.")
-    assert prompt.endswith("Return only the object.") or "# SECTION C" in prompt
+    assert "# SECTION C" in prompt
     text = (INSTRUMENTS / "organisation-roster-v1.md").read_text(encoding="utf-8")
     assert text.startswith("# This is the prompt for step 8, the roster (`make attachments`)")
-    assert text.index("## System prompt") > 0
+    assert text[text.index(marker) + len(marker):].strip().startswith("You are reading the opening")
