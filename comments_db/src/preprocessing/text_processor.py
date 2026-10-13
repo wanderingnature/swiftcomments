@@ -5,8 +5,14 @@ Text preprocessing and normalization functions.
 import re
 import string
 import hashlib
+import sys
+from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
 import unicodedata
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))   # repo root: shared
+
+from shared.text_norm import unescape_text  # noqa: E402
 
 from ..utils.logger import get_logger
 
@@ -259,6 +265,13 @@ class TextProcessor:
 
         # Convert to string if needed
         text = str(text)
+
+        # The submission form's markup and entities are not content: '<br/>'
+        # stripped of its punctuation below would be the word 'br' and '&amp;'
+        # the word 'amp', and two copies of one letter differing only in a
+        # line break would hash apart (rtca defect 7). One normalizer for every
+        # reading of comment text: shared.text_norm.
+        text = unescape_text(text)
 
         # Unicode normalization
         text = unicodedata.normalize('NFKD', text)
