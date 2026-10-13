@@ -1,6 +1,6 @@
-# Stance, instrument `roadless_rescission_v2` (version 2)
+# This is the prompt for step 3, the stance (`make stance`)
 
-The prompt of the stance step (step 3), as the file holds it after `make schema`:
+Instrument `roadless_rescission_v2` (version 2), as the file holds it after `make schema`:
 `seeds/roadless_profile.sql` seeds the system prompt and the topics, and
 `seeds/roadless_prompt_v2.sql` the user template, the active one. This page is a
 copy for reading; the seeds are the source, and `tests/test_prompts_doc.py` fails
