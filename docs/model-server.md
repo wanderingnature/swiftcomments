@@ -126,3 +126,16 @@ What each step took on this docket in the reference run:
 On one local server the substance step is the long one: at a few seconds a reading it
 runs for days. Each step resumes where it stopped, so the server can be stopped and
 started between sessions.
+
+## Proving the server with a pilot
+
+Before a full run, send a few hundred calls and look at what came back:
+
+```
+make stance LIMIT=200
+```
+
+sends 200 groups, stores and loads every reply, prints how many were loaded and how
+many failed and why, and exits. The closing lines give the `--resume` command that
+sends the rest. The console's Steps page (`make console`) shows the same run by
+status, with its tokens and seconds.
