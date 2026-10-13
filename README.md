@@ -146,10 +146,11 @@ A model step is proven before it is run in full: `make stance LIMIT=200` classif
 200 groups, stores and loads them and exits, and the log's closing lines give the
 `--resume` command that sends the rest.
 
-The prompts are in the repository, readable: the stance prompt in
-`docs/instruments/stance-roadless-rescission-v2.md`, the substance instrument and the
-roster instrument beside it with their JSON schemas. `docs/prompts.md` says what each
-call sends, which file to edit to change it, and how the edit takes effect.
+The prompts are in the repository, readable, one file per step in `docs/instruments/`:
+step 3, the stance, `stance-roadless-rescission-v2.md`; step 6, the substance
+reading, `substantive-scoring-v3.md`; step 8, the roster, `organisation-roster-v1.md`;
+each with the JSON schema its reply must match. `docs/prompts.md` says what each call
+sends, which file to edit to change it, and how the edit takes effect.
 
 Two runs of a model step do not match row for row, and the figures downstream of a
 model step are not expected to.
