@@ -10,7 +10,7 @@ PY  := uv run python
 CSV := csv/mv4-z8fw-q5jx.csv
 
 .PHONY: help all schema corpus fetch dedup ngrams ner tag floor groups screen \
-        stance score assemble rate text attachments orgs facts check
+        stance score assemble rate text attachments orgs facts check console
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-12s %s\n", $$1, $$2}'
@@ -85,3 +85,6 @@ facts:  ## one row per comment: comment_facts
 
 check:  ## every figure of the method beside checks/expected.json
 	$(PY) checks/check.py
+
+console:  ## a read-only browser of the file: what each step wrote, one comment, any table, SQL
+	uv run --group console streamlit run console/app.py --server.headless true

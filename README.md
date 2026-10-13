@@ -64,6 +64,13 @@ comment) and `make check`. Each target prints the row counts it wrote, and each 
 where it stopped. The model steps are the long ones: on one local server the substance
 reading runs for days.
 
+## Checking on a run
+
+`make console` opens a read-only browser of the file in a web page, usable while a
+step is writing: what every step has written so far, one comment across every table,
+any table a hundred rows at a time, and SQL typed in. It launches nothing and cannot
+write. `docs/console.md` describes the four pages.
+
 ## The text the API serves and the text you have
 
 The regulations.gov API serves the comment text with its markup. The bulk download
@@ -116,8 +123,9 @@ shared/               db.py (the one module that knows SQLite), the text normali
 comments_db/          the copy-finding scripts and NER
 scripts/              the loader, the substance steps, the entity tagging, the stance chain, the attachment steps
 checks/               figures.sql, expected.json, check.py
+console/              the read-only browser of the file; `make console`
 tests/                the tests; `uv run pytest`
-docs/                 the method and the pages it cites; model-server.md; mineru.md; first-run.md
+docs/                 the method and the pages it cites; model-server.md; mineru.md; console.md; first-run.md
 attachments/, data/   the fetched files and the SQLite file, git-ignored
 ```
 
@@ -127,6 +135,6 @@ attachments/, data/   the fetched files and the SQLite file, git-ignored
 The repository is being built in phases. At this commit it holds the skeleton, the
 seeds, the schema, the loader and the steps through the stance run: `make schema`,
 `make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`, `make floor`,
-`make groups`, `make screen` and `make stance` are ported. The scoring, the
-answerability rating, the attachments, the organisations and the facts table follow,
-one commit per file.
+`make groups`, `make screen` and `make stance` are ported, and `make console` reads
+the file. The scoring, the answerability rating, the attachments, the organisations
+and the facts table follow, one commit per file.

@@ -21,7 +21,10 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pytest"]
+console = [
+    "streamlit>=1.65.0",
+]
+dev = ["pytest", { include-group = "console" }]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
