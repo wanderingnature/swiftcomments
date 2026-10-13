@@ -63,14 +63,27 @@ def test_substance_and_roster_instruments_are_where_the_scripts_read_them():
     # and for the substance instrument before SECTION D (plan 5.2 edit 13). The
     # scripts find both markers by first occurrence, so the labels must not contain
     # them: the slices below are taken the same way.
+    # The prompt is a quoted block (every line starts with ">"), as the stance page
+    # shows its prompt; the scripts strip one quote mark per line before sending.
     marker = "\n# System prompt\n"
     text = (INSTRUMENTS / "substantive-scoring-v3.md").read_text(encoding="utf-8")
     assert text.startswith("# This is the prompt for step 6, the substance reading (`make score`)")
     start, end = text.index(marker), text.index("# SECTION D")
     assert start < end
-    prompt = text[start + len(marker):end].strip()
+    prompt = _unquoted(text[start + len(marker):end])
     assert prompt.startswith("You read one public comment on a federal agency action.")
     assert "# SECTION C" in prompt
     text = (INSTRUMENTS / "organisation-roster-v1.md").read_text(encoding="utf-8")
     assert text.startswith("# This is the prompt for step 8, the roster (`make attachments`)")
-    assert text[text.index(marker) + len(marker):].strip().startswith("You are reading the opening")
+    assert _unquoted(text[text.index(marker) + len(marker):]).startswith("You are reading the opening")
+
+
+def _unquoted(block):
+    """The prompt text of a quoted block: one '> ' (or a bare '>') off every line.
+    Every non-blank line of the block has to carry it, or a line of the prompt
+    would render outside the quote."""
+    lines = block.strip("\n").split("\n")
+    for line in lines:
+        assert line == "" or line.startswith(">"), line
+    return "\n".join(line[2:] if line.startswith("> ") else line[1:] if line.startswith(">") else line
+                     for line in lines).strip()

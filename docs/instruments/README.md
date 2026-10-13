@@ -11,14 +11,15 @@ the system prompt and the user template, with the comment and the topic list fil
 in at run time.
 
 **This is the prompt for step 6, the substance reading (`make score`):**
-`substantive-scoring-v3.md`. The text between its heading `# System prompt` and the
-line `# SECTION D` is sent as the system prompt, word for word, with the comment's
+`substantive-scoring-v3.md`. The quoted text between its heading `# System prompt`
+and the line `# SECTION D` is sent as the system prompt, word for word with the
+quote marks taken off, with the comment's
 own text as the user message; the label above the heading and SECTION D below the
 line are for the person running it. The reply must match
 `substantive-scoring-v3.schema.json`.
 
 **This is the prompt for step 8, the roster (`make attachments`):**
-`organisation-roster-v1.md`. The text under its heading `# System prompt` is sent as
-the system prompt, with the letter's text as the user message; the paragraph above
+`organisation-roster-v1.md`. The quoted text under its heading `# System prompt` is
+sent as the system prompt, the quote marks taken off, with the letter's text as the user message; the paragraph above
 the heading describes the population and what code does with the reply. The reply
 must match `organisation-roster-v1.schema.json`.
