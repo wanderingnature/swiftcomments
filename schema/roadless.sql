@@ -450,34 +450,6 @@ CREATE TABLE zipcodes (
     zipcode TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE comment_areas_llm (
-    id             INTEGER PRIMARY KEY,
-    comment_id     TEXT    NOT NULL REFERENCES comment (comment_id) ON DELETE CASCADE,
-    area_name      TEXT    NOT NULL,
-    matched_text   TEXT    NOT NULL,
-    verdict        INTEGER NOT NULL CHECK (verdict IN (0, 1)),
-    rationale      TEXT,
-    model          TEXT    NOT NULL,
-    prompt_version TEXT    NOT NULL,
-    created_at     TEXT    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (comment_id, area_name, matched_text, model, prompt_version)
-);
-
-CREATE INDEX idx_comment_areas_llm_value ON comment_areas_llm (area_name);
-
-CREATE TABLE citation_resolutions_llm (
-    id               INTEGER PRIMARY KEY,
-    kind             TEXT NOT NULL CHECK (kind IN ('authority', 'reference')),
-    discovered_value TEXT NOT NULL,
-    resolved_seed_id TEXT,
-    resolved_display TEXT,
-    rationale        TEXT,
-    model            TEXT NOT NULL,
-    prompt_version   TEXT NOT NULL,
-    created_at       TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (kind, discovered_value, model, prompt_version)
-);
-
 CREATE TABLE entity_scan_state (
     comment_id       TEXT    PRIMARY KEY REFERENCES comment (comment_id) ON DELETE CASCADE,
     is_tagged_strict INTEGER CHECK (is_tagged_strict IN (0, 1)),

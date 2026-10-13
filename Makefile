@@ -40,13 +40,10 @@ ngrams:  ## step 2: 6 to 8 word n-grams and the near-duplicate groups at 0.85
 ner:  ## step 5: spaCy named entities over the floor's population
 	$(PY) comments_db/scripts/extract_linguistic_patterns.py --project roadless
 
-tag:  ## step 4: the reference lists; the strict and loose passes; the citation afterstep (model); strict again
+tag:  ## step 4: the reference lists; the strict and loose passes
 	$(PY) scripts/entity_tagging/load_references.py --project roadless
 	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode strict
 	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode loose
-	$(PY) scripts/entity_tagging/resolve_citations.py --project roadless --kind both --limit 0
-	$(PY) scripts/entity_tagging/adjudicate_bare_words.py --project roadless --limit 0
-	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode strict
 
 floor:  ## step 6: the floor filter
 	$(PY) scripts/substance/floor_filter.py --project roadless
