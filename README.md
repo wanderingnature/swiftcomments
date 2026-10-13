@@ -56,18 +56,18 @@ method's; the run order interleaves them, because the floor precedes the familie
 the groups precede the stance.
 
 ```
-make corpus       step 1  one row per record of the docket; one row per attachment file
-make dedup        step 2  exact and body hashes: the copies
-make ngrams       step 2  6 to 8 word n-grams; the near-duplicate groups
-make ner          step 5  spaCy named entities, read by the floor and the screen
-make tag          step 4  legal authorities, cited references, forests, roadless areas, species, ZIP codes, by dictionary
-make floor        step 6  the floor: which comments have substance to read
-make groups       step 2  the text families; every comment in one group; the campaign-letter / own-text split
-make screen       step 6  the mechanical screens: class A, B1, B2
-make stance       step 3  SUPPORT, OPPOSE or NEUTRAL, one reading per group, copied to its members (model)
-make score        step 6  the v3 reading of every class A comment (model)
-make assemble     step 6  inheritance along the campaigns, the delta rows, LAW from the citations
-make rate         step 7  answerability, A0 to A3
+make corpus       step 1         one row per record of the docket; one row per attachment file
+make dedup        step 2         exact and body hashes: the copies
+make ngrams       step 2         6 to 8 word n-grams; the near-duplicate groups
+make ner          step 5         spaCy named entities, read by the floor and the screen
+make tag          step 4         legal authorities, cited references, forests, roadless areas, species, ZIP codes, by dictionary
+make floor        step 6         the floor: which comments have substance to read
+make groups       step 2         the text families; every comment in one group; the campaign-letter / own-text split
+make screen       step 6         the mechanical screens: class A, B1, B2
+make stance       step 3  MODEL  the stance: SUPPORT, OPPOSE or NEUTRAL, one reading per group, copied to its members
+make score        step 6  MODEL  the substance reading: the v3 instrument over every class A comment
+make assemble     step 6         inheritance along the campaigns, the delta rows, LAW from the citations
+make rate         step 7         answerability, A0 to A3
 ```
 
 That is the method's reading of the comments, and it stands on its own: no target
@@ -75,17 +75,23 @@ above reads an attachment. The attachments are the rest, 19 GB fetched from
 regulations.gov and read for what each file is and who filed each letter:
 
 ```
-make fetch        step 8  fetch every attachment file
-make text         step 8  extract the text of every fetched file
-make attachments  step 8  what each file is; OCR of the scans that can hold a letter; what each comment counts as; who filed each letter (roster: model)
-make orgs         step 9  who ran each campaign, on four bases
-make facts                one row per comment
-make check                every figure beside checks/expected.json
+make fetch        step 8         fetch every attachment file
+make text         step 8         extract the text of every fetched file
+make attachments  step 8  MODEL  what each file is; OCR of the scans that can hold a letter; what each comment counts as; the roster: who filed each letter
+make orgs         step 9         who ran each campaign, on four bases
+make facts                       one row per comment
+make check                       every figure beside checks/expected.json
 ```
 
-`make corpus` creates the file itself if `make schema` has not run. The model steps
-are the long ones: on one local server the substance reading runs for days. `make
-all` is all of it in this order, after `make schema`, for a machine left to run.
+Three targets, marked `MODEL`, send text to the language model, and they are the
+three prompts of `docs/instruments/`: step 3, the stance (`make stance`); step 6, the
+substance reading (`make score`); step 8, the roster, one of the five passes of
+`make attachments` (the OCR pass in the same target goes to the OCR server instead).
+Every other target is code and dictionaries. The model targets are the long ones: on
+one local server the substance reading runs for days.
+
+`make corpus` creates the file itself if `make schema` has not run. `make all` is all
+of it in this order, after `make schema`, for a machine left to run.
 
 ## Learning the method one step at a time: a sample, then the reference result
 
@@ -149,11 +155,11 @@ tokeniser strips markup and unescapes first.
 
 ## The model steps
 
-| step | instrument | model | what it took on this docket |
-|---|---|---|---|
-| stance | `roadless_rescission_v2`, one call per group | `qwen/qwen3.8-27b` | 44,555 calls; 60.6 M tokens in, 9.4 M out |
-| substance | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
-| roster | `roster-v1`, `organisation_roster.py` | `qwen/qwen3.8-27b` | 3,002 letters read |
+| target | reading | instrument | model | what it took on this docket |
+|---|---|---|---|---|
+| `make stance`, step 3 | the stance | `roadless_rescission_v2`, one call per group | `qwen/qwen3.8-27b` | 44,555 calls; 60.6 M tokens in, 9.4 M out |
+| `make score`, step 6 | the substance reading | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
+| `make attachments`, step 8 | the roster | `roster-v1`, `organisation_roster.py`, the target's fourth pass | `qwen/qwen3.8-27b` | 3,002 letters read |
 
 A model step is proven before it is run in full: `make stance LIMIT=200` classifies
 200 groups, stores and loads them and exits, and the log's closing lines give the
