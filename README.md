@@ -83,18 +83,39 @@ make facts                one row per comment
 make check                every figure beside checks/expected.json
 ```
 
-`make all` is all of it in this order, after `make schema`; `make corpus` creates the
-file itself if `make schema` has not run. The model steps are the long ones: on one
-local server the substance reading runs for days.
+`make corpus` creates the file itself if `make schema` has not run. The model steps
+are the long ones: on one local server the substance reading runs for days. `make
+all` is all of it in this order, after `make schema`, for a machine left to run.
 
-To learn a step without waiting for it, run it on a sample and look at the rows:
+## Learning the method one step at a time: a sample, then our result
+
+Nobody has to run the whole thing to understand it. Every step with a queue takes
+`LIMIT=N`: it processes the first N units, writes them, says what it did and exits.
 `make floor LIMIT=500` runs the floor on the first 500 comments of its population;
-`make stance LIMIT=200` sends 200 groups, stores and loads their replies and exits.
-Every step with a queue takes `LIMIT=N`. Then `make jump STEP=floor` loads our run's
-rows for that step and every step before it, so the next step has what it needs.
-Those rows are what this repository's own code produced when we ran it to prove the
-method; a reader can fast-forward with them, or compare a run of their own against
-ours step by step. `docs/limit-and-jump.md` has the step-by-step table.
+`make stance LIMIT=200` sends 200 groups to the model, stores and loads their replies.
+The console then shows the rows beside the code that made them, which is how to read
+a step: what it takes in, what it decides, what it writes.
+
+Then, instead of running the step in full, load what it produced when we ran it:
+
+```
+make jump STEP=floor
+```
+
+loads our rows for the floor and for every step before it, so the next step has
+what it needs. The rows are not exported from any database of ours. They are what
+this repository's own code wrote, step by step, when we ran it in a clean clone to
+prove the method and the code, saved after each step as one small file holding that
+step's tables and nothing else: `extracts/floor.sqlite` is the one table the floor
+writes, never the comment text. Put the extract files in `extracts/` and jump.
+
+We provide them for three reasons. To fast-forward: read the steps you care about on
+a sample and take our result for the rest. To compare: run a step yourself and set
+your rows beside ours, which is how you find out whether a difference is your
+machine, your text or the model. To change the method: alter the code, run the step,
+and compare against the result the original code gave. `docs/limit-and-jump.md` says
+what `LIMIT` means for each step and which steps have none, because their result is a
+partition of every comment and a sample of it would be a different result.
 
 ## Checking on a run
 
