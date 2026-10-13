@@ -43,6 +43,7 @@ source .venv/bin/activate
 uv sync
 cp .env.example .env     # then fill in the two servers
 make help
+make schema              # creates data/roadless.sqlite and loads the seeds
 ```
 
 `.env.example` documents every variable the pipeline reads.
@@ -61,10 +62,17 @@ make help
 | 8 attachments | fetch every file; extract its text; OCR the scans that can hold a letter; what each file is, what each comment counts as, who filed each letter | `make fetch`, `make text`, `make attachments` (roster: model) |
 | 9 campaign organisations | who ran each campaign, on four bases | `make orgs` |
 
-`make all` runs them in order after `make schema`, then `make facts` (one row per
-comment) and `make check`. Each target prints the row counts it wrote, and each resumes
-where it stopped. The model steps are the long ones: on one local server the substance
-reading runs for days.
+The table is by step; the run order is different, because the floor precedes the
+families and the groups precede the stance. `make all` is that order, from the empty
+file to the check:
+
+```
+make schema corpus fetch dedup ngrams ner tag floor groups screen stance score assemble rate text attachments orgs facts check
+```
+
+`make corpus` creates the file itself if `make schema` has not run. Each target prints
+the row counts it wrote, and each resumes where it stopped. The model steps are the
+long ones: on one local server the substance reading runs for days.
 
 ## Checking on a run
 

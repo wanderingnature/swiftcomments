@@ -8,6 +8,7 @@
 
 PY  := uv run python
 CSV := csv/mv4-z8fw-q5jx.csv
+DB  := data/roadless.sqlite
 
 .PHONY: help all schema corpus fetch dedup ngrams ner tag floor groups screen \
         stance score assemble rate text attachments orgs facts check console
@@ -23,7 +24,11 @@ schema:  ## create data/roadless.sqlite from schema/roadless.sql and load the se
 $(CSV): $(CSV).gz
 	gunzip -k $<
 
-corpus: $(CSV)  ## step 1: load the bulk download; 390,064 comments, 19,903 attachment files
+# The file, when a step is asked for before make schema has run.
+$(DB):
+	$(PY) scripts/make_schema.py
+
+corpus: $(CSV) $(DB)  ## step 1: load the bulk download; 390,064 comments, 19,903 attachment files
 	$(PY) scripts/load_csv.py $(CSV)
 
 fetch:  ## step 8: fetch the 19,903 attachment files (19 GB) from downloads.regulations.gov
