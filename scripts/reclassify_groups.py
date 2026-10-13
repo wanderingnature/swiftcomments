@@ -14,6 +14,8 @@ model server of .env.
   client's retry diagnostics, nothing cut.
 
     python scripts/reclassify_groups.py --project roadless --new-run --concurrency 16
+    python scripts/reclassify_groups.py --project roadless --new-run --limit 200
+        (a pilot: 200 groups sent, stored and loaded, then exit; --resume sends the rest)
     python scripts/reclassify_groups.py --project roadless --resume <run_id>
     python scripts/reclassify_groups.py --project roadless --resume <run_id> --retry-errors
 
@@ -79,8 +81,10 @@ class RunLog:
 
 
 class Run:
-    def __init__(self, ctx, profile, run_id, run_ts, concurrency, chunk_size, log):
+    def __init__(self, ctx, profile, run_id, run_ts, concurrency, chunk_size, log,
+                 limit=None):
         self.ctx = ctx
+        self.limit = limit            # groups to send this session (a pilot), or None
         self.profile = profile
         self.run_id = run_id
         self.run_ts = run_ts
@@ -358,6 +362,9 @@ class Run:
             elif retry_errors and prev[1] == "error":
                 to_send.append((gid, cid, text, prev[0] + 1))
         self.done_before = n_loaded + (0 if retry_errors else n_err)
+        n_unsent = len(to_send)
+        if self.limit:
+            to_send = to_send[:self.limit]
         p = self.profile
         self.log(
             f"RUN {self.run_id} started {self.run_ts:%Y-%m-%d %H:%M:%S}\n"
@@ -366,7 +373,9 @@ class Run:
             f"concurrency {self.concurrency}, chunk {self.chunk_size}\n"
             f"eligible groups {self.total:,} (canonical >= {MIN_COMMENT_LENGTH} chars):"
             f" loaded {n_loaded:,}, errors {n_err:,}, stored not loaded {n_recv:,},"
-            f" to send now {len(to_send):,}" + (" (incl. error retries)" if retry_errors else ""))
+            f" to send now {len(to_send):,}"
+            + (f" of {n_unsent:,} (--limit {self.limit})" if self.limit else "")
+            + (" (incl. error retries)" if retry_errors else ""))
 
         t_session = time.monotonic()
         chunk_no = 0
@@ -496,7 +505,12 @@ def main():
                     help="Calls in flight (default 16)")
     ap.add_argument("--chunk-size", type=int, default=500,
                     help="Stored responses per load transaction (default 500)")
+    ap.add_argument("--limit", type=int, metavar="N",
+                    help="Send at most N groups this session, store and load them,"
+                         " then exit (a pilot; --resume sends the rest)")
     args = ap.parse_args()
+    if args.limit is not None and args.limit < 1:
+        ap.error("--limit must be >= 1")
     if args.retry_errors and not args.resume:
         ap.error("--retry-errors needs --resume")
     if args.concurrency < 1 or args.chunk_size < 1:
@@ -510,7 +524,8 @@ def main():
         run_id, run_ts = _resume_run(ctx, profile, args.resume)
 
     log = RunLog(_REPO_ROOT / "logs" / f"reclassify_{run_id}.log")
-    run = Run(ctx, profile, run_id, run_ts, args.concurrency, args.chunk_size, log)
+    run = Run(ctx, profile, run_id, run_ts, args.concurrency, args.chunk_size, log,
+              limit=args.limit)
 
     def _stop(_sig, _frame):
         run.stopping = True
