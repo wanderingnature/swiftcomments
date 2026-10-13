@@ -191,6 +191,25 @@ STEPS = [
         ],
     },
     {
+        "target": "score-rules",
+        "what": "step 6 (rules): the model-free reading of the same class A, no model call",
+        "figures": [
+            ("class A to read",
+             "SELECT count(*) FROM substance_screen WHERE screen_class = 'A'"),
+            ("scored by the rules", "SELECT count(*) FROM mf_comment_score"),
+            ("gate open", "SELECT count(*) FROM mf_comment_score WHERE gate = 1"),
+        ],
+        "breakdowns": [
+            ("by band",
+             "SELECT ruleset_version, band, count(*) AS n FROM mf_comment_score"
+             " GROUP BY ruleset_version, band ORDER BY n DESC"),
+            ("answerability by level",
+             "SELECT level, count(*) AS n FROM mf_comment_answerability GROUP BY level ORDER BY level"),
+            ("the rules that fired most",
+             "SELECT rule, count(*) AS n FROM mf_sentence_hit GROUP BY rule ORDER BY n DESC LIMIT 25"),
+        ],
+    },
+    {
         "target": "assemble",
         "what": "step 6: campaign inheritance and the delta rows; LAW from the citations",
         "figures": [

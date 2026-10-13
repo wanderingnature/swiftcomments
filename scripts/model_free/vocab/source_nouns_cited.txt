@@ -1,0 +1,29 @@
+# EVID — a noun that names a source when it carries a year or an owner beside
+# it ("the 2018 state survey", "NCWRC 2019 survey data", "the agency's own
+# estimate"). Alone it is an unnamed authority at most.
+study
+studies
+survey
+surveys
+report
+reports
+data
+dataset
+analysis
+analyses
+paper
+papers
+article
+articles
+journal
+assessment
+inventory
+census
+monitoring
+findings
+estimate
+estimates
+figures
+model
+models
+review

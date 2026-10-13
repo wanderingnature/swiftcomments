@@ -1,0 +1,12 @@
+# EVID — an institution named in lower case still names a source: the doc's own
+# level-3 example is "the agency's $40 million estimate", which carries no
+# capitalized word and no NER entity. Institutional nouns only; a word that is
+# a source only sometimes ("service", "state") stays off the list.
+agency
+agencies
+forest service
+department
+bureau
+university
+institute
+laboratory

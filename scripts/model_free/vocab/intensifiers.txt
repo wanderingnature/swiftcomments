@@ -1,0 +1,33 @@
+# ASK 1 — a modifier that asks for more or better work without naming a
+# subject: "a harder look", "a more thorough analysis", "further study".
+harder
+closer
+hard
+close
+careful
+better
+another
+second
+further
+fresh
+serious
+thorough
+honest
+much
+more
+deeper
+full
+proper
+adequate
+additional
+real
+new
+comprehensive
+rigorous
+detailed
+complete
+independent
+genuine
+meaningful
+true
+good

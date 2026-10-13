@@ -1,0 +1,92 @@
+# ALT 1 — "a preference for an outcome already on the table, including no
+# action": the existing rule kept, the rescission withdrawn, the rescission
+# adopted, or a numbered alternative of the DEIS. Extended by testing.
+keep the rule
+keep the roadless rule
+keep the 2001 rule
+keep the 2001 roadless rule
+keep the roadless rule intact
+keep the roadless rule in place
+keep the rule in place
+keep the current rule
+keep the existing rule
+keep the existing protections
+keep these protections
+keep the protections in place
+let the 2001 rule stand
+let the rule stand
+let the roadless rule stand
+leave the rule in place
+leave the roadless rule in place
+leave the roadless rule alone
+leave the rule alone
+leave it in place
+leave it alone
+preserve the roadless rule
+preserving the roadless rule
+preserve the rule
+preserving the rule
+preserve the 2001 rule
+preserve the 2001 roadless rule
+maintain the roadless rule
+maintain the rule
+maintain the 2001 rule
+maintain the current rule
+maintain the existing rule
+maintain the existing protections
+retain the roadless rule
+retain the rule
+retain the 2001 rule
+retain the existing rule
+retain the current rule
+retain the protections
+uphold the roadless rule
+uphold the rule
+uphold the 2001 rule
+reinstate the roadless rule
+reinstate the rule
+restore the roadless rule
+withdraw the rescission
+withdraw the proposal
+withdraw this proposal
+withdraw the proposed rule
+withdraw this proposed rule
+withdraw this rule
+withdraw the rule
+withdraw this rollback
+withdraw the rollback
+abandon the rescission
+abandon this proposal
+abandon the proposal
+do not rescind
+don't rescind
+not rescind
+not to rescind
+not be rescinded
+should not be rescinded
+rescind the rule
+rescind the roadless rule
+rescind the 2001 rule
+rescind the 2001 roadless rule
+rescinding the rule
+rescinding the roadless rule
+rescinding the 2001 roadless rule
+adopt the proposed rule
+adopt the rescission
+finalize the rescission
+finalize the proposed rule
+support the rescission
+support the proposed rule
+support the proposal
+no action alternative
+no-action alternative
+the no action
+no action
+alternative 1
+alternative 2
+alternative 3
+alternative one
+alternative two
+alternative three
+the proposed action
+the proposed alternative

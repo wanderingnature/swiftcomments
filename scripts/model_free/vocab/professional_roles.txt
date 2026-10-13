@@ -1,0 +1,47 @@
+# STAND 3 — a professional role or credential that bears on the subject.
+# Tested first, before the place question: the rubric (line 59, example C5)
+# scores a bearing professional role at 3 whether or not a place is named.
+biologist
+wildlife biologist
+fisheries biologist
+hydrologist
+forester
+silviculturist
+ecologist
+geologist
+soil scientist
+botanist
+archaeologist
+engineer
+civil engineer
+wildlife manager
+range conservationist
+fire manager
+firefighter
+smokejumper
+outfitter
+guide
+packer
+rancher
+permittee
+grazing permittee
+logger
+timber operator
+surveyor
+planner
+attorney
+professor
+researcher
+scientist
+retired forest service
+former forest service
+worked for the forest service
+worked for the u.s. forest service
+career with the forest service
+phd
+ph.d.
+m.s.
+licensed
+certified
+registered professional
+board certified

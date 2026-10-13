@@ -1,0 +1,49 @@
+# ALT 2 — language that offers an alternative. Fires only beside a concrete
+# element (a place, a unit, a number, an exception or condition) and not on an
+# outcome already on the table (alt_on_table.txt). Extended by testing.
+an alternative
+alternative that
+alternative which
+alternative would
+alternative should
+alternative could
+another alternative
+a different alternative
+a new alternative
+a middle ground
+middle ground
+a compromise
+compromise
+instead
+instead of
+in lieu of
+rather than
+a better option
+a better approach
+a different approach
+an approach that
+carve out
+carve-out
+carveout
+phase in
+phase out
+limit the rescission to
+limit the rule to
+apply only to
+applies only to
+modify the rule
+amend the rule
+revise the rule
+narrower
+a narrower
+state-specific
+state specific
+forest-specific
+forest specific
+forest by forest
+forest-by-forest
+case by case
+case-by-case
+site-specific alternative
+grandfather
+grandfathered

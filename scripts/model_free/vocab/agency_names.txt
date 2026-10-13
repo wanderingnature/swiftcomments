@@ -1,0 +1,28 @@
+# The agency and its parts, named. A proper noun on this list makes no gap
+# specific and names no source the commenter is citing (the agency's own
+# figure is handled by source_nouns.txt, as the guide's "the agency's $40
+# million estimate").
+forest service
+the forest service
+u.s. forest service
+us forest service
+usfs
+usda forest service
+usda
+the department
+department of agriculture
+u.s. department of agriculture
+the agency
+the service
+the bureau
+blm
+bureau of land management
+the secretary
+secretary of agriculture
+the chief
+the responsible official
+the administration
+congress
+the president
+the government
+federal government

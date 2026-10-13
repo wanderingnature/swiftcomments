@@ -1,0 +1,74 @@
+# GAP 2 — a named species is a specific name ("the resource, species, effect, or
+# scale that is missing or wrong"). Group nouns (fish, trout, deer, birds) are
+# categories (resource_categories.txt), not species. Extended by testing.
+bull trout
+cutthroat trout
+westslope cutthroat
+steelhead
+chinook
+chinook salmon
+coho
+coho salmon
+sockeye
+grizzly
+grizzly bear
+grizzly bears
+grizzlies
+lynx
+canada lynx
+wolverine
+wolverines
+elk
+moose
+mule deer
+bighorn sheep
+mountain goat
+pine marten
+marten
+fisher
+goshawk
+northern goshawk
+spotted owl
+northern spotted owl
+mexican spotted owl
+marbled murrelet
+sage grouse
+sage-grouse
+greater sage-grouse
+bald eagle
+golden eagle
+peregrine falcon
+gray wolf
+grey wolf
+red wolf
+caribou
+pronghorn
+black bear
+black bears
+pika
+boreal toad
+yellow-legged frog
+bull frog
+appalachian elktoe
+hellbender
+brook trout
+lake trout
+rainbow trout
+white sturgeon
+pacific lamprey
+whitebark pine
+western larch
+ponderosa pine
+lodgepole pine
+douglas fir
+douglas-fir
+sitka spruce
+western red cedar
+red tree vole
+humboldt marten
+flammulated owl
+boreal owl
+great gray owl
+white-headed woodpecker
+black-backed woodpecker
+pileated woodpecker

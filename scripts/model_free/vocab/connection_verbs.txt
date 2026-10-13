@@ -1,0 +1,67 @@
+# STAND — a first-person activity or residence that connects the commenter to a
+# place. The observation verbs (observation_verbs.txt) also connect. Matched
+# beside a first-person pronoun within the same sentence.
+hunt
+hunted
+hunting
+fish
+fished
+fishing
+hike
+hiked
+hiking
+walk
+walked
+walking
+camp
+camped
+camping
+ride
+rode
+riding
+drive
+drove
+driving
+ski
+skied
+skiing
+paddle
+paddled
+backpack
+backpacked
+backpacking
+climb
+climbed
+climbing
+live
+lived
+living
+reside
+resided
+own property
+own land
+own a home
+own a cabin
+grew up
+raised
+work
+worked
+working
+visit
+visited
+visiting
+explore
+explored
+exploring
+graze
+grazed
+ranch
+ranched
+log
+logged
+guide
+guided
+spent time
+spend time
+return
+returned
