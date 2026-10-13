@@ -40,6 +40,8 @@ already been scored.
     python scripts/substance/mechanical_screens.py --project roadless
     python scripts/substance/mechanical_screens.py --project roadless --write
 
+Prints each stage as it starts and a line every 20,000 comments screened.
+
 Without --write: read-only evaluation (class distribution, crosstabs against
 the LLM dimensions, spot checks). With --write: replaces the full marking in
 {analysis}.substance_screen (its class/signal derivation CHECK is identical to
@@ -120,9 +122,12 @@ def compute(ctx, shapes=None):
     is the stored family attribution, so the partition (build_comment_groups
     --write) precedes this step."""
     with db.connect(**ctx.db_config) as conn:
+        print("loading the floor survivors and their shared/own text split", flush=True)
         rows = shared_text.load_corpus(conn, ctx.render_sql)
         if shapes is None:
             shapes = shared_text.load_shapes(conn, ctx.render_sql)
+        print(f"  {len(rows):,} survivors; loading the confirmed citations and the NER"
+              " evidence entities", flush=True)
         tags = {}
         for table, key in (("comment_authorities", "authority"),
                            ("comment_cited_references", "reference")):
@@ -137,8 +142,12 @@ def compute(ctx, shapes=None):
                 " WHERE entity_type IN (SELECT value FROM json_each(?))"), (json.dumps(list(_EVID_TYPES)),)):
             ents.setdefault(cid, []).append(cs)
 
+    print(f"screening {len(rows):,} comments (six signals over own text, then the class);"
+          " a line every 20,000", flush=True)
     out = {}
-    for cid, _text in rows:
+    for n, (cid, _text) in enumerate(rows, 1):
+        if n % 20000 == 0:
+            print(f"  {n:,}/{len(rows):,}", flush=True)
         sh = shapes[cid]
         own_text = sh.own_text
 
@@ -191,6 +200,8 @@ def main() -> None:
           flush=True)
 
     if args.write:
+        print(f"writing {n:,} rows to substance_screen, replacing the previous marking",
+              flush=True)
         rows = [(cid, s["screen_class"], s["authority"], s["reference"],
                  s["doc_cite"], s["action_ref"], s["deficiency"],
                  s["evid_ner"]) for cid, s in marks.items()]
