@@ -1,8 +1,7 @@
 # The model server
 
-Four steps of the analysis read a language model: the stance classification (step 3),
-the citation afterstep of the entity tagging (step 4), the substance reading (step 6) and
-the organisation roster (step 8). All four go through `shared/llm_client.py`, which
+Three steps of the analysis read a language model: the stance classification (step 3),
+the substance reading (step 6) and the organisation roster (step 8). All three go through `shared/llm_client.py`, which
 speaks the OpenAI chat API to one server you run locally. This page says what that
 server has to do and how to run one.
 
@@ -14,7 +13,7 @@ Every call is `POST <LLM_BASE_URL>/chat/completions` with:
 - `messages`: a system prompt and one user message;
 - `temperature` 0 and `max_tokens` 8192;
 - `response_format` of type `json_schema` where the step wants a structured reply
-  (the substance reading, the roster, the citation afterstep), so the server has to
+  (the substance reading, the roster), so the server has to
   support OpenAI structured output;
 - the thinking switch off: `chat_template_kwargs` with `enable_thinking: false`, which
   LM Studio, vLLM and llama.cpp honour, and `reasoning_effort: "none"`, which ollama
@@ -122,7 +121,6 @@ What each step took on this docket with this model, from our run:
 | step | calls | tokens |
 |---|---|---|
 | stance | 44,555 | 60.6 M in, 9.4 M out |
-| citation afterstep | 302 resolutions | |
 | substance | 28,176 direct readings | 115 M in, 6 M out |
 | roster | 3,002 letters | |
 

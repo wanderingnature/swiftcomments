@@ -27,7 +27,7 @@ no service of ours.
   Debian and Ubuntu: `sudo apt install poppler-utils`. Fedora and RHEL:
   `sudo dnf install poppler-utils`. macOS with Homebrew: `brew install poppler`.
   The docx and rtf files are read by `python-docx` and `striprtf`, which `uv sync` installs.
-- A model server, run locally, for the four steps that read a language model: see
+- A model server, run locally, for the three steps that read a language model: see
   `docs/model-server.md`. The model is Qwen3.8-27B. Tested on Apple Silicon with LM
   Studio headless through `lms`; ollama and vLLM are documented, not yet verified.
 - A MinerU server for the OCR of scanned attachments: see `docs/mineru.md`.
@@ -52,7 +52,7 @@ make help
 | 1 corpus | one row per record of the docket; one row per attachment file | `make corpus` |
 | 2 copies | exact and body hashes; 6 to 8 word n-grams; near-duplicate groups; text families; the partition of every comment into one group; the campaign-letter / own-text split | `make dedup`, `make ngrams`, `make groups` |
 | 3 stance | SUPPORT, OPPOSE or NEUTRAL, one reading per group, copied to its members | `make stance` (model) |
-| 4 entities | legal authorities, cited references, forests, roadless areas, species, ZIP codes, by dictionary; the afterstep that resolves citations the dictionary did not know | `make tag` (afterstep: model) |
+| 4 entities | legal authorities, cited references, forests, roadless areas, species, ZIP codes, by dictionary | `make tag` |
 | 5 named entities | spaCy NER, read by steps 6 | `make ner` |
 | 6 substance | the floor, the screens, the v3 reading of every comment with text of its own, the grading, inheritance along the campaigns, LAW | `make floor`, `make screen`, `make score` (model), `make assemble` |
 | 7 answerability | A0 to A3 from the stored dimensions | `make rate` |
@@ -80,7 +80,6 @@ tokeniser strips markup and unescapes first.
 | step | instrument | model | what it took on this docket |
 |---|---|---|---|
 | stance | `roadless_rescission_v2`, one call per group | `qwen/qwen3.8-27b` | 44,555 calls; 60.6 M tokens in, 9.4 M out |
-| citation afterstep | `resolve_citations.py`, `adjudicate_bare_words.py` | `qwen/qwen3.8-27b` | 302 resolutions |
 | substance | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
 | roster | `roster-v1`, `organisation_roster.py` | `qwen/qwen3.8-27b` | 3,002 letters read |
 
