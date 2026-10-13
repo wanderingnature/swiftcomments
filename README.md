@@ -108,6 +108,19 @@ step, in a clean clone, saved after each step as one small file holding that
 step's tables and nothing else: `extracts/floor.sqlite` is the one table the floor
 writes, never the comment text. Put the extract files in `extracts/` and jump.
 
+The extracts are made with the other half of the pair:
+
+```
+make extract STEP=floor
+```
+
+copies the tables the floor writes, as they stand in `data/roadless.sqlite` at that
+moment, to `extracts/floor.sqlite`. It reads the file and runs nothing, so it is taken
+any time after the step has run, in any order, one step at a time; a step run weeks
+ago is extracted today, as long as it has not been run again since. It refuses to
+overwrite an extract that exists. This is how the reference extracts are made, and how
+you make your own after changing a step.
+
 The extracts serve three purposes. To fast-forward: read the steps you care about on
 a sample and take the reference result for the rest. To compare: run a step yourself
 and set your rows beside the reference rows, which is how you find out whether a difference is your
