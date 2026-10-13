@@ -4,18 +4,16 @@ Instrument `roadless_rescission_v2` (version 2), as the file holds it after `mak
 `seeds/roadless_profile.sql` seeds the system prompt and the topics, and
 `seeds/roadless_prompt_v2.sql` the user template, the active one. This page is a
 copy for reading; the seeds are the source, and `tests/test_prompts_doc.py` fails
-if the two differ. `docs/prompts.md` says how to change it.
+if the two differ. `../prompts.md` says how to change it.
 
 Model parameters: `{"temperature": 0.0, "top_p": 1.0}`. The reply is constrained to the JSON
 schema `sentiment_topic_response_format` in `src/pipeline/profile.py`.
 
-## System prompt
+# System prompt
 
-```
-You are an expert text classification system specialized in analyzing public policy comments. Your task is to accurately classify content into predefined topic categories and assess sentiment toward specific policy proposals with high precision. Always respond with valid JSON only, following the exact format specified.
-```
+> You are an expert text classification system specialized in analyzing public policy comments. Your task is to accurately classify content into predefined topic categories and assess sentiment toward specific policy proposals with high precision. Always respond with valid JSON only, following the exact format specified.
 
-## User template
+# User template
 
 `{comment_text}` is the comment; `{topics_list}` is the 18 active
 topics of the `topics` table, each as its name and description, rendered by
