@@ -16,13 +16,18 @@ docs/design/substance-scoring.md §4a.
 
 Scope: the analyzed corpus = the originals of v_truly_unique_comments longer
 than 100 characters (plan 5.2, edit 2: what the lexical pipeline's features
-table held), which is also the NER population. Read-only; writes a CSV of decisions and a
-markdown sample for eyeballing to the project's reports dir.
+table held), which is also the NER population. Writes {analysis}.substance_floor, one
+row per comment, replacing the previous run's rows.
+
+Prints what it is about to do and a progress line every 10,000 comments: the four
+detectors run inside one query, the regexes as Python callbacks from SQLite, so the
+query is the whole run.
 """
 
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -77,19 +82,23 @@ FIRSTPERSON_RE = (
     r"[^.!?]{0,30}\y(i|we|my|our)\y"
 )
 
-FLOOR_SQL = f"""
-WITH base AS (
-    -- The lexically analyzed comments (the originals of v_truly_unique_comments
-    -- longer than 100 characters, plan 5.2 edit 2), and every comment scored on its own
-    -- text: a shorter comment scored directly still needs its floor row — answerability
-    -- reads has_citation for every scored comment and refuses a missing one.
+# The lexically analyzed comments (the originals of v_truly_unique_comments longer
+# than 100 characters, plan 5.2 edit 2), and every comment scored on its own text: a
+# shorter comment scored directly still needs its floor row — answerability reads
+# has_citation for every scored comment and refuses a missing one.
+BASE_SQL = """
     SELECT v.comment_id, v.comment_text
-    FROM {{analysis}}.v_source_comments v
-    WHERE EXISTS (SELECT 1 FROM {{analysis}}.v_truly_unique_comments u
+    FROM {analysis}.v_source_comments v
+    WHERE EXISTS (SELECT 1 FROM {analysis}.v_truly_unique_comments u
                   WHERE u.comment_id = v.comment_id AND length(u.comment_text) > 100)
-       OR EXISTS (SELECT 1 FROM {{analysis}}.substance_scores s
+       OR EXISTS (SELECT 1 FROM {analysis}.substance_scores s
                   WHERE s.comment_id = v.comment_id AND s.scored_via <> 'inherited')
-),
+"""
+
+COUNT_SQL = f"SELECT count(*) FROM ({BASE_SQL})"
+
+FLOOR_SQL = f"""
+WITH base AS ({BASE_SQL}),
 flags AS (
     SELECT
         b.comment_id,
@@ -122,9 +131,24 @@ def run(ctx: ProjectContext) -> None:
         "firstperson": "(?i)" + FIRSTPERSON_RE,
     }
     with dict_connect(ctx.db_config) as conn:
-        rows = conn.execute(ctx.render_sql(FLOOR_SQL), params).fetchall()
-
-    total = len(rows)
+        total = conn.execute(ctx.render_sql(COUNT_SQL)).fetchone()[0]
+        print(f"=== Floor filter — {ctx.slug} ===")
+        print(f"population: the originals of v_truly_unique_comments longer than 100 characters,"
+              f" plus every comment scored on its own text: {total:,} comments")
+        print("running four detectors per comment in one query (a named-entity lookup and three"
+              " regexes, the regexes as Python callbacks from SQLite); progress every 10,000;"
+              " then substance_floor is replaced, one row per comment", flush=True)
+        rows = []
+        t0 = time.monotonic()
+        for row in conn.execute(ctx.render_sql(FLOOR_SQL), params):
+            rows.append(row)
+            n = len(rows)
+            if n % 10000 == 0:
+                elapsed = time.monotonic() - t0
+                eta = elapsed / n * (total - n)
+                print(f"  {n:,}/{total:,} comments in {elapsed:,.0f}s, about {eta:,.0f}s to go",
+                      flush=True)
+    assert len(rows) == total, f"the query returned {len(rows):,} rows for {total:,} comments"
     floored = [r for r in rows if r["floored"]]
     survived = [r for r in rows if not r["floored"]]
     n_floor = len(floored)
@@ -132,8 +156,7 @@ def run(ctx: ProjectContext) -> None:
     def pct(n):
         return f"{100.0 * n / total:.1f}%" if total else "n/a"
 
-    print(f"\n=== Floor filter — {ctx.slug} ===")
-    print(f"analyzed comments (have features, or scored on their own text): {total}")
+    print(f"\nanalyzed comments (have features, or scored on their own text): {total:,}")
     print(f"floored (auto-minimal, no LLM):        {n_floor}  ({pct(n_floor)})")
     print(f"survive to LLM:                        {len(survived)}  ({pct(len(survived))})")
     print("\ndetector hit rates (survivors trip >=1):")
@@ -152,6 +175,9 @@ def run(ctx: ProjectContext) -> None:
     # Floor decisions -> the DB (full recompute each run). The source of truth is the table;
     # no floor_decisions.csv.
     with db.connect(**ctx.db_config) as conn:
+        before = conn.execute(ctx.render_sql(
+            "SELECT count(*) FROM {analysis}.substance_floor")).fetchone()[0]
+        print(f"\nwriting {len(rows):,} rows to substance_floor, replacing {before:,}", flush=True)
         with conn.cursor() as cur:
             cur.execute(ctx.render_sql("DELETE FROM {analysis}.substance_floor"))
             cur.executemany(ctx.render_sql(
@@ -161,11 +187,12 @@ def run(ctx: ProjectContext) -> None:
                 [(r["comment_id"], r["floored"], r["has_entity"], r["has_citation"],
                   r["has_deficiency"], r["has_firstperson"], r["len"]) for r in rows])
         conn.commit()
-    print(f"\nwrote {len(rows)} floor decisions to substance_floor")
+    print(f"wrote {len(rows):,} floor decisions to substance_floor")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Substance-scoring floor filter (read-only).")
+    parser = argparse.ArgumentParser(
+        description="Substance-scoring floor filter: writes substance_floor.")
     add_project_argument(parser)
     args = parser.parse_args()
     run(context_from_args(args))

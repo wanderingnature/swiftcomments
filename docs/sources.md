@@ -24,7 +24,7 @@ the commit that added it says what changed.
 | `shared/db.py` | new; `authority_family_key` is `roadless.authority_family_key` of `db/migrations_pending/roadless_dynamic_views.sql`, pattern for pattern | the one SQLite-aware module (plan 5.2); `Connection.transaction()` is psycopg's `with conn.transaction():`, a transaction or a savepoint inside one, with `force_rollback` for the tests |
 | `scripts/make_schema.py` | new | creates the file from the DDL, loads the profile seeds and the vocabulary |
 | `tests/test_db.py` | new; the three regexes are `CITATION_RE`, `DEFICIENCY_RE`, `FIRSTPERSON_RE` of `scripts/substance/floor_filter.py` | |
-| `scripts/load_csv.py` | new (plan 3.1) | the loader of the bulk download |
+| `scripts/load_csv.py` | new (plan 3.1) | the loader of the bulk download; plan 5.2 edit 12: prints what it loads and a line every 50,000 records |
 | `tests/test_load_csv.py`, `tests/fixtures/bulk_cut.csv` | new; the fixture is twenty records of the bulk download | |
 | `shared/text_norm.py` | `shared/text_norm.py` | copied, byte for byte |
 | `shared/near_duplicates.py` | `shared/near_duplicates.py` | copied, byte for byte |
@@ -50,8 +50,8 @@ the commit that added it says what changed.
 | `scripts/entity_tagging/load_references.py` | `scripts/entity_tagging/load_references.py` | plan 5.2 edit 4: the three lists from `seeds/*.csv` (with DEV's ids) in place of `--source-dbname` and the two upstream queries; the seed CSVs from `seeds/entity_tagging/`; `TRUNCATE` as `DELETE`; `%s` to `?` |
 | `scripts/entity_tagging/run_pass.py`, `tests/entity_tagging/test_run_pass_family_key.py` | the same paths | `%s` to `?`; `authority_family_key(%s::text)` as `authority_family_key(?)`, the registered function; connections through `shared/db.py`; the test's placeholder counts follow |
 | `scripts/substance/shared_text.py`, `tests/substance/test_text_norm.py`, `test_shared_text_normalization.py` | the same paths | copied, byte for byte |
-| `scripts/substance/floor_filter.py` | `scripts/substance/floor_filter.py` | plan 5.2 edit 2: the base set restated as v_truly_unique_comments with length > 100; `~*` as `REGEXP` with `(?i)`; `= ANY` as `json_each`; `left` as `substr`; `TRUNCATE` as `DELETE`; `%s` to `?` |
-| `scripts/substance/mechanical_screens.py` | `scripts/substance/mechanical_screens.py` | `= ANY` as `json_each`; `%s` to `?`; connections through `shared/db.py` |
+| `scripts/substance/floor_filter.py` | `scripts/substance/floor_filter.py` | plan 5.2 edit 2: the base set restated as v_truly_unique_comments with length > 100; `~*` as `REGEXP` with `(?i)`; `= ANY` as `json_each`; `left` as `substr`; `TRUNCATE` as `DELETE`; `%s` to `?`; plan 5.2 edit 12: prints the population and the plan first, a progress line every 10,000 comments, and what it writes |
+| `scripts/substance/mechanical_screens.py` | `scripts/substance/mechanical_screens.py` | `= ANY` as `json_each`; `%s` to `?`; connections through `shared/db.py`; plan 5.2 edit 12: prints each stage and a line every 20,000 comments |
 | `scripts/substance/families.py`, `tests/substance/test_families.py` | the same paths | `array_agg` as `json_group_array` read with `json.loads`; `= ANY` as `json_each`; the named cursor as a plain one; `Json(PARAMS)` as `json.dumps`; the four `COPY` blocks as `executemany`; `own_sentence_keys` written as JSON text; the test copied byte for byte |
 | `scripts/substance/families_incremental.py`, `tests/substance/test_families_incremental.py` | the same paths | as `families.py`; the `&&` array overlap as an `EXISTS` over `json_each`; `UPDATE ... FROM` kept (SQLite 3.33) with `AS` on the alias and `CAST` for `::float8`; the test copied byte for byte |
 | `scripts/substance/build_comment_groups.py` | `scripts/substance/build_comment_groups.py` | the seven-table `TRUNCATE` as seven `DELETE`s; `= ANY` as `json_each`; `now()`; `%s` to `?`; `SET CONSTRAINTS ALL DEFERRED` as `PRAGMA defer_foreign_keys = ON` |

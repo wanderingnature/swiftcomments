@@ -13,7 +13,8 @@ https://downloads.regulations.gov/<comment_id>/attachment_<n>.<ext>). Every reco
 must be a Public Submission of docket FS-2025-0001; any other stops the load.
 
 Loads into empty tables only: a second load is a `make schema --force` away.
-Prints the row counts it wrote.
+Prints what it is about to do, a line every 50,000 records, and the row counts it
+wrote.
 """
 import argparse
 import csv
@@ -29,6 +30,7 @@ DOCKET = "FS-2025-0001"
 DOCUMENT_TYPE = "Public Submission"
 URL_RE = re.compile(r"^https://downloads\.regulations\.gov/([^/]+)/attachment_(\d+)\.([A-Za-z0-9]+)$")
 BATCH = 5000
+PROGRESS = 50000
 
 
 def records(path: Path):
@@ -59,6 +61,9 @@ def load(conn, path: Path) -> tuple[int, int, int, int]:
     for table in ("comment", "attachment_file"):
         if conn.execute(f"SELECT count(*) FROM {table}").fetchone()[0]:
             raise SystemExit(f"{table} is not empty; run `make schema --force` for a fresh file.")
+    print(f"loading {path}: one comment row per record (blank and withdrawn rows kept and"
+          f" flagged), one attachment_file row per attachment URL; committed at the end;"
+          f" a line every {PROGRESS:,} records", flush=True)
     comments, files = [], []
     n_comments = n_text = n_withdrawn = n_files = 0
     for row, withdrawn in records(path):
@@ -70,12 +75,15 @@ def load(conn, path: Path) -> tuple[int, int, int, int]:
         n_comments += 1
         n_text += bool(row["Comment"])
         n_withdrawn += withdrawn
+        if n_comments % PROGRESS == 0:
+            print(f"  {n_comments:,} records read", flush=True)
         if len(comments) >= BATCH:
             _flush(conn, comments, files)
             n_files += len(files)
             comments, files = [], []
     _flush(conn, comments, files)
     n_files += len(files)
+    print(f"  {n_comments:,} records read; committing", flush=True)
     conn.commit()
     return n_comments, n_text, n_withdrawn, n_files
 
