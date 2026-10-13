@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))   # repo 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))          # comments_db (must precede repo root: both have a src package)
 
 from shared.project_context import ProjectContext, add_project_argument, context_from_args
+from shared.text_norm import unescape_text
 from src.preprocessing.text_processor import TextProcessor
 from src.utils.database import DatabaseConnection
 
@@ -102,7 +103,10 @@ class MiddleContentDeduplicator:
         Returns:
             Tuple of (middle_text, md5_hash)
         """
-        middle_text = self.extract_middle_content(text)
+        # The window is cut by character count, so the form's markup has to
+        # go before the cut: a '<br/>' in one copy and not another would move
+        # the cut and hash the two apart however the window is canonicalized.
+        middle_text = self.extract_middle_content(unescape_text(text or ""))
 
         if not middle_text:
             return None, None
