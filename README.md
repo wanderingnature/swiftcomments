@@ -83,6 +83,10 @@ tokeniser strips markup and unescapes first.
 | substance | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
 | roster | `roster-v1`, `organisation_roster.py` | `qwen/qwen3.8-27b` | 3,002 letters read |
 
+A model step is proven before it is run in full: `make stance LIMIT=200` classifies
+200 groups, stores and loads them and exits, and the log's closing lines give the
+`--resume` command that sends the rest.
+
 Measured repeatability of the substance instrument on this model: 65 of 100 readings
 identical between two runs. Two runs do not match row for row, and the figures
 downstream of a model step are not expected to.

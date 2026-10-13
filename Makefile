@@ -54,8 +54,8 @@ groups:  ## step 2: the text families and the comment-group partition
 screen:  ## step 6: the mechanical screens
 	$(PY) scripts/substance/mechanical_screens.py --project roadless --write
 
-stance:  ## step 3 (model): one classification per comment group, copied to the members
-	$(PY) scripts/reclassify_groups.py --project roadless --new-run
+stance:  ## step 3 (model): one classification per comment group, copied to the members; LIMIT=N for a pilot
+	$(PY) scripts/reclassify_groups.py --project roadless --new-run $(if $(LIMIT),--limit $(LIMIT))
 
 score:  ## step 6 (model): the v3 substance reading over class A
 	$(PY) scripts/substance/score_comments.py --project roadless --classes A
