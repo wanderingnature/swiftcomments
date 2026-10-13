@@ -72,11 +72,25 @@ recognisable as ours.
 
 ## Making the extracts
 
-In the clone where the method is run and proven, after each step:
-
 ```
 make extract STEP=floor      # writes extracts/floor.sqlite
 ```
+
+copies the tables the floor writes, as they stand in `data/roadless.sqlite` now, to
+`extracts/floor.sqlite`. It runs no step and reads nothing but the file, so it is
+independent of every other extract: take it any time after `make floor` has finished,
+before or after the later steps have run, in any order, one step at a time. The only
+condition is that the step has not been run again since, because the extract is a
+copy of what the tables hold at the moment it is taken. It refuses to overwrite an
+extract that exists; to replace one, run the script with `--force`:
+
+```
+uv run python scripts/dump_extract.py --target floor --force
+```
+
+The corpus and the fetch are not extracted (above). This is how we made ours, in the
+clone where the method is run and proven, and how a reader makes their own after
+changing a step.
 
 The registry of step to tables is `shared/steps.py`; the console's Steps page, the
 dump and the load read it. `extracts/` is git-ignored.
