@@ -67,3 +67,6 @@ the commit that added it says what changed.
 | `shared/steps.py` | new (`docs/limit-and-jump.md`) | the steps in run order and the tables each writes; read by the console, the dump and the load |
 | `scripts/dump_extract.py`, `scripts/load_extract.py` | new | `make extract STEP=` writes `extracts/<step>.sqlite`, the step's tables as they stand; `make jump STEP=` loads every step up to it, foreign keys checked at the end |
 | `tests/test_extracts.py` | new | dump from one temporary file, load into another, same rows; a missing extract and an empty corpus refused; the registry against the Makefile and the console |
+| `docs/instruments/substantive-scoring-v3.md`, `substantive-scoring-v3.schema.json`, `organisation-roster-v1.md`, `organisation-roster-v1.schema.json` | `docs/instruments/`, the same names | copied, byte for byte: the prompt is the instrument. `score_comments.py` and `organisation_roster.py` read them by this path |
+| `docs/instruments/stance-roadless-rescission-v2.md` | new; the prompt is `db/seeds/roadless_prompt_v2.sql` | the active stance prompt as the seeds load it, rendered for reading; `tests/test_prompts_doc.py` holds it to the seeds |
+| `docs/prompts.md`, `tests/test_prompts_doc.py` | new | what each model call sends, which file holds its prompt, how to change it |

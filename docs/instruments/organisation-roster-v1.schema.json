@@ -1,0 +1,17 @@
+{
+  "name": "organisation_roster_v1",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["sender_kind", "organisation", "signatories", "signer_count_stated", "stance", "stance_quote"],
+    "properties": {
+      "sender_kind": {"type": "string", "enum": ["organisation", "government", "individual", "unclear"]},
+      "organisation": {"type": ["string", "null"]},
+      "signatories": {"type": "array", "items": {"type": "string"}},
+      "signer_count_stated": {"type": ["integer", "null"]},
+      "stance": {"type": "string", "enum": ["oppose", "support", "mixed", "unclear"]},
+      "stance_quote": {"type": ["string", "null"]}
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "type": "object",
+  "properties": {
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "GAP": {
+          "type": "string",
+          "description": "One exact, contiguous span copied from the comment (15 words at most): the commenter's own sentence saying what the analysis gets wrong or omits, not figures quoted from the agency, or 'none'."
+        },
+        "EVID": {
+          "type": "string",
+          "description": "One exact, contiguous span copied from the comment (15 words at most): the source or figure the comment applies to this proposal. Copy the one that names the most - its year, author, or number included when it has one. Or 'none'."
+        },
+        "ASK": {
+          "type": "string",
+          "description": "One exact, contiguous span copied from the comment (15 words at most): the strongest request. Prefer a request that carries timing words (before, prior to, until, in the final EIS) and include those words in the span. Or 'none'."
+        },
+        "ALT": {
+          "type": "string",
+          "description": "One exact, contiguous span copied from the comment (15 words at most): the outcome or alternative the commenter wants, or 'none'."
+        },
+        "STAND": {
+          "type": "string",
+          "description": "One exact, contiguous span copied from the comment (15 words at most): the commenter's connection, with any stated duration, frequency, or role, or 'none'."
+        }
+      },
+      "required": ["GAP", "EVID", "ASK", "ALT", "STAND"],
+      "additionalProperties": false
+    },
+    "gap": {
+      "type": "integer",
+      "description": "0-3, the GAP anchors: 0 none; 1 a general complaint of inadequacy; 2 a named omission or error; 3 a named omission or error with the consequence for the decision stated."
+    },
+    "evid_applied": {
+      "type": "boolean",
+      "description": "Does the comment apply this source or figure to THIS proposal, rather than only mentioning it? false when the EVID span is 'none'."
+    },
+    "ask_names_action_and_subject": {
+      "type": "boolean",
+      "description": "Does the request name both an action and the subject it applies to ('prepare a cumulative sediment analysis for the watershed')? false for a disposition ('please reconsider', 'reject this') or a bare direction to work harder."
+    },
+    "alt_distinct": {
+      "type": "boolean",
+      "description": "Does the comment describe a distinct alternative the agency has not already analyzed? false for a preference among outcomes already on the table ('keep the rule', 'select no action', 'withdraw the rescission')."
+    },
+    "stand_this_place": {
+      "type": "boolean",
+      "description": "Is the commenter's stated connection to THIS place or subject, rather than a general attachment to wild country? false when the STAND span is 'none'."
+    },
+    "moves": {
+      "type": "array",
+      "description": "All that apply. M1 accuracy questioned, M2 adequacy questioned, M3 new information presented, M5 missing analysis identified. M4 (alternative proposed) is set from the ALT answer and is not yours to emit.",
+      "items": {
+        "type": "string",
+        "enum": ["M1", "M2", "M3", "M5"]
+      }
+    },
+    "targets": {
+      "type": "array",
+      "description": "All that apply. T1 impacts, T3 alternatives. T2 (significance) and T4 (legal compliance) are set mechanically and are not yours to emit.",
+      "items": {
+        "type": "string",
+        "enum": ["T1", "T3"]
+      }
+    },
+    "rationale": {
+      "type": "string",
+      "description": "Your account of the GAP level and the four yes/no answers. One or two sentences, 35 words at most."
+    }
+  },
+  "required": [
+    "evidence",
+    "gap",
+    "evid_applied",
+    "ask_names_action_and_subject",
+    "alt_distinct",
+    "stand_this_place",
+    "moves",
+    "targets",
+    "rationale"
+  ],
+  "additionalProperties": false
+}

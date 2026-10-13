@@ -147,6 +147,11 @@ A model step is proven before it is run in full: `make stance LIMIT=200` classif
 200 groups, stores and loads them and exits, and the log's closing lines give the
 `--resume` command that sends the rest.
 
+The prompts are in the repository, readable: the stance prompt in
+`docs/instruments/stance-roadless-rescission-v2.md`, the substance instrument and the
+roster instrument beside it with their JSON schemas. `docs/prompts.md` says what each
+call sends, which file to edit to change it, and how the edit takes effect.
+
 Measured repeatability of the substance instrument on this model: 65 of 100 readings
 identical between two runs. Two runs do not match row for row, and the figures
 downstream of a model step are not expected to.
@@ -180,7 +185,7 @@ scripts/              the loader, the substance steps, the entity tagging, the s
 checks/               figures.sql, expected.json, check.py
 console/              the read-only browser of the file; `make console`
 tests/                the tests; `uv run pytest`
-docs/                 the method and the pages it cites; model-server.md; mineru.md; console.md; sources.md; first-run.md
+docs/                 the method and the pages it cites; instruments/ (the prompts); prompts.md; model-server.md; mineru.md; console.md; limit-and-jump.md; sources.md; first-run.md
 attachments/, data/   the fetched files and the SQLite file, git-ignored
 ```
 
