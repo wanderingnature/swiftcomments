@@ -52,16 +52,17 @@ update it with the seed (the test says when they differ).
 
 **What is sent.** One call per class A comment: the instrument as the system prompt,
 the text of `docs/instruments/substantive-scoring-v3.md` between its heading
-`# System prompt` and the line `# SECTION D` (the label above the heading and the
-deployment notes below the line are not sent), and as the user message the comment's
+`# System prompt` and the line `# SECTION D`, which the page shows as a quoted block
+(the script takes the quote mark off the start of each line; the label above the
+heading and the deployment notes below the line are not sent), and as the user message the comment's
 own text, or the campaign's shared text for an exemplar reading. The reply is
 constrained to `docs/instruments/substantive-scoring-v3.schema.json`.
 
 **Where it lives.** Those two files. `scripts/substance/score_comments.py` reads them
 by path at every run; nothing is cached in the database.
 
-**To edit.** Edit the Markdown between the heading and SECTION D, and the schema if
-the reply changes shape; `scripts/substance/grade.py` turns the reply into the scores, so a new field
+**To edit.** Edit the quoted text between the heading and SECTION D, keeping the
+quote mark at the start of every line, and the schema if the reply changes shape; `scripts/substance/grade.py` turns the reply into the scores, so a new field
 needs its grading there. Then `make score LIMIT=200`. The instrument version a row
 carries is `instrument_version` on `substance_scores`.
 
@@ -69,16 +70,17 @@ carries is `instrument_version` on `substance_scores`.
 
 **What is sent.** One call per letter: a comment's own-letter attachment, or, for a
 bundle of submissions with no letter of its own, the first page of its first enclosed
-file. The text under the heading `# System prompt` in
-`docs/instruments/organisation-roster-v1.md` is the system prompt, and the letter's
+file. The quoted text under the heading `# System prompt` in
+`docs/instruments/organisation-roster-v1.md` is the system prompt (the quote marks
+come off before it is sent), and the letter's
 text, headed by the comment id, the user message. The reply is constrained to
 `docs/instruments/organisation-roster-v1.schema.json`.
 
 **Where it lives.** Those two files; `scripts/organisation_roster.py` reads them by
 path at every run.
 
-**To edit.** Edit the text under `# System prompt`, and the schema if the reply
-changes shape. The roster's rows carry `instrument_version` on
+**To edit.** Edit the quoted text under `# System prompt`, keeping the quote mark at
+the start of every line, and the schema if the reply changes shape. The roster's rows carry `instrument_version` on
 `comment_organisation`; change the version string in the script when the prompt
 changes, so the rows say which prompt made them. Then the roster with a `LIMIT`.
 
