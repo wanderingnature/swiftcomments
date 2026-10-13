@@ -387,6 +387,10 @@ def main() -> None:
     matcher = StrictMatcher(vocab) if args.mode == "strict" else LooseMatcher(vocab)
     print(f"{args.mode} pass, {n_patterns} vocabulary patterns"
           f" across {len(vocab)} entity types")
+    if args.max_comments is not None:
+        print(f"--max-comments {args.max_comments}: stops after the first batches that reach"
+              f" {args.max_comments} unscanned comments (batches of {args.batch_size}); run"
+              " without it for the rest, or make jump STEP=tag for our run's rows")
 
     queue_sql = QUEUE_SQL.replace("MODE_FLAG", f"is_tagged_{args.mode}")
     total_comments = total_tags = 0

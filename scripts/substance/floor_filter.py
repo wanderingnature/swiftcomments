@@ -97,14 +97,22 @@ BASE_SQL = """
 
 COUNT_SQL = f"SELECT count(*) FROM ({BASE_SQL})"
 
-FLOOR_SQL = f"""
-WITH base AS ({BASE_SQL}),
+
+def floor_sql(limit=None):
+    """The floor query; with `limit`, over the first N of the population by
+    comment id (a sample; plan 5.2 edit 11)."""
+    base = BASE_SQL + ("    ORDER BY v.comment_id LIMIT :limit\n" if limit else "")
+    return FLOOR_TEMPLATE.replace("BASE_SELECT", base)
+
+
+FLOOR_TEMPLATE = """
+WITH base AS (BASE_SELECT),
 flags AS (
     SELECT
         b.comment_id,
         b.comment_text,
         EXISTS (
-            SELECT 1 FROM {{analysis}}.named_entities e
+            SELECT 1 FROM {analysis}.named_entities e
             WHERE e.comment_id = b.comment_id
               AND e.entity_type IN (SELECT value FROM json_each(:ent_types))
         ) AS has_entity,
@@ -123,24 +131,30 @@ FROM flags
 """
 
 
-def run(ctx: ProjectContext) -> None:
+def run(ctx: ProjectContext, limit=None) -> None:
     params = {
         "ent_types": json.dumps(list(SUBSTANTIVE_ENTITY_TYPES)),
         "citation": "(?i)" + CITATION_RE,
         "deficiency": "(?i)" + DEFICIENCY_RE,
         "firstperson": "(?i)" + FIRSTPERSON_RE,
     }
+    if limit:
+        params["limit"] = limit
     with dict_connect(ctx.db_config) as conn:
-        total = conn.execute(ctx.render_sql(COUNT_SQL)).fetchone()[0]
+        population = conn.execute(ctx.render_sql(COUNT_SQL)).fetchone()[0]
+        total = min(limit, population) if limit else population
         print(f"=== Floor filter — {ctx.slug} ===")
         print(f"population: the originals of v_truly_unique_comments longer than 100 characters,"
-              f" plus every comment scored on its own text: {total:,} comments")
+              f" plus every comment scored on its own text: {population:,} comments")
+        if limit:
+            print(f"--limit {limit}: the first {total:,} of them by comment id; run without"
+                  " --limit for all of them, or make jump STEP=floor for our run's rows")
         print("running four detectors per comment in one query (a named-entity lookup and three"
               " regexes, the regexes as Python callbacks from SQLite); progress every 10,000;"
               " then substance_floor is replaced, one row per comment", flush=True)
         rows = []
         t0 = time.monotonic()
-        for row in conn.execute(ctx.render_sql(FLOOR_SQL), params):
+        for row in conn.execute(ctx.render_sql(floor_sql(limit)), params):
             rows.append(row)
             n = len(rows)
             if n % 10000 == 0:
@@ -194,8 +208,13 @@ def main():
     parser = argparse.ArgumentParser(
         description="Substance-scoring floor filter: writes substance_floor.")
     add_project_argument(parser)
+    parser.add_argument("--limit", type=int, metavar="N",
+                        help="the first N comments of the population only (a sample);"
+                             " the whole run later replaces them")
     args = parser.parse_args()
-    run(context_from_args(args))
+    if args.limit is not None and args.limit < 1:
+        parser.error("--limit must be >= 1")
+    run(context_from_args(args), limit=args.limit)
 
 
 if __name__ == "__main__":

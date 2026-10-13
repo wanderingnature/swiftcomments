@@ -85,10 +85,16 @@ make check                every figure beside checks/expected.json
 
 `make all` is all of it in this order, after `make schema`; `make corpus` creates the
 file itself if `make schema` has not run. The model steps are the long ones: on one
-local server the substance reading runs for days. Run a model step as a pilot before
-the full run: `make stance LIMIT=200` sends 200 groups, stores and loads their
-replies, prints the counts and exits, and its closing lines give the `--resume`
-command that sends the rest.
+local server the substance reading runs for days.
+
+To learn a step without waiting for it, run it on a sample and look at the rows:
+`make floor LIMIT=500` runs the floor on the first 500 comments of its population;
+`make stance LIMIT=200` sends 200 groups, stores and loads their replies and exits.
+Every step with a queue takes `LIMIT=N`. Then `make jump STEP=floor` loads our run's
+rows for that step and every step before it, so the next step has what it needs.
+Those rows are what this repository's own code produced when we ran it to prove the
+method; a reader can fast-forward with them, or compare a run of their own against
+ours step by step. `docs/limit-and-jump.md` has the step-by-step table.
 
 ## Checking on a run
 

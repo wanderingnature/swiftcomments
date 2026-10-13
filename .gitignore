@@ -17,6 +17,7 @@ csv/mv4-z8fw-q5jx.csv
 csv/*.csv
 attachments/
 data/
+extracts/
 .env
 
 # Run artifacts of the stance step and the batch tools
