@@ -46,10 +46,12 @@ def test_stance_page_is_the_seeded_prompt(tmp_path):
 
 
 def test_substance_and_roster_instruments_are_where_the_scripts_read_them():
-    for stem in ("substantive-scoring-v3", "organisation-roster-v1"):
-        text = (INSTRUMENTS / f"{stem}.md").read_text(encoding="utf-8")
-        schema = json.loads((INSTRUMENTS / f"{stem}.schema.json").read_text(encoding="utf-8"))
-        assert schema["schema"]["type"] == "object"
-        assert text.strip()
+    """The substance schema is the bare JSON schema the scorer loads as
+    RUBRIC_SCHEMA; the roster's is a response_format envelope whose "schema" the
+    roster script takes out."""
+    scoring = json.loads((INSTRUMENTS / "substantive-scoring-v3.schema.json").read_text(encoding="utf-8"))
+    assert scoring["type"] == "object" and "evidence" in scoring["properties"]
+    roster = json.loads((INSTRUMENTS / "organisation-roster-v1.schema.json").read_text(encoding="utf-8"))
+    assert roster["name"] == "organisation_roster_v1" and roster["schema"]["type"] == "object"
     assert "# SECTION D" in (INSTRUMENTS / "substantive-scoring-v3.md").read_text(encoding="utf-8")
     assert "## System prompt" in (INSTRUMENTS / "organisation-roster-v1.md").read_text(encoding="utf-8")
