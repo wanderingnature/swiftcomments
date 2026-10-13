@@ -11,7 +11,8 @@ CSV := csv/mv4-z8fw-q5jx.csv
 DB  := data/roadless.sqlite
 
 .PHONY: help all schema corpus fetch dedup ngrams ner tag floor groups screen \
-        stance score assemble rate text attachments orgs facts check console
+        stance score assemble rate text attachments orgs facts check console \
+        jump extract
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-12s %s\n", $$1, $$2}'
@@ -39,22 +40,22 @@ ngrams:  ## step 2: 6 to 8 word n-grams and the near-duplicate groups at 0.85
 	$(PY) comments_db/scripts/extract_long_ngrams.py --project roadless --rebuild --update-stats
 	$(PY) comments_db/scripts/detect_duplicates_incremental.py --project roadless --rebuild --min-group-size 2
 
-ner:  ## step 5: spaCy named entities over the floor's population
-	$(PY) comments_db/scripts/extract_linguistic_patterns.py --project roadless
+ner:  ## step 5: spaCy named entities over the floor's population; LIMIT=N for the first N
+	$(PY) comments_db/scripts/extract_linguistic_patterns.py --project roadless $(if $(LIMIT),--limit $(LIMIT))
 
-tag:  ## step 4: the reference lists; the strict and loose passes
+tag:  ## step 4: the reference lists; the strict and loose passes; LIMIT=N for about the first N per pass
 	$(PY) scripts/entity_tagging/load_references.py --project roadless
-	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode strict
-	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode loose
+	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode strict $(if $(LIMIT),--max-comments $(LIMIT))
+	$(PY) scripts/entity_tagging/run_pass.py --project roadless --mode loose $(if $(LIMIT),--max-comments $(LIMIT))
 
-floor:  ## step 6: the floor filter
-	$(PY) scripts/substance/floor_filter.py --project roadless
+floor:  ## step 6: the floor filter; LIMIT=N for the first N
+	$(PY) scripts/substance/floor_filter.py --project roadless $(if $(LIMIT),--limit $(LIMIT))
 
 groups:  ## step 2: the text families and the comment-group partition
 	$(PY) scripts/substance/build_comment_groups.py --project roadless --rebuild --write
 
-screen:  ## step 6: the mechanical screens
-	$(PY) scripts/substance/mechanical_screens.py --project roadless --write
+screen:  ## step 6: the mechanical screens; LIMIT=N for the first N survivors
+	$(PY) scripts/substance/mechanical_screens.py --project roadless --write $(if $(LIMIT),--limit $(LIMIT))
 
 stance:  ## step 3 (model): one classification per comment group, copied to the members; LIMIT=N for a pilot
 	$(PY) scripts/reclassify_groups.py --project roadless --new-run $(if $(LIMIT),--limit $(LIMIT))
@@ -90,6 +91,12 @@ facts:  ## one row per comment: comment_facts
 
 check:  ## every figure of the method beside checks/expected.json
 	$(PY) checks/check.py
+
+jump:  ## load the stored rows of a finished run for every step up to STEP from extracts/; make jump STEP=floor
+	$(PY) scripts/load_extract.py --target $(STEP)
+
+extract:  ## write extracts/STEP.sqlite, the tables STEP wrote, for make jump; make extract STEP=floor
+	$(PY) scripts/dump_extract.py --target $(STEP)
 
 console:  ## a read-only browser of the file: what each step wrote, one comment, any table, SQL
 	uv run --group console streamlit run console/app.py --server.headless true

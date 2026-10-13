@@ -166,6 +166,9 @@ def process_comments(ctx: ProjectContext, dry_run: bool = False, limit: Optional
     # load-bearing, not merely an optimization.
     ids = pending_ids(db, random=random_sample)
     if limit:
+        logger.info(f"--limit {limit}: the first {min(limit, len(ids)):,} of {len(ids):,} pending"
+                    " comments; run without --limit for the rest, or make jump STEP=ner"
+                    " for the stored rows")
         ids = ids[:limit]
     total_unprocessed = len(ids)
     logger.info(f"Unprocessed comments (no named_entities row): {total_unprocessed}"

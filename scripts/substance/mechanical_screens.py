@@ -114,18 +114,24 @@ def classify(authority, reference, doc_cite, action_ref, deficiency,
     return "B2"
 
 
-def compute(ctx, shapes=None):
+def compute(ctx, shapes=None, limit=None):
     """(comment_id -> signal dict + class) for every floor-filter survivor.
     All inputs are existing DB layers; no model calls. `shapes` (from
     shared_text.load_shapes) is accepted so a caller that already loaded the
     shared/own split — the scoring queue — does not read it twice. The split
     is the stored family attribution, so the partition (build_comment_groups
-    --write) precedes this step."""
+    --write) precedes this step. `limit` screens the first N survivors only
+    (a sample)."""
     with db.connect(**ctx.db_config) as conn:
         print("loading the floor survivors and their shared/own text split", flush=True)
         rows = shared_text.load_corpus(conn, ctx.render_sql)
         if shapes is None:
             shapes = shared_text.load_shapes(conn, ctx.render_sql)
+        if limit:
+            print(f"  --limit {limit}: the first {min(limit, len(rows)):,} of {len(rows):,} survivors;"
+                  " run without --limit for all of them, or make jump STEP=screen for the"
+                  " stored rows", flush=True)
+            rows = rows[:limit]
         print(f"  {len(rows):,} survivors; loading the confirmed citations and the NER"
               " evidence entities", flush=True)
         tags = {}
@@ -187,10 +193,15 @@ def main() -> None:
     p.add_argument("--write", action="store_true",
                    help="replace the marking in {analysis}.substance_screen"
                         " (default: read-only evaluation)")
+    p.add_argument("--limit", type=int, metavar="N",
+                   help="screen the first N survivors only (a sample); the whole run"
+                        " later replaces them")
     args = p.parse_args()
+    if args.limit is not None and args.limit < 1:
+        p.error("--limit must be >= 1")
     ctx = context_from_args(args)
 
-    marks = compute(ctx)
+    marks = compute(ctx, limit=args.limit)
     n = len(marks)
     dist = {}
     for s in marks.values():
