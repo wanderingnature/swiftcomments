@@ -38,6 +38,7 @@ no service of ours.
 ```
 git clone https://github.com/wanderingnature/swiftcomments.git
 cd swiftcomments
+uv venv --python 3.14    # .python-version pins 3.14; uv downloads it if the machine has none
 uv sync
 cp .env.example .env     # then fill in the two servers
 make help
