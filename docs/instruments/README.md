@@ -11,9 +11,10 @@ the system prompt and the user template, with the comment and the topic list fil
 in at run time.
 
 **This is the prompt for step 6, the substance reading (`make score`):**
-`substantive-scoring-v3.md`. The whole file before the line `# SECTION D` is sent as
-the system prompt, word for word, with the comment's own text as the user message;
-SECTION D is notes for the person running it. The reply must match
+`substantive-scoring-v3.md`. The text between its heading `## System prompt` and the
+line `# SECTION D` is sent as the system prompt, word for word, with the comment's
+own text as the user message; the label above the heading and SECTION D below the
+line are for the person running it. The reply must match
 `substantive-scoring-v3.schema.json`.
 
 **This is the prompt for step 8, the roster (`make attachments`):**

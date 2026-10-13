@@ -51,16 +51,17 @@ update it with the seed (the test says when they differ).
 ## Substance (step 6, `make score`)
 
 **What is sent.** One call per class A comment: the instrument as the system prompt,
-everything in `docs/instruments/substantive-scoring-v3.md` before its SECTION D (the
-deployment notes are not sent), and as the user message the comment's own text, or
-the campaign's shared text for an exemplar reading. The reply is constrained to
-`docs/instruments/substantive-scoring-v3.schema.json`.
+the text of `docs/instruments/substantive-scoring-v3.md` between its heading
+`## System prompt` and the line `# SECTION D` (the label above the heading and the
+deployment notes below the line are not sent), and as the user message the comment's
+own text, or the campaign's shared text for an exemplar reading. The reply is
+constrained to `docs/instruments/substantive-scoring-v3.schema.json`.
 
 **Where it lives.** Those two files. `scripts/substance/score_comments.py` reads them
 by path at every run; nothing is cached in the database.
 
-**To edit.** Edit the Markdown above SECTION D, and the schema if the reply changes
-shape; `scripts/substance/grade.py` turns the reply into the scores, so a new field
+**To edit.** Edit the Markdown between the heading and SECTION D, and the schema if
+the reply changes shape; `scripts/substance/grade.py` turns the reply into the scores, so a new field
 needs its grading there. Then `make score LIMIT=200`. The instrument version a row
 carries is `instrument_version` on `substance_scores`.
 

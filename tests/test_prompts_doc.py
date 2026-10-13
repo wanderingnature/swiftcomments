@@ -53,5 +53,18 @@ def test_substance_and_roster_instruments_are_where_the_scripts_read_them():
     assert scoring["type"] == "object" and "evidence" in scoring["properties"]
     roster = json.loads((INSTRUMENTS / "organisation-roster-v1.schema.json").read_text(encoding="utf-8"))
     assert roster["name"] == "organisation_roster_v1" and roster["schema"]["type"] == "object"
-    assert "# SECTION D" in (INSTRUMENTS / "substantive-scoring-v3.md").read_text(encoding="utf-8")
-    assert "## System prompt" in (INSTRUMENTS / "organisation-roster-v1.md").read_text(encoding="utf-8")
+
+    # Each file opens with its step label; the prompt is the text after the marker,
+    # and for the substance instrument before SECTION D (plan 5.2 edit 13). The
+    # scripts find both markers by first occurrence, so the labels must not contain
+    # them: the slices below are taken the same way.
+    text = (INSTRUMENTS / "substantive-scoring-v3.md").read_text(encoding="utf-8")
+    assert text.startswith("# This is the prompt for step 6, the substance reading (`make score`)")
+    start, end = text.index("## System prompt"), text.index("# SECTION D")
+    assert start < end
+    prompt = text[start + len("## System prompt"):end].strip()
+    assert prompt.startswith("You read one public comment on a federal agency action.")
+    assert prompt.endswith("Return only the object.") or "# SECTION C" in prompt
+    text = (INSTRUMENTS / "organisation-roster-v1.md").read_text(encoding="utf-8")
+    assert text.startswith("# This is the prompt for step 8, the roster (`make attachments`)")
+    assert text.index("## System prompt") > 0

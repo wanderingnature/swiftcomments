@@ -1,6 +1,8 @@
-# Organisation roster, instrument v1
+# This is the prompt for step 8, the roster (`make attachments`)
 
-The prompt `scripts/organisation_roster.py` sends with the opening and closing of a letter
+Instrument `roster-v1`. The text under the heading "System prompt" below is sent to
+the model as the system prompt; this paragraph is not. It is the prompt
+`scripts/organisation_roster.py` sends with the opening and closing of a letter
 filed as a public comment (the closing from the letter's last "Sincerely" or
 "Respectfully" when appendices or an attachment list follow the signatures), and the schema it must answer in
 (`organisation-roster-v1.schema.json`). The model copies; code checks every copied string
