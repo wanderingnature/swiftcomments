@@ -1,0 +1,48 @@
+# GAP 3 — the commenter states the consequence: how the gap carries into a
+# conclusion, a significance finding, or legal sufficiency. The rule fires only
+# on one of these, in the same sentence as the level-2 deficiency, never on
+# length or emphasis. Extended by testing.
+significance finding
+significance findings
+significance determination
+finding of no significant impact
+fonsi
+the conclusion
+the conclusions
+its conclusion
+its conclusions
+conclusion is unsupported
+conclusions are unsupported
+cannot be relied upon
+cannot be relied on
+can not be relied upon
+legally sufficient
+legally insufficient
+legal sufficiency
+legally deficient
+legally inadequate
+violates nepa
+violates the national environmental policy act
+violation of nepa
+fails nepa
+fails to satisfy nepa
+fails to comply with nepa
+does not comply with nepa
+violates the apa
+violates the administrative procedure act
+violates the esa
+violates the endangered species act
+arbitrary and capricious
+invalidates
+invalid
+undermines the finding
+undermines the conclusion
+undermines the analysis
+undermines the determination
+the record of decision
+record of decision
+the decision cannot
+not supported by the record
+unsupported by the record
+no rational basis
+hard look requirement

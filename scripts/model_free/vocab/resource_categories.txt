@@ -1,0 +1,98 @@
+# GAP 1 — a resource or effect category named at topic level. A deficiency or
+# concern trigger beside one of these is a topic-level deficiency (level 1).
+# A specific name (species.txt, a figure, a numbered or named section, a proper
+# noun) is what lifts the level to 2. Extended by testing against the labelled set.
+wildlife
+wildlife impacts
+wildlife habitat
+water quality
+water
+waters
+watershed
+watersheds
+fish
+fisheries
+fish habitat
+habitat
+habitats
+erosion
+sediment
+sedimentation
+fire
+fires
+wildfire
+wildfires
+fire risk
+fuels
+carbon
+carbon storage
+carbon sequestration
+climate
+climate change
+recreation
+recreational
+economic
+economics
+economy
+jobs
+employment
+cultural
+cultural resources
+tribal
+soils
+soil
+air quality
+species
+biodiversity
+biological diversity
+wetlands
+old growth
+old-growth
+timber
+logging
+grazing
+roads
+road building
+road construction
+invasive
+invasive species
+invasives
+impacts
+effects
+ramifications
+consequences
+environmental
+ecological
+ecology
+scenic
+visual
+noise
+wilderness
+hunting
+fishing
+tourism
+drinking water
+flooding
+floods
+landslides
+cumulative effects
+cumulative impacts
+endangered species
+threatened species
+trout
+salmon
+deer
+bears
+birds
+wolves
+elk herds
+streams
+rivers
+forests
+forest health
+mining
+minerals
+energy
+oil and gas
+public health
+safety

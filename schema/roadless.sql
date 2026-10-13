@@ -861,6 +861,95 @@ JOIN answerability_run r USING (run_id)
 JOIN substance_scores s USING (comment_id);
 
 -- ===========================================================================
+-- 9b. The model-free reading (scripts/model_free/, rule set 3). The five mf_*
+--     tables, in the one file so the console, the extracts and the jump see
+--     them; the run row's code_version (a git hash) is not kept. In
+--     this repository a "sentence" row is the whole comment: unit_id is the
+--     comment row's rowid, start_char 0, end_char the text's length.
+-- ===========================================================================
+
+CREATE TABLE mf_score_run (
+    run_id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    ruleset_version     TEXT NOT NULL,
+    started_at          TEXT NOT NULL,
+    finished_at         TEXT,
+    units_scored        INTEGER NOT NULL DEFAULT 0,
+    comments_scored     INTEGER NOT NULL DEFAULT 0,
+    counts_json         TEXT NOT NULL DEFAULT '{}',
+    checks_json         TEXT NOT NULL DEFAULT '{}'
+);
+
+CREATE TABLE mf_sentence_score (
+    ruleset_version  TEXT NOT NULL,
+    unit_id          INTEGER NOT NULL,
+    run_id           INTEGER NOT NULL,
+    comment_id       TEXT NOT NULL,
+    start_char       INTEGER NOT NULL,
+    end_char         INTEGER NOT NULL,
+    text_key         TEXT NOT NULL,
+    place INTEGER NOT NULL, stand INTEGER NOT NULL, doc INTEGER NOT NULL, gap INTEGER NOT NULL,
+    evid INTEGER NOT NULL, ask INTEGER NOT NULL, alt INTEGER NOT NULL, law INTEGER NOT NULL,
+    strength         INTEGER NOT NULL,
+    gate             INTEGER NOT NULL,
+    gate_basis       TEXT NOT NULL,
+    band             TEXT NOT NULL,
+    moves            TEXT NOT NULL,
+    targets          TEXT NOT NULL,
+    evid_applied     INTEGER NOT NULL,
+    ask_names        INTEGER NOT NULL,
+    alt_distinct     INTEGER NOT NULL,
+    stand_this_place INTEGER NOT NULL,
+    is_record_text   INTEGER NOT NULL,
+    anchors          TEXT NOT NULL,
+    PRIMARY KEY (ruleset_version, unit_id)
+);
+CREATE INDEX mf_sentence_score_comment ON mf_sentence_score (ruleset_version, comment_id);
+CREATE INDEX mf_sentence_score_text_key ON mf_sentence_score (text_key);
+
+CREATE TABLE mf_sentence_hit (
+    hit_id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    ruleset_version TEXT NOT NULL,
+    unit_id         INTEGER NOT NULL,
+    run_id          INTEGER NOT NULL,
+    dimension       TEXT NOT NULL,
+    grade           INTEGER NOT NULL,
+    rule            TEXT NOT NULL,
+    match           TEXT NOT NULL,
+    start_char      INTEGER NOT NULL,
+    end_char        INTEGER NOT NULL
+);
+CREATE INDEX mf_sentence_hit_unit ON mf_sentence_hit (ruleset_version, unit_id);
+CREATE INDEX mf_sentence_hit_rule ON mf_sentence_hit (ruleset_version, rule);
+
+CREATE TABLE mf_comment_score (
+    ruleset_version TEXT NOT NULL,
+    comment_id      TEXT NOT NULL,
+    run_id          INTEGER NOT NULL,
+    place INTEGER NOT NULL, stand INTEGER NOT NULL, doc INTEGER NOT NULL, gap INTEGER NOT NULL,
+    evid INTEGER NOT NULL, ask INTEGER NOT NULL, alt INTEGER NOT NULL, law INTEGER NOT NULL,
+    strength        INTEGER NOT NULL,
+    gate            INTEGER NOT NULL,
+    gate_basis      TEXT NOT NULL,
+    band            TEXT NOT NULL,
+    moves           TEXT NOT NULL,
+    targets         TEXT NOT NULL,
+    sentence_count  INTEGER NOT NULL,
+    PRIMARY KEY (ruleset_version, comment_id)
+);
+
+CREATE TABLE mf_comment_answerability (
+    ruleset_version TEXT NOT NULL,
+    comment_id      TEXT NOT NULL,
+    run_id          INTEGER NOT NULL,
+    level           TEXT NOT NULL,
+    defeated        TEXT NOT NULL,
+    open            TEXT NOT NULL,
+    mechanism       INTEGER NOT NULL,
+    cite            INTEGER NOT NULL,
+    PRIMARY KEY (ruleset_version, comment_id)
+);
+
+-- ===========================================================================
 -- 10. Attachments
 -- ===========================================================================
 

@@ -66,6 +66,7 @@ make groups       step 2         the text families; every comment in one group; 
 make screen       step 6         the mechanical screens: class A, B1, B2
 make stance       step 3  MODEL  the stance: SUPPORT, OPPOSE or NEUTRAL, one reading per group, copied to its members
 make score        step 6  MODEL  the substance reading: the v3 instrument over every class A comment
+make score-rules  step 6         the same reading by rule alone, no model call, for a run without a server or beside the model's
 make assemble     step 6         inheritance along the campaigns, the delta rows, LAW from the citations
 make rate         step 7         answerability, A0 to A3
 ```
@@ -88,7 +89,10 @@ three prompts of `docs/instruments/`: step 3, the stance (`make stance`); step 6
 substance reading (`make score`); step 8, the roster, one of the five passes of
 `make attachments` (the OCR pass in the same target goes to the OCR server instead).
 Every other target is code and dictionaries. The model targets are the long ones: on
-one local server the substance reading runs for days.
+one local server the substance reading runs for days. `make score-rules` is the
+substance reading done by rules alone over the same comments; a reader without a
+model server runs the method with it, and a reader with one runs both and sets them
+side by side (`docs/model-free-scoring.md`).
 
 `make corpus` creates the file itself if `make schema` has not run. `make all` is all
 of it in this order, after `make schema`, for a machine left to run.
@@ -198,11 +202,11 @@ csv/                  the bulk download, gzipped; `make corpus` extracts it
 seeds/                the reference lists, the vocabularies, the prompt and topics
 shared/               db.py (the one module that knows SQLite), the text normaliser, the model client
 comments_db/          the copy-finding scripts and NER
-scripts/              the loader, the substance steps, the entity tagging, the stance chain, the attachment steps
+scripts/              the loader, the substance steps, model_free/ (the rules' reading), the entity tagging, the stance chain, the attachment steps, compare_scores.py
 checks/               figures.sql, expected.json, check.py
 console/              the read-only browser of the file; `make console`
 tests/                the tests; `uv run pytest`
-docs/                 the method and the pages it cites; instruments/ (the prompts); prompts.md; model-server.md; mineru.md; console.md; limit-and-jump.md; first-run.md
+docs/                 the method and the pages it cites; instruments/ (the prompts); prompts.md; model-free-scoring.md; model-server.md; mineru.md; console.md; limit-and-jump.md; first-run.md
 attachments/, data/   the fetched files and the SQLite file, git-ignored
 ```
 

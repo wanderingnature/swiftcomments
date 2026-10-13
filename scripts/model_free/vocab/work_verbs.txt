@@ -1,0 +1,44 @@
+# ASK — the work verbs. A request with one of these is at least ASK 1; with a
+# named, non-generic object (from the dependency parse) it is ASK 2. One lemma
+# per line; the parser lemmatizes, so inflections are not written out.
+study
+analyze
+analyse
+consider
+look
+review
+assess
+evaluate
+examine
+disclose
+explain
+quantify
+prepare
+conduct
+address
+reconcile
+identify
+correct
+revise
+update
+supplement
+sample
+survey
+measure
+model
+monitor
+inventory
+map
+document
+calculate
+estimate
+account
+compare
+describe
+discuss
+include
+incorporate
+justify
+verify
+validate
+investigate

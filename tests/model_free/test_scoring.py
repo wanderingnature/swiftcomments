@@ -1,0 +1,212 @@
+"""The model-free reading, scripts/model_free/, on real text and a real
+temporary file: the rules on sentences that carry each dimension, the roll-up
+and the rating, the score run end to end over the schema (the class A
+population, the five mf_* tables, one transaction, a second run writes
+nothing, --comment-id rescoring, the JSON files), and the comparison of two
+JSON folders.
+
+    uv run pytest tests/model_free
+"""
+import io
+import sys
+from pathlib import Path
+
+import pytest
+
+_REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(_REPO))
+sys.path.insert(0, str(_REPO / "scripts"))  # the package is imported as run.py imports it
+
+from shared import db, score_json  # noqa: E402
+from model_free import RULESET_VERSION, run as mf_run  # noqa: E402
+from model_free.arithmetic import rate, roll_up  # noqa: E402
+from model_free.detectors import Context  # noqa: E402
+from model_free.text import PhraseMatcher, normalize, quoted_spans, split_sentences  # noqa: E402
+import compare_scores  # noqa: E402
+
+GAP_SENTENCE = ("The DEIS fails to analyze sediment delivery to bull trout habitat in Wilson Creek,"
+                " so its conclusion of no significant impact cannot stand.")
+LAW_SENTENCE = "The proposal violates 36 CFR 294.12."
+ASK_SENTENCE = "Please prepare a cumulative effects analysis of sediment delivery before the final EIS."
+STAND_SENTENCE = "As a hydrologist I have measured turbidity in the Nantahala National Forest for decades."
+ALT_SENTENCE = "Instead, adopt an alternative that keeps a 300 foot buffer along perennial streams."
+EVID_SENTENCE = "According to the DEIS, 44.7 million acres would be opened to road construction."
+DISPOSITION = "I strongly oppose this rule."
+
+
+def _one(sentence):
+    scores, comment, answer = mf_run.score_text("t", sentence, Context())
+    assert len(scores) == 1
+    return scores[0], comment, answer
+
+
+def test_text_tools():
+    assert normalize("A &amp; B<br>C  “q”") == 'A & B C "q"'
+    text = normalize("Dr. Smith saw it. Then it rained! The U.S. Forest Service agreed.")
+    assert [text[s:e] for s, e in split_sentences(text)] == [
+        "Dr. Smith saw it.", "Then it rained!", "The U.S. Forest Service agreed."]
+    q = quoted_spans('The draft says "the effects would be negligible" (USDA 2025) and more.')
+    assert len(q) == 1 and q[0].text.startswith('"the effects')
+    m = PhraseMatcher(["bull trout", "trout"]).find("Bull trout and brook trout.")
+    assert [(x.phrase, x.start, x.end) for x in m] == [("bull trout", 0, 10), ("trout", 21, 26)]
+
+
+def test_each_dimension_fires_on_its_sentence():
+    s, comment, answer = _one(GAP_SENTENCE)
+    assert s.dims["GAP"] == 3 and s.dims["PLACE"] == 3 and s.dims["DOC"] == 1
+    rules = {h.rule for h in s.hits}
+    assert {"GAP.2.specific_name", "GAP.3.stated_consequence", "PLACE.list.3",
+            "M2.adequacy_questioned", "M5.missing_analysis_named", "MECH.cause_effect"} <= rules
+    assert comment.gate and answer.level == "A2"
+
+    s, comment, answer = _one(LAW_SENTENCE)
+    assert s.dims["LAW"] == 2 and s.dims["EVID"] == 0
+    assert "LAW.2.citation_form" in {h.rule for h in s.hits}
+    assert answer.level == "A1"
+
+    s, _, _ = _one(ASK_SENTENCE)
+    assert s.dims["ASK"] == 3 and s.ask_names and s.dims["GAP"] == 2
+
+    s, comment, answer = _one(STAND_SENTENCE)
+    assert s.dims["STAND"] == 3 and s.stand_this_place and s.dims["PLACE"] == 1
+    assert not comment.gate and answer.level == "A0"
+
+    s, _, _ = _one(ALT_SENTENCE)
+    assert s.dims["ALT"] == 2 and s.alt_distinct
+
+    s, _, _ = _one(EVID_SENTENCE)
+    assert s.dims["EVID"] == 3 and s.evid_applied
+
+    s, comment, _ = _one(DISPOSITION)
+    assert comment.strength == 1 and comment.band == "minimal" and not comment.gate
+
+
+def test_roll_up_takes_the_maximum_and_names_the_first_sentence():
+    scores, _, _ = mf_run.score_text("t", DISPOSITION + " " + GAP_SENTENCE + " " + LAW_SENTENCE, Context())
+    assert len(scores) == 3
+    comment = roll_up("t", scores)
+    assert comment.dims["GAP"] == 3 and comment.dims["LAW"] == 2 and comment.sentence_count == 3
+    assert {b["dimension"]: b["unit_id"] for b in comment.gate_basis} == {"GAP": 2, "LAW": 3}
+    assert rate(comment).level == "A1"
+
+
+CIDS = ["FS-2025-0001-0001", "FS-2025-0001-0002", "FS-2025-0001-0003"]
+
+
+@pytest.fixture
+def dbfile(tmp_path, monkeypatch):
+    path = tmp_path / "roadless.sqlite"
+    conn = db.connect(path, create=True)
+    conn.executescript(db.SCHEMA_PATH.read_text(encoding="utf-8"))
+    texts = [GAP_SENTENCE + " " + LAW_SENTENCE, EVID_SENTENCE, DISPOSITION]
+    for cid, text in zip(CIDS, texts):
+        conn.execute("INSERT INTO comment (comment_id, comment_text) VALUES (?, ?)", (cid, text))
+        conn.execute("INSERT INTO substance_floor (comment_id, floored, has_entity, has_citation,"
+                     " has_deficiency, has_firstperson) VALUES (?, 0, 1, 0, 1, 0)", (cid,))
+    # Two class A rows and one B2: the population is class A only.
+    conn.execute("INSERT INTO substance_screen (comment_id, screen_class, authority, reference, doc_cite,"
+                 " action_ref, deficiency, evid_ner) VALUES (?, 'A', 1, 0, 0, 1, 1, 0)", (CIDS[0],))
+    conn.execute("INSERT INTO substance_screen (comment_id, screen_class, authority, reference, doc_cite,"
+                 " action_ref, deficiency, evid_ner) VALUES (?, 'A', 0, 0, 1, 1, 0, 0)", (CIDS[1],))
+    conn.execute("INSERT INTO substance_screen (comment_id, screen_class, authority, reference, doc_cite,"
+                 " action_ref, deficiency, evid_ner) VALUES (?, 'B2', 0, 0, 0, 1, 0, 0)", (CIDS[2],))
+    conn.execute("INSERT INTO comment_authorities (comment_id, citation, mode, matched_text, family_key)"
+                 " VALUES (?, '36 CFR 294', 'strict', '36 CFR 294.12', '36 cfr 294')", (CIDS[0],))
+    conn.commit()
+    conn.close()
+    monkeypatch.setattr(db, "DB_PATH", path)
+    return path
+
+
+def test_score_run_over_the_file(dbfile, tmp_path, capsys):
+    json_dir = tmp_path / "json"
+    assert mf_run.main(["score", "--limit", "1", "--json", str(json_dir)]) == 0
+    out = capsys.readouterr().out
+    assert "2 class A comments; 0 scored under rule set" in out and "1 to score" in out
+    conn = db.connect(dbfile)
+    assert [r[0] for r in conn.execute("SELECT comment_id FROM mf_comment_score")] == [CIDS[0]]
+    row = conn.execute("SELECT gap, law, gate, band, run_id FROM mf_comment_score").fetchone()
+    assert (row["gap"], row["law"], row["gate"], row["band"]) == (3, 2, 1, "marginal")
+    assert conn.execute("SELECT level FROM mf_comment_answerability").fetchone()[0] == "A1"
+    unit = conn.execute("SELECT unit_id, start_char, end_char FROM mf_sentence_score").fetchone()
+    rowid = conn.execute("SELECT rowid FROM comment WHERE comment_id = ?", (CIDS[0],)).fetchone()[0]
+    assert unit["unit_id"] == rowid and unit["start_char"] == 0
+    assert conn.execute("SELECT count(*) FROM mf_sentence_hit WHERE rule = 'LAW.2.confirmed_authority'").fetchone()[0] == 1
+    run = conn.execute("SELECT comments_scored, units_scored, finished_at FROM mf_score_run").fetchone()
+    assert (run["comments_scored"], run["units_scored"]) == (1, 1) and run["finished_at"]
+    conn.close()
+    rec = score_json.read_dir(json_dir)
+    assert list(rec) == [CIDS[0]]
+    assert rec[CIDS[0]]["scorer"] == "rules" and rec[CIDS[0]]["instrument"] == f"rules-{RULESET_VERSION}"
+    assert rec[CIDS[0]]["levels"]["GAP"] == 3 and rec[CIDS[0]]["a_level"] == "A1"
+
+    # The rest of the population, then nothing left.
+    assert mf_run.main(["score"]) == 0
+    assert "1 scored under rule set" in capsys.readouterr().out
+    assert mf_run.main(["score"]) == 0
+    assert "nothing to score" in capsys.readouterr().out
+    conn = db.connect(dbfile)
+    assert conn.execute("SELECT count(*) FROM mf_comment_score").fetchone()[0] == 2
+    assert conn.execute("SELECT count(*) FROM mf_score_run").fetchone()[0] == 2
+    # Rescoring a named comment replaces its rows with the same values.
+    before = conn.execute("SELECT * FROM mf_comment_score WHERE comment_id = ?", (CIDS[1],)).fetchone()
+    conn.close()
+    assert mf_run.main(["score", "--comment-id", CIDS[1]]) == 0
+    conn = db.connect(dbfile)
+    after = conn.execute("SELECT * FROM mf_comment_score WHERE comment_id = ?", (CIDS[1],)).fetchone()
+    assert tuple(after)[3:] == tuple(before)[3:] and after["run_id"] != before["run_id"]
+    assert conn.execute("SELECT count(*) FROM mf_sentence_hit").fetchone()[0] == \
+        conn.execute("SELECT count(*) FROM mf_sentence_hit WHERE run_id IN"
+                     " (SELECT run_id FROM mf_sentence_score)").fetchone()[0]
+    conn.close()
+    assert mf_run.main(["report"]) == 0
+    assert '"comments": 2' in capsys.readouterr().out
+
+
+def test_score_run_needs_the_screen(tmp_path, monkeypatch):
+    path = tmp_path / "roadless.sqlite"
+    conn = db.connect(path, create=True)
+    conn.executescript(db.SCHEMA_PATH.read_text(encoding="utf-8"))
+    conn.close()
+    monkeypatch.setattr(db, "DB_PATH", path)
+    with pytest.raises(SystemExit, match="run make screen first"):
+        mf_run.main(["score"])
+
+
+def _record(cid, scorer, levels, a_level="A0", evidence=()):
+    strength = sum(levels.values())
+    return {"comment_id": cid, "scorer": scorer, "instrument": "v3" if scorer == "model" else "rules-3",
+            "model": "m" if scorer == "model" else None, "levels": levels, "strength": strength,
+            "gate": any(levels[d] >= 2 for d in ("GAP", "EVID", "ALT", "LAW")), "gate_basis": [],
+            "band": "minimal" if strength <= 5 else "marginal", "a_level": a_level, "evidence": list(evidence)}
+
+
+def test_score_json_check_and_compare(tmp_path):
+    zero = {d: 0 for d in score_json.DIMS}
+    bad = _record("x", "rules", zero)
+    bad["strength"] = 4
+    with pytest.raises(ValueError, match="not the sum"):
+        score_json.check(bad)
+    a_dir, b_dir = tmp_path / "a", tmp_path / "b"
+    score_json.write(a_dir, _record("c1", "model", {**zero, "GAP": 2}, "A3",
+                                    [{"dimension": "GAP", "quote": "fails to analyze"}]))
+    score_json.write(a_dir, _record("c2", "model", {**zero, "LAW": 2}, "A1"))
+    score_json.write(b_dir, _record("c1", "rules", {**zero, "GAP": 2}, "A3",
+                                    [{"dimension": "GAP", "grade": 2, "rule": "GAP.2.specific_name",
+                                      "match": "bull trout", "start": 0, "end": 10}]))
+    score_json.write(b_dir, _record("c2", "rules", zero, "A0",
+                                    [{"dimension": "GAP", "grade": 0, "rule": "GAP.0.nothing_named",
+                                      "match": "fails to", "start": 0, "end": 8}]))
+    score_json.write(b_dir, _record("c3", "rules", zero, "A0"))
+    out = io.StringIO()
+    assert compare_scores.compare(score_json.read_dir(a_dir), score_json.read_dir(b_dir), 20, out) == 0
+    text = out.getvalue()
+    assert "in both: 2; only in A: 0; only in B: 1" in text
+    assert "  GAP          2        0        0" in text
+    assert "  LAW          1        1        0" in text
+    assert "gate: same on 1 of 2; open in A 2, in B 1, in both 1" in text
+    assert "answerability level: same on 1 of 2" in text
+    assert "gate disagreements: 1" in text and "\nc2: A gate=True" in text
+    # Only the disagreement's evidence is printed, each side's in its own form.
+    assert "    GAP 0 GAP.0.nothing_named: fails to" in text
+    assert "GAP.2.specific_name" not in text

@@ -1,0 +1,74 @@
+# ALT 2 — a named measure that makes an alternative concrete enough to
+# evaluate when no place, figure or condition word does: "temporary logging
+# roads and strategic fire breaks", "a phased, forest-level approach".
+# Rule set 2, from the 400-comment under-gating review of 2026-10-06.
+temporary roads
+temporary road
+temporary logging roads
+temporary access
+fire breaks
+firebreaks
+fire break
+fuel breaks
+fuelbreaks
+fuel break
+buffer
+buffers
+buffer zone
+buffer zones
+setback
+setbacks
+phased
+phase-in
+pilot
+pilot program
+pilot project
+forest-level
+forest level
+forest plan
+forest plans
+forest plan revision
+forest planning
+site-specific review
+site-specific nepa
+site-specific analysis
+project-level
+project level
+local decision
+local decisions
+targeted fuel treatments
+targeted treatments
+targeted changes
+strategic fuels treatments
+strategic fuel treatments
+fuels treatments
+fuel treatments
+prescribed fire
+prescribed burns
+prescribed burning
+thinning
+mechanical thinning
+decommission
+decommissioning
+decommission-on-completion
+seasonal closures
+time-bounded
+sunset clause
+sunset provision
+exceptions process
+waiver process
+petition process
+petitions
+state petitions
+state-specific rules
+state rules
+mapped exemptions
+wildland-urban interface
+wui
+community protection zones
+defensible space
+retain the baseline
+baseline protections
+narrowly tailored
+narrow exceptions
+limited exceptions

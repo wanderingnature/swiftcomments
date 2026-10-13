@@ -1,0 +1,24 @@
+# ASK — work named as a noun ("prepare a cumulative sediment analysis",
+# "needs more study"). The noun's own modifiers and prepositional attachments
+# decide whether it names a subject (ASK 2) or only asks for more work (ASK 1).
+study
+studies
+analysis
+analyses
+review
+evaluation
+assessment
+examination
+consideration
+disclosure
+sampling
+survey
+surveys
+monitoring
+modeling
+modelling
+inventory
+mapping
+look
+scrutiny
+attention

@@ -1,0 +1,36 @@
+# EVID — a first-person observation. Level 2 only with a date form beside it; a
+# dated observation stays at 2 even though it holds a year. Without a date it is
+# an applied source that names nothing (level 1).
+i have seen
+i've seen
+i saw
+i observed
+i have observed
+i've observed
+i watched
+i have watched
+i've watched
+i documented
+i have documented
+i photographed
+i measured
+i counted
+i found
+i have found
+i have personally seen
+i have witnessed
+i witnessed
+i've witnessed
+we saw
+we observed
+we have observed
+we've observed
+we documented
+we have documented
+we counted
+we measured
+we photographed
+we have seen
+we've seen
+we witnessed
+we have witnessed

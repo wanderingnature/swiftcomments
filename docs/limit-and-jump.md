@@ -37,6 +37,7 @@ minutes.
 | `screen` | survivor | the first N survivors; replaced by the whole run later |
 | `stance` | group | the first N groups, stored and loaded; the log's closing lines give the `--resume` command |
 | `score` | comment | the first N of the queue |
+| `score-rules` | comment | the first N class A comments the rules have not scored |
 | `assemble` | | none: inheritance over every campaign |
 | `rate` | | none: minutes |
 | `fetch` | file | the first N files |

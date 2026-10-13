@@ -1,0 +1,28 @@
+# ALT 2 — an exception or condition that makes an alternative concrete enough
+# to evaluate, when no place, unit or number does.
+except
+except for
+except where
+except in
+exempt
+exempting
+exemption
+unless
+only if
+only where
+only when
+provided that
+on the condition that
+conditioned on
+limited to
+restricted to
+no more than
+not more than
+at most
+up to
+within
+outside of
+buffer
+buffers
+setback
+setbacks

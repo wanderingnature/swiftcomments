@@ -1,0 +1,18 @@
+# EVID — the action's own document, named inside a span, is what the source is
+# applied TO, not a source the commenter is citing. These names do not make a
+# span "name a source", so an unnamed authority pointed at the DEIS stays at
+# level 1 instead of being lifted to 2 by the document's own acronym.
+deis
+eis
+feis
+seis
+draft eis
+final eis
+supplemental eis
+draft environmental impact statement
+final environmental impact statement
+environmental impact statement
+the proposed rule
+this rulemaking
+the proposal
+the docket

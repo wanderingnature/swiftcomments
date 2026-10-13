@@ -1,0 +1,28 @@
+# ASK 1 — an object that names nothing: a pronoun, a demonstrative, or a bare
+# generic noun. A work verb with one of these as its object asks for work with
+# nothing named ("study this more carefully", "look into the issue").
+this
+that
+it
+them
+these
+those
+more
+everything
+anything
+something
+matter
+matters
+thing
+things
+issue
+issues
+problem
+problems
+concern
+concerns
+question
+questions
+situation
+subject
+topic
