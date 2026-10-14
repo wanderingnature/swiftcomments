@@ -166,6 +166,14 @@ tokeniser strips markup and unescapes first.
 | `make score`, step 6 | the substance reading | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
 | `make attachments`, step 8 | the roster | `roster-v1`, `organisation_roster.py`, the target's fourth pass | `qwen/qwen3.8-27b` | 3,002 letters read |
 
+Those are the figures of the model we used, Qwen3.8-27B run locally, for the
+analysis published at roadless.org. The runs of this repository use Qwen3.8-Flash
+(`qwen/qwen3.8-flash`) through an API, chosen for cost and speed; its rows carry its
+name, and its figures are added to the table as they are measured. Any model a server
+behind the OpenAI chat API serves can be named in `.env`; `docs/model-server.md` says
+what the two we know need, what another choice means for the figures, and how two
+models are compared on the same comments.
+
 A model step is proven before it is run in full: `make stance LIMIT=200` classifies
 200 groups, stores and loads them and exits, and the log's closing lines give the
 `--resume` command that sends the rest.

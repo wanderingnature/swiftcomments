@@ -27,14 +27,53 @@ variables live in `.env` (copy `.env.example`).
 
 ## The model
 
-Qwen3.8-27B, Apache 2.0, 27 billion parameters, 262,144 tokens of context
-(https://huggingface.co/Qwen/Qwen3.8-27B). It is the model our run used for every
-model step. A 4-bit quantisation is 16 to 17 GB on disk and runs on a machine with
-24 GB of memory or more; the full-precision weights need a GPU with about 60 GB.
+The pipeline runs any model a server behind the OpenAI chat API serves, named in
+`LLM_MODEL`. The three model steps need from it: a reply constrained to a JSON schema
+(`response_format` of type `json_schema`), the thinking switch off, temperature 0.
+Every row a model step writes is stamped with the model's name, so a file holds rows
+from more than one model and says which made each. A model choice is a model choice:
+a smaller model runs on a laptop and reads less well; a larger one reads better, is
+slow or impossible to run locally, and costs money through an API. Three things a
+reader needs to know, and this page keeps current.
 
-The measured repeatability of the substance instrument on this model is 65 of 100
-readings identical between two runs, so two runs of the pipeline do not match row for
-row. The method's pages say what that means for the figures.
+**The model we used.** Qwen3.8-27B (https://huggingface.co/Qwen/Qwen3.8-27B; Apache
+2.0, 27 billion parameters, 262,144 tokens of context), run locally through LM
+Studio, for every model step of the analysis published at roadless.org. The figures
+in the method's pages and `docs/first-run.md`, and the token counts in the README's
+model-steps table, are from it. A 4-bit quantisation is 16 to 17 GB on disk and runs
+on a machine with 24 GB of memory or more; the full-precision weights need a GPU with
+about 60 GB. The measured repeatability of the substance instrument on this model is
+65 of 100 readings identical between two runs, so two runs of the pipeline do not
+match row for row. The method's pages say what that means for the figures.
+
+**The model this repository's runs use.** Qwen3.8-Flash (`qwen/qwen3.8-flash`),
+through a hosted API, chosen on 2026-10-13 for cost and speed: it costs about a third
+of the 27B through the same API and answers faster, which makes the method affordable
+for a reader who cannot run a model locally or wants a result in hours rather than
+days. The figures of our runs on it are recorded in the README's model-steps table as
+they are measured, and the comparison with the 27B on the same comments is made with
+`make compare-scores` (`docs/model-free-scoring.md`). Its open weights are
+Qwen3.8-Flash-Next (https://huggingface.co/Qwen/Qwen3.8-Flash-Next; 125 billion
+parameters, 6 billion active per token, 512 experts; `qwen3.8-flash` as served is
+"the official version based on Qwen3.8-Flash-Next with more production features"),
+and quantisations of them run locally where the memory allows: the GSQ-RCO GGUF
+builds (https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF) hold the
+transformer weights in a first shard that has to be resident, 37.6 GB for the 2-bit
+build and 47.0 GB for the 3-bit build the card calls the stronger operating point,
+and a 28.8 GB n-gram shard that can stay memory-mapped on SSD; a 96 GB Apple Silicon
+machine holds either, a 12 GB GPU holds neither. They run unmodified in LM Studio,
+ollama and llama.cpp.
+
+**Other models.** Any other model is a matter of putting its name in `.env`. Two
+things follow. The instruments were measured on the 27B, so another model's reading
+is a different reading: its rows carry its name, the downstream figures are not
+expected to match `checks/expected.json`, and `make score JSON=dir` with
+`make compare-scores` is how the difference is measured on the same comments. And
+the thinking switch is spelled differently by different servers; the client sends
+the spellings LM Studio, vLLM, llama.cpp and ollama take (above), and a pilot of a
+few hundred calls shows in its tokens-out per call whether the server honoured it.
+Among the Qwen3 family these two are the ones that run both locally and through an
+API; a reader picking another model picks it for their own machine and budget.
 
 ## What was tested
 
