@@ -216,6 +216,9 @@ def _require_env(name: str) -> str:
 
 
 class ChatClient:
+    # How long one call keeps waiting through 429s before it gives up (seconds).
+    LIMIT_PATIENCE = 600.0
+
     def __init__(self, base_url=None, model=None, *, api_key=None, provider=None, timeout=300,
                  max_retries=5, max_tokens=DEFAULT_MAX_TOKENS, log=None, max_in_flight=None):
         self.base_url = (base_url or _require_env("LLM_BASE_URL")).rstrip("/")
@@ -241,6 +244,12 @@ class ChatClient:
         self.completion_tokens = 0
         self.cost = None
         _CLIENTS.append(self)
+
+    @property
+    def in_flight_cap(self):
+        """(calls the client lets out at once now, the most it ever will), or
+        (None, None) for a client with no maximum."""
+        return self._throttle.cap, self._throttle.max
 
     def _add_usage(self, payload):
         usage = (payload.get("usage") or {}) if isinstance(payload, dict) else {}
@@ -302,6 +311,7 @@ class ChatClient:
         given. Retry rules are post()'s."""
         last = None
         attempt = 0
+        limited_since = None    # when this call first drew a 429 and began waiting
         while attempt < self.max_retries:
             self._throttle.acquire()
             t0 = time.monotonic()
@@ -336,24 +346,33 @@ class ChatClient:
                     if sc == 429:
                         limited = True
                         retry_after = _retry_after(exc.response.headers.get("Retry-After"))
+                if limited:
+                    # A 429 is the server's pace, not a failed attempt: it costs no
+                    # retry. The pause is shared, every worker of this client waits
+                    # it out before its next call, and fewer go at once after. A
+                    # call that has been waiting on 429s for LIMIT_PATIENCE gives up
+                    # with the server's own words.
+                    now = time.monotonic()
+                    limited_since = limited_since or now
+                    if now - limited_since > self.LIMIT_PATIENCE:
+                        raise requests.HTTPError(
+                            f"rate limited for {now - limited_since:.0f}s, more than"
+                            f" {self.LIMIT_PATIENCE:.0f}s: {exc}{detail}",
+                            response=exc.response) from None
+                    wait, first = self._throttle.limited(retry_after)
+                    if first:
+                        cap = (f", calls in flight capped at {self._throttle.cap}"
+                               if self._throttle.max is not None else "")
+                        self._log(f"rate limited by {self.base_url}: every call waits"
+                                  f" {wait:.0f}s{cap}{detail}")
+                    continue
                 if attempt < self.max_retries - 1:
-                    if limited:
-                        # The pause is shared: every worker of this client waits
-                        # it out before its next call, and fewer go at once after.
-                        wait, first = self._throttle.limited(retry_after)
-                        if first:
-                            cap = (f", calls in flight capped at {self._throttle.cap}"
-                                   if self._throttle.max is not None else "")
-                            self._log(f"rate limited by {self.base_url}: every call waits"
-                                      f" {wait:.0f}s{cap} — retry {attempt + 2}/{self.max_retries}"
-                                      f"{detail}")
-                    else:
-                        wait = 2.0 * (attempt + 1)
-                        self._log(f"{type(exc).__name__} after {dt:.0f}s from"
-                             f" {self.base_url} — retry"
-                             f" {attempt + 2}/{self.max_retries} in {wait:.0f}s"
-                             f"{detail}")
-                        time.sleep(wait)
+                    wait = 2.0 * (attempt + 1)
+                    self._log(f"{type(exc).__name__} after {dt:.0f}s from"
+                         f" {self.base_url} — retry"
+                         f" {attempt + 2}/{self.max_retries} in {wait:.0f}s"
+                         f"{detail}")
+                    time.sleep(wait)
                 else:
                     self._log(f"{type(exc).__name__} after {dt:.0f}s from"
                          f" {self.base_url} — retries exhausted, raising"

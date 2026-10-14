@@ -352,11 +352,13 @@ class Run:
             secs = int(remaining / rate_run)
             eta = f"{secs // 3600}h{secs % 3600 // 60:02d}m"
         by_kind = ", ".join(f"{k} {n}" for k, n in kinds) or "none"
+        cap, cap_max = self.client.in_flight_cap
         self.log(
             f"CHUNK {chunk_no} committed: {loaded} loaded, {members:,} member rows replaced\n"
             f"done {n_loaded + n_err:,}/{self.total:,}"
             f" ({(n_loaded + n_err) / self.total:.1%})  loaded {n_loaded:,}  errors {n_err:,}"
-            f"  rate {rate_block:.2f}/s (chunk) {rate_run:.2f}/s (session)  ETA {eta}\n"
+            f"  rate {rate_block:.2f}/s (chunk) {rate_run:.2f}/s (session)  ETA {eta}"
+            f"  calls in flight {cap} of {cap_max}\n"
             f"tokens in {tok[0]:,} (cached {tok[1]:,}) out {tok[2]:,}  cost ${tok[3]:.4f} (run)"
             f" — errors by kind: {by_kind}")
 
