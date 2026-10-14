@@ -304,3 +304,19 @@ most the run will ever ask for, not where it begins.
 A run's rows carry one model name. `make stance RUN=<id>` refuses to continue a run
 under a changed `LLM_MODEL`, including the same weights under another provider's
 name, and says so; a new run (`make stance LIMIT=200`) starts under the new name.
+
+**Refusals.** A provider may refuse a comment's text outright: Alibaba's content
+inspection, passed through by Together, answered `400 DataInspectionFailed: Input
+text data may contain inappropriate content` to 690 of the 78,953 groups of this
+docket on 2026-10-14, ordinary public comments every one. The runner records such
+an answer as the error kind `refused`, keeps it with the comment, and never sends
+it again (`RETRY=1` leaves them out); the closing block counts them and gives the
+query that lists them. To classify them through another server, put that server
+in `.env` and start a run confined to them:
+
+```
+make stance REFUSED_IN=<the run that refused them>
+```
+
+It is a new run under the new model name, over only those groups, and `make
+stance-runs` lists it beside the others.

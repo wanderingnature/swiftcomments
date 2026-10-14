@@ -269,3 +269,27 @@ def test_resume_refuses_another_model_name(ctx, monkeypatch):
         rg._resume_run(ctx, profile, "reclass_20261013_214534")
     monkeypatch.setenv("LLM_MODEL", "qwen/qwen3.8-flash")
     assert rg._resume_run(ctx, profile, "reclass_20261013_214534")[0] == "reclass_20261013_214534"
+
+
+def test_a_providers_content_refusal_is_its_own_kind_and_not_resent(ctx):
+    body = ('{"id": "x", "error": {"message": "<400> InternalError.Algo.DataInspectionFailed:'
+            ' Input text data may contain inappropriate content.", "type": "invalid_request_error"}}')
+    assert rg.refusal(body).startswith("<400> InternalError.Algo.DataInspectionFailed")
+    assert rg.refusal('{"error": {"message": "bad schema"}}') is None
+    with db.connect(**ctx.db_config) as conn:
+        conn.execute("DELETE FROM classification_run_items")
+        conn.execute("INSERT INTO classification_run_items (run_id, group_id, attempt, comment_id,"
+                     " status, error_kind, error_detail, seconds) VALUES ('reclass_test', 1, 1, ?,"
+                     " 'error', 'refused', 'inappropriate', 1.0)", (MEMBERS[0],))
+    log = rg.RunLog(Path(ctx.db_config["path"]).parent / "t2.log")
+    run = rg.Run(ctx, _profile("{comment_text}{topics_list}"), "reclass_test", None, 1, 500, log)
+    assert run.latest_items() == {1: (1, "error", "refused")}
+
+    assert rg.refused_groups(ctx, "reclass_test") == {1}
+    confined = rg.Run(ctx, _profile("{comment_text}{topics_list}"), "reclass_other", None, 1, 500, log,
+                      only_groups={1})
+    assert [r[0] for r in confined.eligible_groups()] == [1]
+    assert rg.Run(ctx, _profile("{comment_text}{topics_list}"), "reclass_other", None, 1, 500, log,
+                  only_groups={999}).eligible_groups() == []
+    with pytest.raises(SystemExit, match="no group refused"):
+        rg.refused_groups(ctx, "reclass_none")

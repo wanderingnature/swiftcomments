@@ -367,7 +367,8 @@ CREATE TABLE classification_run_items (
     comment_id        TEXT    NOT NULL,
     status            TEXT    NOT NULL CHECK (status IN ('received', 'loaded', 'error')),
     error_kind        TEXT    CHECK (error_kind IN ('transport', 'truncated', 'unparseable',
-                                                    'unknown_topic', 'invalid_sentiment')),
+                                                    'unknown_topic', 'invalid_sentiment',
+                                                    'refused')),   -- the provider's content inspection
     error_detail      TEXT,
     finish_reason     TEXT,
     prompt_tokens     INTEGER,
