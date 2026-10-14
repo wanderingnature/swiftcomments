@@ -18,9 +18,21 @@ model server of .env. Design: docs/design/full-reclassification-run.md.
         (a pilot: 200 groups sent, stored and loaded, then exit; --resume sends the rest)
     python scripts/reclassify_groups.py --project roadless --resume <run_id>
     python scripts/reclassify_groups.py --project roadless --resume <run_id> --retry-errors
+    python scripts/reclassify_groups.py --project roadless --runs
+        (every run so far, what each loaded, and the command that continues the latest)
+
+    make stance LIMIT=200                      a new run, the first 200 groups
+    make stance-runs                           the runs and the command to continue
+    make stance RUN=<run_id> LIMIT=200         the next 200 of that run
+    make stance RUN=<run_id> CONCURRENCY=32    the rest of it
+
+A --limit counts within the run it is given: a resumed run skips every group the
+run has an item for and sends the next N; a --new-run starts from the first group
+again. The client keeps at most --concurrency calls in flight and lowers that on
+its own when the server answers 429 (shared/llm_client.py).
 
 Reads and writes data/roadless.sqlite through shared/db.py; the model server from
-.env (LLM_BASE_URL, LLM_API_KEY, LLM_MODEL).
+.env (LLM_BASE_URL, LLM_API_KEY, LLM_MODEL, LLM_PROVIDER).
 """
 
 import argparse
@@ -91,7 +103,9 @@ class Run:
         self.concurrency = concurrency
         self.chunk_size = chunk_size
         self.log = log
-        self.client = ChatClient(log=log.diag)      # the server and the model of .env
+        # The server and the model of .env; the client keeps at most `concurrency`
+        # calls in flight and lowers that itself when the server answers 429.
+        self.client = ChatClient(log=log.diag, max_in_flight=concurrency)
         self.model = self.client.model
         self.model_stamp = model_of(self.model)
         self.topic_names = {t["topic_name"] for t in profile.topics}
@@ -466,6 +480,61 @@ def _start_run(ctx, profile):
     return run_id, run_ts
 
 
+def list_runs(ctx, out=None):
+    """Every run of classification_runs, newest last: its id, model, prompt,
+    what it loaded, errored, stored unloaded, and has not sent of the eligible
+    groups of today's partition; then the command that continues the latest run
+    with groups left, or says there is none."""
+    out = out or sys.stdout
+    with db.connect(**ctx.db_config) as conn:
+        total = conn.execute(ctx.render_sql(
+            "SELECT count(*) FROM {analysis}.comment_group g"
+            " JOIN {analysis}.v_source_comments c ON c.comment_id = g.canonical_comment_id"
+            " WHERE length(c.comment_text) >= ?"), (MIN_COMMENT_LENGTH,)).fetchone()[0]
+        rebuilt_at = conn.execute(ctx.render_sql(
+            "SELECT max(built_at) FROM {analysis}.comment_group")).fetchone()[0]
+        runs = conn.execute(ctx.render_sql(
+            "SELECT run_timestamp, model_name, prompt_id, comment_count, created_at"
+            " FROM {analysis}.classification_runs ORDER BY run_timestamp")).fetchall()
+        rows = []
+        for ts, model, prompt_id, n_groups, created in runs:
+            run_id = f"reclass_{datetime.fromisoformat(ts):%Y%m%d_%H%M%S}"
+            counts = dict(conn.execute(ctx.render_sql(
+                "SELECT status, count(*) FROM ("
+                "  SELECT status, row_number() OVER (PARTITION BY group_id ORDER BY attempt DESC) AS rn"
+                "  FROM {analysis}.classification_run_items WHERE run_id = ?)"
+                " WHERE rn = 1 GROUP BY status"), (run_id,)).fetchall())
+            items = sum(counts.values())
+            rows.append((run_id, model, prompt_id, n_groups, created, counts, items,
+                         rebuilt_at is not None and created is not None and rebuilt_at > created))
+    print(f"eligible groups today: {total:,} (canonical >= {MIN_COMMENT_LENGTH} chars)", file=out)
+    if not rows:
+        print("no stance run yet: make stance LIMIT=200 starts one", file=out)
+        return
+    continuable = None
+    for run_id, model, prompt_id, n_groups, created, counts, items, rebuilt in rows:
+        unsent = max(0, total - items)
+        state = ("partition rebuilt since; cannot be continued" if rebuilt
+                 else "complete" if unsent == 0 and not counts.get("error") and not counts.get("received")
+                 else f"{unsent:,} not yet sent")
+        print(f"{run_id}  model {model}  prompt id {prompt_id}  started {created}:"
+              f" loaded {counts.get('loaded', 0):,}, errors {counts.get('error', 0):,},"
+              f" stored not loaded {counts.get('received', 0):,}; {state}", file=out)
+        if not rebuilt and (unsent or counts.get("received") or counts.get("error")):
+            continuable = (run_id, unsent, counts.get("error", 0))
+    slug = ctx.slug
+    if continuable is None:
+        print("nothing to continue: make stance LIMIT=200 starts a new run", file=out)
+        return
+    run_id, unsent, n_err = continuable
+    print(f"to continue {run_id}: make stance RUN={run_id} (LIMIT=N for the next N groups,"
+          f" CONCURRENCY=N for calls in flight)", file=out)
+    print(f"  the same as: python scripts/reclassify_groups.py --project {slug} --resume {run_id}", file=out)
+    if n_err:
+        print(f"  with its {n_err:,} errors sent again: python scripts/reclassify_groups.py"
+              f" --project {slug} --resume {run_id} --retry-errors", file=out)
+
+
 def _resume_run(ctx, profile, run_id):
     """The run header of `run_id`; refuses a changed prompt or a rebuilt partition."""
     try:
@@ -499,6 +568,8 @@ def main():
     mode = ap.add_mutually_exclusive_group(required=True)
     mode.add_argument("--new-run", action="store_true", help="Start a new run")
     mode.add_argument("--resume", metavar="RUN_ID", help="Continue a run")
+    mode.add_argument("--runs", action="store_true",
+                      help="List the runs so far and the command that continues the latest")
     ap.add_argument("--retry-errors", action="store_true",
                     help="With --resume: also send again the groups whose latest call errored")
     ap.add_argument("--concurrency", type=int, default=16,
@@ -517,6 +588,9 @@ def main():
         ap.error("--concurrency and --chunk-size must be >= 1")
 
     ctx = ProjectContext.load(args.project)
+    if args.runs:
+        list_runs(ctx)
+        return
     profile = ProjectProfile.load(ctx, "sentiment_topic")
     if args.new_run:
         run_id, run_ts = _start_run(ctx, profile)

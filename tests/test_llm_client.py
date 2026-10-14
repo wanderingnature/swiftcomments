@@ -40,3 +40,38 @@ def test_provider_pin_is_on_every_body_only_when_set(monkeypatch):
     assert remote._headers == {"Authorization": "Bearer k"}
     pinned = ChatClient(base_url=OPENROUTER, model="m", api_key="k", provider="other")
     assert pinned.chat_body({})["provider"]["only"] == ["other"]
+
+
+def test_throttle_pauses_every_worker_and_halves_the_cap_then_recovers():
+    from shared.llm_client import _Throttle
+    import time
+    th = _Throttle(16)
+    th.acquire(); th.acquire()
+    assert th.in_flight == 2
+    wait, first = th.limited(None)
+    assert first and wait == 2.0 and th.cap == 8
+    # A second 429 inside the pause extends nothing and is not the first.
+    wait2, first2 = th.limited(None)
+    assert not first2 and 0 < wait2 <= 2.0
+    th.release(); th.release()
+    t0 = time.monotonic()
+    th.acquire()                       # waits the pause out before the next call
+    assert time.monotonic() - t0 >= 1.5
+    th.release()
+    # The server's Retry-After wins over the doubling wait once the pause has passed.
+    th.pause_until = 0.0
+    wait3, first3 = th.limited(7)
+    assert first3 and wait3 == 7.0 and th.cap == 4
+    th.pause_until = 0.0
+    for _ in range(_Throttle.STREAK):
+        th.succeeded()
+    assert th.cap == 5 and th.backoff == 0.0
+    # A client with no maximum shares the pause and keeps no cap.
+    free = _Throttle(None)
+    assert free.limited(None) == (2.0, True) and free.cap is None
+
+
+def test_retry_after_header_is_seconds_or_nothing():
+    from shared.llm_client import _retry_after
+    assert _retry_after("12") == 12.0 and _retry_after(None) is None
+    assert _retry_after("Wed, 21 Oct 2026 07:28:00 GMT") is None and _retry_after("0") is None
