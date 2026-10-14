@@ -95,7 +95,9 @@ model server runs the method with it, and a reader with one runs both and sets t
 side by side (`docs/model-free-scoring.md`).
 
 `make corpus` creates the file itself if `make schema` has not run. `make all` is all
-of it in this order, after `make schema`, for a machine left to run.
+of it in this order, after `make schema`, for a machine left to run. The listing is
+the whole method; the Status section at the end says which targets are built at
+this commit and which are still to come.
 
 ## Learning the method one step at a time: a sample, then the reference result
 
@@ -227,8 +229,11 @@ attachments/, data/   the fetched files and the SQLite file, git-ignored
 ## Status
 
 The repository is being built in phases. At this commit it holds the skeleton, the
-seeds, the schema, the loader and the steps through the stance run: `make schema`,
-`make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`, `make floor`,
-`make groups`, `make screen` and `make stance` are ported, and `make console` reads
-the file. The scoring, the answerability rating, the attachments, the organisations
-and the facts table follow, one commit per file.
+seeds, the schema, the loader and the steps through the substance reading:
+`make schema`, `make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`,
+`make floor`, `make groups`, `make screen`, `make stance`, `make score` and
+`make score-rules` are ported, `make console` reads the file, and `make extract`,
+`make jump` and `make compare-scores` work. Not yet here, in run order:
+`make assemble`, `make rate`, `make fetch`, `make text`, `make attachments`,
+`make orgs`, `make facts` and `make check`; each lands in its own commit, and this
+list shrinks with each.
