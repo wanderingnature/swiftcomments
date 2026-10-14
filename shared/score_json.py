@@ -1,6 +1,6 @@
 """One JSON file per comment, the same shape from both substance readings, so
 the two can be set side by side (scripts/compare_scores.py). Written by
-`make score JSON=dir` (the model's reading, scripts/substance/score_comments.py)
+`make score-model JSON=dir` (the model's reading, scripts/substance/score_comments.py)
 and `make score-model-free JSON=dir` (the rules' reading, scripts/model_free/run.py).
 
     {

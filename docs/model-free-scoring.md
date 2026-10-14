@@ -1,6 +1,6 @@
 # The model-free reading: `make score-model-free`
 
-Step 6 has two readings of the same comments. `make score` sends every class A
+Step 6 has two readings of the same comments. `make score-model` sends every class A
 comment to the language model with the v3 instrument. `make score-model-free` reads the
 same comments by rule alone: no model call, nothing to run but Python and spaCy, the
 same eight dimensions, the same strength, gate and band, the same A0 to A3 rating. It
@@ -41,7 +41,7 @@ uv run python scripts/model_free/run.py report      # counts by band, gate, leve
 | input | here |
 |---|---|
 | the comment's stored text | `comment.comment_text`, normalised as the package normalises (entities unescaped, tags out, quotes straightened, whitespace collapsed) |
-| the class A population | `substance_screen`, as `make score` reads it |
+| the class A population | `substance_screen`, as `make score-model` reads it |
 | the confirmed citations and legal authorities of each comment | `comment_cited_references`, `comment_authorities` (`matched_text`) |
 | the match keys of every known authority | `legal_authority.match_keys` |
 | the place list | `seeds/entity_tagging/seed_places.csv`, the file the v3 grader reads too |
@@ -73,7 +73,7 @@ levels, strength, gate, gate basis, band, the A level, and the evidence, which i
 model's spans on one side and the rules' hits on the other.
 
 ```
-make score JSON=json/model
+make score-model JSON=json/model
 make score-model-free JSON=json/rules
 make compare-scores A=json/model B=json/rules
 ```

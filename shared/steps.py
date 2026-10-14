@@ -27,7 +27,7 @@ STEPS = [
     ("screen", ["substance_screen"]),
     ("stance", ["classification_runs", "classification_run_items",
                 "comment_classification", "classification_topics"]),
-    ("score", ["substance_scores", "substance_score_parts", "substance_artifacts"]),
+    ("score-model", ["substance_scores", "substance_score_parts", "substance_artifacts"]),
     ("score-model-free", ["mf_score_run", "mf_sentence_score", "mf_sentence_hit",
                      "mf_comment_score", "mf_comment_answerability"]),
     ("assemble", ["substance_scores", "substance_score_parts"]),

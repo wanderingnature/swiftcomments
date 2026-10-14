@@ -67,7 +67,7 @@ def test_substance_and_roster_instruments_are_where_the_scripts_read_them():
     # shows its prompt; the scripts strip one quote mark per line before sending.
     marker = "\n# System prompt\n"
     text = (INSTRUMENTS / "substantive-scoring-v3.md").read_text(encoding="utf-8")
-    assert text.startswith("# This is the prompt for step 6, the substance reading (`make score`)")
+    assert text.startswith("# This is the prompt for step 6, the substance reading (`make score-model`)")
     start, end = text.index(marker), text.index("# SECTION D")
     assert start < end
     prompt = _unquoted(text[start + len(marker):end])

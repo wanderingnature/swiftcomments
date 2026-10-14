@@ -173,7 +173,7 @@ STEPS = [
         ],
     },
     {
-        "target": "score",
+        "target": "score-model",
         "what": "step 6 (model): the v3 substance reading over class A",
         "figures": [
             ("class A to read",

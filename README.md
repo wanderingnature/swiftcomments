@@ -86,7 +86,7 @@ make check                       every figure beside checks/expected.json
 
 Three targets, marked `MODEL`, send text to the language model, and they are the
 three prompts of `docs/instruments/`: step 3, the stance (`make stance`); step 6, the
-substance reading (`make score`); step 8, the roster, one of the five passes of
+substance reading (`make score-model`); step 8, the roster, one of the five passes of
 `make attachments` (the OCR pass in the same target goes to the OCR server instead).
 Every other target is code and dictionaries. The model targets are the long ones: on
 one local server the substance reading runs for days. `make score-model-free` is the
@@ -165,7 +165,7 @@ tokeniser strips markup and unescapes first.
 | target | reading | instrument | model | what it took on this docket |
 |---|---|---|---|---|
 | `make stance`, step 3 | the stance | `roadless_rescission_v2`, one call per group | `qwen/qwen3.8-27b` | one call per group of the final partition, 81,569 groups over the 390,062 comments with text; 1,360 tokens in and 211 out a call, measured on the 44,555 calls of the run of 2026-09-25 (60.6 M in, 9.4 M out) |
-| `make score`, step 6 | the substance reading | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
+| `make score-model`, step 6 | the substance reading | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
 | `make attachments`, step 8 | the roster | `roster-v1`, `organisation_roster.py`, the target's fourth pass | `qwen/qwen3.8-27b` | 3,002 letters read |
 
 Those are the figures of the model we used, Qwen3.8-27B through a paid API, for the
@@ -240,7 +240,7 @@ the originals with the remarks that only made sense there edited out.
 The repository is being built in phases. At this commit it holds the skeleton, the
 seeds, the schema, the loader and the steps through the substance reading:
 `make schema`, `make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`,
-`make floor`, `make groups`, `make screen`, `make stance`, `make score`,
+`make floor`, `make groups`, `make screen`, `make stance`, `make score-model`,
 `make score-model-free`, `make assemble` and `make rate` are ported, `make console` reads
 the file, and `make extract`, `make jump` and `make compare-scores` work. Not yet
 here, in run order: `make fetch`, `make text`, `make attachments`, `make orgs`,

@@ -163,7 +163,7 @@ def test_dry_run_report_prints_the_queue_and_touches_nothing(capsys):
              "user": "COMMENT (comment_id=c1):\n---\nbody\n---"},
             {"request_id": "c2#exemplar", "comment_id": "c2", "kind": "exemplar",
              "user": "COMMENT (comment_id=c2):\n---\nlonger body here\n---"}]
-    sc.dry_run_report(reqs, "v3", "SYSTEM PROMPT", "roadless.substance_scores", "make score")
+    sc.dry_run_report(reqs, "v3", "SYSTEM PROMPT", "roadless.substance_scores", "make score-model")
     out = capsys.readouterr().out
     assert "DRY RUN" in out and "no calls made" in out
     assert "substantive-scoring-v3.md" in out
@@ -177,9 +177,9 @@ def test_the_dry_run_ends_with_the_command_it_would_have_run(capsys):
     """House rule: a step in a chain prints the next command in full."""
     reqs = [{"request_id": "c1#direct", "comment_id": "c1", "kind": "unique",
              "user": "body"}]
-    sc.dry_run_report(reqs, "v3", "P", "roadless.substance_scores", "make score")
+    sc.dry_run_report(reqs, "v3", "P", "roadless.substance_scores", "make score-model")
     out = capsys.readouterr().out
-    assert "NEXT: make score" in out
+    assert "NEXT: make score-model" in out
 
 
 def test_next_steps_labels_the_first_one_next_and_the_rest_then(capsys):

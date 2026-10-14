@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Model-free scoring, fully parallel to v3: the rules' reading of every class A
-comment, no model call. Step 6, beside make score.
+comment, no model call. Step 6, beside make score-model.
 
     uv run python scripts/model_free/run.py score [--limit N] [--comment-id ID ...] [--ids-file F] [--json DIR]
     uv run python scripts/model_free/run.py report

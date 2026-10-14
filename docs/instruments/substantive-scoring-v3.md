@@ -1,4 +1,4 @@
-# This is the prompt for step 6, the substance reading (`make score`)
+# This is the prompt for step 6, the substance reading (`make score-model`)
 
 Instrument v3. Everything from the heading "System prompt" below to the deployment
 notes (the last section, D) is sent to the model as the system prompt, word for word,

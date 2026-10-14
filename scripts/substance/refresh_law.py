@@ -23,7 +23,7 @@ next, with answerability.py after it.
     make assemble        (the assembler, then this report)
 
 Ported from rtca: reads and writes data/roadless.sqlite through shared/db.py.
-In a run from empty the tags precede the scoring (make tag before make score),
+In a run from empty the tags precede the scoring (make tag before make score-model),
 so this finds nothing to change and says so; it is here for a file whose tags
 were rebuilt after a score was written.
 """
