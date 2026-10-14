@@ -296,7 +296,8 @@ CREATE TABLE classification_runs (
     prompt_id     INTEGER NOT NULL REFERENCES prompts (prompt_id),
     model_name    TEXT    NOT NULL,
     comment_count INTEGER NOT NULL,
-    created_at    TEXT    DEFAULT CURRENT_TIMESTAMP
+    created_at    TEXT    DEFAULT CURRENT_TIMESTAMP,
+    refused_in    TEXT                            -- the run whose refused groups this run is confined to
 );
 
 CREATE TABLE comment_classification (

@@ -520,8 +520,9 @@ def refused_groups(ctx, run_id):
     return ids
 
 
-def _start_run(ctx, profile):
-    """Record the run header and return (run_id, run_ts)."""
+def _start_run(ctx, profile, refused_in=None):
+    """Record the run header and return (run_id, run_ts). `refused_in` names the run
+    whose refused groups this run is confined to, so a resume stays confined."""
     run_ts = datetime.now()
     run_id = f"reclass_{run_ts:%Y%m%d_%H%M%S}"
     with db.connect(**ctx.db_config) as conn:
@@ -532,8 +533,10 @@ def _start_run(ctx, profile):
         assert n is not None
         conn.execute(ctx.render_sql(
             "INSERT INTO {analysis}.classification_runs"
-            " (run_timestamp, prompt_id, model_name, comment_count) VALUES (?, ?, ?, ?)"),
-            (run_ts.isoformat(sep=" "), profile.prompt_id, model_of(configured_model()), n[0]))
+            " (run_timestamp, prompt_id, model_name, comment_count, refused_in)"
+            " VALUES (?, ?, ?, ?, ?)"),
+            (run_ts.isoformat(sep=" "), profile.prompt_id, model_of(configured_model()), n[0],
+             refused_in))
     return run_id, run_ts
 
 
@@ -616,7 +619,8 @@ def list_runs(ctx, out=None):
 
 
 def _resume_run(ctx, profile, run_id):
-    """The run header of `run_id`; refuses a changed prompt or a rebuilt partition."""
+    """(run_id, run_ts, refused_in) from the run header of `run_id`; refuses a changed
+    prompt, a changed model or a rebuilt partition."""
     try:
         ts = datetime.strptime(run_id, "reclass_%Y%m%d_%H%M%S")
     except ValueError:
@@ -625,13 +629,13 @@ def _resume_run(ctx, profile, run_id):
         row = conn.execute(ctx.render_sql(
             "SELECT run_timestamp, prompt_id, created_at,"
             "       (SELECT max(built_at) FROM {analysis}.comment_group) > created_at,"
-            "       model_name"
+            "       model_name, refused_in"
             " FROM {analysis}.classification_runs"
             " WHERE strftime('%Y%m%d_%H%M%S', run_timestamp) = ?"),
             (f"{ts:%Y%m%d_%H%M%S}",)).fetchone()
     if row is None:
         raise SystemExit(f"No classification_runs row for {run_id}.")
-    run_ts, prompt_id, _created, rebuilt, run_model = row
+    run_ts, prompt_id, _created, rebuilt, run_model, refused_in = row
     if prompt_id != profile.prompt_id:
         raise SystemExit(
             f"{run_id} ran prompt id {prompt_id}; the active prompt is {profile.prompt_id}."
@@ -646,7 +650,7 @@ def _resume_run(ctx, profile, run_id):
         raise SystemExit(
             f"comment_group was rebuilt after {run_id} started — its group ids no longer"
             " match the stored calls. Start a new run.")
-    return run_id, datetime.fromisoformat(run_ts)
+    return run_id, datetime.fromisoformat(run_ts), refused_in
 
 
 def main():
@@ -683,19 +687,22 @@ def main():
         return
     profile = ProjectProfile.load(ctx, "sentiment_topic")
     only_groups = None
+    refused_in = args.refused_in
     if args.refused_in:
         only_groups = refused_groups(ctx, args.refused_in)
-        run_id, run_ts = _start_run(ctx, profile)
+        run_id, run_ts = _start_run(ctx, profile, refused_in=args.refused_in)
     elif args.new_run:
         run_id, run_ts = _start_run(ctx, profile)
     else:
-        run_id, run_ts = _resume_run(ctx, profile, args.resume)
+        run_id, run_ts, refused_in = _resume_run(ctx, profile, args.resume)
+        if refused_in:
+            only_groups = refused_groups(ctx, refused_in)
 
     log = RunLog(_REPO_ROOT / "logs" / f"reclassify_{run_id}.log")
     run = Run(ctx, profile, run_id, run_ts, args.concurrency, args.chunk_size, log,
               limit=args.limit, only_groups=only_groups)
     if only_groups is not None:
-        log(f"confined to the {len(only_groups):,} group(s) refused in {args.refused_in}")
+        log(f"confined to the {len(only_groups):,} group(s) refused in {refused_in}")
 
     def _stop(_sig, _frame):
         run.stopping = True
