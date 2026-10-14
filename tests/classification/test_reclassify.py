@@ -293,3 +293,24 @@ def test_a_providers_content_refusal_is_its_own_kind_and_not_resent(ctx):
                   only_groups={999}).eligible_groups() == []
     with pytest.raises(SystemExit, match="no group refused"):
         rg.refused_groups(ctx, "reclass_none")
+
+
+def test_refused_report_lists_each_refused_group_with_its_text(ctx, tmp_path):
+    import refused_report as rr  # pyright: ignore[reportMissingImports]
+    with db.connect(**ctx.db_config) as conn:
+        conn.execute("DELETE FROM classification_run_items")
+        conn.execute("DELETE FROM classification_runs")
+        conn.execute("INSERT INTO classification_runs (run_timestamp, prompt_id, model_name, comment_count)"
+                     " VALUES ('2026-10-13 23:41:02', 2, 'qwen/qwen3.8-flash', 1)")
+        conn.execute("INSERT INTO classification_run_items (run_id, group_id, attempt, comment_id,"
+                     " status, error_kind, error_detail, seconds) VALUES ('reclass_20261013_234102', 1, 2, ?,"
+                     " 'error', 'refused', '<400> DataInspectionFailed: inappropriate', 1.0)", (MEMBERS[0],))
+        text = rr.report(conn, "reclass_20261013_234102")
+    assert text.startswith("# Comments the provider refused in stance run reclass_20261013_234102")
+    assert "1 groups, standing for 5 comments" in text
+    assert "> <400> DataInspectionFailed: inappropriate" in text
+    assert f"| {MEMBERS[0]} | 1 | 5 |" in text and "| 2 |" in text
+    assert f"### {MEMBERS[0]} (group 1, 5 comment(s)," in text
+    assert "> " + TEST_COMMENT[:20] in text
+    with pytest.raises(SystemExit, match="no stance run reclass_20261013_000000"):
+        rr.report(conn, "reclass_20261013_000000")
