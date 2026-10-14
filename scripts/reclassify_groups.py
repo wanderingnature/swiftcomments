@@ -505,19 +505,19 @@ def list_runs(ctx, out=None):
                 "  FROM {analysis}.classification_run_items WHERE run_id = ?)"
                 " WHERE rn = 1 GROUP BY status"), (run_id,)).fetchall())
             items = sum(counts.values())
-            rows.append((run_id, model, prompt_id, n_groups, created, counts, items,
+            rows.append((run_id, model, prompt_id, n_groups, ts, counts, items,
                          rebuilt_at is not None and created is not None and rebuilt_at > created))
     print(f"eligible groups today: {total:,} (canonical >= {MIN_COMMENT_LENGTH} chars)", file=out)
     if not rows:
         print("no stance run yet: make stance LIMIT=200 starts one", file=out)
         return
     continuable = None
-    for run_id, model, prompt_id, n_groups, created, counts, items, rebuilt in rows:
+    for run_id, model, prompt_id, n_groups, started, counts, items, rebuilt in rows:
         unsent = max(0, total - items)
         state = ("partition rebuilt since; cannot be continued" if rebuilt
                  else "complete" if unsent == 0 and not counts.get("error") and not counts.get("received")
                  else f"{unsent:,} not yet sent")
-        print(f"{run_id}  model {model}  prompt id {prompt_id}  started {created}:"
+        print(f"{run_id}  model {model}  prompt id {prompt_id}  started {started[:19]}:"
               f" loaded {counts.get('loaded', 0):,}, errors {counts.get('error', 0):,},"
               f" stored not loaded {counts.get('received', 0):,}; {state}", file=out)
         if not rebuilt and (unsent or counts.get("received") or counts.get("error")):
