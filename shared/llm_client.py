@@ -12,11 +12,13 @@ Responsibilities, in one place:
   how to run one.
 - **retry** — 429 (rate limit), 408/409, 5xx, timeouts, and truncated JSON are retried with
   backoff; a real 4xx (400/422 bad request/schema) fails fast.
-- **the throttle** — calls in flight start at one and climb one per five clean
-  answers to `max_in_flight` (the runner's concurrency). One 429 pauses every worker
-  of the client, not just the one that got it, for the server's Retry-After or a
-  doubling wait, halves the calls in flight, and marks the level that drew it, which
-  is then probed only once per fifty clean answers. The server is asked for what it
+- **the throttle** — calls in flight start at one and double per five clean answers
+  while the server has never pushed back, up to `max_in_flight` (the runner's
+  concurrency); calls leave at least 100 ms apart. One 429 pauses every worker of the
+  client, not just the one that got it, for the server's Retry-After or a doubling
+  wait, halves the calls in flight, and marks the level that drew it: from then on
+  the climb is one per five clean answers to just under that level and one per fifty
+  above it. A 429 costs a call none of its retries. The server is asked for what it
   has shown it takes, never for sixteen at once to see what happens.
 - **structured output** — pass a JSON Schema and get back the parsed object (the endpoint is
   handed an OpenAI `response_format: json_schema`); omit it and get the raw text.
@@ -128,18 +130,22 @@ class _Throttle:
     """What the client's workers share, so the server is never asked for more
     than it has shown it will take.
 
-    Calls in flight start at ONE and climb: every STREAK clean answers in a row
-    add one, up to the maximum the caller set (the runner's concurrency). A 429
-    from any worker sets a pause every worker honours before its next call (the
-    server's Retry-After when it sends one, else 2 s doubling to 60 s on
-    repeats), halves the calls in flight, and remembers the level that drew it:
-    the climb back goes one per STREAK up to just under that level and one per
-    PROBE above it, so the limit is tested rarely, not leaned on. A client made
-    without a maximum (a local server) shares the pause and keeps no cap.
+    Calls in flight start at ONE and climb the way TCP does: while the server
+    has never pushed back, every STREAK clean answers in a row double them, up to
+    the maximum the caller set (the runner's concurrency). A 429 from any worker
+    sets a pause every worker honours before its next call (the server's
+    Retry-After when it sends one, else 2 s doubling to 60 s on repeats), halves
+    the calls in flight, and remembers the level that drew it: from then on the
+    climb is one per STREAK up to just under that level and one per PROBE above
+    it, so the limit is tested rarely, not leaned on. Calls leave at least
+    SPACING apart, so the end of a pause or a raised cap never fires a burst at
+    the same instant. A client made without a maximum (a local server) shares
+    the pause and the spacing and keeps no cap.
     """
     STREAK = 5
     PROBE = 50
     MAX_PAUSE = 60.0
+    SPACING = 0.1
 
     def __init__(self, max_in_flight=None):
         self.max = max_in_flight
@@ -147,6 +153,7 @@ class _Throttle:
         self.ceiling = None           # the in-flight level that last drew a 429
         self.in_flight = 0
         self.pause_until = 0.0
+        self.next_start = 0.0
         self.backoff = 0.0
         self.streak = 0
         self._cv = threading.Condition()
@@ -155,11 +162,13 @@ class _Throttle:
         with self._cv:
             while True:
                 now = time.monotonic()
-                if now < self.pause_until:
-                    self._cv.wait(self.pause_until - now)
+                until = max(self.pause_until, self.next_start)
+                if now < until:
+                    self._cv.wait(until - now)
                     continue
                 if self.max is None or self.in_flight < self.cap:
                     self.in_flight += 1
+                    self.next_start = now + self.SPACING
                     return
                 self._cv.wait()
 
@@ -190,7 +199,14 @@ class _Throttle:
             self.streak += 1
             if self.max is None or self.cap >= self.max:
                 return
-            needed = self.PROBE if self.ceiling is not None and self.cap + 1 >= self.ceiling else self.STREAK
+            if self.ceiling is None:
+                # Never pushed back: double, as TCP's slow start does.
+                if self.streak >= self.STREAK:
+                    self.cap = min(self.max, self.cap * 2)
+                    self.streak = 0
+                    self._cv.notify_all()
+                return
+            needed = self.PROBE if self.cap + 1 >= self.ceiling else self.STREAK
             if self.streak >= needed:
                 self.cap += 1
                 self.streak = 0

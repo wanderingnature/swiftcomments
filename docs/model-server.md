@@ -239,11 +239,13 @@ because its stored calls name groups that no longer exist; then a new run.
 
 **Rate limits.** A shared API throttles on concurrency: Alibaba through OpenRouter
 answered 429 `Throttling.Concurrency` the moment the pilot put 16 calls in flight.
-The client therefore never starts there. Calls in flight start at one and climb one
-per five clean answers towards `CONCURRENCY`; a 429 pauses every worker for the
-server's `Retry-After` or two seconds, doubling to a minute on repeats, halves the
-calls in flight, and marks the level that drew it, which is then tried again only
-once per fifty clean answers. A 429 is the server's pace, not a failed call: it
+The client therefore never starts there. Calls in flight start at one and, while
+the server has never pushed back, double per five clean answers towards
+`CONCURRENCY`, leaving at least a tenth of a second apart; a 429 pauses every worker
+for the server's `Retry-After` or two seconds, doubling to a minute on repeats,
+halves the calls in flight, and marks the level that drew it: from then on the climb
+is one per five clean answers to just under that level and one per fifty above it.
+A 429 is the server's pace, not a failed call: it
 costs none of a call's five retries, and a call gives up only after ten minutes of
 waiting on them. The log says so once per pause (`rate limited by ...: every call
 waits 2s, calls in flight capped at 4`), not once per worker, and every progress

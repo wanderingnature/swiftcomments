@@ -47,9 +47,13 @@ def test_throttle_starts_at_one_climbs_and_backs_off_as_one():
     import time
     th = _Throttle(16)
     assert th.cap == 1
+    for _ in range(_Throttle.STREAK * 2):
+        th.succeeded()
+    assert th.cap == 4                     # doubling per five clean answers, never pushed back
     for _ in range(_Throttle.STREAK * 3):
         th.succeeded()
-    assert th.cap == 4                     # one more per five clean answers
+    assert th.cap == 16                    # and never above the maximum
+    th.cap = 4
     th.acquire(); th.acquire()
     wait, first = th.limited(None)
     assert first and wait == 2.0 and th.cap == 2 and th.ceiling == 4
@@ -79,6 +83,15 @@ def test_throttle_starts_at_one_climbs_and_backs_off_as_one():
     # A client with no maximum shares the pause and keeps no cap.
     free = _Throttle(None)
     assert free.cap is None and free.limited(None) == (2.0, True)
+
+
+def test_calls_leave_spaced_apart():
+    from shared.llm_client import _Throttle
+    import time
+    th = _Throttle(None)
+    t0 = time.monotonic()
+    th.acquire(); th.acquire(); th.acquire()
+    assert time.monotonic() - t0 >= 2 * _Throttle.SPACING - 0.01
 
 
 def test_client_reports_its_climb():
