@@ -57,8 +57,8 @@ groups:  ## step 2: the text families and the comment-group partition
 screen:  ## step 6: the mechanical screens; LIMIT=N for the first N survivors
 	$(PY) scripts/substance/mechanical_screens.py --project roadless --write $(if $(LIMIT),--limit $(LIMIT))
 
-stance:  ## step 3 (model): one classification per comment group, copied to the members; LIMIT=N sends N groups; RUN=<id> continues a run, RETRY=1 resends its errors; CONCURRENCY=N
-	$(PY) scripts/reclassify_groups.py --project roadless $(if $(RUN),--resume $(RUN),--new-run) $(if $(RETRY),--retry-errors) $(if $(LIMIT),--limit $(LIMIT)) $(if $(CONCURRENCY),--concurrency $(CONCURRENCY))
+stance:  ## step 3 (model): one classification per comment group, copied to the members; LIMIT=N sends N groups; RUN=<id> continues a run, RETRY=1 resends its errors; REFUSED_IN=<id> a new run over the groups that run's provider refused; CONCURRENCY=N
+	$(PY) scripts/reclassify_groups.py --project roadless $(if $(REFUSED_IN),--refused-in $(REFUSED_IN),$(if $(RUN),--resume $(RUN),--new-run)) $(if $(RETRY),--retry-errors) $(if $(LIMIT),--limit $(LIMIT)) $(if $(CONCURRENCY),--concurrency $(CONCURRENCY))
 
 stance-runs:  ## the stance runs so far, what each loaded, and the command that continues the latest
 	$(PY) scripts/reclassify_groups.py --project roadless --runs

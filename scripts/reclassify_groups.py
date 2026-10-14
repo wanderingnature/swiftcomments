@@ -26,6 +26,9 @@ model server of .env.
     make stance RUN=<run_id> LIMIT=200         the next 200 of that run
     make stance RUN=<run_id> CONCURRENCY=32    the rest of it
     make stance RUN=<run_id> RETRY=1           also send again the groups whose call errored
+    make stance REFUSED_IN=<run_id>            a new run, under the model of .env, over only the
+                                               groups that run's provider refused (another server
+                                               for the comments one provider's inspection will not take)
 
 A --limit counts within the run it is given: a resumed run skips every group the
 run has an item for and sends the next N; a --new-run starts from the first group
@@ -66,6 +69,23 @@ _MIN_TOPIC_CONFIDENCE = 0.7   # load_classifications' threshold, counted per cal
 # Refused for every call alike (key, credits, the provider pin): abort, don't grind.
 _ABORT_STATUS = (401, 402, 403, 404)   # no key, no credit, no access, no endpoint
 
+# A provider's content inspection refusing the comment's text (Alibaba's
+# DataInspectionFailed, passed through by Together: "Input text data may contain
+# inappropriate content"). The comment did nothing wrong and the answer never changes, so it
+# is recorded as a refusal, kept with the comment, and never sent again.
+_REFUSAL_MARKS = ("DataInspectionFailed", "inappropriate content")
+
+
+def refusal(resp_text):
+    """The provider's refusal message when a 400 body carries one, else None."""
+    text = resp_text or ""
+    if any(mark in text for mark in _REFUSAL_MARKS):
+        try:
+            return json.loads(text)["error"]["message"]
+        except (ValueError, KeyError, TypeError):
+            return text.strip()
+    return None
+
 
 class Abort(RuntimeError):
     """A failure every remaining call would repeat."""
@@ -96,9 +116,10 @@ class RunLog:
 
 class Run:
     def __init__(self, ctx, profile, run_id, run_ts, concurrency, chunk_size, log,
-                 limit=None):
+                 limit=None, only_groups=None):
         self.ctx = ctx
         self.limit = limit            # groups to send this session (a pilot), or None
+        self.only_groups = only_groups  # a set of group ids this run is confined to, or None
         self.profile = profile
         self.run_id = run_id
         self.run_ts = run_ts
@@ -136,25 +157,29 @@ class Run:
     # ------------------------------------------------------------ selection
 
     def eligible_groups(self):
-        """Every group whose canonical text is long enough, in group_id order."""
+        """Every group whose canonical text is long enough, in group_id order; only
+        those of `only_groups` when the run is confined to a set."""
         with db.connect(**self.ctx.db_config) as conn:
-            return conn.execute(self.sql(
+            rows = conn.execute(self.sql(
                 "SELECT g.group_id, c.comment_id, c.comment_text"
                 " FROM {analysis}.comment_group g"
                 " JOIN {analysis}.v_source_comments c ON c.comment_id = g.canonical_comment_id"
                 " WHERE length(c.comment_text) >= ? ORDER BY g.group_id"),
                 (MIN_COMMENT_LENGTH,)).fetchall()
+        if self.only_groups is not None:
+            rows = [r for r in rows if r[0] in self.only_groups]
+        return rows
 
     def latest_items(self):
-        """{group_id: (attempt, status)} — each group's highest attempt."""
+        """{group_id: (attempt, status, error_kind)} — each group's highest attempt."""
         with db.connect(**self.ctx.db_config) as conn:
             rows = conn.execute(self.sql(
-                "SELECT group_id, attempt, status FROM ("
-                "  SELECT group_id, attempt, status,"
+                "SELECT group_id, attempt, status, error_kind FROM ("
+                "  SELECT group_id, attempt, status, error_kind,"
                 "         row_number() OVER (PARTITION BY group_id ORDER BY attempt DESC) AS rn"
                 "  FROM {analysis}.classification_run_items WHERE run_id = ?)"
                 " WHERE rn = 1 ORDER BY group_id"), (self.run_id,)).fetchall()
-        return {g: (a, s) for g, a, s in rows}
+        return {g: (a, s, k) for g, a, s, k in rows}
 
     # ------------------------------------------------------------ one call
 
@@ -227,7 +252,11 @@ class Run:
             code = resp.status_code if resp is not None else None
             if code in _ABORT_STATUS:
                 raise Abort(f"g={group_id} c={comment_id}: HTTP {code} {exc}") from None
-            status, kind, detail, classification = "error", "transport", str(exc), None
+            refused = refusal(resp.text if resp is not None else "") if code == 400 else None
+            if refused:
+                status, kind, detail, classification = "error", "refused", refused, None
+            else:
+                status, kind, detail, classification = "error", "transport", str(exc), None
         if payload is not None:
             try:
                 status, kind, detail, classification = self._judge(comment_id, payload)
@@ -369,15 +398,17 @@ class Run:
         groups = self.eligible_groups()
         self.total = len(groups)
         latest = self.latest_items()
-        n_loaded = sum(1 for _, s in latest.values() if s == "loaded")
-        n_err = sum(1 for _, s in latest.values() if s == "error")
-        n_recv = sum(1 for _, s in latest.values() if s == "received")
+        n_loaded = sum(1 for _, s, _k in latest.values() if s == "loaded")
+        n_err = sum(1 for _, s, _k in latest.values() if s == "error")
+        n_refused = sum(1 for _, s, k in latest.values() if s == "error" and k == "refused")
+        n_recv = sum(1 for _, s, _k in latest.values() if s == "received")
         to_send = []
         for gid, cid, text in groups:
             prev = latest.get(gid)
             if prev is None:
                 to_send.append((gid, cid, text, 1))
-            elif retry_errors and prev[1] == "error":
+            elif retry_errors and prev[1] == "error" and prev[2] != "refused":
+                # A refusal is the provider's answer to this text; it does not change.
                 to_send.append((gid, cid, text, prev[0] + 1))
         self.done_before = n_loaded + (0 if retry_errors else n_err)
         n_unsent = len(to_send)
@@ -390,7 +421,8 @@ class Run:
             f"model {self.model} (stamped {self.model_stamp}) via {self.client.base_url}\n"
             f"concurrency {self.concurrency}, chunk {self.chunk_size}\n"
             f"eligible groups {self.total:,} (canonical >= {MIN_COMMENT_LENGTH} chars):"
-            f" loaded {n_loaded:,}, errors {n_err:,}, stored not loaded {n_recv:,},"
+            f" loaded {n_loaded:,}, errors {n_err:,} (refused by the provider {n_refused:,}),"
+            f" stored not loaded {n_recv:,},"
             f" to send now {len(to_send):,}"
             + (f" of {n_unsent:,} (--limit {self.limit})" if self.limit else "")
             + (" (incl. error retries)" if retry_errors else ""))
@@ -451,18 +483,41 @@ class Run:
         self.close()
 
         latest = self.latest_items()
-        n_loaded = sum(1 for _, s in latest.values() if s == "loaded")
-        n_err = sum(1 for _, s in latest.values() if s == "error")
+        n_loaded = sum(1 for _, s, _k in latest.values() if s == "loaded")
+        n_err = sum(1 for _, s, _k in latest.values() if s == "error")
+        n_refused = sum(1 for _, s, k in latest.values() if s == "error" and k == "refused")
         unsent = self.total - len(latest)
         how = "ABORTED" if aborted else ("STOPPED" if self.stopping else "FINISHED")
-        self.log(f"RUN {self.run_id} {how}: loaded {n_loaded:,}, errors {n_err:,},"
+        self.log(f"RUN {self.run_id} {how}: loaded {n_loaded:,}, errors {n_err:,}"
+                 f" (refused by the provider {n_refused:,}),"
                  f" not yet sent {unsent:,} of {self.total:,}")
         if unsent:
             self.log(f"to continue: make stance RUN={self.run_id}"
                      f"  (LIMIT=N for the next N groups, CONCURRENCY=N for calls in flight)")
-        if n_err:
-            self.log(f"to send the errors again: make stance RUN={self.run_id} RETRY=1")
+        if n_err > n_refused:
+            self.log(f"to send the errors again: make stance RUN={self.run_id} RETRY=1"
+                     " (a refusal is not sent again)")
+        if n_refused:
+            self.log(f"{n_refused:,} group(s) refused by the provider's content inspection"
+                     " stay unclassified under this run; their ids:"
+                     " SELECT comment_id FROM classification_run_items WHERE run_id ="
+                     f" '{self.run_id}' AND error_kind = 'refused'")
         return 1 if aborted else 0
+
+
+def refused_groups(ctx, run_id):
+    """The group ids whose latest call in `run_id` was refused by the provider."""
+    with db.connect(**ctx.db_config) as conn:
+        rows = conn.execute(ctx.render_sql(
+            "SELECT group_id FROM ("
+            "  SELECT group_id, error_kind,"
+            "         row_number() OVER (PARTITION BY group_id ORDER BY attempt DESC) AS rn"
+            "  FROM {analysis}.classification_run_items WHERE run_id = ?)"
+            " WHERE rn = 1 AND error_kind = 'refused' ORDER BY group_id"), (run_id,)).fetchall()
+    ids = {r[0] for r in rows}
+    if not ids:
+        raise SystemExit(f"{run_id} has no group refused by the provider; nothing to send")
+    return ids
 
 
 def _start_run(ctx, profile):
@@ -576,6 +631,9 @@ def main():
     mode.add_argument("--resume", metavar="RUN_ID", help="Continue a run")
     mode.add_argument("--runs", action="store_true",
                       help="List the runs so far and the command that continues the latest")
+    mode.add_argument("--refused-in", metavar="RUN_ID",
+                      help="Start a new run, under the model of .env, confined to the groups"
+                           " that run's provider refused")
     ap.add_argument("--retry-errors", action="store_true",
                     help="With --resume: also send again the groups whose latest call errored")
     ap.add_argument("--concurrency", type=int, default=16,
@@ -598,14 +656,20 @@ def main():
         list_runs(ctx)
         return
     profile = ProjectProfile.load(ctx, "sentiment_topic")
-    if args.new_run:
+    only_groups = None
+    if args.refused_in:
+        only_groups = refused_groups(ctx, args.refused_in)
+        run_id, run_ts = _start_run(ctx, profile)
+    elif args.new_run:
         run_id, run_ts = _start_run(ctx, profile)
     else:
         run_id, run_ts = _resume_run(ctx, profile, args.resume)
 
     log = RunLog(_REPO_ROOT / "logs" / f"reclassify_{run_id}.log")
     run = Run(ctx, profile, run_id, run_ts, args.concurrency, args.chunk_size, log,
-              limit=args.limit)
+              limit=args.limit, only_groups=only_groups)
+    if only_groups is not None:
+        log(f"confined to the {len(only_groups):,} group(s) refused in {args.refused_in}")
 
     def _stop(_sig, _frame):
         run.stopping = True
