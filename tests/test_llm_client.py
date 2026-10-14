@@ -116,3 +116,39 @@ def test_base_url_takes_the_endpoint_or_its_base():
     assert _base_url(" http://127.0.0.1:1234/v1/ ") == "http://127.0.0.1:1234/v1"
     assert ChatClient(base_url="https://openrouter.ai/api/v1/chat/completions/", model="m",
                       api_key="k").base_url == "https://openrouter.ai/api/v1"
+
+
+def test_stream_is_assembled_into_the_one_reply_shape():
+    from shared.llm_client import StreamError, _assemble_stream
+    import json
+    import pytest
+    chunk = lambda **kw: "data: " + json.dumps({"id": "x1", "model": "m", **kw})  # noqa: E731
+    lines = [
+        ": keep-alive",
+        chunk(choices=[{"index": 0, "delta": {"role": "assistant", "reasoning_content": "thi"}, "finish_reason": None}]),
+        chunk(choices=[{"index": 0, "delta": {"reasoning_content": "nk"}, "finish_reason": None}]),
+        chunk(choices=[{"index": 0, "delta": {"content": "{\"a\":"}, "finish_reason": None}]),
+        "",
+        chunk(choices=[{"index": 0, "delta": {"content": " 1}"}, "finish_reason": "stop"}]),
+        chunk(choices=[], usage={"prompt_tokens": 10, "completion_tokens": 4, "total_tokens": 14,
+                                 "prompt_tokens_details": {"cached_tokens": 8}}),
+        "data: [DONE]",
+        chunk(choices=[{"index": 0, "delta": {"content": "never read"}, "finish_reason": None}]),
+    ]
+    payload = _assemble_stream(line.encode() for line in lines)
+    assert payload["choices"][0]["message"] == {"role": "assistant", "content": '{"a": 1}',
+                                               "reasoning_content": "think"}
+    assert payload["choices"][0]["finish_reason"] == "stop"
+    assert payload["usage"]["prompt_tokens_details"]["cached_tokens"] == 8 and payload["id"] == "x1"
+    with pytest.raises(StreamError, match="stream error"):
+        _assemble_stream(["data: " + json.dumps({"error": {"message": "boom", "code": 500}})])
+    with pytest.raises(StreamError, match="before any chunk"):
+        _assemble_stream(["data: [DONE]"])
+
+
+def test_stream_setting_from_env_or_argument(monkeypatch):
+    monkeypatch.delenv("LLM_STREAM", raising=False)
+    assert ChatClient(base_url=LOCAL, model="m", api_key="").stream is False
+    monkeypatch.setenv("LLM_STREAM", "1")
+    assert ChatClient(base_url=LOCAL, model="m", api_key="").stream is True
+    assert ChatClient(base_url=LOCAL, model="m", api_key="", stream=False).stream is False

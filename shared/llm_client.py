@@ -12,6 +12,10 @@ Responsibilities, in one place:
   how to run one.
 - **retry** — 429 (rate limit), 408/409, 5xx, timeouts, and truncated JSON are retried with
   backoff; a real 4xx (400/422 bad request/schema) fails fast.
+- **streaming** — a provider that answers a model only as a stream (Together says
+  so with a 400 `streaming_required`) gets `stream: true` from then on, and the
+  stream is assembled into the one reply shape every caller reads: the message, its
+  finish reason, the usage. `LLM_STREAM=1` sets it from the start.
 - **the throttle** — calls in flight start at one and double per five clean answers
   while the server has never pushed back, up to `max_in_flight` (the runner's
   concurrency); calls leave at least 100 ms apart. One 429 (or 503, Together's
@@ -46,6 +50,11 @@ class TruncatedResponse(RuntimeError):
     Never repaired, never salvaged, never retried — a truncated response is a lost response.
     House rule: nothing in this project is truncated.
     """
+
+
+class StreamError(requests.RequestException):
+    """A streamed reply that ended without a usable message: an error chunk, or
+    no chunk at all. Retried like a dropped connection."""
 
 
 class EndpointNotReady(RuntimeError):
@@ -223,6 +232,57 @@ def _retry_after(value):
         return None
 
 
+def _assemble_stream(lines) -> dict:
+    """The one reply shape from a server-sent event stream: `data:` lines of
+    chat.completion.chunk objects ended by `data: [DONE]`. The content and the
+    reasoning channel are joined piece by piece, the finish reason is the last
+    one sent, the usage the last one sent (OpenAI's `stream_options.include_usage`
+    puts it on the final chunk; Together puts it there too). An `error` chunk, or
+    a stream with no chunk, is a StreamError."""
+    content, reasoning = [], []
+    finish = None
+    usage = {}
+    head = {}
+    chunks = 0
+    for raw in lines:
+        line = raw.decode("utf-8", "replace") if isinstance(raw, bytes) else raw
+        line = line.strip()
+        if not line or line.startswith(":") or not line.startswith("data:"):
+            continue
+        data = line[5:].strip()
+        if data == "[DONE]":
+            break
+        try:
+            chunk = json.loads(data)
+        except ValueError:
+            raise StreamError(f"stream chunk is not JSON: {data[:200]}") from None
+        if "error" in chunk and not chunk.get("choices"):
+            raise StreamError(f"stream error: {json.dumps(chunk['error'])}")
+        chunks += 1
+        for key in ("id", "model"):
+            if key in chunk and key not in head:
+                head[key] = chunk[key]
+        if chunk.get("usage"):
+            usage = chunk["usage"]
+        for choice in chunk.get("choices") or []:
+            delta = choice.get("delta") or {}
+            if delta.get("content"):
+                content.append(delta["content"])
+            piece = delta.get("reasoning_content") or delta.get("reasoning")
+            if piece:
+                reasoning.append(piece)
+            if choice.get("finish_reason"):
+                finish = choice["finish_reason"]
+    if chunks == 0:
+        raise StreamError("the stream ended before any chunk arrived")
+    message = {"role": "assistant", "content": "".join(content)}
+    if reasoning:
+        message["reasoning_content"] = "".join(reasoning)
+    return {**head, "object": "chat.completion",
+            "choices": [{"index": 0, "message": message, "finish_reason": finish}],
+            "usage": usage}
+
+
 def _base_url(value: str) -> str:
     """The base the client posts /chat/completions under. A value that names
     the endpoint itself (https://host/v1/chat/completions, as a provider's docs
@@ -247,9 +307,14 @@ class ChatClient:
     LIMIT_PATIENCE = 600.0
 
     def __init__(self, base_url=None, model=None, *, api_key=None, provider=None, timeout=300,
-                 max_retries=5, max_tokens=DEFAULT_MAX_TOKENS, log=None, max_in_flight=None):
+                 max_retries=5, max_tokens=DEFAULT_MAX_TOKENS, log=None, max_in_flight=None,
+                 stream=None):
         self.base_url = _base_url(base_url or _require_env("LLM_BASE_URL"))
         self.model = model or _require_env("LLM_MODEL")
+        # Ask for the reply as a stream (LLM_STREAM=1, or set by the server's own
+        # streaming_required answer); it is assembled into the usual reply shape.
+        self.stream = bool(stream) if stream is not None else bool(
+            (os.environ.get("LLM_STREAM") or "").strip())
         # The most calls this client ever keeps in flight (the runner's
         # concurrency); the throttle starts at one and climbs to it.
         self._throttle = _Throttle(max_in_flight)
@@ -343,17 +408,21 @@ class ChatClient:
             self._throttle.acquire()
             t0 = time.monotonic()
             try:
-                r = requests.post(f"{self.base_url}{path}", json=body,
-                                  headers=self._headers, timeout=self.timeout)
+                streaming = self.stream and path == "/chat/completions"
+                sent = ({**body, "stream": True, "stream_options": {"include_usage": True}}
+                        if streaming else body)
+                r = requests.post(f"{self.base_url}{path}", json=sent, headers=self._headers,
+                                  timeout=self.timeout, stream=streaming)
                 r.raise_for_status()
+                payload = _assemble_stream(r.iter_lines()) if streaming else r.json()
                 dt = time.monotonic() - t0
                 if dt > 60:
                     self._log(f"slow call: {dt:.0f}s from {self.base_url}")
-                payload = r.json()
                 self._add_usage(payload)
                 self._throttle.succeeded()
                 return payload
-            except (requests.HTTPError, requests.ConnectionError, requests.Timeout) as exc:
+            except (requests.HTTPError, requests.ConnectionError, requests.Timeout,
+                    StreamError) as exc:
                 last = exc
                 dt = time.monotonic() - t0
                 # Fail fast on a genuine 4xx (bad request / schema); retry 429/408/409.
@@ -367,6 +436,13 @@ class ChatClient:
                     sc = exc.response.status_code
                     # The status and the body, verbatim: what the server said.
                     detail = f" — HTTP {sc} " + (exc.response.text or "").strip()
+                    if sc == 400 and "streaming_required" in detail and not self.stream:
+                        # The server answers this model only as a stream (Together):
+                        # every call from here on asks for one. Costs no retry.
+                        self.stream = True
+                        self._log(f"{self.base_url} serves {self.model} only as a stream;"
+                                  f" streaming every call from here on{detail}")
+                        continue
                     if 400 <= sc < 500 and sc not in (408, 409, 429):
                         raise requests.HTTPError(
                             f"{exc}{detail}", response=exc.response) from None
