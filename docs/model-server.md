@@ -37,18 +37,20 @@ slow or impossible to run locally, and costs money through an API. Three things 
 reader needs to know, and this page keeps current.
 
 **The model we used.** Qwen3.8-27B (https://huggingface.co/Qwen/Qwen3.8-27B; Apache
-2.0, 27 billion parameters, 262,144 tokens of context), run locally through LM
-Studio, for every model step of the analysis published at roadless.org. The figures
-in the method's pages and `docs/first-run.md`, and the token counts in the README's
-model-steps table, are from it. A 4-bit quantisation is 16 to 17 GB on disk and runs
-on a machine with 24 GB of memory or more; the full-precision weights need a GPU with
-about 60 GB. The measured repeatability of the substance instrument on this model is
+2.0, 27 billion parameters, 262,144 tokens of context), through a paid API, for every
+model step of the analysis published at roadless.org: the 190 million tokens of the
+README's model-steps table are more than a local server gets through in the time the
+docket allowed. The figures in the method's pages and `docs/first-run.md`, and those
+token counts, are from it. It also runs locally: a 4-bit quantisation is 16 to 17 GB
+on disk and runs on a machine with 24 GB of memory or more, which is how the pilots
+of this repository were made; the full-precision weights need a GPU with about 60 GB.
+The measured repeatability of the substance instrument on this model is
 65 of 100 readings identical between two runs, so two runs of the pipeline do not
 match row for row. The method's pages say what that means for the figures.
 
 **The model this repository's runs use.** Qwen3.8-Flash (`qwen/qwen3.8-flash`),
-through a hosted API, chosen on 2026-10-13 for cost and speed: it costs about a third
-of the 27B through the same API and answers faster, which makes the method affordable
+through a paid API, chosen on 2026-10-13 for cost and speed: it costs about a third
+of what the 27B cost us through an API and answers faster, which makes the method affordable
 for a reader who cannot run a model locally or wants a result in hours rather than
 days. The figures of our runs on it are recorded in the README's model-steps table as
 they are measured, and the comparison with the 27B on the same comments is made with
