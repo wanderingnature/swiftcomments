@@ -63,6 +63,9 @@ stance:  ## step 3 (model): one classification per comment group, copied to the 
 stance-runs:  ## the stance runs so far, what each loaded, and the command that continues the latest
 	$(PY) scripts/reclassify_groups.py --project roadless --runs
 
+stance-refused:  ## the comments a provider refused in a stance run, as docs/refused-<RUN>.md with the texts in full
+	$(PY) scripts/refused_report.py --run $(RUN) --out docs/refused-$(RUN).md
+
 score-model:  ## step 6 (model): the MODEL reading, the v3 instrument over class A; LIMIT=N for a pilot; JSON=dir writes one file per comment
 	$(PY) scripts/substance/score_comments.py --project roadless --classes A $(if $(LIMIT),--limit $(LIMIT)) $(if $(JSON),--json $(JSON))
 

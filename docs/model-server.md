@@ -319,4 +319,7 @@ make stance REFUSED_IN=<the run that refused them>
 ```
 
 It is a new run under the new model name, over only those groups, and `make
-stance-runs` lists it beside the others.
+stance-runs` lists it beside the others. `make stance-refused RUN=<the run>` writes
+`docs/refused-<the run>.md`: every refused group with the provider's message, the
+comment id, how many comments the group stands for, and the text in full, so the
+refusals can be read against what was sent. Ours is in `docs/`.
