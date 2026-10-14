@@ -231,9 +231,9 @@ attachments/, data/   the fetched files and the SQLite file, git-ignored
 The repository is being built in phases. At this commit it holds the skeleton, the
 seeds, the schema, the loader and the steps through the substance reading:
 `make schema`, `make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`,
-`make floor`, `make groups`, `make screen`, `make stance`, `make score` and
-`make score-rules` are ported, `make console` reads the file, and `make extract`,
-`make jump` and `make compare-scores` work. Not yet here, in run order:
-`make assemble`, `make rate`, `make fetch`, `make text`, `make attachments`,
-`make orgs`, `make facts` and `make check`; each lands in its own commit, and this
-list shrinks with each.
+`make floor`, `make groups`, `make screen`, `make stance`, `make score`,
+`make score-rules` and `make assemble` are ported, `make console` reads the file, and
+`make extract`, `make jump` and `make compare-scores` work. Not yet here, in run
+order: `make rate`, `make fetch`, `make text`, `make attachments`, `make orgs`,
+`make facts` and `make check`; each lands in its own commit, and this list shrinks
+with each.
