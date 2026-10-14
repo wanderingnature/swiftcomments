@@ -198,7 +198,7 @@ What each step took on this docket in the reference run:
 
 | step | calls | tokens |
 |---|---|---|
-| stance | 44,555 | 60.6 M in, 9.4 M out |
+| stance | 44,555, on the docket of 2026-09-25 (the final docket has 78,953 eligible groups) | 60.6 M in, 9.4 M out |
 | substance | 28,176 direct readings | 115 M in, 6 M out |
 | roster | 3,002 letters | |
 

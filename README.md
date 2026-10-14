@@ -161,7 +161,7 @@ tokeniser strips markup and unescapes first.
 
 | target | reading | instrument | model | what it took on this docket |
 |---|---|---|---|---|
-| `make stance`, step 3 | the stance | `roadless_rescission_v2`, one call per group | `qwen/qwen3.8-27b` | 44,555 calls; 60.6 M tokens in, 9.4 M out |
+| `make stance`, step 3 | the stance | `roadless_rescission_v2`, one call per group | `qwen/qwen3.8-27b` | 44,555 calls; 60.6 M tokens in, 9.4 M out, on the docket of 2026-09-25 (256,804 comments in 45,182 groups; the final docket has 390,064 comments in 78,953 eligible groups) |
 | `make score`, step 6 | the substance reading | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
 | `make attachments`, step 8 | the roster | `roster-v1`, `organisation_roster.py`, the target's fourth pass | `qwen/qwen3.8-27b` | 3,002 letters read |
 
