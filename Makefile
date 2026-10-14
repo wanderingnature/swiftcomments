@@ -11,8 +11,8 @@ CSV := csv/mv4-z8fw-q5jx.csv
 DB  := data/roadless.sqlite
 
 .PHONY: help all schema corpus fetch dedup ngrams ner tag floor groups screen \
-        stance score score-rules assemble rate text attachments orgs facts check \
-        console jump extract compare-scores
+        stance stance-runs score score-rules assemble rate text attachments orgs \
+        facts check console jump extract compare-scores
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
@@ -57,8 +57,11 @@ groups:  ## step 2: the text families and the comment-group partition
 screen:  ## step 6: the mechanical screens; LIMIT=N for the first N survivors
 	$(PY) scripts/substance/mechanical_screens.py --project roadless --write $(if $(LIMIT),--limit $(LIMIT))
 
-stance:  ## step 3 (model): one classification per comment group, copied to the members; LIMIT=N for a pilot
-	$(PY) scripts/reclassify_groups.py --project roadless --new-run $(if $(LIMIT),--limit $(LIMIT))
+stance:  ## step 3 (model): one classification per comment group, copied to the members; LIMIT=N sends N groups; RUN=<id> continues a run; CONCURRENCY=N
+	$(PY) scripts/reclassify_groups.py --project roadless $(if $(RUN),--resume $(RUN),--new-run) $(if $(LIMIT),--limit $(LIMIT)) $(if $(CONCURRENCY),--concurrency $(CONCURRENCY))
+
+stance-runs:  ## the stance runs so far, what each loaded, and the command that continues the latest
+	$(PY) scripts/reclassify_groups.py --project roadless --runs
 
 score:  ## step 6 (model): the v3 substance reading over class A
 	$(PY) scripts/substance/score_comments.py --project roadless --classes A

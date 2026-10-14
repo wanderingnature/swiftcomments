@@ -204,7 +204,7 @@ On one local server the substance step is the long one: at a few seconds a readi
 runs for days. Each step resumes where it stopped, so the server can be stopped and
 started between sessions.
 
-## Proving the server with a pilot
+## A pilot, then the rest of the run
 
 Before a full run, send a few hundred calls and look at what came back:
 
@@ -212,7 +212,36 @@ Before a full run, send a few hundred calls and look at what came back:
 make stance LIMIT=200
 ```
 
-sends 200 groups, stores and loads every reply, prints how many were loaded and how
-many failed and why, and exits. The closing lines give the `--resume` command that
-sends the rest. The console's Steps page (`make console`) shows the same run by
-status, with its tokens and seconds.
+starts a run, sends its first 200 groups, stores and loads every reply, prints how
+many were loaded and how many failed and why, and exits. The console's Steps page
+(`make console`) shows the run by status, with its tokens and seconds.
+
+A run is continued, never restarted. `make stance LIMIT=200` again would start a
+second run and send the same first 200 groups again; the groups already done are
+skipped only within the run that did them. So:
+
+```
+make stance-runs
+```
+
+lists every run so far, what each loaded, errored and has not sent, and prints the
+command that continues the latest one with groups left. That command is
+
+```
+make stance RUN=reclass_20261013_214534 LIMIT=200     # the next 200 groups of that run
+make stance RUN=reclass_20261013_214534               # the rest of it
+```
+
+`LIMIT=N` counts from where the run stopped; `CONCURRENCY=N` sets how many calls are
+in flight (16 if not given). A run resumes after an interruption with the same
+command, and refuses to continue if the partition was rebuilt since it started,
+because its stored calls name groups that no longer exist; then a new run.
+
+**Rate limits.** A shared API throttles on concurrency: Alibaba through OpenRouter
+answered 429 `Throttling.Concurrency` to the pilot at 16 in flight. The client
+handles it as one: the first 429 pauses every worker for the server's `Retry-After`
+or two seconds, doubling to a minute on repeats, and halves the calls kept in
+flight; twenty clean answers in a row raise that cap by one until it is back at
+`CONCURRENCY`. The log says so once per pause (`rate limited by ...: every call
+waits 2s, calls in flight capped at 8`), not once per worker. Start at the
+concurrency the API takes and let the throttle find the rate.

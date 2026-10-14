@@ -12,6 +12,11 @@ Responsibilities, in one place:
   how to run one.
 - **retry** — 429 (rate limit), 408/409, 5xx, timeouts, and truncated JSON are retried with
   backoff; a real 4xx (400/422 bad request/schema) fails fast.
+- **the throttle** — one 429 pauses every worker of the client, not just the one that
+  got it, for the server's Retry-After or a doubling wait, and halves the calls the
+  client keeps in flight; a run of clean answers raises the cap back one at a time
+  (`max_in_flight`, the runner's concurrency). A shared pool that throttles on
+  concurrency is never hammered by sixteen threads retrying on their own clocks.
 - **structured output** — pass a JSON Schema and get back the parsed object (the endpoint is
   handed an OpenAI `response_format: json_schema`); omit it and get the raw text.
 - **spend** — every answered call's `usage` is summed on the client (calls, tokens, and a
@@ -118,11 +123,83 @@ DEFAULT_MAX_TOKENS = 8192
 _CLIENTS = []   # every ChatClient made in this process, for the exit spend report
 
 
+class _Throttle:
+    """What the client's workers share when the server pushes back.
+
+    A 429 from any worker sets a pause every worker honours before its next call
+    (the server's Retry-After when it sends one, else 2 s doubling to 60 s), and
+    halves the number of calls kept in flight; every STREAK clean answers raise
+    that cap by one until it is back at the maximum. A client made without a
+    maximum (a local server) still shares the pause and keeps no cap.
+    """
+    STREAK = 20
+    MAX_PAUSE = 60.0
+
+    def __init__(self, max_in_flight=None):
+        self.max = max_in_flight
+        self.cap = max_in_flight
+        self.in_flight = 0
+        self.pause_until = 0.0
+        self.backoff = 0.0
+        self.streak = 0
+        self._cv = threading.Condition()
+
+    def acquire(self):
+        with self._cv:
+            while True:
+                now = time.monotonic()
+                if now < self.pause_until:
+                    self._cv.wait(self.pause_until - now)
+                    continue
+                if self.max is None or self.in_flight < self.cap:
+                    self.in_flight += 1
+                    return
+                self._cv.wait()
+
+    def release(self):
+        with self._cv:
+            self.in_flight -= 1
+            self._cv.notify_all()
+
+    def limited(self, retry_after=None):
+        """A 429 arrived. Returns (seconds every worker now waits, whether this call
+        set the pause); a 429 that lands while a pause is already on extends nothing."""
+        with self._cv:
+            now = time.monotonic()
+            if now < self.pause_until:
+                return self.pause_until - now, False
+            self.backoff = min(self.MAX_PAUSE, self.backoff * 2 if self.backoff else 2.0)
+            wait = float(retry_after) if retry_after else self.backoff
+            self.pause_until = now + wait
+            if self.max is not None:
+                self.cap = max(1, self.cap // 2)
+            self.streak = 0
+            return wait, True
+
+    def succeeded(self):
+        with self._cv:
+            self.backoff = 0.0
+            self.streak += 1
+            if self.max is not None and self.cap < self.max and self.streak >= self.STREAK:
+                self.cap += 1
+                self.streak = 0
+                self._cv.notify_all()
+
+
 @atexit.register
 def _print_spend():
     for client in _CLIENTS:
         if client.calls:
             print(client.spend_line(), flush=True)
+
+
+def _retry_after(value):
+    """A Retry-After header as seconds, or None: servers send a number of seconds
+    or an HTTP date; only the number is taken."""
+    try:
+        return float(value) if value is not None and float(value) > 0 else None
+    except ValueError:
+        return None
 
 
 def _require_env(name: str) -> str:
@@ -136,9 +213,12 @@ def _require_env(name: str) -> str:
 
 class ChatClient:
     def __init__(self, base_url=None, model=None, *, api_key=None, provider=None, timeout=300,
-                 max_retries=5, max_tokens=DEFAULT_MAX_TOKENS, log=None):
+                 max_retries=5, max_tokens=DEFAULT_MAX_TOKENS, log=None, max_in_flight=None):
         self.base_url = (base_url or _require_env("LLM_BASE_URL")).rstrip("/")
         self.model = model or _require_env("LLM_MODEL")
+        # The most calls this client keeps in flight (the runner's concurrency),
+        # lowered and raised by the throttle as the server pushes back.
+        self._throttle = _Throttle(max_in_flight)
         # The one provider every call is pinned to on OpenRouter (LLM_PROVIDER);
         # empty for a local server, which has only itself.
         self.provider = (provider or os.environ.get("LLM_PROVIDER") or "").strip()
@@ -219,6 +299,7 @@ class ChatClient:
         last = None
         attempt = 0
         while attempt < self.max_retries:
+            self._throttle.acquire()
             t0 = time.monotonic()
             try:
                 r = requests.post(f"{self.base_url}{path}", json=body,
@@ -229,6 +310,7 @@ class ChatClient:
                     self._log(f"slow call: {dt:.0f}s from {self.base_url}")
                 payload = r.json()
                 self._add_usage(payload)
+                self._throttle.succeeded()
                 return payload
             except (requests.HTTPError, requests.ConnectionError, requests.Timeout) as exc:
                 last = exc
@@ -238,6 +320,8 @@ class ChatClient:
                 # unknown model, overload) — a bare "N Client/Server Error" is
                 # undiagnosable. Carry it in every log line and raised error.
                 detail = ""
+                limited = False
+                retry_after = None
                 if isinstance(exc, requests.HTTPError):
                     sc = exc.response.status_code
                     # The status and the body, verbatim: what the server said.
@@ -245,13 +329,27 @@ class ChatClient:
                     if 400 <= sc < 500 and sc not in (408, 409, 429):
                         raise requests.HTTPError(
                             f"{exc}{detail}", response=exc.response) from None
+                    if sc == 429:
+                        limited = True
+                        retry_after = _retry_after(exc.response.headers.get("Retry-After"))
                 if attempt < self.max_retries - 1:
-                    wait = 2.0 * (attempt + 1)
-                    self._log(f"{type(exc).__name__} after {dt:.0f}s from"
-                         f" {self.base_url} — retry"
-                         f" {attempt + 2}/{self.max_retries} in {wait:.0f}s"
-                         f"{detail}")
-                    time.sleep(wait)
+                    if limited:
+                        # The pause is shared: every worker of this client waits
+                        # it out before its next call, and fewer go at once after.
+                        wait, first = self._throttle.limited(retry_after)
+                        if first:
+                            cap = (f", calls in flight capped at {self._throttle.cap}"
+                                   if self._throttle.max is not None else "")
+                            self._log(f"rate limited by {self.base_url}: every call waits"
+                                      f" {wait:.0f}s{cap} — retry {attempt + 2}/{self.max_retries}"
+                                      f"{detail}")
+                    else:
+                        wait = 2.0 * (attempt + 1)
+                        self._log(f"{type(exc).__name__} after {dt:.0f}s from"
+                             f" {self.base_url} — retry"
+                             f" {attempt + 2}/{self.max_retries} in {wait:.0f}s"
+                             f"{detail}")
+                        time.sleep(wait)
                 else:
                     self._log(f"{type(exc).__name__} after {dt:.0f}s from"
                          f" {self.base_url} — retries exhausted, raising"
@@ -259,7 +357,9 @@ class ChatClient:
                     if detail:
                         raise requests.HTTPError(
                             f"{exc}{detail}", response=exc.response) from None
-                attempt += 1
+            finally:
+                self._throttle.release()
+            attempt += 1
         if last is None:
             raise RuntimeError(f"no attempt was made against {self.base_url}")
         raise last

@@ -35,7 +35,7 @@ minutes.
 | `floor` | comment | the first N of the population by comment id; the table is replaced, so the whole run later replaces the sample |
 | `groups` | | none: a partition of every comment |
 | `screen` | survivor | the first N survivors; replaced by the whole run later |
-| `stance` | group | the first N groups, stored and loaded; the log's closing lines give the `--resume` command |
+| `stance` | group | the first N groups of a new run, stored and loaded; `make stance RUN=<id> LIMIT=N` sends the next N of that run, and `make stance-runs` names the run and the command |
 | `score` | comment | the first N of the queue |
 | `score-rules` | comment | the first N class A comments the rules have not scored |
 | `assemble` | | none: inheritance over every campaign |

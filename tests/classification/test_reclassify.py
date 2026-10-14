@@ -225,3 +225,31 @@ def test_replace_groups_gives_every_member_the_group_row(ctx):
             "SELECT count(*) FROM {analysis}.comment_classification WHERE batch_id = ?"),
             (batch,)).fetchone()
         assert tuple(still) == (0,)
+
+
+def test_runs_listing_names_the_run_and_the_command_to_continue(ctx, capsys):
+    """make stance-runs: every run with what it loaded, and the continue command for
+    the latest run with groups left; a complete run or none says so."""
+    with db.connect(**ctx.db_config) as conn:
+        conn.execute("DELETE FROM classification_run_items")
+        conn.execute("DELETE FROM classification_runs")
+    rg.list_runs(ctx)
+    out = capsys.readouterr().out
+    assert "eligible groups today: 1" in out and "no stance run yet" in out
+    with db.connect(**ctx.db_config) as conn:
+        conn.execute("INSERT INTO classification_runs (run_timestamp, prompt_id, model_name, comment_count)"
+                     " VALUES ('2026-10-13 21:45:34', 2, 'qwen/qwen3.8-flash', 1)")
+    rg.list_runs(ctx)
+    out = capsys.readouterr().out
+    assert "reclass_20261013_214534  model qwen/qwen3.8-flash  prompt id 2" in out
+    assert "loaded 0, errors 0, stored not loaded 0; 1 not yet sent" in out
+    assert "to continue reclass_20261013_214534: make stance RUN=reclass_20261013_214534" in out
+    assert "--resume reclass_20261013_214534" in out and "--retry-errors" not in out
+    with db.connect(**ctx.db_config) as conn:
+        conn.execute("INSERT INTO classification_run_items (run_id, group_id, attempt, comment_id,"
+                     " status, seconds) VALUES ('reclass_20261013_214534', 1, 1, ?, 'loaded', 1.0)",
+                     (MEMBERS[0],))
+    rg.list_runs(ctx)
+    out = capsys.readouterr().out
+    assert "loaded 1, errors 0, stored not loaded 0; complete" in out
+    assert "nothing to continue: make stance LIMIT=200 starts a new run" in out
