@@ -269,6 +269,14 @@ def test_resume_refuses_another_model_name(ctx, monkeypatch):
         rg._resume_run(ctx, profile, "reclass_20261013_214534")
     monkeypatch.setenv("LLM_MODEL", "qwen/qwen3.8-flash")
     assert rg._resume_run(ctx, profile, "reclass_20261013_214534")[0] == "reclass_20261013_214534"
+    # A run confined to another run's refusals says so in its header, so a resume
+    # stays confined.
+    with db.connect(**ctx.db_config) as conn:
+        conn.execute("INSERT INTO classification_runs (run_timestamp, prompt_id, model_name,"
+                     " comment_count, refused_in) VALUES ('2026-10-14 10:00:00', 2,"
+                     " 'qwen/qwen3.8-flash', 1, 'reclass_20261013_214534')")
+    assert rg._resume_run(ctx, profile, "reclass_20261014_100000")[2] == "reclass_20261013_214534"
+    assert rg._resume_run(ctx, profile, "reclass_20261013_214534")[2] is None
 
 
 def test_a_providers_content_refusal_is_its_own_kind_and_not_resent(ctx):
