@@ -48,7 +48,7 @@ refuses a run whose prompt is no longer the active one. The copy in
 `docs/instruments/` is checked against the seeds by `tests/test_prompts_doc.py`, so
 update it with the seed (the test says when they differ).
 
-## Substance (step 6, `make score`)
+## Substance (step 6, `make score-model`)
 
 **What is sent.** One call per class A comment: the instrument as the system prompt,
 the text of `docs/instruments/substantive-scoring-v3.md` between its heading
@@ -63,7 +63,7 @@ by path at every run; nothing is cached in the database.
 
 **To edit.** Edit the quoted text between the heading and SECTION D, keeping the
 quote mark at the start of every line, and the schema if the reply changes shape; `scripts/substance/grade.py` turns the reply into the scores, so a new field
-needs its grading there. Then `make score LIMIT=200`. The instrument version a row
+needs its grading there. Then `make score-model LIMIT=200`. The instrument version a row
 carries is `instrument_version` on `substance_scores`.
 
 ## Roster (step 8, `make attachments`)

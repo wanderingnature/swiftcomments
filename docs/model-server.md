@@ -86,7 +86,7 @@ ollama and llama.cpp.
 **Other models.** Any other model is a matter of putting its name in `.env`. Two
 things follow. The instruments were written for the 27B, so another model's reading
 is a different reading: its rows carry its name, the downstream figures are not
-expected to match `checks/expected.json`, and `make score JSON=dir` with
+expected to match `checks/expected.json`, and `make score-model JSON=dir` with
 `make compare-scores` is how the difference is measured on the same comments. And
 the thinking switch is spelled differently by different servers; the client sends
 the spellings LM Studio, vLLM, llama.cpp and ollama take (above), and a pilot of a

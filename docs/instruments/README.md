@@ -10,7 +10,7 @@ load into the file (`seeds/roadless_profile.sql`, `seeds/roadless_prompt_v2.sql`
 the system prompt and the user template, with the comment and the topic list filled
 in at run time.
 
-**This is the prompt for step 6, the substance reading (`make score`):**
+**This is the prompt for step 6, the substance reading (`make score-model`):**
 `substantive-scoring-v3.md`. The quoted text between its heading `# System prompt`
 and the line `# SECTION D` is sent as the system prompt, word for word with the
 quote marks taken off, with the comment's

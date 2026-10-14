@@ -1,5 +1,5 @@
 """Read-only inputs from data/roadless.sqlite: the class A comments the screen
-chose (the population make score reads), each comment's stored text, its
+chose (the population make score-model reads), each comment's stored text, its
 confirmed citations and legal authorities, and the match keys of every known
 authority.
 
@@ -56,7 +56,7 @@ def load_authority_keys(conn: db.Connection) -> list[str]:
 
 
 def comment_ids(conn: db.Connection) -> list[str]:
-    """The population: every class A comment of the screen, as make score reads it."""
+    """The population: every class A comment of the screen, as make score-model reads it."""
     ids = [r[0] for r in conn.execute(
         "SELECT comment_id FROM substance_screen WHERE screen_class = 'A' ORDER BY comment_id")]
     if not ids:

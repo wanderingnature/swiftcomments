@@ -27,9 +27,9 @@ Own-score rows upsert into {analysis}.substance_scores; exemplar and delta
 results land in {analysis}.substance_score_parts for assemble_scores.py. Run
 stats go to substance_artifacts — the DB is the source of truth; no files.
 
-    make score                 every class A comment the model has not read
-    make score LIMIT=200       the first 200 calls of the queue, then exit
-    make score JSON=dir        also one JSON file per comment (shared/score_json.py),
+    make score-model                 every class A comment the model has not read
+    make score-model LIMIT=200       the first 200 calls of the queue, then exit
+    make score-model JSON=dir        also one JSON file per comment (shared/score_json.py),
                                for make compare-scores beside the rules' reading
 
 Reads and writes data/roadless.sqlite through shared/db.py; the server and the
@@ -459,7 +459,7 @@ def build_scoring_requests(ctx, *, model, classes=("A",), limit=None, rescore=Fa
     Shared by the synchronous scorer and the batch generator, so local and
     cloud-batch stay one pipeline with two transports.
     """
-    print("make score: reading the floor's survivors, the screen, the floor flags, the"
+    print("make score-model: reading the floor's survivors, the screen, the floor flags, the"
           " named entities, the partition and the shared text; then the queue of calls"
           " for class(es) " + "/".join(classes) + " not yet read under"
           f" {instrument} by {model_of(model)}", flush=True)
@@ -875,7 +875,7 @@ def main():
             requests, args.instrument, system_prompt,
             f"{ctx.analysis_schema}.{table}"
             + ("" if args.merged else " + substance_score_parts"),
-            "make score" + (" --merged" if args.merged else "")
+            "make score-model" + (" --merged" if args.merged else "")
             + (f" LIMIT={args.limit}" if args.limit else ""))
         print(f"would call   {client.model} at {client.base_url}")
         return
@@ -1075,7 +1075,7 @@ def main():
         for e in errors:
             print("  ERROR", e["comment_id"], "->", e["error"])
 
-    cmd = "make score"
+    cmd = "make score-model"
     steps = []
     if args.limit or errors:
         why = []
