@@ -165,7 +165,7 @@ tokeniser strips markup and unescapes first.
 | `make score`, step 6 | the substance reading | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
 | `make attachments`, step 8 | the roster | `roster-v1`, `organisation_roster.py`, the target's fourth pass | `qwen/qwen3.8-27b` | 3,002 letters read |
 
-Those are the figures of Qwen3.8-27B run locally, for the
+Those are the figures of Qwen3.8-27B through a paid API, for the
 analysis published at roadless.org. The runs of this repository use Qwen3.8-Flash
 (`qwen/qwen3.8-flash`) through an API, chosen for cost and speed; its rows carry its
 name, and its figures are added to the table as they are measured. Any model a server
