@@ -261,7 +261,8 @@ make stance RUN=reclass_20261013_214534               # the rest of it
 ```
 
 `LIMIT=N` counts from where the run stopped; `CONCURRENCY=N` sets how many calls are
-in flight (16 if not given). A run resumes after an interruption with the same
+in flight at most (16 if not given); `RETRY=1` also sends again the groups whose call
+errored. A run resumes after an interruption with the same
 command, and refuses to continue if the partition was rebuilt since it started,
 because its stored calls name groups that no longer exist; then a new run.
 

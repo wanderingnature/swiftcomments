@@ -25,6 +25,7 @@ model server of .env. Design: docs/design/full-reclassification-run.md.
     make stance-runs                           the runs and the command to continue
     make stance RUN=<run_id> LIMIT=200         the next 200 of that run
     make stance RUN=<run_id> CONCURRENCY=32    the rest of it
+    make stance RUN=<run_id> RETRY=1           also send again the groups whose call errored
 
 A --limit counts within the run it is given: a resumed run skips every group the
 run has an item for and sends the next N; a --new-run starts from the first group
@@ -63,7 +64,7 @@ from src.pipeline.profile import ProjectProfile, sentiment_topic_response_format
 _STRENGTHS = ("HIGH", "MEDIUM", "LOW")
 _MIN_TOPIC_CONFIDENCE = 0.7   # load_classifications' threshold, counted per call here
 # Refused for every call alike (key, credits, the provider pin): abort, don't grind.
-_ABORT_STATUS = (401, 402, 403)
+_ABORT_STATUS = (401, 402, 403, 404)   # no key, no credit, no access, no endpoint
 
 
 class Abort(RuntimeError):
