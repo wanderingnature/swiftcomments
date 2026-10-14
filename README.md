@@ -166,6 +166,7 @@ tokeniser strips markup and unescapes first.
 | `make stance`, step 3 | the stance | `roadless_rescission_v2`, one call per group | `qwen/qwen3.8-27b` | one call per group of the final partition, 81,569 groups over the 390,062 comments with text; 1,360 tokens in and 211 out a call, measured on the 44,555 calls of the run of 2026-09-25 (60.6 M in, 9.4 M out) |
 | `make score-model`, step 6 | the substance reading | v3, `score_comments.py` over class A | `qwen/qwen3.8-27b` | 28,176 direct readings; 115 M tokens in, 6 M out; 2,096 exemplar and 26,671 delta readings; the rest inherited by code |
 | `make attachments`, step 8 | the roster | `roster-v1`, `organisation_roster.py`, the target's fourth pass | `qwen/qwen3.8-27b` | 3,002 letters read |
+| `make stance`, step 3, this repository's run | the stance | the same prompt | `qwen/qwen3.8-flash` via Together AI | 78,953 calls on the final partition (2026-10-14); 107.0 M tokens in, 80.4 M of them from cache, 17.6 M out; 1,355 in and 224 out a call; 5 calls a second at 32 in flight |
 
 Those are the figures of Qwen3.8-27B through a paid API, for the
 analysis published at roadless.org. The runs of this repository use Qwen3.8-Flash
