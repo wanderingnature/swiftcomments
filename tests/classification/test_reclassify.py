@@ -244,7 +244,7 @@ def test_runs_listing_names_the_run_and_the_command_to_continue(ctx, capsys):
     assert "reclass_20261013_214534  model qwen/qwen3.8-flash  prompt id 2" in out
     assert "loaded 0, errors 0, stored not loaded 0; 1 not yet sent" in out
     assert "to continue reclass_20261013_214534: make stance RUN=reclass_20261013_214534" in out
-    assert "--resume reclass_20261013_214534" in out and "--retry-errors" not in out
+    assert "RETRY=1" not in out
     with db.connect(**ctx.db_config) as conn:
         conn.execute("INSERT INTO classification_run_items (run_id, group_id, attempt, comment_id,"
                      " status, seconds) VALUES ('reclass_20261013_214534', 1, 1, ?, 'loaded', 1.0)",

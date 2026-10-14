@@ -457,13 +457,11 @@ class Run:
         how = "ABORTED" if aborted else ("STOPPED" if self.stopping else "FINISHED")
         self.log(f"RUN {self.run_id} {how}: loaded {n_loaded:,}, errors {n_err:,},"
                  f" not yet sent {unsent:,} of {self.total:,}")
-        slug = self.ctx.slug
         if unsent:
-            self.log(f"resume: python scripts/reclassify_groups.py --project {slug}"
-                     f" --resume {self.run_id}")
+            self.log(f"to continue: make stance RUN={self.run_id}"
+                     f"  (LIMIT=N for the next N groups, CONCURRENCY=N for calls in flight)")
         if n_err:
-            self.log(f"retry the errors: python scripts/reclassify_groups.py --project {slug}"
-                     f" --resume {self.run_id} --retry-errors")
+            self.log(f"to send the errors again: make stance RUN={self.run_id} RETRY=1")
         return 1 if aborted else 0
 
 
@@ -526,17 +524,14 @@ def list_runs(ctx, out=None):
               f" stored not loaded {counts.get('received', 0):,}; {state}", file=out)
         if not rebuilt and (unsent or counts.get("received") or counts.get("error")):
             continuable = (run_id, unsent, counts.get("error", 0))
-    slug = ctx.slug
     if continuable is None:
         print("nothing to continue: make stance LIMIT=200 starts a new run", file=out)
         return
     run_id, unsent, n_err = continuable
-    print(f"to continue {run_id}: make stance RUN={run_id} (LIMIT=N for the next N groups,"
+    print(f"to continue {run_id}: make stance RUN={run_id}  (LIMIT=N for the next N groups,"
           f" CONCURRENCY=N for calls in flight)", file=out)
-    print(f"  the same as: python scripts/reclassify_groups.py --project {slug} --resume {run_id}", file=out)
     if n_err:
-        print(f"  with its {n_err:,} errors sent again: python scripts/reclassify_groups.py"
-              f" --project {slug} --resume {run_id} --retry-errors", file=out)
+        print(f"  with its {n_err:,} errors sent again: make stance RUN={run_id} RETRY=1", file=out)
 
 
 def _resume_run(ctx, profile, run_id):
@@ -625,7 +620,7 @@ def main():
         import traceback
         log(f"FAILED: {type(exc).__name__}: {exc}\n{traceback.format_exc()}"
             f"Nothing of the failed load was committed; stored responses stay stored."
-            f" Fix the cause, then --resume {run_id}.")
+            f" Fix the cause, then: make stance RUN={run_id}")
         raise SystemExit(1) from None
     sys.exit(code)
 
