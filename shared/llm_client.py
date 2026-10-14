@@ -8,8 +8,11 @@ OpenAI-compatible endpoint goes through `ChatClient`.
 
 Responsibilities, in one place:
 - **the server** — one, the reader's, from .env (plan 5.2, edit 8): `LLM_BASE_URL`,
-  `LLM_MODEL`, and `LLM_API_KEY` sent as a Bearer token when set, nothing when not.
-  docs/model-server.md says how to run one.
+  `LLM_MODEL`, and `LLM_API_KEY` sent as a Bearer token when set, nothing when not;
+  `LLM_PROVIDER`, when set, pins every call to that one provider on OpenRouter
+  (`provider: {only: [name], allow_fallbacks: false}`), so the rows a run writes
+  come from the weights and the prices the reader chose. docs/model-server.md says
+  how to run one.
 - **retry** — 429 (rate limit), 408/409, 5xx, timeouts, and truncated JSON are retried with
   backoff; a real 4xx (400/422 bad request/schema) fails fast.
 - **structured output** — pass a JSON Schema and get back the parsed object (the endpoint is
@@ -63,8 +66,11 @@ def no_thinking(model: str, base_url: str = "") -> dict:
     `.thinking`, which LM Studio, vLLM and llama.cpp take, and `reasoning_effort:
     "none"`, which ollama takes; each server ignores the one it does not know
     (LM Studio answers a request carrying `reasoning_effort` normally, checked
-    2026-10-12). A top-level `reasoning` object is never sent: LM Studio hangs on
-    it — every call timing out at 180s, five retries deep, measured 2026-09-19.
+    2026-10-12). A top-level `reasoning` object is never sent to a local server:
+    LM Studio hangs on it — every call timing out at 180s, five retries deep,
+    measured 2026-09-19. OpenRouter is the exception: its one spelling is
+    `reasoning: {enabled: false}` (its own documentation, 2026-10-13), and it is
+    sent that alone.
 
     This is not a tuning knob. The v3 instrument's repeatability was measured
     with thinking off (docs/design/reduced-ask-scoring-instrument.md); with it
@@ -92,7 +98,13 @@ def thinking_off(body: dict, model: str, base_url: str) -> dict:
     return out
 
 
+def is_openrouter(base_url: str) -> bool:
+    return "openrouter.ai" in (base_url or "").lower()
+
+
 def _thinking_off_fields(model: str, base_url: str) -> dict:
+    if is_openrouter(base_url):
+        return {"reasoning": {"enabled": False}}
     return {"chat_template_kwargs": {"enable_thinking": False, "thinking": False},
             "reasoning_effort": "none"}
 
@@ -129,10 +141,13 @@ def _require_env(name: str) -> str:
 
 
 class ChatClient:
-    def __init__(self, base_url=None, model=None, *, api_key=None, timeout=300, max_retries=5,
-                 max_tokens=DEFAULT_MAX_TOKENS, log=None):
+    def __init__(self, base_url=None, model=None, *, api_key=None, provider=None, timeout=300,
+                 max_retries=5, max_tokens=DEFAULT_MAX_TOKENS, log=None):
         self.base_url = (base_url or _require_env("LLM_BASE_URL")).rstrip("/")
         self.model = model or _require_env("LLM_MODEL")
+        # The one provider every call is pinned to on OpenRouter (LLM_PROVIDER);
+        # empty for a local server, which has only itself.
+        self.provider = (provider or os.environ.get("LLM_PROVIDER") or "").strip()
         self.timeout = timeout
         self.max_retries = max_retries
         self.max_tokens = max_tokens
@@ -188,11 +203,20 @@ class ChatClient:
         go through — so auth and retry live here alone and nowhere else. `body` may omit
         `model`; the client's model is injected. Retries 429/408/409/5xx/timeouts; a real
         4xx fails fast; a persistent failure re-raises the last exception."""
+        return self.request("/chat/completions", self.chat_body(body))
+
+    def chat_body(self, body):
+        """`body` with what every chat completion carries: the client's model when
+        the body names none, `max_tokens` (see DEFAULT_MAX_TOKENS) when it sets none,
+        and, when a provider is pinned, OpenRouter's `provider` routing with
+        fallbacks off, so a call never lands on other weights or other prices."""
         if "model" not in body:
             body = {"model": self.model, **body}
         if "max_tokens" not in body:
-            body = {**body, "max_tokens": self.max_tokens}  # see DEFAULT_MAX_TOKENS
-        return self.request("/chat/completions", body)
+            body = {**body, "max_tokens": self.max_tokens}
+        if self.provider and "provider" not in body:
+            body = {**body, "provider": {"only": [self.provider], "allow_fallbacks": False}}
+        return body
 
     def request(self, path, body):
         """POST `body` to `<base_url><path>` through the one authed, retried path and

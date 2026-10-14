@@ -2,8 +2,8 @@
 
 Three steps of the analysis read a language model: the stance classification (step 3),
 the substance reading (step 6) and the organisation roster (step 8). All three go through `shared/llm_client.py`, which
-speaks the OpenAI chat API to one server you run locally. This page says what that
-server has to do and how to run one.
+speaks the OpenAI chat API to one server, a local one you run or an API. This page
+says what that server has to do and how to run or name one.
 
 ## What the pipeline sends
 
@@ -17,10 +17,14 @@ Every call is `POST <LLM_BASE_URL>/chat/completions` with:
   support OpenAI structured output;
 - the thinking switch off: `chat_template_kwargs` with `enable_thinking: false`, which
   LM Studio, vLLM and llama.cpp honour, and `reasoning_effort: "none"`, which ollama
-  honours; the other side ignores the field it does not know. The instruments were
-  measured with thinking off; with it on the model answers differently from the way that
-  was tested, and slowly.
+  honours; the other side ignores the field it does not know. To OpenRouter the switch
+  is sent in its own spelling, `reasoning: {"enabled": false}`, and nothing else. The
+  instruments were measured with thinking off; with it on the model answers differently
+  from the way that was tested, and slowly.
 - `Authorization: Bearer <LLM_API_KEY>` when `LLM_API_KEY` is set.
+- `provider: {"only": ["<LLM_PROVIDER>"], "allow_fallbacks": false}` when `LLM_PROVIDER`
+  is set: on OpenRouter, every call goes to that one provider and fails rather than
+  fall back to another, so a run's rows come from one set of weights at one price.
 
 Every reply is stored whole, so the grading can be audited afterwards. The three
 variables live in `.env` (copy `.env.example`).
@@ -101,10 +105,30 @@ API; a reader picking another model picks it for their own machine and budget.
 ## What was tested
 
 The code was tested on Apple Silicon with LM Studio running headless through `lms`,
-the path below. The ollama and vLLM sections are written from their documentation and
-have not been run against this pipeline; other local servers may behave differently,
-in the thinking switch, structured output or the model's name. They will be verified
-when there is a chance.
+the path below, and is being run through OpenRouter for the runs of this repository.
+The ollama and vLLM sections are written from their documentation and have not been
+run against this pipeline; other local servers may behave differently, in the thinking
+switch, structured output or the model's name. They will be verified when there is a
+chance.
+
+## OpenRouter
+
+The API this repository's runs use. Make a key at https://openrouter.ai/keys, then in
+`.env`:
+
+```
+LLM_BASE_URL=https://openrouter.ai/api/v1
+LLM_API_KEY=<your key>
+LLM_MODEL=qwen/qwen3.8-flash
+LLM_PROVIDER=alibaba
+```
+
+`LLM_PROVIDER` pins every call to Alibaba International, the provider whose prices
+are in the table above, with fallbacks off: OpenRouter otherwise routes each call to
+whichever of a model's providers it chooses, at that provider's price and on that
+provider's serving of the weights. The 27B is `qwen/qwen3.8-27b` on the same
+provider. OpenRouter reports the cost of every call in its `usage`, and the spend
+line each model step prints at exit carries the dollars.
 
 ## LM Studio, with `lms`
 
