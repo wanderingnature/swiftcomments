@@ -11,13 +11,13 @@ CSV := csv/mv4-z8fw-q5jx.csv
 DB  := data/roadless.sqlite
 
 .PHONY: help all schema corpus fetch dedup ngrams ner tag floor groups screen \
-        stance stance-runs score score-rules assemble rate text attachments orgs \
+        stance stance-runs score score-model-free assemble rate text attachments orgs \
         facts check console jump extract compare-scores
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
 
-all: schema corpus dedup ngrams ner tag floor groups screen stance score score-rules assemble rate fetch text attachments orgs facts check  ## every step, in order
+all: schema corpus dedup ngrams ner tag floor groups screen stance score score-model-free assemble rate fetch text attachments orgs facts check  ## every step, in order
 
 schema:  ## create data/roadless.sqlite from schema/roadless.sql and load the seeds; refuses SQLite < 3.38
 	$(PY) scripts/make_schema.py
@@ -63,10 +63,10 @@ stance:  ## step 3 (model): one classification per comment group, copied to the 
 stance-runs:  ## the stance runs so far, what each loaded, and the command that continues the latest
 	$(PY) scripts/reclassify_groups.py --project roadless --runs
 
-score:  ## step 6 (model): the v3 substance reading over class A; LIMIT=N for a pilot; JSON=dir writes one file per comment
+score:  ## step 6 (model): the MODEL reading, the v3 instrument over class A; LIMIT=N for a pilot; JSON=dir writes one file per comment
 	$(PY) scripts/substance/score_comments.py --project roadless --classes A $(if $(LIMIT),--limit $(LIMIT)) $(if $(JSON),--json $(JSON))
 
-score-rules:  ## step 6 (rules): the model-free reading of the same class A, no model call; LIMIT=N; JSON=dir writes one file per comment
+score-model-free:  ## step 6 (model-free): the MODEL-FREE reading of the same class A by rules, no model call; LIMIT=N; JSON=dir writes one file per comment
 	$(PY) scripts/model_free/run.py score $(if $(LIMIT),--limit $(LIMIT)) $(if $(JSON),--json $(JSON))
 
 compare-scores:  ## the two readings side by side from their JSON folders: make compare-scores A=dir B=dir

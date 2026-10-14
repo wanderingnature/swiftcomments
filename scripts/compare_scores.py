@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """The two substance readings side by side: two folders of per-comment JSON
 files in the shape of shared/score_json.py, one from `make score JSON=dir`
-(the model) and one from `make score-rules JSON=dir` (the rules), or any two
+(the model) and one from `make score-model-free JSON=dir` (the rules), or any two
 runs of either. New (docs/model-free-scoring.md).
 
     uv run python scripts/compare_scores.py --a json/model --b json/rules [--limit N]

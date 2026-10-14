@@ -65,8 +65,8 @@ make floor        step 6         the floor: which comments have substance to rea
 make groups       step 2         the text families; every comment in one group; the campaign-letter / own-text split
 make screen       step 6         the mechanical screens: class A, B1, B2
 make stance       step 3  MODEL  the stance: SUPPORT, OPPOSE or NEUTRAL, one reading per group, copied to its members
-make score        step 6  MODEL  the substance reading: the v3 instrument over every class A comment
-make score-rules  step 6         the same reading by rule alone, no model call, for a run without a server or beside the model's
+make score        step 6  MODEL  the MODEL reading: the v3 instrument over every class A comment
+make score-model-free  step 6     the MODEL-FREE reading: the same comments scored by rules alone, no model call; beside the model's or instead of it
 make assemble     step 6         inheritance along the campaigns, the delta rows, LAW from the citations
 make rate         step 7         answerability, A0 to A3
 ```
@@ -89,7 +89,7 @@ three prompts of `docs/instruments/`: step 3, the stance (`make stance`); step 6
 substance reading (`make score`); step 8, the roster, one of the five passes of
 `make attachments` (the OCR pass in the same target goes to the OCR server instead).
 Every other target is code and dictionaries. The model targets are the long ones: on
-one local server the substance reading runs for days. `make score-rules` is the
+one local server the substance reading runs for days. `make score-model-free` is the
 substance reading done by rules alone over the same comments; a reader without a
 model server runs the method with it, and a reader with one runs both and sets them
 side by side (`docs/model-free-scoring.md`).
@@ -241,7 +241,7 @@ The repository is being built in phases. At this commit it holds the skeleton, t
 seeds, the schema, the loader and the steps through the substance reading:
 `make schema`, `make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`,
 `make floor`, `make groups`, `make screen`, `make stance`, `make score`,
-`make score-rules`, `make assemble` and `make rate` are ported, `make console` reads
+`make score-model-free`, `make assemble` and `make rate` are ported, `make console` reads
 the file, and `make extract`, `make jump` and `make compare-scores` work. Not yet
 here, in run order: `make fetch`, `make text`, `make attachments`, `make orgs`,
 `make facts` and `make check`; each lands in its own commit, and this list shrinks

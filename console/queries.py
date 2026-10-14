@@ -191,7 +191,7 @@ STEPS = [
         ],
     },
     {
-        "target": "score-rules",
+        "target": "score-model-free",
         "what": "step 6 (rules): the model-free reading of the same class A, no model call",
         "figures": [
             ("class A to read",

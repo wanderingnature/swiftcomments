@@ -1,7 +1,7 @@
-# The model-free reading: `make score-rules`
+# The model-free reading: `make score-model-free`
 
 Step 6 has two readings of the same comments. `make score` sends every class A
-comment to the language model with the v3 instrument. `make score-rules` reads the
+comment to the language model with the v3 instrument. `make score-model-free` reads the
 same comments by rule alone: no model call, nothing to run but Python and spaCy, the
 same eight dimensions, the same strength, gate and band, the same A0 to A3 rating. It
 is the operator's `model_free` package, rule set 3, in `scripts/model_free/`, with the
@@ -16,9 +16,9 @@ both and see where a rule and a model part.
 ## Running it
 
 ```
-make score-rules                    # every class A comment the rules have not scored
-make score-rules LIMIT=200          # the first 200 of them, then exit
-make score-rules JSON=json/rules    # also one JSON file per comment, for the comparison
+make score-model-free                    # every class A comment the rules have not scored
+make score-model-free LIMIT=200          # the first 200 of them, then exit
+make score-model-free JSON=json/rules    # also one JSON file per comment, for the comparison
 ```
 
 A run scores every class A comment that has no comment score under the current rule
@@ -62,7 +62,7 @@ Five tables, schema section 9b, the package's own: `mf_score_run` (one row per r
 strength, gate, band, moves, targets, anchors), `mf_sentence_hit` (every rule that
 fired, with the matched words and their offsets), `mf_comment_score` and
 `mf_comment_answerability`. Every row carries `ruleset_version`. The console's Steps
-page shows the counts; `make extract STEP=score-rules` and `make jump STEP=score-rules`
+page shows the counts; `make extract STEP=score-model-free` and `make jump STEP=score-model-free`
 work as for any step.
 
 ## Setting the two readings side by side
@@ -74,7 +74,7 @@ model's spans on one side and the rules' hits on the other.
 
 ```
 make score JSON=json/model
-make score-rules JSON=json/rules
+make score-model-free JSON=json/rules
 make compare-scores A=json/model B=json/rules
 ```
 

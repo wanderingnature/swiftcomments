@@ -5,7 +5,7 @@ comment, no model call. Step 6, beside make score.
     uv run python scripts/model_free/run.py score [--limit N] [--comment-id ID ...] [--ids-file F] [--json DIR]
     uv run python scripts/model_free/run.py report
     uv run python scripts/model_free/run.py text "comment text ..."    # score ad-hoc text, print JSON
-    make score-rules [LIMIT=N] [JSON=dir]
+    make score-model-free [LIMIT=N] [JSON=dir]
 
 `score` reads the class A comments of the screen from data/roadless.sqlite,
 scores every one that has no comment score under the current rule set
@@ -104,7 +104,7 @@ def cmd_score(args: argparse.Namespace) -> int:
         if args.limit:
             wanted = set(sorted(wanted)[:args.limit])
     json_dir = Path(args.json) if args.json else None
-    print(f"make score-rules: {len(all_ids):,} class A comments; {len(done):,} scored under rule set"
+    print(f"make score-model-free: {len(all_ids):,} class A comments; {len(done):,} scored under rule set"
           f" {RULESET_VERSION}; {len(wanted):,} to score, whole, no model call"
           + (f" (--limit {args.limit})" if args.limit and not (args.comment_id or args.ids_file) else "")
           + "; writes mf_sentence_score, mf_sentence_hit, mf_comment_score, mf_comment_answerability,"
