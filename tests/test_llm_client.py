@@ -42,33 +42,43 @@ def test_provider_pin_is_on_every_body_only_when_set(monkeypatch):
     assert pinned.chat_body({})["provider"]["only"] == ["other"]
 
 
-def test_throttle_pauses_every_worker_and_halves_the_cap_then_recovers():
+def test_throttle_starts_at_one_climbs_and_backs_off_as_one():
     from shared.llm_client import _Throttle
     import time
     th = _Throttle(16)
+    assert th.cap == 1
+    for _ in range(_Throttle.STREAK * 3):
+        th.succeeded()
+    assert th.cap == 4                     # one more per five clean answers
     th.acquire(); th.acquire()
-    assert th.in_flight == 2
     wait, first = th.limited(None)
-    assert first and wait == 2.0 and th.cap == 8
+    assert first and wait == 2.0 and th.cap == 2 and th.ceiling == 4
     # A second 429 inside the pause extends nothing and is not the first.
     wait2, first2 = th.limited(None)
     assert not first2 and 0 < wait2 <= 2.0
     th.release(); th.release()
     t0 = time.monotonic()
-    th.acquire()                       # waits the pause out before the next call
+    th.acquire()                           # waits the pause out before the next call
     assert time.monotonic() - t0 >= 1.5
     th.release()
+    # Back up to just under the level that drew the 429 at the quick pace, then
+    # one per PROBE above it.
+    for _ in range(_Throttle.STREAK):
+        th.succeeded()
+    assert th.cap == 3
+    for _ in range(_Throttle.STREAK):
+        th.succeeded()
+    assert th.cap == 3
+    for _ in range(_Throttle.PROBE - _Throttle.STREAK):
+        th.succeeded()
+    assert th.cap == 4
     # The server's Retry-After wins over the doubling wait once the pause has passed.
     th.pause_until = 0.0
     wait3, first3 = th.limited(7)
-    assert first3 and wait3 == 7.0 and th.cap == 4
-    th.pause_until = 0.0
-    for _ in range(_Throttle.STREAK):
-        th.succeeded()
-    assert th.cap == 5 and th.backoff == 0.0
+    assert first3 and wait3 == 7.0 and th.cap == 2
     # A client with no maximum shares the pause and keeps no cap.
     free = _Throttle(None)
-    assert free.limited(None) == (2.0, True) and free.cap is None
+    assert free.cap is None and free.limited(None) == (2.0, True)
 
 
 def test_retry_after_header_is_seconds_or_nothing():

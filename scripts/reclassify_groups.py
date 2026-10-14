@@ -28,8 +28,9 @@ model server of .env. Design: docs/design/full-reclassification-run.md.
 
 A --limit counts within the run it is given: a resumed run skips every group the
 run has an item for and sends the next N; a --new-run starts from the first group
-again. The client keeps at most --concurrency calls in flight and lowers that on
-its own when the server answers 429 (shared/llm_client.py).
+again. The client starts at one call in flight and climbs towards --concurrency,
+one more per five clean answers, and backs off as one when the server answers
+429 (shared/llm_client.py); --concurrency is the most it will ever ask for.
 
 Reads and writes data/roadless.sqlite through shared/db.py; the model server from
 .env (LLM_BASE_URL, LLM_API_KEY, LLM_MODEL, LLM_PROVIDER).
@@ -103,8 +104,8 @@ class Run:
         self.concurrency = concurrency
         self.chunk_size = chunk_size
         self.log = log
-        # The server and the model of .env; the client keeps at most `concurrency`
-        # calls in flight and lowers that itself when the server answers 429.
+        # The server and the model of .env; the client starts at one call in
+        # flight and climbs to at most `concurrency`, backing off on 429.
         self.client = ChatClient(log=log.diag, max_in_flight=concurrency)
         self.model = self.client.model
         self.model_stamp = model_of(self.model)
