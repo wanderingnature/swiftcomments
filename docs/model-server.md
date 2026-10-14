@@ -206,7 +206,7 @@ What each step took on this docket with this model, from our run:
 
 | step | calls | tokens |
 |---|---|---|
-| stance | 44,555, on the docket of 2026-09-25 (the final docket has 78,953 eligible groups) | 60.6 M in, 9.4 M out |
+| stance | one per group of the final partition, 81,569 groups; the per-call figures are from the 44,555 calls of 2026-09-25 | 1,360 in, 211 out a call (60.6 M in, 9.4 M out on the 44,555) |
 | substance | 28,176 direct readings | 115 M in, 6 M out |
 | roster | 3,002 letters | |
 
