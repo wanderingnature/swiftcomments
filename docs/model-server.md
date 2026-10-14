@@ -143,10 +143,27 @@ LLM_PROVIDER=
 ```
 
 `LLM_PROVIDER` stays empty: the provider pin is OpenRouter's request field, and
-Together is one provider. Together signals a model in high demand with a 429 or a
-503 (its rate-limits page), and the client treats both as the server's pace, as
-above. Together reports no cost in its replies, so the spend line at exit carries
-the tokens and says the cost was not reported.
+Together is one provider. Together serves some models only as a stream and answers
+a plain request with `400 streaming_required`; the client then streams every call
+and assembles the reply, so nothing else changes (`LLM_STREAM=1` streams from the
+first call). Together signals a model in high demand with a 429 or a 503 (its
+rate-limits page), and the client treats both as the server's pace, as above.
+Together reports no cost in its replies, so the spend line at exit carries the
+tokens and says the cost was not reported.
+
+## What differs between servers
+
+The same request is not taken the same way everywhere; these are the differences
+the client handles, by server, and the reader does not have to:
+
+| | LM Studio, ollama, vLLM, llama.cpp | OpenRouter | Together |
+|---|---|---|---|
+| thinking off | `chat_template_kwargs.enable_thinking` and `reasoning_effort: "none"`, both sent; each ignores the other's | `reasoning: {"enabled": false}`, OpenRouter's own field, sent alone | the local servers' two spellings; the pilot's tokens out per call show whether they took |
+| one provider | not applicable | `provider.only` with fallbacks off, from `LLM_PROVIDER` | not applicable; `LLM_PROVIDER` empty |
+| streaming | not needed | not needed | required for some models; the server says so once and the client streams from then on |
+| rate limits | none | 429, often from a provider's shared pool; an own provider key lifts it | 429 or 503 |
+| cost | none | in every reply's `usage.cost`; the spend line shows dollars | not reported; the spend line shows tokens |
+| structured output | `response_format` of type `json_schema` | the same | the same (`response_format` supported) |
 
 ## LM Studio, with `lms`
 
