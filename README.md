@@ -65,7 +65,7 @@ make floor        step 6         the floor: which comments have substance to rea
 make groups       step 2         the text families; every comment in one group; the campaign-letter / own-text split
 make screen       step 6         the mechanical screens: class A, B1, B2
 make stance       step 3  MODEL  the stance: SUPPORT, OPPOSE or NEUTRAL, one reading per group, copied to its members
-make score        step 6  MODEL  the MODEL reading: the v3 instrument over every class A comment
+make score-model  step 6  MODEL  the MODEL reading: the v3 instrument over every class A comment
 make score-model-free  step 6     the MODEL-FREE reading: the same comments scored by rules alone, no model call; beside the model's or instead of it
 make assemble     step 6         inheritance along the campaigns, the delta rows, LAW from the citations
 make rate         step 7         answerability, A0 to A3
