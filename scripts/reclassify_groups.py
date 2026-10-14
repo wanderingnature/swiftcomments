@@ -547,17 +547,24 @@ def _resume_run(ctx, profile, run_id):
     with db.connect(**ctx.db_config) as conn:
         row = conn.execute(ctx.render_sql(
             "SELECT run_timestamp, prompt_id, created_at,"
-            "       (SELECT max(built_at) FROM {analysis}.comment_group) > created_at"
+            "       (SELECT max(built_at) FROM {analysis}.comment_group) > created_at,"
+            "       model_name"
             " FROM {analysis}.classification_runs"
             " WHERE strftime('%Y%m%d_%H%M%S', run_timestamp) = ?"),
             (f"{ts:%Y%m%d_%H%M%S}",)).fetchone()
     if row is None:
         raise SystemExit(f"No classification_runs row for {run_id}.")
-    run_ts, prompt_id, _created, rebuilt = row
+    run_ts, prompt_id, _created, rebuilt, run_model = row
     if prompt_id != profile.prompt_id:
         raise SystemExit(
             f"{run_id} ran prompt id {prompt_id}; the active prompt is {profile.prompt_id}."
             " A resume must use the run's prompt.")
+    model = model_of(configured_model())
+    if model != run_model:
+        raise SystemExit(
+            f"{run_id} ran model {run_model}; .env names {model}. A run's rows carry one"
+            " model name: set LLM_MODEL back to continue it, or start a new run"
+            " (make stance LIMIT=200).")
     if rebuilt:
         raise SystemExit(
             f"comment_group was rebuilt after {run_id} started — its group ids no longer"

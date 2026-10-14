@@ -253,3 +253,19 @@ def test_runs_listing_names_the_run_and_the_command_to_continue(ctx, capsys):
     out = capsys.readouterr().out
     assert "loaded 1, errors 0, stored not loaded 0; complete" in out
     assert "nothing to continue: make stance LIMIT=200 starts a new run" in out
+
+
+def test_resume_refuses_another_model_name(ctx, monkeypatch):
+    """A run's rows carry one model name: a resume under a changed LLM_MODEL is
+    refused and told how to go on."""
+    monkeypatch.setenv("LLM_MODEL", "Qwen/Qwen3.8-Flash")
+    with db.connect(**ctx.db_config) as conn:
+        conn.execute("DELETE FROM classification_run_items")
+        conn.execute("DELETE FROM classification_runs")
+        conn.execute("INSERT INTO classification_runs (run_timestamp, prompt_id, model_name, comment_count)"
+                     " VALUES ('2026-10-13 21:45:34', 2, 'qwen/qwen3.8-flash', 1)")
+    profile = ProjectProfile.load(ctx, "sentiment_topic")
+    with pytest.raises(SystemExit, match="ran model qwen/qwen3.8-flash; .env names Qwen/Qwen3.8-Flash"):
+        rg._resume_run(ctx, profile, "reclass_20261013_214534")
+    monkeypatch.setenv("LLM_MODEL", "qwen/qwen3.8-flash")
+    assert rg._resume_run(ctx, profile, "reclass_20261013_214534")[0] == "reclass_20261013_214534"

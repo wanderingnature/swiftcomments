@@ -122,6 +122,24 @@ provider's serving of the weights. The 27B is `qwen/qwen3.8-27b` on the same
 provider. OpenRouter reports the cost of every call in its `usage`, and the spend
 line each model step prints at exit carries the dollars.
 
+## Together AI
+
+A serverless API that lists the same model. Make a key at
+https://api.together.ai/settings/api-keys, then in `.env`:
+
+```
+LLM_BASE_URL=https://api.together.ai/v1
+LLM_API_KEY=<your key>
+LLM_MODEL=<the model's name as Together lists it>
+LLM_PROVIDER=
+```
+
+`LLM_PROVIDER` stays empty: the provider pin is OpenRouter's request field, and
+Together is one provider. Together signals a model in high demand with a 429 or a
+503 (its rate-limits page), and the client treats both as the server's pace, as
+above. Together reports no cost in its replies, so the spend line at exit carries
+the tokens and says the cost was not reported.
+
 ## LM Studio, with `lms`
 
 The path this repository was built and run with. Download LM Studio from
@@ -251,3 +269,7 @@ waiting on them. The log says so once per pause (`rate limited by ...: every cal
 waits 2s, calls in flight capped at 4`), not once per worker, and every progress
 block says where the climb stands (`calls in flight 6 of 16`). `CONCURRENCY` is the
 most the run will ever ask for, not where it begins.
+
+A run's rows carry one model name. `make stance RUN=<id>` refuses to continue a run
+under a changed `LLM_MODEL`, including the same weights under another provider's
+name, and says so; a new run (`make stance LIMIT=200`) starts under the new name.
