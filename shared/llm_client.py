@@ -303,7 +303,8 @@ def _require_env(name: str) -> str:
 
 
 class ChatClient:
-    # How long one call keeps waiting through 429s before it gives up (seconds).
+    # How long one call keeps waiting through 429s, or through a lost connection
+    # (the network down, the name unresolvable), before it gives up (seconds).
     LIMIT_PATIENCE = 600.0
 
     def __init__(self, base_url=None, model=None, *, api_key=None, provider=None, timeout=300,
@@ -432,6 +433,22 @@ class ChatClient:
                 detail = ""
                 limited = False
                 retry_after = None
+                if isinstance(exc, requests.ConnectionError):
+                    # No connection at all: the network is down or the name does
+                    # not resolve. One worker's finding is every worker's; they
+                    # wait as one, doubling to a minute, for up to LIMIT_PATIENCE,
+                    # instead of each burning its retries in seconds.
+                    now = time.monotonic()
+                    limited_since = limited_since or now
+                    if now - limited_since > self.LIMIT_PATIENCE:
+                        raise requests.ConnectionError(
+                            f"no connection to {self.base_url} for {now - limited_since:.0f}s,"
+                            f" more than {self.LIMIT_PATIENCE:.0f}s: {exc}") from None
+                    wait, first = self._throttle.limited(None)
+                    if first:
+                        self._log(f"no connection to {self.base_url}: every call waits"
+                                  f" {wait:.0f}s and tries again ({type(exc).__name__}: {exc})")
+                    continue
                 if isinstance(exc, requests.HTTPError):
                     sc = exc.response.status_code
                     # The status and the body, verbatim: what the server said.

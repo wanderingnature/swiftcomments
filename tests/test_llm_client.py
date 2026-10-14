@@ -152,3 +152,24 @@ def test_stream_setting_from_env_or_argument(monkeypatch):
     monkeypatch.setenv("LLM_STREAM", "1")
     assert ChatClient(base_url=LOCAL, model="m", api_key="").stream is True
     assert ChatClient(base_url=LOCAL, model="m", api_key="", stream=False).stream is False
+
+
+def test_a_lost_connection_is_waited_out_as_one_then_raised(monkeypatch):
+    """A name that does not resolve: the client pauses every worker and keeps
+    trying for LIMIT_PATIENCE, then raises the connection error. Real DNS, no
+    server; the patience is shortened so the test ends."""
+    import time
+    import requests
+    import pytest
+    from shared.llm_client import _Throttle
+    monkeypatch.setattr(ChatClient, "LIMIT_PATIENCE", 0.5)
+    monkeypatch.setattr(_Throttle, "MAX_PAUSE", 0.2)
+    logged = []
+    c = ChatClient(base_url="http://no-such-host.invalid:1/v1", model="m", api_key="",
+                   timeout=2, log=logged.append)
+    t0 = time.monotonic()
+    with pytest.raises(requests.ConnectionError, match="no connection to http://no-such-host.invalid:1/v1"):
+        c.post({"messages": []})
+    assert time.monotonic() - t0 >= 0.5
+    assert any(line.startswith("no connection to http://no-such-host.invalid:1/v1: every call waits")
+               for line in logged)

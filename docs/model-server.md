@@ -283,7 +283,10 @@ halves the calls in flight, and marks the level that drew it: from then on the c
 is one per five clean answers to just under that level and one per fifty above it.
 A 429 is the server's pace, not a failed call: it
 costs none of a call's five retries, and a call gives up only after ten minutes of
-waiting on them. The log says so once per pause (`rate limited by ...: every call
+waiting on them. A lost connection, the network down or the API's name not
+resolving, is handled the same way: every worker waits as one, doubling to a
+minute between tries, for up to ten minutes, and the run aborts only after that,
+with what was stored kept and `make stance RUN=<id>` continuing it. The log says so once per pause (`rate limited by ...: every call
 waits 2s, calls in flight capped at 4`), not once per worker, and every progress
 block says where the climb stands (`calls in flight 6 of 16`). `CONCURRENCY` is the
 most the run will ever ask for, not where it begins.
