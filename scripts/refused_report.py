@@ -9,6 +9,7 @@ what was sent. Reads the file only. New (docs/model-server.md, "Refusals").
     make stance-refused RUN=reclass_20261013_234102
 """
 import argparse
+import json
 import sys
 from datetime import date
 from pathlib import Path
@@ -17,6 +18,19 @@ _REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_REPO_ROOT))
 
 from shared import db  # noqa: E402
+
+
+def provider_message(detail):
+    """The provider's own message out of a stored error: the HTTP envelope carries a
+    per-call id, so the envelope differs for every call and the message does not."""
+    text = (detail or "").strip()
+    brace = text.find("{")
+    if brace != -1:
+        try:
+            return json.loads(text[brace:])["error"]["message"]
+        except (ValueError, KeyError, TypeError):
+            pass
+    return text
 
 
 def report(conn, run_id):
@@ -39,7 +53,7 @@ def report(conn, run_id):
         " ORDER BY i.group_id", (run_id,)).fetchall()
     if not rows:
         raise SystemExit(f"{run_id} has no group refused by the provider")
-    messages = sorted({(r["error_detail"] or "").strip() for r in rows})
+    messages = sorted({provider_message(r["error_detail"]) for r in rows})
     total_members = sum(r["size"] for r in rows)
     out = [f"# Comments the provider refused in stance run {run_id}", "",
            f"Model `{run['model_name']}`, run started {run['run_timestamp']}; this document"
