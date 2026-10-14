@@ -143,6 +143,29 @@ rate-limits page), and the client treats both as the server's pace, as above.
 Together reports no cost in its replies, so the spend line at exit carries the
 tokens and says the cost was not reported.
 
+## Two servers in one `.env`
+
+A second server is a named set of the same five variables, `LLM_<NAME>_BASE_URL`,
+`LLM_<NAME>_API_KEY`, `LLM_<NAME>_MODEL`, `LLM_<NAME>_PROVIDER`, `LLM_<NAME>_STREAM`,
+beside the plain set, and one command runs against it with `SERVER=<NAME>`:
+
+```
+LLM_BASE_URL=https://api.together.ai/v1        # the plain set: every command without SERVER=
+LLM_API_KEY=<key>
+LLM_MODEL=<the flash's name on Together>
+LLM_LOCAL_BASE_URL=http://127.0.0.1:1234/v1    # a named set: SERVER=LOCAL
+LLM_LOCAL_MODEL=qwen/qwen3.8-27b
+```
+
+```
+make stance REFUSED_IN=reclass_20261013_234102 SERVER=LOCAL
+```
+
+classifies the groups Together's provider refused on the local 27B, as a run of its
+own under that model's name, and `.env` is never edited back and forth. `make
+stance-runs` then shows the Together run with its refusals "classified later by
+another run" and the local run complete.
+
 ## What differs between servers
 
 The same request is not taken the same way everywhere; these are the differences

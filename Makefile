@@ -6,7 +6,9 @@
 # for the model steps and the OCR, the two servers of docs/model-server.md and
 # docs/mineru.md.
 
-PY  := uv run python
+# SERVER=<NAME> runs a command against the named server set of .env
+# (LLM_<NAME>_BASE_URL and so on) instead of the plain one.
+PY  := LLM_SERVER=$(SERVER) uv run python
 CSV := csv/mv4-z8fw-q5jx.csv
 DB  := data/roadless.sqlite
 

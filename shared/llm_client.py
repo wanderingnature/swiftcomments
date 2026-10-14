@@ -43,6 +43,8 @@ import time
 import requests
 from typing import Any
 
+from shared.instrument import llm_var
+
 
 class TruncatedResponse(RuntimeError):
     """The server stopped generating before the model was done (finish_reason=length).
@@ -293,9 +295,13 @@ def _base_url(value: str) -> str:
     return base
 
 
-def _require_env(name: str) -> str:
-    value = (os.environ.get(name) or "").strip()
+def _require_env(suffix: str) -> str:
+    """LLM_<suffix> of the server the command runs against (shared.instrument.llm_var):
+    the plain set, or the named set LLM_SERVER selects."""
+    value = llm_var(suffix)
     if not value:
+        server = (os.environ.get("LLM_SERVER") or "").strip().upper()
+        name = f"LLM_{server}_{suffix}" if server else f"LLM_{suffix}"
         raise RuntimeError(
             f"{name} is not set: the model server is configured in .env"
             " (see .env.example and docs/model-server.md).")
@@ -310,18 +316,17 @@ class ChatClient:
     def __init__(self, base_url=None, model=None, *, api_key=None, provider=None, timeout=300,
                  max_retries=5, max_tokens=DEFAULT_MAX_TOKENS, log=None, max_in_flight=None,
                  stream=None):
-        self.base_url = _base_url(base_url or _require_env("LLM_BASE_URL"))
-        self.model = model or _require_env("LLM_MODEL")
+        self.base_url = _base_url(base_url or _require_env("BASE_URL"))
+        self.model = model or _require_env("MODEL")
         # Ask for the reply as a stream (LLM_STREAM=1, or set by the server's own
         # streaming_required answer); it is assembled into the usual reply shape.
-        self.stream = bool(stream) if stream is not None else bool(
-            (os.environ.get("LLM_STREAM") or "").strip())
+        self.stream = bool(stream) if stream is not None else bool(llm_var("STREAM"))
         # The most calls this client ever keeps in flight (the runner's
         # concurrency); the throttle starts at one and climbs to it.
         self._throttle = _Throttle(max_in_flight)
         # The one provider every call is pinned to on OpenRouter (LLM_PROVIDER);
         # empty for a local server, which has only itself.
-        self.provider = (provider or os.environ.get("LLM_PROVIDER") or "").strip()
+        self.provider = (provider or llm_var("PROVIDER")).strip()
         self.timeout = timeout
         self.max_retries = max_retries
         self.max_tokens = max_tokens
@@ -369,7 +374,7 @@ class ChatClient:
     def _auth_headers(api_key):
         """Bearer auth when a key is given or LLM_API_KEY is set; none otherwise
         (LM Studio and ollama need none)."""
-        key = api_key or (os.environ.get("LLM_API_KEY") or "").strip()
+        key = api_key or llm_var("API_KEY")
         if key:
             return {"Authorization": f"Bearer {key}"}
         return {}

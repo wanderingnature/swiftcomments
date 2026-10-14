@@ -173,3 +173,30 @@ def test_a_lost_connection_is_waited_out_as_one_then_raised(monkeypatch):
     assert time.monotonic() - t0 >= 0.5
     assert any(line.startswith("no connection to http://no-such-host.invalid:1/v1: every call waits")
                for line in logged)
+
+
+def test_a_named_server_set_is_chosen_with_llm_server(monkeypatch):
+    from shared.instrument import configured_model, llm_var
+    monkeypatch.setenv("LLM_BASE_URL", "https://api.together.ai/v1")
+    monkeypatch.setenv("LLM_MODEL", "flash")
+    monkeypatch.setenv("LLM_API_KEY", "k1")
+    monkeypatch.setenv("LLM_LOCAL_BASE_URL", "http://127.0.0.1:1234/v1")
+    monkeypatch.setenv("LLM_LOCAL_MODEL", "qwen/qwen3.8-27b")
+    monkeypatch.delenv("LLM_LOCAL_API_KEY", raising=False)
+    monkeypatch.delenv("LLM_SERVER", raising=False)
+    monkeypatch.delenv("LLM_PROVIDER", raising=False)
+    plain = ChatClient()
+    assert (plain.base_url, plain.model, plain._headers) == (
+        "https://api.together.ai/v1", "flash", {"Authorization": "Bearer k1"})
+    assert configured_model() == "flash"
+    monkeypatch.setenv("LLM_SERVER", "local")
+    named = ChatClient()
+    assert (named.base_url, named.model, named._headers) == (
+        "http://127.0.0.1:1234/v1", "qwen/qwen3.8-27b", {})
+    assert configured_model() == "qwen/qwen3.8-27b" and llm_var("API_KEY") == ""
+    monkeypatch.setenv("LLM_SERVER", "")
+    assert ChatClient().model == "flash"
+    monkeypatch.setenv("LLM_SERVER", "NOWHERE")
+    import pytest
+    with pytest.raises(RuntimeError, match="LLM_NOWHERE_BASE_URL is not set"):
+        ChatClient()
