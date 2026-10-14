@@ -81,6 +81,15 @@ def test_throttle_starts_at_one_climbs_and_backs_off_as_one():
     assert free.cap is None and free.limited(None) == (2.0, True)
 
 
+def test_client_reports_its_climb():
+    c = ChatClient(base_url=LOCAL, model="m", api_key="", max_in_flight=16)
+    assert c.in_flight_cap == (1, 16)
+    for _ in range(5):
+        c._throttle.succeeded()
+    assert c.in_flight_cap == (2, 16)
+    assert ChatClient(base_url=LOCAL, model="m", api_key="").in_flight_cap == (None, None)
+
+
 def test_retry_after_header_is_seconds_or_nothing():
     from shared.llm_client import _retry_after
     assert _retry_after("12") == 12.0 and _retry_after(None) is None

@@ -253,6 +253,9 @@ The client therefore never starts there. Calls in flight start at one and climb 
 per five clean answers towards `CONCURRENCY`; a 429 pauses every worker for the
 server's `Retry-After` or two seconds, doubling to a minute on repeats, halves the
 calls in flight, and marks the level that drew it, which is then tried again only
-once per fifty clean answers. The log says so once per pause (`rate limited by ...:
-every call waits 2s, calls in flight capped at 4`), not once per worker.
-`CONCURRENCY` is the most the run will ever ask for, not where it begins.
+once per fifty clean answers. A 429 is the server's pace, not a failed call: it
+costs none of a call's five retries, and a call gives up only after ten minutes of
+waiting on them. The log says so once per pause (`rate limited by ...: every call
+waits 2s, calls in flight capped at 4`), not once per worker, and every progress
+block says where the climb stands (`calls in flight 6 of 16`). `CONCURRENCY` is the
+most the run will ever ask for, not where it begins.
