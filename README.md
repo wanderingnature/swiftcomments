@@ -167,10 +167,10 @@ tokeniser strips markup and unescapes first.
 
 Those are the figures of Qwen3.8-27B through a paid API, for the
 analysis published at roadless.org. The runs of this repository use Qwen3.8-Flash
-(`qwen/qwen3.8-flash`) through an API, chosen for speed and its lower output price;
-on this method's token mix it costs more than the 27B, and `docs/model-server.md` shows
-the arithmetic. Its rows carry its name, and its figures are added to the table as
-they are measured. Any model a server
+(`qwen/qwen3.8-flash`) through an API, chosen for cost and speed: with the prompt
+prefix cached, which both prompts are built for, it costs about half the 27B on this
+method, and `docs/model-server.md` shows the arithmetic. Its rows carry its name, and
+its figures are added to the table as they are measured. Any model a server
 behind the OpenAI chat API serves can be named in `.env`; `docs/model-server.md` says
 what the two documented servers need, what another choice means for the figures, and how two
 models are compared on the same comments.

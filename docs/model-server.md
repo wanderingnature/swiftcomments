@@ -49,24 +49,32 @@ The measured repeatability of the substance instrument on this model is
 match row for row. The method's pages say what that means for the figures.
 
 **The model this repository's runs use.** Qwen3.8-Flash (`qwen/qwen3.8-flash`),
-through a paid API, chosen on 2026-10-13: it answers faster, and its output tokens
-cost less than half the 27B's, which makes a result possible in hours for a reader
-who cannot run a model locally. It is not the cheaper model for this method. At
-OpenRouter's prices of that day, the 27B at $0.039 in and $1.25 out per million
-tokens and the flash at $0.15 in and $0.47 out, the two model steps whose tokens we
-counted cost, from the README's token counts:
+through a paid API, chosen on 2026-10-13 for cost and speed. At OpenRouter's prices
+of that day, the 27B at $0.039 in and $1.25 out per million tokens and the flash at
+$0.15 in and $0.47 out, the flash is dearer on input and cheaper on output, and the
+method sends twelve tokens in for every one out. What turns that round is prompt
+caching: both prompts put everything but the comment in a fixed prefix (the stance
+template ends with the comment, after the topic list; the substance instrument is
+15,165 characters of system prompt), so nearly all of the input is repeated text,
+and a cached input token is priced at $0.016 per million for the flash and $0.0198
+for the 27B (OpenRouter's model list, 2026-10-13). The two model steps whose tokens
+we counted, from the README's token counts:
 
-| model, price per 1 M tokens in / out | stance (60.6 M in, 9.4 M out) | substance, direct readings (115 M in, 6 M out) | total |
-|---|---|---|---|
-| Qwen3.8-27B, $0.039 / $1.25 | $14.11 | $11.98 | $26.10 |
-| Qwen3.8-Flash, $0.15 / $0.47 | $13.51 | $20.07 | $33.58 |
+| step | 27B, no cache | 27B, cached | flash, no cache | flash, cached |
+|---|---|---|---|---|
+| stance (60.6 M in, 9.4 M out) | $14.11 | $12.95 to $14.11 | $13.51 | $5.39 to $13.51 |
+| substance, direct readings (115 M in, 6 M out) | $11.98 | $9.93 | $20.07 | $5.74 |
+| total | $26.10 | $22.88 to $24.04 | $33.58 | $11.13 to $19.25 |
 
-The flash is cheaper on output and dearer on input, and the method sends twelve
-tokens in for every one out, so the input price decides the bill: the flash saves 60
-cents on the stance, where the output share is highest, and costs $8 more on the
-substance reading, 29 percent more over the two. The roster's tokens were not counted
-and the exemplar and delta readings are inside the substance figure. the figures of
-the reference run on the flash are recorded in the README's model-steps table as
+The substance row takes its cacheable share from the counts themselves: 4,081 tokens
+a call, of which the instrument is about 3,800, so 93 percent prefix. The stance row
+is a range from nothing cached to everything cached, because 1,360 tokens a call is
+less than its rendered prefix, so the share is not known until the pilot reports
+its tokens per call. Uncached, the flash costs 29 percent more than the 27B; cached,
+about half. The 27B gains little from a cache because its bill is its output. The
+roster's tokens were not counted and the exemplar and delta readings are inside the
+substance figure. the figures of the reference run on the flash are recorded in the README's
+model-steps table as
 they are measured, and the comparison with the 27B on the same comments is made with
 `make compare-scores` (`docs/model-free-scoring.md`). Its open weights are
 Qwen3.8-Flash-Next (https://huggingface.co/Qwen/Qwen3.8-Flash-Next; 125 billion
