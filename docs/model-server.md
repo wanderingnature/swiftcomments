@@ -238,10 +238,11 @@ command, and refuses to continue if the partition was rebuilt since it started,
 because its stored calls name groups that no longer exist; then a new run.
 
 **Rate limits.** A shared API throttles on concurrency: Alibaba through OpenRouter
-answered 429 `Throttling.Concurrency` to the pilot at 16 in flight. The client
-handles it as one: the first 429 pauses every worker for the server's `Retry-After`
-or two seconds, doubling to a minute on repeats, and halves the calls kept in
-flight; twenty clean answers in a row raise that cap by one until it is back at
-`CONCURRENCY`. The log says so once per pause (`rate limited by ...: every call
-waits 2s, calls in flight capped at 8`), not once per worker. Start at the
-concurrency the API takes and let the throttle find the rate.
+answered 429 `Throttling.Concurrency` the moment the pilot put 16 calls in flight.
+The client therefore never starts there. Calls in flight start at one and climb one
+per five clean answers towards `CONCURRENCY`; a 429 pauses every worker for the
+server's `Retry-After` or two seconds, doubling to a minute on repeats, halves the
+calls in flight, and marks the level that drew it, which is then tried again only
+once per fifty clean answers. The log says so once per pause (`rate limited by ...:
+every call waits 2s, calls in flight capped at 4`), not once per worker.
+`CONCURRENCY` is the most the run will ever ask for, not where it begins.

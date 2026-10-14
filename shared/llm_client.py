@@ -12,11 +12,12 @@ Responsibilities, in one place:
   how to run one.
 - **retry** — 429 (rate limit), 408/409, 5xx, timeouts, and truncated JSON are retried with
   backoff; a real 4xx (400/422 bad request/schema) fails fast.
-- **the throttle** — one 429 pauses every worker of the client, not just the one that
-  got it, for the server's Retry-After or a doubling wait, and halves the calls the
-  client keeps in flight; a run of clean answers raises the cap back one at a time
-  (`max_in_flight`, the runner's concurrency). A shared pool that throttles on
-  concurrency is never hammered by sixteen threads retrying on their own clocks.
+- **the throttle** — calls in flight start at one and climb one per five clean
+  answers to `max_in_flight` (the runner's concurrency). One 429 pauses every worker
+  of the client, not just the one that got it, for the server's Retry-After or a
+  doubling wait, halves the calls in flight, and marks the level that drew it, which
+  is then probed only once per fifty clean answers. The server is asked for what it
+  has shown it takes, never for sixteen at once to see what happens.
 - **structured output** — pass a JSON Schema and get back the parsed object (the endpoint is
   handed an OpenAI `response_format: json_schema`); omit it and get the raw text.
 - **spend** — every answered call's `usage` is summed on the client (calls, tokens, and a
@@ -124,20 +125,26 @@ _CLIENTS = []   # every ChatClient made in this process, for the exit spend repo
 
 
 class _Throttle:
-    """What the client's workers share when the server pushes back.
+    """What the client's workers share, so the server is never asked for more
+    than it has shown it will take.
 
-    A 429 from any worker sets a pause every worker honours before its next call
-    (the server's Retry-After when it sends one, else 2 s doubling to 60 s), and
-    halves the number of calls kept in flight; every STREAK clean answers raise
-    that cap by one until it is back at the maximum. A client made without a
-    maximum (a local server) still shares the pause and keeps no cap.
+    Calls in flight start at ONE and climb: every STREAK clean answers in a row
+    add one, up to the maximum the caller set (the runner's concurrency). A 429
+    from any worker sets a pause every worker honours before its next call (the
+    server's Retry-After when it sends one, else 2 s doubling to 60 s on
+    repeats), halves the calls in flight, and remembers the level that drew it:
+    the climb back goes one per STREAK up to just under that level and one per
+    PROBE above it, so the limit is tested rarely, not leaned on. A client made
+    without a maximum (a local server) shares the pause and keeps no cap.
     """
-    STREAK = 20
+    STREAK = 5
+    PROBE = 50
     MAX_PAUSE = 60.0
 
     def __init__(self, max_in_flight=None):
         self.max = max_in_flight
-        self.cap = max_in_flight
+        self.cap = 1 if max_in_flight is not None else None
+        self.ceiling = None           # the in-flight level that last drew a 429
         self.in_flight = 0
         self.pause_until = 0.0
         self.backoff = 0.0
@@ -172,6 +179,7 @@ class _Throttle:
             wait = float(retry_after) if retry_after else self.backoff
             self.pause_until = now + wait
             if self.max is not None:
+                self.ceiling = self.cap
                 self.cap = max(1, self.cap // 2)
             self.streak = 0
             return wait, True
@@ -180,17 +188,13 @@ class _Throttle:
         with self._cv:
             self.backoff = 0.0
             self.streak += 1
-            if self.max is not None and self.cap < self.max and self.streak >= self.STREAK:
+            if self.max is None or self.cap >= self.max:
+                return
+            needed = self.PROBE if self.ceiling is not None and self.cap + 1 >= self.ceiling else self.STREAK
+            if self.streak >= needed:
                 self.cap += 1
                 self.streak = 0
                 self._cv.notify_all()
-
-
-@atexit.register
-def _print_spend():
-    for client in _CLIENTS:
-        if client.calls:
-            print(client.spend_line(), flush=True)
 
 
 def _retry_after(value):
@@ -216,8 +220,8 @@ class ChatClient:
                  max_retries=5, max_tokens=DEFAULT_MAX_TOKENS, log=None, max_in_flight=None):
         self.base_url = (base_url or _require_env("LLM_BASE_URL")).rstrip("/")
         self.model = model or _require_env("LLM_MODEL")
-        # The most calls this client keeps in flight (the runner's concurrency),
-        # lowered and raised by the throttle as the server pushes back.
+        # The most calls this client ever keeps in flight (the runner's
+        # concurrency); the throttle starts at one and climbs to it.
         self._throttle = _Throttle(max_in_flight)
         # The one provider every call is pinned to on OpenRouter (LLM_PROVIDER);
         # empty for a local server, which has only itself.

@@ -179,8 +179,8 @@ A model step is proven before it is run in full: `make stance LIMIT=200` classif
 200 groups, stores and loads them and exits. The rest of that run is continued, not
 restarted: `make stance-runs` lists the runs and prints the command, `make stance
 RUN=<run id>`, with `LIMIT=N` for the next N groups and `CONCURRENCY=N` for the calls
-in flight. The client backs off and lowers its concurrency on its own when an API
-answers 429 (`docs/model-server.md`).
+in flight at most: the client starts at one call and climbs, and backs off as one
+when an API answers 429 (`docs/model-server.md`).
 
 The prompts are in the repository, readable, one file per step in `docs/instruments/`:
 step 3, the stance, `stance-roadless-rescission-v2.md`; step 6, the substance
