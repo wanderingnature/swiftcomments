@@ -29,6 +29,24 @@ import os
 SCORING_INSTRUMENT = "v3"
 
 
+def llm_var(suffix: str) -> str:
+    """The value of an LLM_* variable for the server the command runs against.
+    One server is the plain set (LLM_BASE_URL, LLM_API_KEY, LLM_MODEL,
+    LLM_PROVIDER, LLM_STREAM). A second server is a named set in the same .env,
+    LLM_<NAME>_BASE_URL and so on, chosen for one command with LLM_SERVER=<NAME>
+    (make's SERVER=<NAME>), so a run against another server is one word on the
+    command line and .env is never edited back and forth."""
+    server = (os.environ.get("LLM_SERVER") or "").strip().upper()
+    name = f"LLM_{server}_{suffix}" if server else f"LLM_{suffix}"
+    return (os.environ.get(name) or "").strip()
+
+
+def llm_server_label() -> str:
+    """How a log names the server a run used: the named set, or the plain one."""
+    server = (os.environ.get("LLM_SERVER") or "").strip().upper()
+    return f"server {server} of .env" if server else "the server of .env"
+
+
 # One model, one server, one name: the reader's (plan 5.2, edit 8). LLM_MODEL in
 # .env is the name the reader's server gives Qwen3.8-27B; it is the name a row is
 # STAMPED with, the name the queue and the assembler compare, the name the corpus
@@ -37,10 +55,12 @@ SCORING_INSTRUMENT = "v3"
 def configured_model() -> str:
     """The model named in .env. Refuses an empty one: a row stamped with nothing
     cannot be told from a row stamped by nothing."""
-    name = (os.environ.get("LLM_MODEL") or "").strip()
+    name = llm_var("MODEL")
     if not name:
+        server = (os.environ.get("LLM_SERVER") or "").strip().upper()
+        var = f"LLM_{server}_MODEL" if server else "LLM_MODEL"
         raise SystemExit(
-            "LLM_MODEL is not set: put the model's name on your server in .env"
+            f"{var} is not set: put the model's name on your server in .env"
             " (see .env.example and docs/model-server.md)")
     return name
 

@@ -314,3 +314,30 @@ def test_refused_report_lists_each_refused_group_with_its_text(ctx, tmp_path):
     assert "> " + TEST_COMMENT[:20] in text
     with pytest.raises(SystemExit, match="no stance run reclass_20261013_000000"):
         rr.report(conn, "reclass_20261013_000000")
+
+
+def test_runs_listing_credits_refusals_a_later_run_classified(ctx, capsys):
+    with db.connect(**ctx.db_config) as conn:
+        conn.execute("DELETE FROM classification_run_items")
+        conn.execute("DELETE FROM classification_runs")
+        conn.execute("INSERT INTO classification_runs (run_timestamp, prompt_id, model_name, comment_count)"
+                     " VALUES ('2026-10-13 23:41:02', 2, 'qwen/qwen3.8-flash', 1)")
+        conn.execute("INSERT INTO classification_run_items (run_id, group_id, attempt, comment_id,"
+                     " status, error_kind, error_detail, seconds) VALUES ('reclass_20261013_234102', 1, 1, ?,"
+                     " 'error', 'refused', 'inappropriate', 1.0)", (MEMBERS[0],))
+    rg.list_runs(ctx)
+    out = capsys.readouterr().out
+    assert "errors 1 (refused by the provider 1, of which 0 classified later by another run)" in out
+    assert "1 refused group(s) unclassified" in out
+    assert "make stance REFUSED_IN=reclass_20261013_234102 SERVER=" in out
+    assert "RETRY=1" not in out
+    with db.connect(**ctx.db_config) as conn:
+        conn.execute("INSERT INTO classification_runs (run_timestamp, prompt_id, model_name, comment_count)"
+                     " VALUES ('2026-10-14 10:00:00', 2, 'qwen/qwen3.8-27b', 1)")
+        conn.execute("INSERT INTO classification_run_items (run_id, group_id, attempt, comment_id,"
+                     " status, seconds) VALUES ('reclass_20261014_100000', 1, 1, ?, 'loaded', 1.0)",
+                     (MEMBERS[0],))
+    rg.list_runs(ctx)
+    out = capsys.readouterr().out
+    assert "of which 1 classified later by another run), stored not loaded 0; complete" in out
+    assert "reclass_20261014_100000  model qwen/qwen3.8-27b" in out and "REFUSED_IN" not in out

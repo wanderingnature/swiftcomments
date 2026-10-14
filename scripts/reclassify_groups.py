@@ -555,6 +555,7 @@ def list_runs(ctx, out=None):
             "SELECT run_timestamp, model_name, prompt_id, comment_count, created_at"
             " FROM {analysis}.classification_runs ORDER BY run_timestamp")).fetchall()
         rows = []
+        loaded_by_run = {}
         for ts, model, prompt_id, n_groups, created in runs:
             run_id = f"reclass_{datetime.fromisoformat(ts):%Y%m%d_%H%M%S}"
             counts = dict(conn.execute(ctx.render_sql(
@@ -563,23 +564,48 @@ def list_runs(ctx, out=None):
                 "  FROM {analysis}.classification_run_items WHERE run_id = ?)"
                 " WHERE rn = 1 GROUP BY status"), (run_id,)).fetchall())
             items = sum(counts.values())
+            latest = conn.execute(ctx.render_sql(
+                "SELECT group_id, status, error_kind FROM ("
+                "  SELECT group_id, status, error_kind,"
+                "         row_number() OVER (PARTITION BY group_id ORDER BY attempt DESC) AS rn"
+                "  FROM {analysis}.classification_run_items WHERE run_id = ?) WHERE rn = 1"),
+                (run_id,)).fetchall()
+            loaded_by_run[run_id] = {g for g, s, _k in latest if s == "loaded"}
+            refused = {g for g, s, k in latest if s == "error" and k == "refused"}
             rows.append((run_id, model, prompt_id, n_groups, ts, counts, items,
-                         rebuilt_at is not None and created is not None and rebuilt_at > created))
+                         rebuilt_at is not None and created is not None and rebuilt_at > created,
+                         refused))
     print(f"eligible groups today: {total:,} (canonical >= {MIN_COMMENT_LENGTH} chars)", file=out)
     if not rows:
         print("no stance run yet: make stance LIMIT=200 starts one", file=out)
         return
     continuable = None
-    for run_id, model, prompt_id, n_groups, started, counts, items, rebuilt in rows:
+    for idx, (run_id, model, prompt_id, n_groups, started, counts, items, rebuilt, refused) in enumerate(rows):
         unsent = max(0, total - items)
+        # A refusal is the provider's final answer; a later run on another
+        # server that loaded the group is what classifies it.
+        later = set()
+        for later_id, _m, _p, _n, _s, _c, _i, _r, _rf in rows[idx + 1:]:
+            later |= loaded_by_run[later_id] & refused
+        n_err = counts.get("error", 0)
+        n_open = n_err - len(refused)
         state = ("partition rebuilt since; cannot be continued" if rebuilt
-                 else "complete" if unsent == 0 and not counts.get("error") and not counts.get("received")
-                 else f"{unsent:,} not yet sent")
+                 else "complete" if unsent == 0 and not n_open and not counts.get("received")
+                 and len(later) == len(refused)
+                 else f"{unsent:,} not yet sent" if unsent
+                 else f"{len(refused) - len(later):,} refused group(s) unclassified")
+        refused_note = ""
+        if refused:
+            refused_note = (f" (refused by the provider {len(refused):,}, of which"
+                            f" {len(later):,} classified later by another run)")
         print(f"{run_id}  model {model}  prompt id {prompt_id}  started {started[:19]}:"
-              f" loaded {counts.get('loaded', 0):,}, errors {counts.get('error', 0):,},"
+              f" loaded {counts.get('loaded', 0):,}, errors {n_err:,}{refused_note},"
               f" stored not loaded {counts.get('received', 0):,}; {state}", file=out)
-        if not rebuilt and (unsent or counts.get("received") or counts.get("error")):
-            continuable = (run_id, unsent, counts.get("error", 0))
+        if not rebuilt and (unsent or counts.get("received") or n_open):
+            continuable = (run_id, unsent, n_open)
+        elif not rebuilt and len(later) < len(refused):
+            print(f"  to classify its refused groups elsewhere: make stance REFUSED_IN={run_id}"
+                  f" SERVER=<a named server of .env>", file=out)
     if continuable is None:
         print("nothing to continue: make stance LIMIT=200 starts a new run", file=out)
         return
