@@ -72,7 +72,7 @@ score-rules:  ## step 6 (rules): the model-free reading of the same class A, no 
 compare-scores:  ## the two readings side by side from their JSON folders: make compare-scores A=dir B=dir
 	$(PY) scripts/compare_scores.py --a $(A) --b $(B)
 
-assemble:  ## step 6: campaign inheritance and the delta rows; LAW from the citations
+assemble:  ## step 6: campaign inheritance and the delta rows; then the LAW check (a report; --write if it lists rows)
 	$(PY) scripts/substance/assemble_scores.py --project roadless --write
 	$(PY) scripts/substance/refresh_law.py --project roadless
 

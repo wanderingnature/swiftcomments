@@ -215,3 +215,29 @@ def test_a_model_name_is_the_same_weights_only_as_itself():
     assert not same_weights(None, "nicholas-212f/eis")
     assert same_weights("some/other-model", "some/other-model")
     assert not same_weights("qwen/qwen3.5-9b", "nicholas-212f/eis")
+
+
+def test_assemble_reads_only_the_parts_scored_by_the_run_model():
+    import assemble_scores as asm  # pyright: ignore[reportMissingImports]
+    rows = [("c1", "exemplar", "qwen/qwen3.8-flash", {"strength": 9}),
+            ("c2", "delta", "qwen/qwen3.8-27b", {"strength": 4}),        # another reader
+            ("c3", "delta", "qwen/qwen3.8-flash", {"strength": 2}),
+            ("c4", "delta", None, {"strength": 1})]                       # no model
+    parts = asm.parts_under(rows, "qwen/qwen3.8-flash")
+    assert parts == {"exemplar": {"c1": {"strength": 9}},
+                     "delta": {"c3": {"strength": 2}}}
+
+
+def test_assemble_merges_the_exemplar_and_the_delta_field_by_field():
+    import assemble_scores as asm  # pyright: ignore[reportMissingImports]
+    ex = {"scores": {"PLACE": 1, "STAND": 0, "DOC": 1, "GAP": 2, "EVID": 0, "ASK": 1, "ALT": 0, "LAW": 0},
+          "rationale": "shared", "moves": ["M2"], "targets": ["T1"], "topics": ["WATER"], "issue_count": 1}
+    de = {"scores": {"PLACE": 0, "STAND": 2, "DOC": 0, "GAP": 1, "EVID": 3, "ASK": 0, "ALT": 0, "LAW": 0},
+          "rationale": "own", "moves": ["M3"], "targets": ["T1", "T2"], "topics": [], "issue_count": 2}
+    m = asm._merge(ex, de)
+    assert m["scores"] == {"PLACE": 1, "STAND": 2, "DOC": 1, "GAP": 2, "EVID": 3, "ASK": 1, "ALT": 0, "LAW": 0}
+    assert m["strength"] == 10 and m["gate"] is True and m["gate_basis"] == ["GAP", "EVID"]
+    assert m["band"] == "marginal" and m["moves"] == ["M2", "M3"] and m["targets"] == ["T1", "T2"]
+    assert m["issue_count"] == 2 and m["rationale"] == "[shared text] shared [own text] own"
+    alone = asm._merge(ex, None)
+    assert alone["scores"] == ex["scores"] and alone["rationale"] == "shared"
