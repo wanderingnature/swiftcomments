@@ -107,3 +107,12 @@ def test_retry_after_header_is_seconds_or_nothing():
     from shared.llm_client import _retry_after
     assert _retry_after("12") == 12.0 and _retry_after(None) is None
     assert _retry_after("Wed, 21 Oct 2026 07:28:00 GMT") is None and _retry_after("0") is None
+
+
+def test_base_url_takes_the_endpoint_or_its_base():
+    from shared.llm_client import _base_url
+    assert _base_url("https://api.together.ai/v1") == "https://api.together.ai/v1"
+    assert _base_url("https://api.together.ai/v1/chat/completions") == "https://api.together.ai/v1"
+    assert _base_url(" http://127.0.0.1:1234/v1/ ") == "http://127.0.0.1:1234/v1"
+    assert ChatClient(base_url="https://openrouter.ai/api/v1/chat/completions/", model="m",
+                      api_key="k").base_url == "https://openrouter.ai/api/v1"

@@ -223,6 +223,16 @@ def _retry_after(value):
         return None
 
 
+def _base_url(value: str) -> str:
+    """The base the client posts /chat/completions under. A value that names
+    the endpoint itself (https://host/v1/chat/completions, as a provider's docs
+    show it) is taken as its base, not doubled."""
+    base = value.strip().rstrip("/")
+    if base.lower().endswith("/chat/completions"):
+        base = base[:-len("/chat/completions")].rstrip("/")
+    return base
+
+
 def _require_env(name: str) -> str:
     value = (os.environ.get(name) or "").strip()
     if not value:
@@ -238,7 +248,7 @@ class ChatClient:
 
     def __init__(self, base_url=None, model=None, *, api_key=None, provider=None, timeout=300,
                  max_retries=5, max_tokens=DEFAULT_MAX_TOKENS, log=None, max_in_flight=None):
-        self.base_url = (base_url or _require_env("LLM_BASE_URL")).rstrip("/")
+        self.base_url = _base_url(base_url or _require_env("LLM_BASE_URL"))
         self.model = model or _require_env("LLM_MODEL")
         # The most calls this client ever keeps in flight (the runner's
         # concurrency); the throttle starts at one and climbs to it.
