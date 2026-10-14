@@ -49,10 +49,20 @@ The measured repeatability of the substance instrument on this model is
 match row for row. The method's pages say what that means for the figures.
 
 **The model this repository's runs use.** Qwen3.8-Flash (`qwen/qwen3.8-flash`),
-through a paid API, chosen on 2026-10-13 for cost and speed: it costs about a third
-of what the 27B cost us through an API and answers faster, which makes the method affordable
-for a reader who cannot run a model locally or wants a result in hours rather than
-days. The figures of our runs on it are recorded in the README's model-steps table as
+through a paid API, chosen on 2026-10-13 for cost and speed: at OpenRouter's prices
+of that day it costs about a third of what the 27B costs through the same API, and it
+answers faster, which makes the method affordable for a reader who cannot run a model
+locally or wants a result in hours rather than days. The cost of the two model steps
+whose tokens we counted, at those prices, from the README's token counts:
+
+| model, price per 1 M tokens in / out | stance (60.6 M in, 9.4 M out) | substance, direct readings (115 M in, 6 M out) | total |
+|---|---|---|---|
+| Qwen3.8-27B, $0.39 / $1.25 | $35.38 | $52.35 | $87.73 |
+| Qwen3.8-Flash, $0.15 / $0.47 | $13.51 | $20.07 | $33.58 |
+
+The method is input-heavy: twelve tokens in for every one out, so the input price
+decides the bill. The roster's tokens were not counted and the exemplar and delta
+readings are inside the substance figure. The figures of our runs on the flash are recorded in the README's model-steps table as
 they are measured, and the comparison with the 27B on the same comments is made with
 `make compare-scores` (`docs/model-free-scoring.md`). Its open weights are
 Qwen3.8-Flash-Next (https://huggingface.co/Qwen/Qwen3.8-Flash-Next; 125 billion
