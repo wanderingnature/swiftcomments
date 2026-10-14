@@ -17,7 +17,8 @@ Responsibilities, in one place:
   backoff; a real 4xx (400/422 bad request/schema) fails fast.
 - **the throttle** — calls in flight start at one and double per five clean answers
   while the server has never pushed back, up to `max_in_flight` (the runner's
-  concurrency); calls leave at least 100 ms apart. One 429 pauses every worker of the
+  concurrency); calls leave at least 100 ms apart. One 429 (or 503, Together's
+  high-demand signal) pauses every worker of the
   client, not just the one that got it, for the server's Retry-After or a doubling
   wait, halves the calls in flight, and marks the level that drew it: from then on
   the climb is one per five clean answers to just under that level and one per fifty
@@ -365,7 +366,9 @@ class ChatClient:
                     if 400 <= sc < 500 and sc not in (408, 409, 429):
                         raise requests.HTTPError(
                             f"{exc}{detail}", response=exc.response) from None
-                    if sc == 429:
+                    if sc in (429, 503):
+                        # 429 everywhere; 503 is how Together signals a model in
+                        # high demand (its rate-limits page), the same thing.
                         limited = True
                         retry_after = _retry_after(exc.response.headers.get("Retry-After"))
                 if limited:
