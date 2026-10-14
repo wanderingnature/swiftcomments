@@ -63,8 +63,8 @@ stance:  ## step 3 (model): one classification per comment group, copied to the 
 stance-runs:  ## the stance runs so far, what each loaded, and the command that continues the latest
 	$(PY) scripts/reclassify_groups.py --project roadless --runs
 
-score:  ## step 6 (model): the v3 substance reading over class A
-	$(PY) scripts/substance/score_comments.py --project roadless --classes A
+score:  ## step 6 (model): the v3 substance reading over class A; LIMIT=N for a pilot; JSON=dir writes one file per comment
+	$(PY) scripts/substance/score_comments.py --project roadless --classes A $(if $(LIMIT),--limit $(LIMIT)) $(if $(JSON),--json $(JSON))
 
 score-rules:  ## step 6 (rules): the model-free reading of the same class A, no model call; LIMIT=N; JSON=dir writes one file per comment
 	$(PY) scripts/model_free/run.py score $(if $(LIMIT),--limit $(LIMIT)) $(if $(JSON),--json $(JSON))
