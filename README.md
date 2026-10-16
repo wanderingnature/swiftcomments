@@ -221,7 +221,7 @@ csv/                  the bulk download, gzipped; `make corpus` extracts it
 seeds/                the reference lists, the vocabularies, the prompt and topics
 shared/               db.py (the one module that knows SQLite), the text normaliser, the model client
 comments_db/          the copy-finding scripts and NER
-scripts/              the loader, the substance steps, model_free/ (the rules' reading), the entity tagging, the stance chain, the attachment steps, score_model_compare.py
+scripts/              the loader, the substance steps, model_free/ (the rules' reading), the entity tagging, the stance chain, the attachment steps, compare_scores.py
 checks/               figures.sql, expected.json, check.py
 console/              the read-only browser of the file; `make console`
 tests/                the tests; `uv run pytest`
@@ -243,7 +243,32 @@ seeds, the schema, the loader and the steps through the substance reading:
 `make schema`, `make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`,
 `make floor`, `make groups`, `make screen`, `make stance`, `make score-model`,
 `make score-model-free`, `make assemble` and `make rate` are ported, `make console` reads
-the file, and `make extract`, `make jump` and `make score-model-compare` work. Not yet
+the file, and `make extract`, `make jump` and `make compare-scores` work. Not yet
 here, in run order: `make fetch`, `make text`, `make attachments`, `make orgs`,
 `make facts` and `make check`; each lands in its own commit, and this list shrinks
 with each.
+
+## Licence
+
+The code in this repository is licensed under the GNU Affero General Public
+License, version 3 or any later version (AGPL-3.0-or-later); the full text is in
+`LICENSE`. You may use, study, change and share it. If you distribute a changed
+version, or run one as a service others use over a network, you must offer its
+source under the same licence.
+
+The seed lists and the hand-reviewed tables in `seeds/` are licensed under the
+Creative Commons Attribution-NonCommercial 4.0 International licence
+([CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)). The public
+comments themselves, and the attachments `make fetch` downloads, are the public
+record of docket FS-2025-0001 as published by regulations.gov; this
+repository's licence does not cover them.
+
+Commercial licences are available for anyone who wants to use this code under
+terms other than the AGPL, for example to build it into a proprietary product
+or service. Contact Nicholas Holshouser at nicholas@wanderingnature.com.
+
+Contributions are welcome. So that the code can continue to be offered under
+both licences, contributors are asked to agree to the contributor agreement in
+`CONTRIBUTING.md` before a pull request is merged.
+
+Copyright (C) 2026 Nicholas Holshouser
