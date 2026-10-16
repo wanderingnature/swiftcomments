@@ -3,7 +3,7 @@
 
 make score-model-compare LIMIT=N picks N class A comments, reads each one with
 the model (the v3 instrument, the server of .env) and with the rules (rule set
-3, no model call), keeps both readings and the comparison in
+3 in hybrid mode, no model call), keeps both readings and the comparison in
 data/roadless.sqlite (score_compare_run, score_compare_reading; the console's
 Compare page), writes one JSON file per comment per reading in the shape of
 shared/score_json.py, and prints the comparison. New (docs/model-free-scoring.md).
@@ -144,12 +144,16 @@ def rules_reading(conn, run_id, picked: set[str], out_dir: Path) -> dict[str, di
     authority_keys = inputs.load_authority_keys(conn)
     print(f"the rules' reading: {len(picked)} comment(s), no model call", flush=True)
     records = {}
-    for u in inputs.iter_comments(conn, picked):
-        sentences, comment, answer = mf_run.read_comment(u, tags, authority_keys)
-        rec = mf_run.json_record(comment, answer, sentences)
+    for cid, units in inputs.iter_comments(conn, picked):
+        if units is None:
+            store(conn, run_id, cid, "model-free", None, "no sentence of 25 or more letters and digits")
+            print(f"  {cid}: no sentence to score; not compared", flush=True)
+            continue
+        scored, comment, answer = mf_run.read_comment(cid, units, tags, authority_keys)
+        rec = mf_run.json_record(comment, answer, scored)
         score_json.write(out_dir, rec)
-        store(conn, run_id, u.comment_id, "model-free", rec, None)
-        records[u.comment_id] = rec
+        store(conn, run_id, cid, "model-free", rec, None)
+        records[cid] = rec
     return records
 
 

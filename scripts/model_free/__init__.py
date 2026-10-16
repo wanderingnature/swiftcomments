@@ -2,9 +2,12 @@
 
 The method: docs/methods-scoring.md and docs/model-free-scoring.md.
 
-This package imports nothing from scripts/substance/ or shared/, and nothing
-there imports it. It reads the database tables listed in the plan and writes
-only its own mf_* tables.
+This package imports nothing from scripts/substance/ or shared/. Its one
+outside dependency is the comment-sentences package
+(packages/comment-sentences, stored_units), the one method that splits a
+comment into sentences. Nothing outside imports this package but
+scripts/score_model_compare.py. It reads the tables listed in
+docs/model-free-scoring.md and writes only its own mf_* tables.
 """
 from __future__ import annotations
 

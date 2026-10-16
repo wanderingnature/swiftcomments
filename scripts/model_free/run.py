@@ -4,17 +4,22 @@ comment, no model call. Step 6, beside make score-model.
 
     uv run python scripts/model_free/run.py score [--limit N] [--comment-id ID ...] [--ids-file F]
     uv run python scripts/model_free/run.py report
-    uv run python scripts/model_free/run.py text "comment text ..."    # score ad-hoc text, print JSON
+    uv run python scripts/model_free/run.py text [--mode sentence|whole|hybrid] "comment text ..."    # score ad-hoc text, print JSON
     make score-model-free [LIMIT=N]
 
-`score` reads the class A comments of the screen from data/roadless.sqlite,
-scores every one that has no comment score under the current rule set
-version, whole (the comment's full stored text is the one unit the rules run
-over), and writes its mf_* tables in one transaction. A second run on the same
-inputs writes nothing.
+`score` reads the class A comments of the screen from data/roadless.sqlite and
+scores every one that has no comment score under the current rule set version
+in hybrid mode: each sentence (split by the comment-sentences package,
+stored_units) and the whole comment are scored, and the comment score is the
+whole comment's with GAP held to what one sentence reaches
+(arithmetic.hybrid). It writes its mf_* tables in one transaction. A second run
+on the same inputs writes nothing. A comment the package leaves no sentence
+(every piece under 25 letters and digits) is not scored, and the run says how
+many.
 
-The whole-comment mode is the only one and --mode is gone; the store is the repository's file;
-the git hash is not stamped.
+The comment-sentences package splits the stored text as it is read; hybrid is
+the mode `score` runs, and --mode stays on `text`; the store is the
+repository's file.
 """
 from __future__ import annotations
 
@@ -30,11 +35,12 @@ sys.path.insert(0, str(_HERE.parents[1]))
 sys.path.insert(0, str(_HERE.parents[2]))
 
 from model_free import RULESET_VERSION  # noqa: E402
-from model_free.arithmetic import Answerability, CommentScore, rate, roll_up  # noqa: E402
+from model_free.arithmetic import Answerability, CommentScore, hybrid, rate, roll_up  # noqa: E402
 from model_free.detectors import Context, SentenceInput, SentenceScore, score_sentence  # noqa: E402
 from model_free.nlp import parse_many  # noqa: E402
 from model_free.store import Store  # noqa: E402
-from model_free.text import normalize, split_sentences, text_key  # noqa: E402
+from model_free.text import normalize, text_key  # noqa: E402
+from comment_sentences import stored_units  # noqa: E402
 
 INSTRUMENT = f"rules-{RULESET_VERSION}"
 
@@ -45,21 +51,38 @@ def now() -> str:
 
 # ------------------------------------------------------------ ad-hoc text
 
-def score_text(comment_id: str, text: str, ctx: Context) -> tuple[list[SentenceScore], object, object]:
-    """Split raw text, score each sentence, roll up. For the instrument's
-    examples and ad-hoc checks; production reads the comment whole."""
+def score_text(comment_id: str, text: str, ctx: Context,
+               mode: str = "sentence") -> tuple[list[SentenceScore], object, object]:
+    """Score raw comment text in the given mode (sentence, whole or hybrid,
+    as `score`; the whole-comment unit is id -1), roll up. The sentences are
+    split by the one method that writes comment_unit
+    (the comment-sentences package, stored_units), so a text scored here is
+    split exactly as the same text stored as a comment is."""
     norm = normalize(text)
-    spans = split_sentences(norm)
-    inputs = [SentenceInput(i + 1, comment_id, s, e, norm[s:e], text_key(norm[s:e]))
-              for i, (s, e) in enumerate(spans)]
-    docs = list(parse_many([u.text for u in inputs]))
-    scores = [score_sentence(u, d, ctx) for u, d in zip(inputs, docs)]
-    comment = roll_up(comment_id, scores)
+    sentences: list[SentenceScore] = []
+    whole: SentenceScore | None = None
+    if mode in ("sentence", "hybrid"):
+        inputs = [SentenceInput(i + 1, comment_id, a, b, t, text_key(t))
+                  for i, (a, b, t, _) in enumerate(stored_units(text)[0])]
+        docs = list(parse_many([u.text for u in inputs]))
+        sentences = [score_sentence(u, d, ctx) for u, d in zip(inputs, docs)]
+    if mode in ("whole", "hybrid"):
+        unit = SentenceInput(-1, comment_id, 0, len(norm), norm, text_key(norm))
+        whole = score_sentence(unit, next(iter(parse_many([norm]))), ctx)
+    if mode == "sentence":
+        scores, comment = sentences, roll_up(comment_id, sentences)
+    elif mode == "whole" and whole is not None:
+        scores, comment = [whole], roll_up(comment_id, [whole])
+    elif mode == "hybrid" and whole is not None:
+        scores = sentences + [whole]
+        comment = hybrid(roll_up(comment_id, [whole]), roll_up(comment_id, sentences))
+    else:
+        raise ValueError(f"unknown mode: {mode}")
     return scores, comment, rate(comment)
 
 
 def cmd_text(args: argparse.Namespace) -> int:
-    scores, comment, answer = score_text("adhoc", args.text, Context())
+    scores, comment, answer = score_text("adhoc", args.text, Context(), args.mode)
     print(json.dumps({
         "sentences": [{"unit_id": s.unit_id, "start": s.start_char, "end": s.end_char, "dims": s.dims,
                        "evid_applied": s.evid_applied, "ask_names": s.ask_names,
@@ -72,27 +95,37 @@ def cmd_text(args: argparse.Namespace) -> int:
 
 # ------------------------------------------------------------------ score
 
-def json_record(comment: CommentScore, answer: Answerability, sentences: list[SentenceScore]) -> dict:
-    """The comment's reading in the shape shared with the model's (shared/score_json.py)."""
+def json_record(comment: CommentScore, answer: Answerability, units: list[SentenceScore]) -> dict:
+    """The comment's reading in the shape shared with the model's (shared/score_json.py).
+    The evidence is the hits the hybrid score is taken from: GAP's from the
+    sentences, every other dimension's and the moves' from the whole comment
+    (arithmetic.hybrid)."""
     return {
         "comment_id": comment.comment_id, "scorer": "rules", "instrument": INSTRUMENT, "model": None,
         "levels": dict(comment.dims), "strength": comment.strength, "gate": bool(comment.gate),
         "gate_basis": comment.gate_basis, "band": comment.band, "a_level": answer.level,
         "evidence": [{"dimension": h.dimension, "grade": h.grade, "rule": h.rule, "match": h.match,
-                      "start": h.start, "end": h.end} for s in sentences for h in s.hits],
+                      "start": h.start, "end": h.end}
+                     for s in units for h in s.hits if (h.dimension == "GAP") == (s.unit_id > 0)],
     }
 
 
-def read_comment(u: SentenceInput, tags, authority_keys: list[str]) -> tuple[list[SentenceScore], CommentScore, Answerability]:
-    """One comment, whole, through the rules: its unit scores, its comment score
-    and its rating. The score run calls it, and so does make score-model-compare
+def read_comment(comment_id: str, units: tuple[list[SentenceInput], SentenceInput], tags,
+                 authority_keys: list[str]) -> tuple[list[SentenceScore], CommentScore, Answerability]:
+    """One comment through the rules in hybrid mode: every sentence and the whole comment scored, the
+    comment score arithmetic.hybrid of the two roll-ups. Returns every unit's
+    score (the sentences, then the whole comment), the comment score and its
+    rating. The score run calls it, and so does make score-model-compare
     (scripts/score_model_compare.py)."""
+    sentences_in, whole_in = units
     ctx = Context(authority_keys=authority_keys,
-                  citations=tags.citations.get(u.comment_id, []),
-                  authorities=tags.authorities.get(u.comment_id, []))
-    sentences = [score_sentence(u, d, ctx) for d in parse_many([u.text])]
-    comment = roll_up(u.comment_id, sentences)
-    return sentences, comment, rate(comment)
+                  citations=tags.citations.get(comment_id, []),
+                  authorities=tags.authorities.get(comment_id, []))
+    docs = parse_many([u.text for u in sentences_in] + [whole_in.text])
+    scored = [score_sentence(u, d, ctx) for u, d in zip(sentences_in + [whole_in], docs)]
+    sentences, whole = scored[:-1], scored[-1]
+    comment = hybrid(roll_up(comment_id, [whole]), roll_up(comment_id, sentences))
+    return scored, comment, rate(comment)
 
 
 def cmd_score(args: argparse.Namespace) -> int:
@@ -112,7 +145,8 @@ def cmd_score(args: argparse.Namespace) -> int:
         if args.limit:
             wanted = set(sorted(wanted)[:args.limit])
     print(f"make score-model-free: {len(all_ids):,} class A comments; {len(done):,} scored under rule set"
-          f" {RULESET_VERSION}; {len(wanted):,} to score, whole, no model call"
+          f" {RULESET_VERSION}; {len(wanted):,} to score in hybrid mode (each sentence and the whole"
+          f" comment), no model call"
           + (f" (--limit {args.limit})" if args.limit and not (args.comment_id or args.ids_file) else "")
           + "; writes mf_sentence_score, mf_sentence_hit, mf_comment_score, mf_comment_answerability,"
             " one mf_score_run row", flush=True)
@@ -126,11 +160,15 @@ def cmd_score(args: argparse.Namespace) -> int:
 
     units = 0
     comments = 0
+    no_sentence = 0
     counts: dict[str, int] = {}
     with conn.transaction():
         run_id = store.start_run(RULESET_VERSION, now())
-        for u in db.iter_comments(conn, wanted):
-            sentences, comment, answer = read_comment(u, tags, authority_keys)
+        for cid, comment_units in db.iter_comments(conn, wanted):
+            if comment_units is None:
+                no_sentence += 1
+                continue
+            sentences, comment, answer = read_comment(cid, comment_units, tags, authority_keys)
             units += store.write_sentences(RULESET_VERSION, run_id, sentences)
             store.write_comments(RULESET_VERSION, run_id, [(comment, answer)])
             comments += 1
@@ -141,7 +179,8 @@ def cmd_score(args: argparse.Namespace) -> int:
                 log(f"{comments:,} of {len(wanted):,} comments, {time.time() - t0:.0f}s")
         store.finish_run(run_id, now(), units, comments, counts, {"ruleset_version": RULESET_VERSION})
     rep = store.report(RULESET_VERSION)
-    print(f"done: {comments:,} comments scored in {time.time() - t0:.0f}s; run {run_id};"
+    print(f"done: {comments:,} comments scored in {time.time() - t0:.0f}s, {units:,} units (sentences and"
+          f" whole comments); {no_sentence:,} not scored, no sentence of 25 or more letters and digits; run {run_id};"
           f" {rep['comments']:,} comment scores under rule set {RULESET_VERSION},"
           f" gate open on {rep['comment_gate_open']:,}; by band {rep['comment_band']};"
           f" answerability {rep['answerability']}")
@@ -177,6 +216,7 @@ def main(argv: list[str] | None = None) -> int:
     r.set_defaults(fn=cmd_report)
     t = sub.add_parser("text")
     t.add_argument("text")
+    t.add_argument("--mode", choices=("sentence", "whole", "hybrid"), default="sentence")
     t.set_defaults(fn=cmd_text)
     args = ap.parse_args(argv)
     return int(args.fn(args))

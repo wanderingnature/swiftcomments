@@ -1,9 +1,8 @@
-"""Text utilities: normalization, the raw-text sentence splitter, quotation
-detection, numbers and figures, and the phrase matcher every vocabulary list
-runs through. No database, no model.
-
-The production unit is a row of roadless.comment_unit, already split. The
-splitter here serves the instrument's examples (tests) and ad-hoc text only.
+"""Text utilities: normalization, quotation detection, numbers and figures,
+and the phrase matcher every vocabulary list runs through. No database, no
+model. The package has no sentence splitter of its own: a comment's sentences
+are split by the comment-sentences package (stored_units), the method that writes
+roadless.comment_unit (run.score_text calls it for raw text).
 """
 from __future__ import annotations
 
@@ -48,83 +47,6 @@ def norm_key(text: str) -> str:
 
 def text_key(text: str) -> str:
     return hashlib.sha256(norm_key(text).encode("utf-8")).hexdigest()
-
-
-# ------------------------------------------------------------ sentences
-
-_ABBREV = {
-    "dr", "mr", "mrs", "ms", "prof", "sr", "jr", "st", "mt", "ft", "no", "nos",
-    "vs", "etc", "inc", "co", "corp", "u.s", "u.s.c", "c.f.r", "cfr", "usc",
-    "e.g", "i.e", "fig", "figs", "sec", "secs", "pp", "p", "vol", "ch", "approx",
-    "al", "dept", "gov", "rep", "sen", "pres", "gen", "col", "lt", "capt",
-}
-_END = re.compile(r"[.!?]+[\"')\]]*")
-
-
-def split_sentences(text: str) -> list[tuple[int, int]]:
-    """(start, end) offsets of each sentence in `text`, in order. Breaks at a
-    sentence-ending mark followed by whitespace and an upper-case letter, a
-    digit or an opening quote or bracket, unless the mark closes a known
-    abbreviation, a single initial, or a decimal. Line breaks always break."""
-    out: list[tuple[int, int]] = []
-    n = len(text)
-    start = 0
-    i = 0
-    while i < n:
-        ch = text[i]
-        if ch == "\n":
-            _push(out, text, start, i)
-            start = i + 1
-            i += 1
-            continue
-        if ch in ".!?":
-            m = _END.match(text, i)
-            end = m.end() if m else i + 1
-            j = end
-            while j < n and text[j] in " \t":
-                j += 1
-            if j >= n:
-                i = end
-                continue
-            nxt = text[j]
-            if j == end or not (nxt.isupper() or nxt.isdigit() or nxt in "\"'(["):
-                i = end
-                continue
-            if ch == "." and _closes_abbreviation(text, i):
-                i = end
-                continue
-            _push(out, text, start, end)
-            start = j
-            i = j
-            continue
-        i += 1
-    _push(out, text, start, n)
-    return out
-
-
-def _closes_abbreviation(text: str, dot: int) -> bool:
-    k = dot - 1
-    while k >= 0 and (text[k].isalnum() or text[k] == "."):
-        k -= 1
-    word = text[k + 1:dot].lower()
-    if not word:
-        return False
-    if word in _ABBREV:
-        return True
-    if len(word) == 1 and word.isalpha():
-        return True
-    if "." in word and all(p.isalpha() and len(p) == 1 for p in word.split(".") if p):
-        return True
-    return False
-
-
-def _push(out: list[tuple[int, int]], text: str, start: int, end: int) -> None:
-    while start < end and text[start].isspace():
-        start += 1
-    while end > start and text[end - 1].isspace():
-        end -= 1
-    if end > start:
-        out.append((start, end))
 
 
 # ------------------------------------------------------------- quotations

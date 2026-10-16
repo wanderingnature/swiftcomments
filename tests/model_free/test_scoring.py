@@ -23,7 +23,7 @@ from shared import db, score_json  # noqa: E402
 from model_free import RULESET_VERSION, run as mf_run  # noqa: E402
 from model_free.arithmetic import rate, roll_up  # noqa: E402
 from model_free.detectors import Context  # noqa: E402
-from model_free.text import PhraseMatcher, normalize, quoted_spans, split_sentences  # noqa: E402
+from model_free.text import PhraseMatcher, normalize, quoted_spans  # noqa: E402
 import score_model_compare  # noqa: E402
 
 GAP_SENTENCE = ("The DEIS fails to analyze sediment delivery to bull trout habitat in Wilson Creek,"
@@ -44,9 +44,6 @@ def _one(sentence):
 
 def test_text_tools():
     assert normalize("A &amp; B<br>C  “q”") == 'A & B C "q"'
-    text = normalize("Dr. Smith saw it. Then it rained! The U.S. Forest Service agreed.")
-    assert [text[s:e] for s, e in split_sentences(text)] == [
-        "Dr. Smith saw it.", "Then it rained!", "The U.S. Forest Service agreed."]
     q = quoted_spans('The draft says "the effects would be negligible" (USDA 2025) and more.')
     assert len(q) == 1 and q[0].text.startswith('"the effects')
     m = PhraseMatcher(["bull trout", "trout"]).find("Bull trout and brook trout.")
@@ -79,17 +76,31 @@ def test_each_dimension_fires_on_its_sentence():
     s, _, _ = _one(EVID_SENTENCE)
     assert s.dims["EVID"] == 3 and s.evid_applied
 
-    s, comment, _ = _one(DISPOSITION)
+    # A sentence under 25 letters and digits is not a unit (stored_units drops
+    # it); the whole comment still reads it.
+    with pytest.raises(ValueError, match="no sentences"):
+        mf_run.score_text("t", DISPOSITION, Context())
+    scores, comment, _ = mf_run.score_text("t", DISPOSITION, Context(), "whole")
+    assert [s.unit_id for s in scores] == [-1]
     assert comment.strength == 1 and comment.band == "minimal" and not comment.gate
 
 
 def test_roll_up_takes_the_maximum_and_names_the_first_sentence():
-    scores, _, _ = mf_run.score_text("t", DISPOSITION + " " + GAP_SENTENCE + " " + LAW_SENTENCE, Context())
-    assert len(scores) == 3
+    scores, _, _ = mf_run.score_text("t", GAP_SENTENCE + " " + DISPOSITION + " " + LAW_SENTENCE, Context())
+    # the short disposition joins no neighbour and is dropped: two units
+    assert len(scores) == 2
     comment = roll_up("t", scores)
-    assert comment.dims["GAP"] == 3 and comment.dims["LAW"] == 2 and comment.sentence_count == 3
-    assert {b["dimension"]: b["unit_id"] for b in comment.gate_basis} == {"GAP": 2, "LAW": 3}
+    assert comment.dims["GAP"] == 3 and comment.dims["LAW"] == 2 and comment.sentence_count == 2
+    assert {b["dimension"]: b["unit_id"] for b in comment.gate_basis} == {"GAP": 1, "LAW": 2}
     assert rate(comment).level == "A1"
+
+
+def test_a_comment_with_no_sentence_has_no_units():
+    from model_free import inputs
+    assert inputs.comment_units(7, "c", DISPOSITION) is None
+    sentences, whole = inputs.comment_units(7, "c", GAP_SENTENCE + " " + LAW_SENTENCE)
+    assert [u.unit_id for u in sentences] == [700001, 700002] and whole.unit_id == -700001
+    assert sentences[1].text == LAW_SENTENCE and whole.start_char == 0
 
 
 CIDS = ["FS-2025-0001-0001", "FS-2025-0001-0002", "FS-2025-0001-0003"]
@@ -129,12 +140,16 @@ def test_score_run_over_the_file(dbfile, capsys):
     row = conn.execute("SELECT gap, law, gate, band, run_id FROM mf_comment_score").fetchone()
     assert (row["gap"], row["law"], row["gate"], row["band"]) == (3, 2, 1, "marginal")
     assert conn.execute("SELECT level FROM mf_comment_answerability").fetchone()[0] == "A1"
-    unit = conn.execute("SELECT unit_id, start_char, end_char FROM mf_sentence_score").fetchone()
+    # Hybrid: the two sentences and the whole comment, each a unit.
     rowid = conn.execute("SELECT rowid FROM comment WHERE comment_id = ?", (CIDS[0],)).fetchone()[0]
-    assert unit["unit_id"] == rowid and unit["start_char"] == 0
-    assert conn.execute("SELECT count(*) FROM mf_sentence_hit WHERE rule = 'LAW.2.confirmed_authority'").fetchone()[0] == 1
+    units = [tuple(r) for r in conn.execute(
+        "SELECT unit_id, start_char FROM mf_sentence_score ORDER BY unit_id")]
+    assert units == [(-(rowid * 100000 + 1), 0), (rowid * 100000 + 1, 0),
+                     (rowid * 100000 + 2, len(GAP_SENTENCE) + 1)]
+    # LAW's authority is found in its sentence and in the whole comment
+    assert conn.execute("SELECT count(*) FROM mf_sentence_hit WHERE rule = 'LAW.2.confirmed_authority'").fetchone()[0] == 2
     run = conn.execute("SELECT comments_scored, units_scored, finished_at FROM mf_score_run").fetchone()
-    assert (run["comments_scored"], run["units_scored"]) == (1, 1) and run["finished_at"]
+    assert (run["comments_scored"], run["units_scored"]) == (1, 3) and run["finished_at"]
     conn.close()
 
     # The rest of the population, then nothing left.

@@ -1,0 +1,335 @@
+{
+ "about": "Comment texts and the (start, end, text) units the one comment sentence method gives them: offsets into v_source_comments.comment_text, start at the sentence's own first character, end exclusive after its terminal punctuation; pieces under 25 letters and digits not units. Taken from a stored comment_unit table on 2026-10-16. Tested by tests/test_fixture.py against comment_sentences.stored_units.",
+ "cases": [
+  {
+   "case": "form_markup_and_list_marker",
+   "comment_id": "FS-2025-0001-223912",
+   "text": "Attention: U.S. Forest Service, Department of Agriculture<br/>Regarding: Proposed Rescission of the 2001 Roadless Area Conservation Rule<br/><br/><span style='padding-left: 30px'></span>I am writing to formally submit my public comment in strict opposition to the proposal to rescind the 2001 Roadless Area Conservation Rule. Overwhelming public consensus has consistently supported maintaining these protections, with 99 percent of previous public comments opposing the rule&#39;s repeal.<br/><br/>The Forest Service&#39;s core mission should prioritize the long-term health and preservation of our natural ecosystems. Rescinding this rule to open 44.7 million acres of backcountry forests to industrial development and logging represents a severe regression in federal land stewardship.<br/><br/>The environmental costs of this policy shift are unacceptable:<br/>* Habitat Fragmentation: Roads permanently disrupt the contiguous wild spaces that large, imperiled species rely on for survival.<br/><br/>* Ecosystem Loss: Commercial logging degrades old-growth tree stands that are essential for regional biodiversity and climate resilience.<br/><br/>*Infrastructure Backlog: Adding new roads will only worsen the Forest Service&rsquo;s existing multi-billion-dollar road maintenance backlog.<br/><br/>Our wildlife and endangered species deserve our protection.  I urge the U.S. Forest Service to listen to the American public, respect established scientific consensus, and withdraw this proposal immediately.<br/><br/>Sincerely,<br/>Concerned animal lover and protector",
+   "units": [
+    [
+     0,
+     57,
+     "Attention: U.S. Forest Service, Department of Agriculture"
+    ],
+    [
+     62,
+     136,
+     "Regarding: Proposed Rescission of the 2001 Roadless Area Conservation Rule"
+    ],
+    [
+     186,
+     325,
+     "I am writing to formally submit my public comment in strict opposition to the proposal to rescind the 2001 Roadless Area Conservation Rule."
+    ],
+    [
+     326,
+     489,
+     "Overwhelming public consensus has consistently supported maintaining these protections, with 99 percent of previous public comments opposing the rule's repeal."
+    ],
+    [
+     499,
+     619,
+     "The Forest Service's core mission should prioritize the long-term health and preservation of our natural ecosystems."
+    ],
+    [
+     620,
+     788,
+     "Rescinding this rule to open 44.7 million acres of backcountry forests to industrial development and logging represents a severe regression in federal land stewardship."
+    ],
+    [
+     798,
+     860,
+     "The environmental costs of this policy shift are unacceptable:"
+    ],
+    [
+     867,
+     994,
+     "Habitat Fragmentation: Roads permanently disrupt the contiguous wild spaces that large, imperiled species rely on for survival."
+    ],
+    [
+     1006,
+     1141,
+     "Ecosystem Loss: Commercial logging degrades old-growth tree stands that are essential for regional biodiversity and climate resilience."
+    ],
+    [
+     1152,
+     1292,
+     "Infrastructure Backlog: Adding new roads will only worsen the Forest Service’s existing multi-billion-dollar road maintenance backlog."
+    ],
+    [
+     1302,
+     1361,
+     "Our wildlife and endangered species deserve our protection."
+    ],
+    [
+     1363,
+     1509,
+     "I urge the U.S. Forest Service to listen to the American public, respect established scientific consensus, and withdraw this proposal immediately."
+    ],
+    [
+     1534,
+     1570,
+     "Concerned animal lover and protector"
+    ]
+   ]
+  },
+  {
+   "case": "abbreviation_mt",
+   "comment_id": "FS-2025-0001-233981",
+   "text": "We wsnt to save our forests and Mt. Hood . ",
+   "units": [
+    [
+     0,
+     42,
+     "We wsnt to save our forests and Mt. Hood ."
+    ]
+   ]
+  },
+  {
+   "case": "abbreviation_st",
+   "comment_id": "FS-2025-0001-344694",
+   "text": "I oppose rescinding this rule.  It would adversely affect the St. Johns&#39; River, a vital waterway to the environmental health of Florida.",
+   "units": [
+    [
+     0,
+     30,
+     "I oppose rescinding this rule."
+    ],
+    [
+     32,
+     140,
+     "It would adversely affect the St. Johns' River, a vital waterway to the environmental health of Florida."
+    ]
+   ]
+  },
+  {
+   "case": "abbreviation_no",
+   "comment_id": "FS-2025-0001-563930",
+   "text": "Re: Docket FS-2025-0001 / RIN 0596-AD66<br/>Special Areas; Roadless Area Conservation<br/>91 Fed. Reg. 53827 (August 20, 2026)<br/>Document No. 2026-16965<br/><br/>To the U.S. Department of Agriculture and U.S. Forest Service:",
+   "units": [
+    [
+     0,
+     39,
+     "Re: Docket FS-2025-0001 / RIN 0596-AD66"
+    ],
+    [
+     44,
+     85,
+     "Special Areas; Roadless Area Conservation"
+    ],
+    [
+     90,
+     126,
+     "91 Fed. Reg. 53827 (August 20, 2026)"
+    ],
+    [
+     164,
+     226,
+     "To the U.S. Department of Agriculture and U.S. Forest Service:"
+    ]
+   ]
+  },
+  {
+   "case": "abbreviation_co_corp",
+   "comment_id": "FS-2025-0001-339205",
+   "text": "I oppose any changes to the 2001 Roadless Rule.  We need undisturbed habitat far more than logging and mining companies need access to our natural resources.   I don&#39;t want our federal lands exploited any more than they already have been.   I feel very lucky living near national forests and I want to keep them undisturbed.   Elizabeth Ihle, Rockingham Co. VA",
+   "units": [
+    [
+     0,
+     47,
+     "I oppose any changes to the 2001 Roadless Rule."
+    ],
+    [
+     49,
+     157,
+     "We need undisturbed habitat far more than logging and mining companies need access to our natural resources."
+    ],
+    [
+     160,
+     242,
+     "I don't want our federal lands exploited any more than they already have been."
+    ],
+    [
+     245,
+     328,
+     "I feel very lucky living near national forests and I want to keep them undisturbed."
+    ],
+    [
+     331,
+     364,
+     "Elizabeth Ihle, Rockingham Co. VA"
+    ]
+   ]
+  },
+  {
+   "case": "doi",
+   "comment_id": "FS-2025-0001-610227",
+   "text": "Repealing the Roadless Rule would be an absolute disaster. The proposal states that it is in order to reduce forest fires, but this is not based in science. Including decades of research, the Fire Ecology study conducted by Gregory H. Aplet et al, showed that wildfire ignition in areas within 50 meters of a road are far, far higher (https://doi.org/10.1186/s42408-026-00450-2). In addition, 84% of fires are caused by humans, according to Balch et al&rsquo;s research published in the Proceedings of the National Academy of Sciences. (https://doi.org/10.1073/pnas.1617394114)<br/><br/>Building more roads, with more humans present along those roads, will lead to more fires.<br/><br/>In addition, repealing the rule will harm our drinking water. Logging and roads lead to sediment build up, which contaminates the watershed.<br/><br/>I myself live in an area that relies on national forests for its drinking water and regularly hike and bird watch in several roadless areas, including the Tahoe Rim Trail, Kingsbury Stinger Trail, Sierra Canyon, and Genoa Peak. These are vital areas of subalpine woodland and mixed conifer forests that wildlife and our water sources rely on.<br/><br/>Please do not repeal the Roadless Rule.",
+   "units": [
+    [
+     0,
+     58,
+     "Repealing the Roadless Rule would be an absolute disaster."
+    ],
+    [
+     59,
+     156,
+     "The proposal states that it is in order to reduce forest fires, but this is not based in science."
+    ],
+    [
+     157,
+     379,
+     "Including decades of research, the Fire Ecology study conducted by Gregory H. Aplet et al, showed that wildfire ignition in areas within 50 meters of a road are far, far higher (https://doi.org/10.1186/s42408-026-00450-2)."
+    ],
+    [
+     380,
+     577,
+     "In addition, 84% of fires are caused by humans, according to Balch et al’s research published in the Proceedings of the National Academy of Sciences. (https://doi.org/10.1073/pnas.1617394114)"
+    ],
+    [
+     587,
+     676,
+     "Building more roads, with more humans present along those roads, will lead to more fires."
+    ],
+    [
+     686,
+     747,
+     "In addition, repealing the rule will harm our drinking water."
+    ],
+    [
+     748,
+     826,
+     "Logging and roads lead to sediment build up, which contaminates the watershed."
+    ],
+    [
+     836,
+     1063,
+     "I myself live in an area that relies on national forests for its drinking water and regularly hike and bird watch in several roadless areas, including the Tahoe Rim Trail, Kingsbury Stinger Trail, Sierra Canyon, and Genoa Peak."
+    ],
+    [
+     1064,
+     1178,
+     "These are vital areas of subalpine woodland and mixed conifer forests that wildlife and our water sources rely on."
+    ],
+    [
+     1188,
+     1227,
+     "Please do not repeal the Roadless Rule."
+    ]
+   ]
+  },
+  {
+   "case": "bullets",
+   "comment_id": "FS-2025-0001-595122",
+   "text": "I am completely opposed to the overturning of the roadless rule. This land is extremely important to the economic state and ecological state of this country. Taking away these lands would leave thousands of people without clean water and would increase the wild fires.<br/><br/>- Dakota Mercado<br/>Tolar TX",
+   "units": [
+    [
+     0,
+     64,
+     "I am completely opposed to the overturning of the roadless rule."
+    ],
+    [
+     65,
+     157,
+     "This land is extremely important to the economic state and ecological state of this country."
+    ],
+    [
+     158,
+     268,
+     "Taking away these lands would leave thousands of people without clean water and would increase the wild fires."
+    ]
+   ]
+  },
+  {
+   "case": "orphaned_closing_quote",
+   "comment_id": "FS-2025-0001-566609",
+   "text": "Please do NOT repeal or dilute the &quot;Roadless Rule.&quot; The Roadless Rule is beneficial for any/all visitors and wildlife.",
+   "units": [
+    [
+     0,
+     56,
+     "Please do NOT repeal or dilute the \"Roadless Rule.\""
+    ],
+    [
+     62,
+     128,
+     "The Roadless Rule is beneficial for any/all visitors and wildlife."
+    ]
+   ]
+  },
+  {
+   "case": "url_encoded_in_a_link",
+   "comment_id": "FS-2025-0001-606147",
+   "text": "I support the continuation of the 2001 roadless area conservation rule to protect our nation&rsquo;s forests. I am very disturbed to hear there are efforts to dismantle the rule.  &ldquo;Roadless areas in America&rsquo;s national forests support wildlife and plant biodiversity, viewsheds and soundscapes, and climate resilience, as well as air and water quality.&rdquo;-NPCA<br/>Please consider reading an article on the subject written by the NPCA. https://www.npca.org/articles/10475-6-reasons-to-keep-the-roadless-rule-in-place#:~:text=Roadless%20areas%20in%20America&#39;s%20national,as%20air%20and%20water%20quality.<br/>#Keep it wild<br/>",
+   "units": [
+    [
+     0,
+     109,
+     "I support the continuation of the 2001 roadless area conservation rule to protect our nation’s forests."
+    ],
+    [
+     110,
+     178,
+     "I am very disturbed to hear there are efforts to dismantle the rule."
+    ],
+    [
+     180,
+     622,
+     "“Roadless areas in America’s national forests support wildlife and plant biodiversity, viewsheds and soundscapes, and climate resilience, as well as air and water quality.”-NPCA Please consider reading an article on the subject written by the NPCA. https://www.npca.org/articles/10475-6-reasons-to-keep-the-roadless-rule-in-place#:~:text=Roadless areas in America's national,as air and water quality."
+    ]
+   ]
+  },
+  {
+   "case": "url_encoded_comment",
+   "comment_id": "FS-2025-0001-524351",
+   "text": "re:%20Rescission%20of%20the%20Roadless%20Area%20Conservation%20Rule,%20Docket%20FS-2025-0001%0A%0AI%20am%20writing%20in%20opposition%20to%20the%20rescission%20of%20the%202001%20Roadless%20Area%20Conservation%20Rule.%0A%0AI%20raise%20the%20following%20issues%20for%20the%20record%20and%20ask%20that%20the%20agency%20respond%20to%20each%20of%20them%3A%0A%0AIssue%201%3A%20The%20small-business%20certification%20contradicts%20the%20analysis%20beside%20it%0A%0AI%20hike%20and%20camp%20in%20these%20areas,%20and%20the%20small%20outfitters%20and%20guides%20who%20work%20this%20same%20country%20help%20people%20like%20me%20get%20out%20there.%20They%20deserve%20a%20real%20assessment.%20The%20proposed%20rule%20certifies%20no%20significant%20impact%20on%20small%20entities%20while%20the%20DEIS%20names%20outfitters,%20guides%20and%20tour%20operators%20as%20affected%20and%20its%20own%20Cost%20Benefit%20Analysis%20books%20lost%20recreation%20benefit%20at%20a%20minimum%20of%20$6.1%20million%20a%20year.%0A%0AThe%20supporting%20regulatory%20flexibility%20analysis%20reaches%20its%20no-impact%20conclusion%20by%20spreading%20the%20$9%20million%20annual%20expenditure%20loss%20across%20every%20small%20firm%20in%20the%20sector%20nationally,%20rather%20than%20assessing%20the%20outfitters%20and%20guides%20actually%20holding%20permits%20in%20the%20affected%20areas,%20and%20concedes%20some%20firms%20may%20lose%20these%20receipts.%20I%20ask%20that%20the%20agency%20withdraw%20the%20certification%20and%20assess%20the%20impact%20on%20the%20small%20entities%20actually%20operating%20in%20the%20potentially%20affected%20roadless%20areas,%20not%20the%20national%20average%20firm.%",
+   "units": [
+    [
+     0,
+     92,
+     "re: Rescission of the Roadless Area Conservation Rule, Docket FS-2025-0001"
+    ],
+    [
+     98,
+     215,
+     "I am writing in opposition to the rescission of the 2001 Roadless Area Conservation Rule."
+    ],
+    [
+     221,
+     347,
+     "I raise the following issues for the record and ask that the agency respond to each of them:"
+    ],
+    [
+     355,
+     451,
+     "Issue 1: The small-business certification contradicts the analysis beside it"
+    ],
+    [
+     457,
+     634,
+     "I hike and camp in these areas, and the small outfitters and guides who work this same country help people like me get out there."
+    ],
+    [
+     637,
+     676,
+     "They deserve a real assessment."
+    ],
+    [
+     679,
+     994,
+     "The proposed rule certifies no significant impact on small entities while the DEIS names outfitters, guides and tour operators as affected and its own Cost Benefit Analysis books lost recreation benefit at a minimum of $6.1 million a year."
+    ],
+    [
+     1000,
+     1418,
+     "The supporting regulatory flexibility analysis reaches its no-impact conclusion by spreading the $9 million annual expenditure loss across every small firm in the sector nationally, rather than assessing the outfitters and guides actually holding permits in the affected areas, and concedes some firms may lose these receipts."
+    ],
+    [
+     1421,
+     1664,
+     "I ask that the agency withdraw the certification and assess the impact on the small entities actually operating in the potentially affected roadless areas, not the national average firm.%"
+    ]
+   ]
+  }
+ ]
+}

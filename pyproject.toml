@@ -18,6 +18,8 @@ dependencies = [
     "rich",
     "python-docx",
     "striprtf",
+    # The one sentence method, packages/comment-sentences (standard library only)
+    "comment-sentences",
 ]
 
 [dependency-groups]
@@ -27,4 +29,7 @@ console = [
 dev = ["pytest", { include-group = "console" }]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "packages/comment-sentences/tests"]
+
+[tool.uv.sources]
+comment-sentences = { path = "packages/comment-sentences", editable = true }

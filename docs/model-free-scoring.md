@@ -23,12 +23,27 @@ A run scores every class A comment that has no comment score under the current r
 set version, and writes its rows in one transaction: an interrupted run leaves nothing.
 A second run on the same file scores nothing. The comments are the screen's class A, so
 `make screen` has to have run; the tags of `make tag` are read for the confirmed
-citations and authorities. The population is read whole, one comment per unit.
+citations and authorities.
+
+The step reads every comment in hybrid mode, the package's third mode. Each comment is split into sentences by the comment-sentences package
+(`packages/comment-sentences`, `stored_units`): the stored text rendered plain line
+by line, each line split by the record's sentence rule, every piece under 25 letters
+and digits left out. Every sentence is scored, and the whole comment is scored as one
+more unit. The comment score is the whole comment's, with GAP held to what one
+sentence reaches: GAP is the lower of the whole comment's GAP and the highest
+sentence GAP, so GAP opens the gate only when the whole comment and one sentence both
+reach 2 (`arithmetic.hybrid`). Whole mode alone paired a GAP trigger in one sentence
+with a specific name in another. A comment the package leaves no sentence is not
+scored, and the run says how many.
+
+The package's other two modes, sentence (the sentences only, rolled up by maximum) and
+whole (the whole comment only), are kept for ad hoc text; `make score-model-free` runs
+hybrid.
 
 Ad hoc, from the command line, any text at all:
 
 ```
-uv run python scripts/model_free/run.py text "The DEIS fails to analyze sediment delivery to bull trout habitat in Wilson Creek."
+uv run python scripts/model_free/run.py text --mode hybrid "The DEIS fails to analyze sediment delivery to bull trout habitat in Wilson Creek."
 uv run python scripts/model_free/run.py report      # counts by band, gate, level and rule
 ```
 
@@ -36,7 +51,7 @@ uv run python scripts/model_free/run.py report      # counts by band, gate, leve
 
 | input | here |
 |---|---|
-| the comment's stored text | `comment.comment_text`, normalised as the package normalises (entities unescaped, tags out, quotes straightened, whitespace collapsed) |
+| the comment's stored text | `comment.comment_text`: split into sentences by `stored_units`, and, for the whole-comment unit, normalised as the package normalises (entities unescaped, tags out, quotes straightened, whitespace collapsed) |
 | the class A population | `substance_screen`, as `make score-model` reads it |
 | the confirmed citations and legal authorities of each comment | `comment_cited_references`, `comment_authorities` (`matched_text`) |
 | the match keys of every known authority | `legal_authority.match_keys` |
@@ -44,8 +59,8 @@ uv run python scripts/model_free/run.py report      # counts by band, gate, leve
 | the 27 vocabulary lists | `scripts/model_free/vocab/` |
 | spaCy `en_core_web_md` | the parse: parts of speech, dependencies, entities |
 
-Three inputs of the package are not read: the sentence table (so the whole
-comment is the unit), the record's own sentences and
+The package splits each comment as it is read. Two inputs are not read: the record's
+own sentences and
 figures (so no sentence is marked as the agency's text, and a figure that appears in
 the DEIS is not an anchor for the generality test), and the sentence vectors (so the
 similarity of an alternative to the DEIS's alternatives is not measured; it was
@@ -54,10 +69,12 @@ recorded, never thresholded).
 ## What it writes
 
 Five tables, schema section 9b, the package's own: `mf_score_run` (one row per run),
-`mf_sentence_score` (one row per unit, here one per comment: the eight levels,
+`mf_sentence_score` (one row per unit, every sentence and the whole comment: the eight levels,
 strength, gate, band, moves, targets, anchors), `mf_sentence_hit` (every rule that
-fired, with the matched words and their offsets), `mf_comment_score` and
-`mf_comment_answerability`. Every row carries `ruleset_version`. The console's Steps
+fired, with the matched words and their offsets), `mf_comment_score` (the hybrid score) and
+`mf_comment_answerability`. Every row carries `ruleset_version`. A sentence's unit id
+is the comment row's rowid times 100,000 plus its place in the comment from one; the
+whole comment's is the negative of its first sentence's, as the package numbers it. The console's Steps
 page shows the counts; `make extract STEP=score-model-free` and `make jump STEP=score-model-free`
 work as for any step.
 
