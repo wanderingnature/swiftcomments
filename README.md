@@ -92,7 +92,7 @@ Every other target is code and dictionaries. The model targets are the long ones
 one local server the substance reading runs for days. `make score-model-free` is the
 substance reading done by rules alone over the same comments; a reader without a
 model server runs the method with it, and a reader with one runs both and sets them
-side by side (`docs/model-free-scoring.md`).
+side by side (`make score-model-compare`, below).
 
 `make corpus` creates the file itself if `make schema` has not run. `make all` is all
 of it in this order, after `make schema`, for a machine left to run. The listing is
@@ -146,8 +146,37 @@ partition of every comment and a sample of it would be a different result.
 
 `make console` opens a read-only browser of the file in a web page, usable while a
 step is writing: what every step has written so far, one comment across every table,
-any table a hundred rows at a time, and SQL typed in. It launches nothing and cannot
-write. `docs/console.md` describes the four pages.
+every comparison of the two substance readings, any table a hundred rows at a time,
+and SQL typed in. It launches nothing and cannot write. `docs/console.md` describes
+the five pages.
+
+## Comparing the two substance readings
+
+```
+make score-model-compare LIMIT=20                         # 20 class A comments, read by the model and by the rules
+make score-model-compare LIMIT=20 SERVER=LOCAL            # the same, with the second server of .env
+make score-model-compare COMMENTS_OF=<run>                # the comments of an earlier comparison, read again
+```
+
+Scoring and comparing are separate. `make score-model` and `make score-model-free`
+each score over their own queue; `make score-model-compare` is a command of its own,
+with its own queue: it picks `LIMIT` class A comments, evenly spread over the docket,
+reads each one with the model and with the rules, and sets the two readings side by
+side. It writes nothing to either scoring step's tables, so both still have every
+comment to read.
+
+Every comparison is kept in the file, stamped with the code it ran (the git commit,
+and whether there were uncommitted changes), the model, the instrument and the rule
+set. The console's Compare page shows each run: per dimension, how many comments the
+two readings agree on and which reads higher; the gate, band and strength; and every
+comment that differs, opening to its text and its eight dimensions with each
+reading's level and evidence side by side. It also sets any two readings of any two
+runs side by side, so a change to the code, the rules, the instrument or the model is
+seen against what an earlier run read; `COMMENTS_OF=<run>` reads exactly that run's
+comments again for the purpose. Each run's readings are also written as one JSON file
+per comment under `compare/<run>/`, with the printed comparison in
+`compare/<run>/comparison.txt`. `docs/model-free-scoring.md` says how the comments
+are picked and what each side's evidence is.
 
 ## The text we analysed and the text you have
 
