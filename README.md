@@ -218,7 +218,7 @@ csv/                  the bulk download, gzipped; `make corpus` extracts it
 seeds/                the reference lists, the vocabularies, the prompt and topics
 shared/               db.py (the one module that knows SQLite), the text normaliser, the model client
 comments_db/          the copy-finding scripts and NER
-scripts/              the loader, the substance steps, model_free/ (the rules' reading), the entity tagging, the stance chain, the attachment steps, compare_scores.py
+scripts/              the loader, the substance steps, model_free/ (the rules' reading), the entity tagging, the stance chain, the attachment steps, score_model_compare.py
 checks/               figures.sql, expected.json, check.py
 console/              the read-only browser of the file; `make console`
 tests/                the tests; `uv run pytest`
@@ -234,7 +234,7 @@ seeds, the schema, the loader and the steps through the substance reading:
 `make schema`, `make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`,
 `make floor`, `make groups`, `make screen`, `make stance`, `make score-model`,
 `make score-model-free`, `make assemble` and `make rate` are built, `make console` reads
-the file, and `make extract`, `make jump` and `make compare-scores` work. Not yet
+the file, and `make extract`, `make jump` and `make score-model-compare` work. Not yet
 here, in run order: `make fetch`, `make text`, `make attachments`, `make orgs`,
 `make facts` and `make check`; each lands in its own commit, and this list shrinks
 with each.

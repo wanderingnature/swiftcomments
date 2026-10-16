@@ -2,8 +2,9 @@
 temporary file: the rules on sentences that carry each dimension, the roll-up
 and the rating, the score run end to end over the schema (the class A
 population, the five mf_* tables, one transaction, a second run writes
-nothing, --comment-id rescoring, the JSON files), and the comparison of two
-JSON folders.
+nothing, --comment-id rescoring), and make score-model-compare's pieces that
+need no model server: the even pick, the rules' half (JSON files, nothing
+written to the file) and the comparison.
 
     uv run pytest tests/model_free
 """
@@ -22,7 +23,7 @@ from model_free import RULESET_VERSION, run as mf_run  # noqa: E402
 from model_free.arithmetic import rate, roll_up  # noqa: E402
 from model_free.detectors import Context  # noqa: E402
 from model_free.text import PhraseMatcher, normalize, quoted_spans, split_sentences  # noqa: E402
-import compare_scores  # noqa: E402
+import score_model_compare  # noqa: E402
 
 GAP_SENTENCE = ("The DEIS fails to analyze sediment delivery to bull trout habitat in Wilson Creek,"
                 " so its conclusion of no significant impact cannot stand.")
@@ -118,9 +119,8 @@ def dbfile(tmp_path, monkeypatch):
     return path
 
 
-def test_score_run_over_the_file(dbfile, tmp_path, capsys):
-    json_dir = tmp_path / "json"
-    assert mf_run.main(["score", "--limit", "1", "--json", str(json_dir)]) == 0
+def test_score_run_over_the_file(dbfile, capsys):
+    assert mf_run.main(["score", "--limit", "1"]) == 0
     out = capsys.readouterr().out
     assert "2 class A comments; 0 scored under rule set" in out and "1 to score" in out
     conn = db.connect(dbfile)
@@ -135,10 +135,6 @@ def test_score_run_over_the_file(dbfile, tmp_path, capsys):
     run = conn.execute("SELECT comments_scored, units_scored, finished_at FROM mf_score_run").fetchone()
     assert (run["comments_scored"], run["units_scored"]) == (1, 1) and run["finished_at"]
     conn.close()
-    rec = score_json.read_dir(json_dir)
-    assert list(rec) == [CIDS[0]]
-    assert rec[CIDS[0]]["scorer"] == "rules" and rec[CIDS[0]]["instrument"] == f"rules-{RULESET_VERSION}"
-    assert rec[CIDS[0]]["levels"]["GAP"] == 3 and rec[CIDS[0]]["a_level"] == "A1"
 
     # The rest of the population, then nothing left.
     assert mf_run.main(["score"]) == 0
@@ -161,6 +157,26 @@ def test_score_run_over_the_file(dbfile, tmp_path, capsys):
     conn.close()
     assert mf_run.main(["report"]) == 0
     assert '"comments": 2' in capsys.readouterr().out
+
+
+def test_compare_rules_half_writes_files_and_not_the_file(dbfile, tmp_path):
+    out_dir = tmp_path / "model-free"
+    rec = score_model_compare.rules_reading({CIDS[0], CIDS[1]}, out_dir)
+    assert sorted(rec) == CIDS[:2] and sorted(score_json.read_dir(out_dir)) == CIDS[:2]
+    assert rec[CIDS[0]]["scorer"] == "rules" and rec[CIDS[0]]["instrument"] == f"rules-{RULESET_VERSION}"
+    assert rec[CIDS[0]]["levels"]["GAP"] == 3 and rec[CIDS[0]]["a_level"] == "A1"
+    conn = db.connect(dbfile)
+    assert conn.execute("SELECT count(*) FROM mf_comment_score").fetchone()[0] == 0
+    assert conn.execute("SELECT count(*) FROM mf_score_run").fetchone()[0] == 0
+    conn.close()
+
+
+def test_compare_picks_at_even_steps():
+    ids = [f"c{i:02d}" for i in range(10)]
+    assert score_model_compare.pick(list(reversed(ids)), 3) == ["c00", "c03", "c06"]
+    assert score_model_compare.pick(ids, 10) == ids
+    with pytest.raises(SystemExit, match="more than the 10"):
+        score_model_compare.pick(ids, 11)
 
 
 def test_score_run_needs_the_screen(tmp_path, monkeypatch):
@@ -199,7 +215,7 @@ def test_score_json_check_and_compare(tmp_path):
                                       "match": "fails to", "start": 0, "end": 8}]))
     score_json.write(b_dir, _record("c3", "rules", zero, "A0"))
     out = io.StringIO()
-    assert compare_scores.compare(score_json.read_dir(a_dir), score_json.read_dir(b_dir), 20, out) == 0
+    assert score_model_compare.compare(score_json.read_dir(a_dir), score_json.read_dir(b_dir), 20, out) == 0
     text = out.getvalue()
     assert "in both: 2; only in A: 0; only in B: 1" in text
     assert "  GAP          2        0        0" in text

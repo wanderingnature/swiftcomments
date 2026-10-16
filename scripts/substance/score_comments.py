@@ -29,8 +29,6 @@ stats go to substance_artifacts — the DB is the source of truth; no files.
 
     make score-model                 every class A comment the model has not read
     make score-model LIMIT=200       the first 200 calls of the queue, then exit
-    make score-model JSON=dir        also one JSON file per comment (shared/score_json.py),
-                               for make compare-scores beside the rules' reading
 
 Reads and writes data/roadless.sqlite through shared/db.py; the server and the
 model from .env (LLM_BASE_URL, LLM_API_KEY, LLM_MODEL, LLM_PROVIDER); the
@@ -52,7 +50,7 @@ _REPO_ROOT = _HERE.parents[2]
 sys.path.insert(0, str(_REPO_ROOT))
 sys.path.insert(0, str(_HERE.parent))   # scripts/substance
 
-from shared import db, score_json
+from shared import db
 from shared.instrument import SCORING_INSTRUMENT, model_of, same_weights
 from shared.project_context import add_project_argument, context_from_args
 from shared.llm_client import ChatClient, EndpointNotReady
@@ -234,6 +232,29 @@ def json_record(obj, model):
         "gate_basis": list(obj.get("gate_basis", [])), "band": obj["band"], "a_level": None,
         "evidence": evidence,
     }
+
+
+def score_request(client, req, system_prompt, schema, tags, own_law, shared_law):
+    """One queue item through the model and the grader: the finalized record,
+    with its tokens and time. The run's workers call it, and so does
+    make score-model-compare (scripts/score_model_compare.py), so both read a
+    comment the same way."""
+    _t0 = time.perf_counter()
+    obj, usage = client.complete(system=system_prompt, user=req["user"],
+                                 schema=schema, with_usage=True)
+    obj["scored_by"] = client.base_url
+    # Token + latency accounting for cost/throughput estimation (per comment).
+    obj["tokens_in"] = usage.get("prompt_tokens")
+    obj["tokens_out"] = usage.get("completion_tokens")
+    obj["ms"] = round((time.perf_counter() - _t0) * 1000)
+    law_cited = law_cited_for(req["kind"], own_law, shared_law)
+    if tags is not None:
+        apply_v3_grade(obj, req["comment_id"], req["text"], tags, law_cited)
+    finalize_record(obj, req["comment_id"], False, law_cited=law_cited)
+    obj["scored_via"] = req["scored_via"]
+    obj["exemplar_id"] = req["exemplar_id"]
+    obj["instrument_version"] = req["instrument_version"]
+    return obj
 
 
 def next_steps(*steps):
@@ -816,9 +837,6 @@ def main():
     parser.add_argument("--concurrency", type=int, default=8,
                         help="the most calls in flight; the client starts at one and climbs")
     parser.add_argument("--timeout", type=int, default=300)
-    parser.add_argument("--json", metavar="DIR",
-                        help="also write one JSON file per scored comment under DIR, in the"
-                             " shape of shared/score_json.py (make compare-scores)")
     # The FULL instrument is the default. The sliced prompt drops the few-shots,
     # which are the negative calibration ("statement of position only" scoring
     # all zeros) whose absence lets policy opinions gate in as substantive.
@@ -848,7 +866,6 @@ def main():
     # from one, climbing (shared/llm_client.py).
     client = ChatClient(timeout=args.timeout, max_in_flight=args.concurrency)
     args.model = client.model
-    json_dir = Path(args.json) if args.json else None
 
     classes = tuple(c.strip() for c in args.classes.split(",") if c.strip())
     shapes = None
@@ -868,8 +885,6 @@ def main():
               flush=True)
         return
     system_prompt = requests[0]["system"]  # identical for every request
-    if json_dir is not None:
-        print(f"one JSON file per scored comment under {json_dir}", flush=True)
     if args.dry_run:
         dry_run_report(
             requests, args.instrument, system_prompt,
@@ -915,24 +930,7 @@ def main():
         tags = grading_tags(ctx) if args.instrument == "v3" else None
 
     def score_job(req):
-        _t0 = time.perf_counter()
-        obj, usage = client.complete(system=system_prompt, user=req["user"],
-                                     schema=schema, with_usage=True)
-        obj["scored_by"] = client.base_url
-        # Token + latency accounting for cost/throughput estimation (per comment).
-        obj["tokens_in"] = usage.get("prompt_tokens")
-        obj["tokens_out"] = usage.get("completion_tokens")
-        obj["ms"] = round((time.perf_counter() - _t0) * 1000)
-        law_cited = law_cited_for(req["kind"], own_law, shared_law)
-        if tags is not None:
-            apply_v3_grade(obj, req["comment_id"], req["text"], tags, law_cited)
-        finalize_record(obj, req["comment_id"], False, law_cited=law_cited)
-        obj["scored_via"] = req["scored_via"]
-        obj["exemplar_id"] = req["exemplar_id"]
-        obj["instrument_version"] = req["instrument_version"]
-        if json_dir is not None and obj["scored_via"] == "direct":
-            score_json.write(json_dir, json_record(obj, model_of(args.model)))
-        return obj
+        return score_request(client, req, system_prompt, schema, tags, own_law, shared_law)
 
     stop = threading.Event()
     fatal = []

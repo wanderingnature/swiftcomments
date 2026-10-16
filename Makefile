@@ -13,8 +13,8 @@ CSV := csv/mv4-z8fw-q5jx.csv
 DB  := data/roadless.sqlite
 
 .PHONY: help all schema corpus fetch dedup ngrams ner tag floor groups screen \
-        stance stance-runs score score-model-free assemble rate text attachments orgs \
-        facts check console jump extract compare-scores
+        stance stance-runs score-model score-model-free assemble rate text attachments orgs \
+        facts check console jump extract score-model-compare
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
@@ -68,14 +68,14 @@ stance-runs:  ## the stance runs so far, what each loaded, and the command that 
 stance-refused:  ## the comments a provider refused in a stance run, as docs/refused-<RUN>.md with the texts in full
 	$(PY) scripts/refused_report.py --run $(RUN) --out docs/refused-$(RUN).md
 
-score-model:  ## step 6 (model): the MODEL reading, the v3 instrument over class A; LIMIT=N for a pilot; JSON=dir writes one file per comment
-	$(PY) scripts/substance/score_comments.py --project roadless --classes A $(if $(LIMIT),--limit $(LIMIT)) $(if $(JSON),--json $(JSON))
+score-model:  ## step 6 (model): the MODEL reading, the v3 instrument over class A; LIMIT=N for a pilot
+	$(PY) scripts/substance/score_comments.py --project roadless --classes A $(if $(LIMIT),--limit $(LIMIT))
 
-score-model-free:  ## step 6 (model-free): the MODEL-FREE reading of the same class A by rules, no model call; LIMIT=N; JSON=dir writes one file per comment
-	$(PY) scripts/model_free/run.py score $(if $(LIMIT),--limit $(LIMIT)) $(if $(JSON),--json $(JSON))
+score-model-free:  ## step 6 (model-free): the MODEL-FREE reading of the same class A by rules, no model call; LIMIT=N for a pilot
+	$(PY) scripts/model_free/run.py score $(if $(LIMIT),--limit $(LIMIT))
 
-compare-scores:  ## the two readings side by side from their JSON folders: make compare-scores A=dir B=dir
-	$(PY) scripts/compare_scores.py --a $(A) --b $(B)
+score-model-compare:  ## LIMIT=N class A comments read by both methods, JSON files under compare/, the comparison printed; writes nothing to the file
+	$(PY) scripts/score_model_compare.py $(if $(LIMIT),--limit $(LIMIT))
 
 assemble:  ## step 6: campaign inheritance and the delta rows; then the LAW check (a report; --write if it lists rows)
 	$(PY) scripts/substance/assemble_scores.py --project roadless --write
