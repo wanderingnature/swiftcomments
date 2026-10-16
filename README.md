@@ -220,6 +220,7 @@ schema/roadless.sql   the SQLite DDL
 csv/                  the bulk download, gzipped; `make corpus` extracts it
 seeds/                the reference lists, the vocabularies, the prompt and topics
 shared/               db.py (the one module that knows SQLite), the text normaliser, the model client
+packages/             comment-sentences, the one sentence method (shared with eis-analysis and rtca)
 comments_db/          the copy-finding scripts and NER
 scripts/              the loader, the substance steps, model_free/ (the rules' reading), the entity tagging, the stance chain, the attachment steps, compare_scores.py
 checks/               figures.sql, expected.json, check.py

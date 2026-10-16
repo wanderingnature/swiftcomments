@@ -67,6 +67,29 @@ def roll_up(comment_id: str, sentences: list[SentenceScore]) -> CommentScore:
         mechanism=any(s.mechanism for s in sentences))
 
 
+def hybrid(whole: CommentScore, sentence: CommentScore) -> CommentScore:
+    """The whole-comment score with GAP held to what one sentence reaches:
+    GAP is the lower of the whole-comment GAP and the sentence roll-up's GAP,
+    so GAP opens the gate only when the whole comment and one sentence both
+    reach 2. Every other dimension, the moves, targets, citation and
+    mechanism are the whole comment's; the sentence count is the sentences'."""
+    if whole.comment_id != sentence.comment_id:
+        raise ValueError(f"hybrid of two comments: {whole.comment_id}, {sentence.comment_id}")
+    dims = dict(whole.dims)
+    dims["GAP"] = min(whole.dims["GAP"], sentence.dims["GAP"])
+    opening = {d: u for d, u in whole.opening_unit.items() if d != "GAP"}
+    if dims["GAP"] > 0:
+        src = sentence if sentence.dims["GAP"] == dims["GAP"] else whole
+        opening["GAP"] = src.opening_unit["GAP"]
+    basis = [{"dimension": d, "unit_id": opening[d]} for d in gate_basis(dims)]
+    strength = strength_of(dims)
+    return CommentScore(
+        comment_id=whole.comment_id, dims=dims, strength=strength, gate=bool(basis),
+        gate_basis=basis, band=band_of(strength), moves=whole.moves, targets=whole.targets,
+        sentence_count=sentence.sentence_count, opening_unit=opening,
+        has_citation=whole.has_citation, mechanism=whole.mechanism)
+
+
 # ---------------------------------------------------------- answerability
 
 NO_ACTION_CODES = [
