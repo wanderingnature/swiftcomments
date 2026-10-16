@@ -22,6 +22,7 @@ the two can be set side by side. Written by `make score-model-compare`
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 DIMS = ("PLACE", "STAND", "DOC", "GAP", "EVID", "ASK", "ALT", "LAW")
@@ -83,3 +84,79 @@ def read_dir(directory: Path) -> dict[str, dict]:
     if not out:
         raise SystemExit(f"{directory}: no score files")
     return out
+
+
+def describe(records: dict[str, dict]) -> str:
+    scorers = sorted({r["scorer"] for r in records.values()})
+    instruments = sorted({r["instrument"] for r in records.values()})
+    return f"{len(records):,} comments; scorer {', '.join(scorers)}; instrument {', '.join(instruments)}"
+
+
+def evidence_lines(rec: dict) -> list[str]:
+    out = []
+    for e in rec["evidence"]:
+        if "rule" in e:
+            out.append(f"    {e.get('dimension', '?')} {e.get('grade', '?')} {e['rule']}: {e.get('match', '')!s}")
+        else:
+            out.append("    " + ", ".join(f"{k}={v!s}" for k, v in e.items()))
+    return out
+
+
+def compare(a: dict[str, dict], b: dict[str, dict], limit: int, out=None) -> int:
+    """Two sets of records, by comment id, side by side on the comments both
+    hold: per dimension how many agree and which side reads higher; the gate,
+    band, strength and level agreement; then each comment where the gate
+    differs, then each where the gate agrees and a level does not, with both
+    sides' levels and evidence, up to `limit` (0 for all).
+    Printed to `out` (stdout when None). make score-model-compare prints it and
+    the console's Compare page shows it."""
+    out = sys.stdout if out is None else out
+    both = sorted(set(a) & set(b))
+    print(f"A: {describe(a)}", file=out)
+    print(f"B: {describe(b)}", file=out)
+    print(f"in both: {len(both):,}; only in A: {len(set(a) - set(b)):,}; only in B: {len(set(b) - set(a)):,}",
+          file=out)
+    if not both:
+        return 1
+    print("\nper dimension: same level, A higher, B higher", file=out)
+    for d in DIMS:
+        same = sum(1 for c in both if a[c]["levels"][d] == b[c]["levels"][d])
+        up = sum(1 for c in both if a[c]["levels"][d] > b[c]["levels"][d])
+        print(f"  {d:5s}  {same:7,}  {up:7,}  {len(both) - same - up:7,}", file=out)
+    same_all = sum(1 for c in both if all(a[c]["levels"][d] == b[c]["levels"][d] for d in DIMS))
+    print(f"identical on all eight: {same_all:,} of {len(both):,}", file=out)
+    gate_same = sum(1 for c in both if a[c]["gate"] == b[c]["gate"])
+    a_open = sum(1 for c in both if a[c]["gate"])
+    b_open = sum(1 for c in both if b[c]["gate"])
+    print(f"\ngate: same on {gate_same:,} of {len(both):,}; open in A {a_open:,}, in B {b_open:,},"
+          f" in both {sum(1 for c in both if a[c]['gate'] and b[c]['gate']):,}", file=out)
+    print(f"band: same on {sum(1 for c in both if a[c]['band'] == b[c]['band']):,}", file=out)
+    rated = [c for c in both if a[c]["a_level"] is not None and b[c]["a_level"] is not None]
+    if rated:
+        print(f"answerability level: same on"
+              f" {sum(1 for c in rated if a[c]['a_level'] == b[c]['a_level']):,} of {len(rated):,} rated on both sides",
+              file=out)
+    else:
+        print("answerability level: not rated on both sides", file=out)
+    diff = sum(abs(a[c]["strength"] - b[c]["strength"]) for c in both)
+    print(f"strength: same on {sum(1 for c in both if a[c]['strength'] == b[c]['strength']):,};"
+          f" mean absolute difference {diff / len(both):.2f}", file=out)
+
+    disagreements = [c for c in both if a[c]["gate"] != b[c]["gate"]]
+    changed = [c for c in both if a[c]["gate"] == b[c]["gate"]
+               and any(a[c]["levels"][d] != b[c]["levels"][d] for d in DIMS)]
+    listed = disagreements + changed
+    shown = listed if limit == 0 else listed[:limit]
+    print(f"\ngate disagreements: {len(disagreements):,}; the same gate with a level that differs:"
+          f" {len(changed):,}" + (f" (the first {len(shown)} listed)" if len(shown) < len(listed) else ""),
+          file=out)
+    for c in shown:
+        print(f"\n{c}: A gate={a[c]['gate']} basis={a[c]['gate_basis']} | B gate={b[c]['gate']} basis={b[c]['gate_basis']}",
+              file=out)
+        print("  A " + " ".join(f"{d} {a[c]['levels'][d]}" for d in DIMS), file=out)
+        for line in evidence_lines(a[c]):
+            print(line, file=out)
+        print("  B " + " ".join(f"{d} {b[c]['levels'][d]}" for d in DIMS), file=out)
+        for line in evidence_lines(b[c]):
+            print(line, file=out)
+    return 0

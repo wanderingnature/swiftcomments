@@ -952,6 +952,41 @@ CREATE TABLE mf_comment_answerability (
 );
 
 -- ===========================================================================
+-- 9c. make score-model-compare (scripts/score_model_compare.py; new). One row
+--     per comparison run and one per comment per method, so every comparison
+--     is kept and any two runs can be set side by side in the console. A run
+--     is stamped with the code it ran (the git commit, and whether the working
+--     tree had uncommitted changes), the model and server, the instrument and
+--     the rule set. Written by that command only; the scoring steps' tables are
+--     not touched by it.
+-- ===========================================================================
+
+CREATE TABLE score_compare_run (
+    run_id             TEXT PRIMARY KEY,       -- compare/<run_id>/, YYYYMMDD_HHMMSS
+    started_at         TEXT NOT NULL,
+    finished_at        TEXT,
+    code_version       TEXT NOT NULL,          -- git rev-parse HEAD
+    code_dirty         INTEGER NOT NULL,       -- 1: tracked files had uncommitted changes
+    model              TEXT NOT NULL,
+    server             TEXT NOT NULL,          -- the base URL the calls went to
+    instrument_version TEXT NOT NULL,
+    ruleset_version    TEXT NOT NULL,
+    comments_of        TEXT REFERENCES score_compare_run (run_id),  -- the run whose comments were read again
+    pool               INTEGER NOT NULL,       -- class A comments the model reads as themselves
+    picked             INTEGER NOT NULL,
+    report             TEXT                    -- the printed comparison, model against rules
+);
+
+CREATE TABLE score_compare_reading (
+    run_id     TEXT NOT NULL REFERENCES score_compare_run (run_id),
+    comment_id TEXT NOT NULL,
+    method     TEXT NOT NULL CHECK (method IN ('model', 'model-free')),
+    record     TEXT,                           -- shared/score_json.py's shape; NULL when the call failed
+    error      TEXT,
+    PRIMARY KEY (run_id, comment_id, method)
+);
+
+-- ===========================================================================
 -- 10. Attachments
 -- ===========================================================================
 

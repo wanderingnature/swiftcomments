@@ -1,6 +1,7 @@
-"""The console: a read-only Streamlit app over data/roadless.sqlite. Four pages: Steps (what every make target has written), Comment (one
-comment across every table), Tables (any table or view, paged) and Query (SQL,
-read-only). It launches nothing: the steps run from make. The connection is
+"""The console: a read-only Streamlit app over data/roadless.sqlite. Five pages: Steps (what every make target has written), Comment (one
+comment across every table), Compare (every make score-model-compare run, and any
+two readings of any two runs side by side), Tables (any table or view, paged) and
+Query (SQL, read-only). It launches nothing: the steps run from make. The connection is
 opened with PRAGMA query_only, so nothing here can write the file, and reading
 while a step writes is safe under WAL.
 
@@ -8,6 +9,8 @@ while a step writes is safe under WAL.
 """
 import contextlib
 import datetime
+import io
+import json
 import os
 import sqlite3
 import sys
@@ -20,8 +23,8 @@ _REPO_ROOT = os.path.abspath(os.path.join(_HERE, ".."))
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
-from shared import db  # noqa: E402
-from console.queries import COMMENT, STEPS, TABLES  # noqa: E402
+from shared import db, score_json  # noqa: E402
+from console.queries import COMMENT, COMPARE_READINGS, COMPARE_RUNS, STEPS, TABLES  # noqa: E402
 
 ATTACHMENTS_DIR = os.path.join(_REPO_ROOT, "attachments")
 PAGE_ROWS = 100         # the Tables page's page
@@ -110,6 +113,65 @@ def page_comment():
                 show(df)
 
 
+def readings(conn, run_id, method):
+    """One run's kept readings by one method, by comment id."""
+    return {r["comment_id"]: json.loads(r["record"]) for r in conn.execute(COMPARE_READINGS, (run_id,))
+            if r["method"] == method and r["record"] is not None}
+
+
+def page_compare():
+    st.header("Compare")
+    st.caption("Every make score-model-compare run, newest first, stamped with the code it ran."
+               " Below: one run's comparison and readings; then any two readings of any two runs"
+               " side by side on the comments both read, so a change to the code, the rules or the"
+               " model shows against what an earlier run read.")
+    with open_db() as conn:
+        try:
+            runs = frame(conn, COMPARE_RUNS)
+        except sqlite3.OperationalError as exc:
+            if "no such table" in str(exc):
+                st.text("no score_compare_run table: the file predates schema section 9c")
+                return
+            raise
+        if runs.empty:
+            st.text("no comparison run yet: make score-model-compare LIMIT=N")
+            return
+        show(runs)
+        ids = list(runs["run_id"])
+
+        st.subheader("One run")
+        run_id = st.selectbox("run", ids, key="one_run")
+        report = conn.execute("SELECT report FROM score_compare_run WHERE run_id = ?", (run_id,)).fetchone()[0]
+        st.text(report if report else "no comparison stored: the run did not finish")
+        rows = []
+        for r in conn.execute(COMPARE_READINGS, (run_id,)):
+            rec = json.loads(r["record"]) if r["record"] else None
+            rows.append({"comment_id": r["comment_id"], "method": r["method"],
+                         "levels": " ".join(f"{d} {rec['levels'][d]}" for d in score_json.DIMS) if rec else None,
+                         "strength": rec["strength"] if rec else None,
+                         "gate": rec["gate"] if rec else None,
+                         "band": rec["band"] if rec else None,
+                         "a_level": rec["a_level"] if rec else None,
+                         "error": r["error"]})
+        show(pd.DataFrame(rows, columns=["comment_id", "method", "levels", "strength", "gate", "band",
+                                         "a_level", "error"]))
+
+        st.subheader("Two readings")
+        methods = ["model", "model-free"]
+        left, right = st.columns(2)
+        a_run = left.selectbox("A: run", ids, index=min(1, len(ids) - 1), key="a_run")
+        a_method = left.selectbox("A: reading", methods, key="a_method")
+        b_run = right.selectbox("B: run", ids, key="b_run")
+        b_method = right.selectbox("B: reading", methods, index=1, key="b_method")
+        a, b = readings(conn, a_run, a_method), readings(conn, b_run, b_method)
+    if not a or not b:
+        st.text("one side holds no reading")
+        return
+    out = io.StringIO()
+    score_json.compare(a, b, 0, out)
+    st.text(f"A: run {a_run}, {a_method}\nB: run {b_run}, {b_method}\n\n" + out.getvalue())
+
+
 def page_tables():
     st.header("Tables")
     with open_db() as conn:
@@ -159,6 +221,7 @@ def page_query():
 PAGES = {
     "Steps": page_steps,
     "Comment": page_comment,
+    "Compare": page_compare,
     "Tables": page_tables,
     "Query": page_query,
 }

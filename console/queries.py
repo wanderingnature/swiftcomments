@@ -349,7 +349,26 @@ COMMENT = [
     ("campaign organisation",
      "SELECT fo.* FROM family_organisation fo JOIN text_family_member m USING (family_id)"
      " WHERE m.comment_id = ?"),
+    ("comparison readings (make score-model-compare)",
+     "SELECT run_id, method, error, record FROM score_compare_reading"
+     " WHERE comment_id = ? ORDER BY run_id, method"),
 ]
+
+# The Compare page: every make score-model-compare run, newest first, with the
+# code it ran and how many readings it kept; and one run's readings.
+COMPARE_RUNS = (
+    "SELECT r.run_id, r.started_at, r.finished_at, substr(r.code_version, 1, 12) AS git_commit,"
+    " r.code_dirty AS uncommitted_changes, r.model, r.server, r.instrument_version,"
+    " r.ruleset_version, r.comments_of, r.pool, r.picked,"
+    " (SELECT count(*) FROM score_compare_reading x WHERE x.run_id = r.run_id"
+    "   AND x.method = 'model' AND x.record IS NOT NULL) AS model_readings,"
+    " (SELECT count(*) FROM score_compare_reading x WHERE x.run_id = r.run_id"
+    "   AND x.method = 'model-free' AND x.record IS NOT NULL) AS rules_readings,"
+    " (SELECT count(*) FROM score_compare_reading x WHERE x.run_id = r.run_id"
+    "   AND x.error IS NOT NULL) AS errors"
+    " FROM score_compare_run r ORDER BY r.run_id DESC")
+COMPARE_READINGS = ("SELECT comment_id, method, record, error FROM score_compare_reading"
+                    " WHERE run_id = ? ORDER BY comment_id, method")
 
 TABLES = ("SELECT type, name FROM sqlite_master WHERE type IN ('table', 'view')"
           " AND name NOT LIKE 'sqlite_%' ORDER BY type, name")
