@@ -15,7 +15,7 @@ the file, its size, when it was last written, and the size of its write-ahead lo
 which is non-zero while a step is writing or until SQLite folds the log back into the
 file.
 
-## The four pages
+## The five pages
 
 **Steps.** Every `make` target in the README's run order, the attachments last, each
 with the rows it has written: the
@@ -34,8 +34,20 @@ steps hold about it, one table each: the attachment files, the hash row, the
 near-duplicate group, the text family and the comment group, the active stance and
 its topics, the entity scan state and the dictionary matches, the named entities, the
 floor, the screen, the substance score and its parts, the answerability, the
-attachment text and kind and count, the roster row, the campaign's organisation. A
+attachment text and kind and count, the roster row, the campaign's organisation, and its readings in every comparison run. A
 table with no row for the comment says "no row".
+
+**Compare.** Every `make score-model-compare` run, newest first, with the code it ran
+(the git commit, and whether tracked files had uncommitted changes), the model, the
+server, the instrument, the rule set, the run whose comments it read again if any, and
+how many readings it kept. Under it, one run: the comparison it printed, and every
+comment's two readings (the eight levels, strength, gate, band, A level, or the
+error of a failed call). Then any two readings of any two runs, A and B, each a run
+and a method (model or model-free), set side by side on the comments both read: the
+same comparison as the command prints, listing every comment whose gate or any level
+differs. The model's reading of one run against the model's reading of a later one,
+or the rules' against the rules', is how a change to the code, the instrument, the
+rules or the model is seen against what was read before it.
 
 **Tables.** Any table or view, a hundred rows at a time from any offset, with the
 table's row count. Views are not counted, because two of them walk the whole file.

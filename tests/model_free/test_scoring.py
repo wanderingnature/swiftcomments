@@ -3,8 +3,9 @@ temporary file: the rules on sentences that carry each dimension, the roll-up
 and the rating, the score run end to end over the schema (the class A
 population, the five mf_* tables, one transaction, a second run writes
 nothing, --comment-id rescoring), and make score-model-compare's pieces that
-need no model server: the even pick, the rules' half (JSON files, nothing
-written to the file) and the comparison.
+need no model server: the code stamp, the even pick, the rules' half (JSON
+files and score_compare_reading rows, the mf_* tables untouched), the comments
+of an earlier run, and the comparison.
 
     uv run pytest tests/model_free
 """
@@ -159,16 +160,40 @@ def test_score_run_over_the_file(dbfile, capsys):
     assert '"comments": 2' in capsys.readouterr().out
 
 
-def test_compare_rules_half_writes_files_and_not_the_file(dbfile, tmp_path):
+def _compare_run(conn, run_id, comments_of=None):
+    conn.execute("INSERT INTO score_compare_run (run_id, started_at, code_version, code_dirty, model,"
+                 " server, instrument_version, ruleset_version, comments_of, pool, picked)"
+                 " VALUES (?, '2026-10-16T00:00:00+00:00', 'abc', 0, 'm', 'http://x', 'v3', ?, ?, 2, 2)",
+                 (run_id, RULESET_VERSION, comments_of))
+    conn.commit()
+
+
+def test_compare_rules_half_keeps_its_readings_apart(dbfile, tmp_path):
     out_dir = tmp_path / "model-free"
-    rec = score_model_compare.rules_reading({CIDS[0], CIDS[1]}, out_dir)
+    conn = db.connect(dbfile)
+    _compare_run(conn, "r1")
+    rec = score_model_compare.rules_reading(conn, "r1", {CIDS[0], CIDS[1]}, out_dir)
     assert sorted(rec) == CIDS[:2] and sorted(score_json.read_dir(out_dir)) == CIDS[:2]
     assert rec[CIDS[0]]["scorer"] == "rules" and rec[CIDS[0]]["instrument"] == f"rules-{RULESET_VERSION}"
     assert rec[CIDS[0]]["levels"]["GAP"] == 3 and rec[CIDS[0]]["a_level"] == "A1"
-    conn = db.connect(dbfile)
+    rows = conn.execute("SELECT comment_id, method, record, error FROM score_compare_reading"
+                        " ORDER BY comment_id").fetchall()
+    assert [(r["comment_id"], r["method"], r["error"]) for r in rows] == \
+        [(CIDS[0], "model-free", None), (CIDS[1], "model-free", None)]
+    assert score_json.check(__import__("json").loads(rows[0]["record"]))["levels"]["GAP"] == 3
+    # The scoring step's own tables are not the comparison's.
     assert conn.execute("SELECT count(*) FROM mf_comment_score").fetchone()[0] == 0
     assert conn.execute("SELECT count(*) FROM mf_score_run").fetchone()[0] == 0
+    # A later run reads the same comments again.
+    assert score_model_compare.comments_of(conn, "r1") == CIDS[:2]
+    with pytest.raises(SystemExit, match="no comparison run r9"):
+        score_model_compare.comments_of(conn, "r9")
     conn.close()
+
+
+def test_compare_stamps_the_commit():
+    head, dirty = score_model_compare.code_version()
+    assert len(head) == 40 and dirty in (0, 1)
 
 
 def test_compare_picks_at_even_steps():
@@ -215,14 +240,15 @@ def test_score_json_check_and_compare(tmp_path):
                                       "match": "fails to", "start": 0, "end": 8}]))
     score_json.write(b_dir, _record("c3", "rules", zero, "A0"))
     out = io.StringIO()
-    assert score_model_compare.compare(score_json.read_dir(a_dir), score_json.read_dir(b_dir), 20, out) == 0
+    assert score_json.compare(score_json.read_dir(a_dir), score_json.read_dir(b_dir), 20, out) == 0
     text = out.getvalue()
     assert "in both: 2; only in A: 0; only in B: 1" in text
     assert "  GAP          2        0        0" in text
     assert "  LAW          1        1        0" in text
     assert "gate: same on 1 of 2; open in A 2, in B 1, in both 1" in text
     assert "answerability level: same on 1 of 2" in text
-    assert "gate disagreements: 1" in text and "\nc2: A gate=True" in text
+    assert "gate disagreements: 1; the same gate with a level that differs: 0" in text
+    assert "\nc2: A gate=True" in text
     # Only the disagreement's evidence is printed, each side's in its own form.
     assert "    GAP 0 GAP.0.nothing_named: fails to" in text
     assert "GAP.2.specific_name" not in text

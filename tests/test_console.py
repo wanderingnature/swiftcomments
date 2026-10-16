@@ -1,9 +1,10 @@
 """The console over a real temporary SQLite file: every query of console/queries.py
-runs on the schema, and the app renders each of its four pages through Streamlit's
+runs on the schema, and the app renders each of its five pages through Streamlit's
 AppTest (the script run in-process, no server) with db.DB_PATH pointed at the file.
 
     uv run pytest tests/test_console.py
 """
+import json
 import sys
 from pathlib import Path
 
@@ -13,8 +14,8 @@ from streamlit.testing.v1 import AppTest
 _REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_REPO))
 
-from shared import db  # noqa: E402
-from console.queries import COMMENT, STEPS, TABLES  # noqa: E402
+from shared import db, score_json  # noqa: E402
+from console.queries import COMMENT, COMPARE_READINGS, COMPARE_RUNS, STEPS, TABLES  # noqa: E402
 
 APP = _REPO / "console" / "app.py"
 CID = "FS-2025-0001-0002"
@@ -47,6 +48,8 @@ def test_every_query_runs_on_the_schema(dbfile):
             conn.execute(sql).fetchall()
     for title, sql in COMMENT:
         conn.execute(sql, (CID,) * sql.count("?")).fetchall()
+    conn.execute(COMPARE_RUNS).fetchall()
+    conn.execute(COMPARE_READINGS, ("r",)).fetchall()
     names = [r["name"] for r in conn.execute(TABLES)]
     assert "comment" in names and "v_source_comments" in names
     conn.close()
@@ -109,3 +112,45 @@ def test_query_page_is_read_only(dbfile):
     conn = db.connect(dbfile)
     assert conn.execute("SELECT count(*) FROM comment").fetchone()[0] == 1
     conn.close()
+
+
+def _reading(scorer, gap):
+    levels = {d: 0 for d in score_json.DIMS}
+    levels["GAP"] = gap
+    return {"comment_id": CID, "scorer": scorer, "instrument": "v3" if scorer == "model" else "rules-3",
+            "model": "m" if scorer == "model" else None, "levels": levels, "strength": gap,
+            "gate": gap >= 2, "gate_basis": [], "band": "minimal", "a_level": None, "evidence": []}
+
+
+def test_compare_page_renders(dbfile):
+    at = AppTest.from_file(str(APP), default_timeout=60)
+    at.run()
+    at.radio[0].set_value("Compare")
+    _run(at)
+    assert any("no comparison run yet" in t.value for t in at.text)
+
+    conn = db.connect(dbfile)
+    for run_id, model_gap, rules_gap in (("20261016_100000", 2, 1), ("20261016_110000", 2, 2)):
+        conn.execute("INSERT INTO score_compare_run (run_id, started_at, finished_at, code_version,"
+                     " code_dirty, model, server, instrument_version, ruleset_version, pool, picked, report)"
+                     " VALUES (?, 's', 'f', ?, 0, 'm', 'http://x', 'v3', '3', 1, 1, ?)",
+                     (run_id, run_id * 2, f"report of {run_id}"))
+        for method, gap in (("model", model_gap), ("model-free", rules_gap)):
+            conn.execute("INSERT INTO score_compare_reading (run_id, comment_id, method, record)"
+                         " VALUES (?, ?, ?, ?)",
+                         (run_id, CID, method, json.dumps(_reading("model" if method == "model" else "rules", gap))))
+    conn.commit()
+    conn.close()
+    _run(at)
+    assert len(at.dataframe) == 2
+    texts = [t.value for t in at.text]
+    assert "report of 20261016_110000" in texts
+    # A: the earlier run's model reading; B: the newest run's rules reading.
+    pair = next(t for t in texts if t.startswith("A: run "))
+    assert pair.startswith("A: run 20261016_100000, model\nB: run 20261016_110000, model-free")
+    assert "identical on all eight: 1 of 1" in pair
+    # The rules' reading of the two runs set side by side: GAP moved from 1 to 2.
+    at.selectbox(key="a_method").set_value("model-free")
+    _run(at)
+    pair = next(t.value for t in at.text if t.value.startswith("A: run "))
+    assert "gate disagreements: 1" in pair and "  A PLACE 0 STAND 0 DOC 0 GAP 1" in pair

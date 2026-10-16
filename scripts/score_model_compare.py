@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 """The two substance readings of the same comments, side by side.
 
-make score-model-compare LIMIT=N picks N class A comments, reads each one with the
-model (the v3 instrument, the server of .env) and with the rules (rule set 3,
-no model call), writes one JSON file per comment per reading in the shape of
+make score-model-compare LIMIT=N picks N class A comments, reads each one with
+the model (the v3 instrument, the server of .env) and with the rules (rule set
+3, no model call), keeps both readings and the comparison in
+data/roadless.sqlite (score_compare_run, score_compare_reading; the console's
+Compare page), writes one JSON file per comment per reading in the shape of
 shared/score_json.py, and prints the comparison. New (docs/model-free-scoring.md).
 
     make score-model-compare LIMIT=20
     make score-model-compare LIMIT=20 SERVER=LOCAL
+    make score-model-compare COMMENTS_OF=20261016_141500
     uv run python scripts/score_model_compare.py --limit 20
 
 The comparison is its own run, apart from the two scoring steps: it has its own
-queue and writes nothing to data/roadless.sqlite, so make score-model and make
-score-model-free still have every comment of their own queues to read, and a
+queue, and it writes only its own two tables, so make score-model and make
+score-model-free still have every comment of their queues to read, and a
 comparison never stands in for either.
 
 The queue: the class A comments make score-model reads as themselves (its
@@ -20,23 +23,25 @@ The queue: the class A comments make score-model reads as themselves (its
 is all of its text), sorted by comment id, N of them picked at even steps
 across the list, so a pilot spans the docket rather than its first days. An
 exemplar or delta item is a part of a family's score, not one comment's
-reading, and is not in the queue.
+reading, and is not in the queue. COMMENTS_OF=<run> reads the comments of an
+earlier run again instead, so a change to the code, the instrument, the rules
+or the model is measured on exactly the comments the earlier run read.
 
-The files go to compare/<run>/model/ and compare/<run>/model-free/, and the
-printed comparison to compare/<run>/comparison.txt. It prints, for the
-comments both readings scored: per dimension, how many agree exactly, how many
-the model reads higher, how many the rules; the gate, band, strength and
-answerability agreement; then every comment where the gate differs, with each
-side's levels and evidence.
+Every run is stamped with the code it ran: the git commit, and whether tracked
+files had uncommitted changes. The files go to compare/<run>/model/ and
+compare/<run>/model-free/, the comparison to compare/<run>/comparison.txt and
+to the run's row.
 """
 from __future__ import annotations
 
 import argparse
 import contextlib
 import io
+import json
+import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -49,71 +54,24 @@ from shared.instrument import model_of  # noqa: E402
 from shared.llm_client import ChatClient, EndpointNotReady  # noqa: E402
 from shared.project_context import ProjectContext  # noqa: E402
 
-DIMS = score_json.DIMS
+
+def now() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def describe(records: dict[str, dict]) -> str:
-    scorers = sorted({r["scorer"] for r in records.values()})
-    instruments = sorted({r["instrument"] for r in records.values()})
-    return f"{len(records):,} comments; scorer {', '.join(scorers)}; instrument {', '.join(instruments)}"
-
-
-def evidence_lines(rec: dict) -> list[str]:
-    out = []
-    for e in rec["evidence"]:
-        if "rule" in e:
-            out.append(f"    {e.get('dimension', '?')} {e.get('grade', '?')} {e['rule']}: {e.get('match', '')!s}")
-        else:
-            out.append("    " + ", ".join(f"{k}={v!s}" for k, v in e.items()))
-    return out
-
-
-def compare(a: dict[str, dict], b: dict[str, dict], limit: int, out=sys.stdout) -> int:
-    both = sorted(set(a) & set(b))
-    print(f"A: {describe(a)}", file=out)
-    print(f"B: {describe(b)}", file=out)
-    print(f"in both: {len(both):,}; only in A: {len(set(a) - set(b)):,}; only in B: {len(set(b) - set(a)):,}",
-          file=out)
-    if not both:
-        return 1
-    print("\nper dimension: same level, A higher, B higher", file=out)
-    for d in DIMS:
-        same = sum(1 for c in both if a[c]["levels"][d] == b[c]["levels"][d])
-        up = sum(1 for c in both if a[c]["levels"][d] > b[c]["levels"][d])
-        print(f"  {d:5s}  {same:7,}  {up:7,}  {len(both) - same - up:7,}", file=out)
-    same_all = sum(1 for c in both if all(a[c]["levels"][d] == b[c]["levels"][d] for d in DIMS))
-    print(f"identical on all eight: {same_all:,} of {len(both):,}", file=out)
-    gate_same = sum(1 for c in both if a[c]["gate"] == b[c]["gate"])
-    a_open = sum(1 for c in both if a[c]["gate"])
-    b_open = sum(1 for c in both if b[c]["gate"])
-    print(f"\ngate: same on {gate_same:,} of {len(both):,}; open in A {a_open:,}, in B {b_open:,},"
-          f" in both {sum(1 for c in both if a[c]['gate'] and b[c]['gate']):,}", file=out)
-    print(f"band: same on {sum(1 for c in both if a[c]['band'] == b[c]['band']):,}", file=out)
-    rated = [c for c in both if a[c]["a_level"] is not None and b[c]["a_level"] is not None]
-    if rated:
-        print(f"answerability level: same on"
-              f" {sum(1 for c in rated if a[c]['a_level'] == b[c]['a_level']):,} of {len(rated):,} rated on both sides",
-              file=out)
-    else:
-        print("answerability level: not rated on both sides", file=out)
-    diff = sum(abs(a[c]["strength"] - b[c]["strength"]) for c in both)
-    print(f"strength: same on {sum(1 for c in both if a[c]['strength'] == b[c]['strength']):,};"
-          f" mean absolute difference {diff / len(both):.2f}", file=out)
-
-    disagreements = [c for c in both if a[c]["gate"] != b[c]["gate"]]
-    shown = disagreements if limit == 0 else disagreements[:limit]
-    print(f"\ngate disagreements: {len(disagreements):,}" + (f" (first {len(shown)})" if len(shown) < len(disagreements) else ""),
-          file=out)
-    for c in shown:
-        print(f"\n{c}: A gate={a[c]['gate']} basis={a[c]['gate_basis']} | B gate={b[c]['gate']} basis={b[c]['gate_basis']}",
-              file=out)
-        print("  A " + " ".join(f"{d} {a[c]['levels'][d]}" for d in DIMS), file=out)
-        for line in evidence_lines(a[c]):
-            print(line, file=out)
-        print("  B " + " ".join(f"{d} {b[c]['levels'][d]}" for d in DIMS), file=out)
-        for line in evidence_lines(b[c]):
-            print(line, file=out)
-    return 0
+def code_version() -> tuple[str, int]:
+    """The git commit the run's code is at, and 1 when tracked files have
+    uncommitted changes (the run then read code no commit holds)."""
+    try:
+        head = subprocess.run(["git", "-C", str(_REPO_ROOT), "rev-parse", "HEAD"],
+                              capture_output=True, text=True, check=True).stdout.strip()
+        dirty = subprocess.run(["git", "-C", str(_REPO_ROOT), "status", "--porcelain",
+                                "--untracked-files=no"],
+                               capture_output=True, text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise SystemExit("make score-model-compare stamps every run with its git commit, and"
+                         f" git could not give one here: {exc}. Run it in a git clone.") from None
+    return head, int(bool(dirty))
 
 
 def pick(ids: list[str], n: int) -> list[str]:
@@ -124,8 +82,25 @@ def pick(ids: list[str], n: int) -> list[str]:
     return [ids[i * len(ids) // n] for i in range(n)]
 
 
-def model_reading(client, requests, ctx, shapes, out_dir: Path, concurrency: int) -> dict[str, dict]:
-    """The model's reading of the picked queue items, one file each; nothing written to the file."""
+def comments_of(conn, run_id: str) -> list[str]:
+    """The comments an earlier comparison run read."""
+    if conn.execute("SELECT 1 FROM score_compare_run WHERE run_id = ?", (run_id,)).fetchone() is None:
+        raise SystemExit(f"no comparison run {run_id}; the console's Compare page lists them")
+    return [r[0] for r in conn.execute(
+        "SELECT DISTINCT comment_id FROM score_compare_reading WHERE run_id = ? ORDER BY comment_id",
+        (run_id,))]
+
+
+def store(conn, run_id: str, comment_id: str, method: str, record: dict | None, error: str | None) -> None:
+    conn.execute("INSERT INTO score_compare_reading (run_id, comment_id, method, record, error)"
+                 " VALUES (?, ?, ?, ?, ?)",
+                 (run_id, comment_id, method, None if record is None else json.dumps(record, sort_keys=True),
+                  error))
+    conn.commit()
+
+
+def model_reading(conn, run_id, client, requests, ctx, shapes, out_dir: Path, concurrency: int) -> dict[str, dict]:
+    """The model's reading of the picked queue items: one file and one row each."""
     import score_comments as sc
 
     print(f"the model's reading: {len(requests)} call(s) to {client.model} at {client.base_url},"
@@ -146,10 +121,12 @@ def model_reading(client, requests, ctx, shapes, out_dir: Path, concurrency: int
                 raise SystemExit(f"ABORTED: {exc}") from None
             except Exception as exc:
                 errors.append((cid, str(exc)))
+                store(conn, run_id, cid, "model", None, str(exc))
                 print(f"  ERROR {cid} -> {exc}", flush=True)
                 continue
             rec = sc.json_record(obj, model_of(client.model))
             score_json.write(out_dir, rec)
+            store(conn, run_id, cid, "model", rec, None)
             records[cid] = rec
             print(f"  model {len(records) + len(errors)}/{len(requests)} {cid}", flush=True)
     if errors:
@@ -159,12 +136,10 @@ def model_reading(client, requests, ctx, shapes, out_dir: Path, concurrency: int
     return records
 
 
-def rules_reading(picked: set[str], out_dir: Path) -> dict[str, dict]:
-    """The rules' reading of the picked comments, one file each; nothing written to the file."""
+def rules_reading(conn, run_id, picked: set[str], out_dir: Path) -> dict[str, dict]:
+    """The rules' reading of the picked comments: one file and one row each."""
     from model_free import inputs, run as mf_run
 
-    conn = inputs.connect()
-    conn.execute("PRAGMA query_only = 1")
     tags = inputs.load_tags(conn)
     authority_keys = inputs.load_authority_keys(conn)
     print(f"the rules' reading: {len(picked)} comment(s), no model call", flush=True)
@@ -173,26 +148,32 @@ def rules_reading(picked: set[str], out_dir: Path) -> dict[str, dict]:
         sentences, comment, answer = mf_run.read_comment(u, tags, authority_keys)
         rec = mf_run.json_record(comment, answer, sentences)
         score_json.write(out_dir, rec)
+        store(conn, run_id, u.comment_id, "model-free", rec, None)
         records[u.comment_id] = rec
-    conn.close()
     return records
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
-    ap.add_argument("--limit", type=int, required=True,
-                    help="how many class A comments to read both ways (make score-model-compare LIMIT=N)")
+    which = ap.add_mutually_exclusive_group(required=True)
+    which.add_argument("--limit", type=int,
+                       help="how many class A comments to read both ways (make score-model-compare LIMIT=N)")
+    which.add_argument("--comments-of", metavar="RUN",
+                       help="read the comments of this earlier comparison run again (COMMENTS_OF=<run>)")
     ap.add_argument("--concurrency", type=int, default=8,
                     help="the most model calls in flight; the client starts at one and climbs")
     ap.add_argument("--timeout", type=int, default=300)
     args = ap.parse_args(argv)
-    if args.limit < 1:
+    if args.limit is not None and args.limit < 1:
         raise SystemExit("LIMIT must be at least 1")
 
     import score_comments as sc
+    from model_free import RULESET_VERSION
 
+    version, dirty = code_version()
     ctx = ProjectContext.load("roadless")
     client = ChatClient(timeout=args.timeout, max_in_flight=args.concurrency)
+    conn = db.connect(db.DB_PATH)
     print("make score-model-compare: building the model's whole class A queue to pick from",
           flush=True)
     # The queue build announces a make score-model run and the tables it writes;
@@ -202,23 +183,48 @@ def main(argv=None) -> int:
     unique = {r["comment_id"]: r for r in requests if r["kind"] == "unique"}
     if not unique:
         raise SystemExit("the model's queue holds no class A comment read as itself")
-    picked = pick(list(unique), args.limit)
-    run_dir = _REPO_ROOT / "compare" / datetime.now().strftime("%Y%m%d_%H%M%S")
-    print(f"make score-model-compare: {len(picked)} of the {len(unique):,} class A comments read as"
-          f" themselves, picked at even steps by comment id; each read by the model and by the"
-          f" rules; one JSON file per comment per reading under {run_dir.relative_to(_REPO_ROOT)}/;"
-          f" nothing written to {db.DB_PATH.relative_to(_REPO_ROOT)}", flush=True)
+    if args.comments_of:
+        picked = comments_of(conn, args.comments_of)
+        gone = [c for c in picked if c not in unique]
+        if gone:
+            raise SystemExit(f"{len(gone)} comment(s) of run {args.comments_of} are no longer class A"
+                             " comments the model reads as themselves (the screen or the groups"
+                             " changed since): " + ", ".join(gone))
+        how = f"the {len(picked)} comments of run {args.comments_of}"
+    else:
+        picked = pick(list(unique), args.limit)
+        how = (f"{len(picked)} of the {len(unique):,} class A comments read as themselves,"
+               " picked at even steps by comment id")
 
-    model = model_reading(client, [unique[c] for c in picked], ctx, shapes, run_dir / "model",
-                          args.concurrency)
-    rules = rules_reading(set(picked), run_dir / "model-free")
+    run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_dir = _REPO_ROOT / "compare" / run_id
+    conn.execute("INSERT INTO score_compare_run (run_id, started_at, code_version, code_dirty, model,"
+                 " server, instrument_version, ruleset_version, comments_of, pool, picked)"
+                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                 (run_id, now(), version, dirty, model_of(client.model), client.base_url,
+                  sc.SCORING_INSTRUMENT, RULESET_VERSION, args.comments_of, len(unique), len(picked)))
+    conn.commit()
+    print(f"make score-model-compare: run {run_id} at commit {version[:12]}"
+          + (" with uncommitted changes" if dirty else "") + f"; {how}; each read by the model"
+          f" ({sc.SCORING_INSTRUMENT}) and by the rules (rule set {RULESET_VERSION}); writes"
+          f" score_compare_run and score_compare_reading, and one JSON file per comment per"
+          f" reading under {run_dir.relative_to(_REPO_ROOT)}/", flush=True)
+
+    model = model_reading(conn, run_id, client, [unique[c] for c in picked], ctx, shapes,
+                          run_dir / "model", args.concurrency)
+    rules = rules_reading(conn, run_id, set(picked), run_dir / "model-free")
     out = io.StringIO()
-    compare(model, rules, 0, out)
+    score_json.compare(model, rules, 0, out)
     text = out.getvalue()
     (run_dir / "comparison.txt").write_text(text, encoding="utf-8")
+    conn.execute("UPDATE score_compare_run SET report = ?, finished_at = ? WHERE run_id = ?",
+                 (text, now(), run_id))
+    conn.commit()
+    conn.close()
     print("\n" + text, end="")
-    print(f"\nwritten: {run_dir.relative_to(_REPO_ROOT)}/model/ ({len(model)} files),"
-          f" model-free/ ({len(rules)} files), comparison.txt")
+    print(f"\nrun {run_id}: {len(model)} model and {len(rules)} rules readings in score_compare_reading;"
+          f" files under {run_dir.relative_to(_REPO_ROOT)}/; make console, page Compare, sets it beside"
+          f" any other run; make score-model-compare COMMENTS_OF={run_id} reads the same comments again")
     return 0
 
 

@@ -68,8 +68,9 @@ work as for any step.
 ## Setting the two readings side by side
 
 ```
-make score-model-compare LIMIT=20                  # the model of .env
-make score-model-compare LIMIT=20 SERVER=LOCAL     # the second server of .env
+make score-model-compare LIMIT=20                         # the model of .env
+make score-model-compare LIMIT=20 SERVER=LOCAL            # the second server of .env
+make score-model-compare COMMENTS_OF=20261016_141500      # the comments of an earlier run, again
 ```
 
 A command of its own, apart from the two scoring steps, with its own queue. It picks
@@ -80,14 +81,26 @@ days. It reads each with the model and with the rules, and writes one JSON file 
 comment per reading under `compare/<run>/model/` and `compare/<run>/model-free/`,
 in one shape (`shared/score_json.py`): the comment id, which scorer, which instrument,
 the eight levels, strength, gate, gate basis, band, the A level, and the evidence,
-which is the model's spans on one side and the rules' hits on the other. It writes
-nothing to `data/roadless.sqlite`: both scoring steps still have every comment of
-their queues to read, and a comparison never stands in for either.
+which is the model's spans on one side and the rules' hits on the other.
 
-It then prints the comparison, and keeps it as `compare/<run>/comparison.txt`: per
-dimension, how many agree exactly and which side reads higher; the gate, band and
-strength agreement; then every comment where the gate differs, with both sides'
-levels and evidence. The model's side carries no A level (that comes from
+Every run is kept in the file, in two tables of its own (schema section 9c):
+`score_compare_run`, one row per run, stamped with the code it ran (the git commit,
+and whether tracked files had uncommitted changes), the model, the server, the
+instrument, the rule set and the comparison it printed; and `score_compare_reading`,
+one row per comment per method holding the reading in the files' shape, or the error
+of a failed call. The scoring steps' own tables are not touched: both still have every
+comment of their queues to read, and a comparison never stands in for either.
+`COMMENTS_OF=<run>` reads the comments of an earlier run again, so a change to the
+code, the instrument, the rules or the model is measured on exactly the comments the
+earlier run read; it stops, naming them, if any of those comments is no longer one the
+model reads as itself. The console's Compare page (`docs/console.md`) lists the runs
+and sets any two readings of any two runs side by side.
+
+It then prints the comparison, and keeps it as `compare/<run>/comparison.txt` and in
+the run's row: per dimension, how many agree exactly and which side reads higher; the
+gate, band and strength agreement; then every comment where the gate differs, and
+every comment where the gate agrees and a level does not, with both sides' levels and
+evidence. The model's side carries no A level (that comes from
 `make rate`, over the stored scores), so the level agreement reads "not rated on
 both sides". A model call that fails is listed and its comment left out of the
 comparison.
