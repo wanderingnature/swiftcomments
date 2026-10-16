@@ -173,6 +173,7 @@ def main(argv=None) -> int:
     version, dirty = code_version()
     ctx = ProjectContext.load("roadless")
     client = ChatClient(timeout=args.timeout, max_in_flight=args.concurrency)
+    args.concurrency = client.max_in_flight     # the server's limit when lower
     conn = db.connect(db.DB_PATH)
     print("make score-model-compare: building the model's whole class A queue to pick from",
           flush=True)

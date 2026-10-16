@@ -327,8 +327,15 @@ class ChatClient:
         # Ask for the reply as a stream (LLM_STREAM=1, or set by the server's own
         # streaming_required answer); it is assembled into the usual reply shape.
         self.stream = bool(stream) if stream is not None else bool(llm_var("STREAM"))
-        # The most calls this client ever keeps in flight (the runner's
-        # concurrency); the throttle starts at one and climbs to it.
+        # The most calls this client ever keeps in flight: the runner's
+        # concurrency, never above the server's own limit (LLM_CONCURRENCY, or
+        # LLM_<NAME>_CONCURRENCY; the local server takes 2). The throttle starts
+        # at one and climbs to it.
+        server_max = llm_var("CONCURRENCY")
+        if server_max:
+            server_max = int(server_max)
+            max_in_flight = server_max if max_in_flight is None else min(max_in_flight, server_max)
+        self.max_in_flight = max_in_flight
         self._throttle = _Throttle(max_in_flight)
         # The one provider every call is pinned to on OpenRouter (LLM_PROVIDER);
         # empty for a local server, which has only itself.

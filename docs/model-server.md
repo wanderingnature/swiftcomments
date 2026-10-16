@@ -322,7 +322,10 @@ minute between tries, for up to ten minutes, and the run aborts only after that,
 with what was stored kept and `make stance RUN=<id>` continuing it. The log says so once per pause (`rate limited by ...: every call
 waits 2s, calls in flight capped at 4`), not once per worker, and every progress
 block says where the climb stands (`calls in flight 6 of 16`). `CONCURRENCY` is the
-most the run will ever ask for, not where it begins.
+most the run will ever ask for, not where it begins. A server's own limit goes in
+`.env` as `LLM_CONCURRENCY` (or `LLM_<NAME>_CONCURRENCY` for a named server), and no
+run puts more calls in flight than that, whatever `CONCURRENCY` says: a local server
+takes 2 (`LLM_LOCAL_CONCURRENCY=2`).
 
 A run's rows carry one model name. `make stance RUN=<id>` refuses to continue a run
 under a changed `LLM_MODEL`, including the same weights under another provider's
