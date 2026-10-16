@@ -865,6 +865,7 @@ def main():
     # The server and the model of .env; at most --concurrency calls in flight,
     # from one, climbing (shared/llm_client.py).
     client = ChatClient(timeout=args.timeout, max_in_flight=args.concurrency)
+    args.concurrency = client.max_in_flight     # the server's limit when lower
     args.model = client.model
 
     classes = tuple(c.strip() for c in args.classes.split(",") if c.strip())

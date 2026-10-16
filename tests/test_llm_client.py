@@ -200,3 +200,15 @@ def test_a_named_server_set_is_chosen_with_llm_server(monkeypatch):
     import pytest
     with pytest.raises(RuntimeError, match="LLM_NOWHERE_BASE_URL is not set"):
         ChatClient()
+
+
+def test_the_server_limit_caps_calls_in_flight(monkeypatch):
+    monkeypatch.setenv("LLM_SERVER", "LOCAL")
+    monkeypatch.setenv("LLM_LOCAL_BASE_URL", "http://127.0.0.1:1234/v1")
+    monkeypatch.setenv("LLM_LOCAL_MODEL", "qwen/qwen3.8-27b")
+    monkeypatch.setenv("LLM_LOCAL_CONCURRENCY", "2")
+    assert ChatClient(max_in_flight=8).max_in_flight == 2
+    assert ChatClient(max_in_flight=1).max_in_flight == 1
+    assert ChatClient().max_in_flight == 2
+    monkeypatch.delenv("LLM_LOCAL_CONCURRENCY")
+    assert ChatClient(max_in_flight=8).max_in_flight == 8

@@ -129,6 +129,7 @@ class Run:
         # The server and the model of .env; the client starts at one call in
         # flight and climbs to at most `concurrency`, backing off on 429.
         self.client = ChatClient(log=log.diag, max_in_flight=concurrency)
+        self.concurrency = self.client.max_in_flight   # the server's limit when lower
         self.model = self.client.model
         self.model_stamp = model_of(self.model)
         self.topic_names = {t["topic_name"] for t in profile.topics}
