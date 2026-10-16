@@ -40,12 +40,17 @@ table with no row for the comment says "no row".
 **Compare.** Every `make score-model-compare` run, newest first, with the code it ran
 (the git commit, and whether tracked files had uncommitted changes), the model, the
 server, the instrument, the rule set, the run whose comments it read again if any, and
-how many readings it kept. Under it, one run: the comparison it printed, and every
-comment's two readings (the eight levels, strength, gate, band, A level, or the
-error of a failed call). Then any two readings of any two runs, A and B, each a run
-and a method (model or model-free), set side by side on the comments both read: the
-same comparison as the command prints, listing every comment whose gate or any level
-differs. The model's reading of one run against the model's reading of a later one,
+how many readings it kept. Under it, one run: its model reading against its rules
+reading, and any call that failed. Then any two readings of any two runs, A and B,
+each a run and a method (model or model-free), set side by side on the comments both
+read. Either comparison is the same set of tables: per dimension, how many agree,
+which side reads higher and each side's mean level; the gate, all eight levels, the
+band and the strength; then every comment whose gate differs, and every one whose
+gate agrees and a level does not, with both gates, both strengths and the levels that
+differ. Each of those comments opens to its text and its eight dimensions, each with
+both levels, a mark where they differ, and each side's evidence for it (the model's
+span and the rule that graded it; the rules' rule and the words it matched), then the
+model's rationale and the rules' moves. The model's reading of one run against the model's reading of a later one,
 or the rules' against the rules', is how a change to the code, the instrument, the
 rules or the model is seen against what was read before it.
 

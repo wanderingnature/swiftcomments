@@ -142,15 +142,18 @@ def test_compare_page_renders(dbfile):
     conn.commit()
     conn.close()
     _run(at)
-    assert len(at.dataframe) == 2
+    # the runs; one run's per-dimension and gate tables (it differs on nothing);
+    # the two-reading pair's tables and its differing comment, opened to its eight dimensions
     texts = [t.value for t in at.text]
-    assert "report of 20261016_110000" in texts
-    # A: the earlier run's model reading; B: the newest run's rules reading.
-    pair = next(t for t in texts if t.startswith("A: run "))
-    assert pair.startswith("A: run 20261016_100000, model\nB: run 20261016_110000, model-free")
-    assert "identical on all eight: 1 of 1" in pair
+    assert "A: run 20261016_100000, model    B: run 20261016_110000, model-free" in texts
+    assert "comments that differ: 0 on the gate, 0 more on a level" in texts
+    assert len(at.dataframe) == 5
     # The rules' reading of the two runs set side by side: GAP moved from 1 to 2.
     at.selectbox(key="a_method").set_value("model-free")
     _run(at)
-    pair = next(t.value for t in at.text if t.value.startswith("A: run "))
-    assert "gate disagreements: 1" in pair and "  A PLACE 0 STAND 0 DOC 0 GAP 1" in pair
+    texts = [t.value for t in at.text]
+    assert "comments that differ: 1 on the gate, 0 more on a level" in texts
+    assert at.expander[0].label == f"{CID}: A closed, B open"
+    detail = at.dataframe[-1].value
+    gap = detail[detail["dimension"] == "GAP"].iloc[0]
+    assert (gap["A"], gap["B"], gap["differs"]) == (1, 2, "*")

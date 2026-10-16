@@ -215,7 +215,7 @@ def main(argv=None) -> int:
                           run_dir / "model", args.concurrency)
     rules = rules_reading(conn, run_id, set(picked), run_dir / "model-free")
     out = io.StringIO()
-    score_json.compare(model, rules, 0, out)
+    score_json.compare(model, rules, 0, out, labels=("model", "rules"))
     text = out.getvalue()
     (run_dir / "comparison.txt").write_text(text, encoding="utf-8")
     conn.execute("UPDATE score_compare_run SET report = ?, finished_at = ? WHERE run_id = ?",

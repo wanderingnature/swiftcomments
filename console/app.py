@@ -120,10 +120,54 @@ def readings(conn, run_id, method):
             if r["method"] == method and r["record"] is not None}
 
 
+def show_comparison(conn, a, b, labels):
+    """Two sets of readings side by side, as tables: per dimension; the gate,
+    band and strength; then every comment that differs, gate first, each one
+    opening to its text and its eight dimensions with both sides' evidence."""
+    la, lb = labels
+    both = sorted(set(a) & set(b))
+    st.text(f"both read {len(both):,}; only {la} {len(set(a) - set(b)):,}; only {lb} {len(set(b) - set(a)):,}")
+    if not both:
+        return
+    show(pd.DataFrame(score_json.dimension_rows(a, b, labels)))
+    n = len(both)
+    show(pd.DataFrame([
+        {"measure": "gate open", la: sum(1 for c in both if a[c]["gate"]), lb: sum(1 for c in both if b[c]["gate"]),
+         "same": sum(1 for c in both if a[c]["gate"] == b[c]["gate"]), "of": n},
+        {"measure": "all eight levels", la: None, lb: None,
+         "same": sum(1 for c in both if a[c]["levels"] == b[c]["levels"]), "of": n},
+        {"measure": "band", la: None, lb: None,
+         "same": sum(1 for c in both if a[c]["band"] == b[c]["band"]), "of": n},
+        {"measure": "strength (mean)", la: round(sum(a[c]["strength"] for c in both) / n, 2),
+         lb: round(sum(b[c]["strength"] for c in both) / n, 2),
+         "same": sum(1 for c in both if a[c]["strength"] == b[c]["strength"]), "of": n},
+    ]))
+    gate, level = score_json.differing(a, b)
+    st.text(f"comments that differ: {len(gate):,} on the gate, {len(level):,} more on a level")
+    rows = []
+    for c in gate + level:
+        rows.append({"comment_id": c, "differs on": "gate" if c in gate else "level",
+                     f"{la} gate": score_json.gate_text(a[c]), f"{lb} gate": score_json.gate_text(b[c]),
+                     f"{la} strength": a[c]["strength"], f"{lb} strength": b[c]["strength"],
+                     "levels that differ": " ".join(f"{d} {a[c]['levels'][d]}/{b[c]['levels'][d]}"
+                                                    for d in score_json.DIMS
+                                                    if a[c]["levels"][d] != b[c]["levels"][d])})
+    if rows:
+        show(pd.DataFrame(rows))
+    for c in gate + level:
+        with st.expander(f"{c}: {la} {score_json.gate_text(a[c])}, {lb} {score_json.gate_text(b[c])}"):
+            text = conn.execute("SELECT comment_text FROM comment WHERE comment_id = ?", (c,)).fetchone()
+            st.text(text[0] if text else "no comment row")
+            show(pd.DataFrame(score_json.comment_rows(a[c], b[c], labels)))
+            for side, rec in ((la, a[c]), (lb, b[c])):
+                for line in score_json.evidence_by_dimension(rec)[1]:
+                    st.text(f"{side}: {line}")
+
+
 def page_compare():
     st.header("Compare")
     st.caption("Every make score-model-compare run, newest first, stamped with the code it ran."
-               " Below: one run's comparison and readings; then any two readings of any two runs"
+               " Below: one run's two readings side by side; then any two readings of any two runs"
                " side by side on the comments both read, so a change to the code, the rules or the"
                " model shows against what an earlier run read.")
     with open_db() as conn:
@@ -140,24 +184,15 @@ def page_compare():
         show(runs)
         ids = list(runs["run_id"])
 
-        st.subheader("One run")
+        st.subheader("One run: the model against the rules")
         run_id = st.selectbox("run", ids, key="one_run")
-        report = conn.execute("SELECT report FROM score_compare_run WHERE run_id = ?", (run_id,)).fetchone()[0]
-        st.text(report if report else "no comparison stored: the run did not finish")
-        rows = []
-        for r in conn.execute(COMPARE_READINGS, (run_id,)):
-            rec = json.loads(r["record"]) if r["record"] else None
-            rows.append({"comment_id": r["comment_id"], "method": r["method"],
-                         "levels": " ".join(f"{d} {rec['levels'][d]}" for d in score_json.DIMS) if rec else None,
-                         "strength": rec["strength"] if rec else None,
-                         "gate": rec["gate"] if rec else None,
-                         "band": rec["band"] if rec else None,
-                         "a_level": rec["a_level"] if rec else None,
-                         "error": r["error"]})
-        show(pd.DataFrame(rows, columns=["comment_id", "method", "levels", "strength", "gate", "band",
-                                         "a_level", "error"]))
+        errors = [r for r in conn.execute(COMPARE_READINGS, (run_id,)) if r["error"]]
+        for r in errors:
+            st.text(f"{r['comment_id']} {r['method']} failed: {r['error']}")
+        show_comparison(conn, readings(conn, run_id, "model"), readings(conn, run_id, "model-free"),
+                        ("model", "rules"))
 
-        st.subheader("Two readings")
+        st.subheader("Two readings: any run, either method")
         methods = ["model", "model-free"]
         left, right = st.columns(2)
         a_run = left.selectbox("A: run", ids, index=min(1, len(ids) - 1), key="a_run")
@@ -165,12 +200,11 @@ def page_compare():
         b_run = right.selectbox("B: run", ids, key="b_run")
         b_method = right.selectbox("B: reading", methods, index=1, key="b_method")
         a, b = readings(conn, a_run, a_method), readings(conn, b_run, b_method)
-    if not a or not b:
-        st.text("one side holds no reading")
-        return
-    out = io.StringIO()
-    score_json.compare(a, b, 0, out)
-    st.text(f"A: run {a_run}, {a_method}\nB: run {b_run}, {b_method}\n\n" + out.getvalue())
+        st.text(f"A: run {a_run}, {a_method}    B: run {b_run}, {b_method}")
+        if not a or not b:
+            st.text("one side holds no reading")
+            return
+        show_comparison(conn, a, b, ("A", "B"))
 
 
 def page_tables():

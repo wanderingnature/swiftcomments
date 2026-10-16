@@ -86,77 +86,153 @@ def read_dir(directory: Path) -> dict[str, dict]:
     return out
 
 
-def describe(records: dict[str, dict]) -> str:
-    scorers = sorted({r["scorer"] for r in records.values()})
-    instruments = sorted({r["instrument"] for r in records.values()})
-    return f"{len(records):,} comments; scorer {', '.join(scorers)}; instrument {', '.join(instruments)}"
+def gate_dimensions(rec: dict) -> list[str]:
+    """The dimensions that opened the gate: the model records names, the rules
+    records {dimension, unit_id}."""
+    return [b["dimension"] if isinstance(b, dict) else str(b) for b in rec["gate_basis"]]
 
 
-def evidence_lines(rec: dict) -> list[str]:
-    out = []
+def evidence_by_dimension(rec: dict) -> tuple[dict[str, list[str]], list[str]]:
+    """The record's evidence as readable lines, per dimension, and the lines that
+    belong to no dimension (the model's rationale, the rules' moves). A model
+    line is its span in quotes and the grading rule; a rules line is the rule
+    and the words it matched."""
+    by = {d: [] for d in DIMS}
+    other = []
     for e in rec["evidence"]:
+        d = e.get("dimension")
         if "rule" in e:
-            out.append(f"    {e.get('dimension', '?')} {e.get('grade', '?')} {e['rule']}: {e.get('match', '')!s}")
+            line = f'{e["rule"]}: "{e.get("match", "")}"'
+        elif d == "rationale":
+            other.append(f"rationale: {e.get('span')}")
+            continue
         else:
-            out.append("    " + ", ".join(f"{k}={v!s}" for k, v in e.items()))
-    return out
+            span = e.get("span")
+            rules = ", ".join(r.get("rule", "") for r in e.get("rules") or [])
+            line = (f'"{span}"' if span and span != "none" else "no span") + (f" ({rules})" if rules else "")
+        if d in by:
+            by[d].append(line)
+        else:
+            other.append(f"{d}: {line}")
+    return by, other
 
 
-def compare(a: dict[str, dict], b: dict[str, dict], limit: int, out=None) -> int:
-    """Two sets of records, by comment id, side by side on the comments both
-    hold: per dimension how many agree and which side reads higher; the gate,
-    band, strength and level agreement; then each comment where the gate
-    differs, then each where the gate agrees and a level does not, with both
-    sides' levels and evidence, up to `limit` (0 for all).
-    Printed to `out` (stdout when None). make score-model-compare prints it and
-    the console's Compare page shows it."""
-    out = sys.stdout if out is None else out
+def dimension_rows(a: dict[str, dict], b: dict[str, dict], labels=("A", "B")) -> list[dict]:
+    """Per dimension over the comments both hold: how many agree, how many each
+    side reads higher, each side's mean level."""
     both = sorted(set(a) & set(b))
-    print(f"A: {describe(a)}", file=out)
-    print(f"B: {describe(b)}", file=out)
-    print(f"in both: {len(both):,}; only in A: {len(set(a) - set(b)):,}; only in B: {len(set(b) - set(a)):,}",
-          file=out)
-    if not both:
-        return 1
-    print("\nper dimension: same level, A higher, B higher", file=out)
+    la, lb = labels
+    rows = []
     for d in DIMS:
         same = sum(1 for c in both if a[c]["levels"][d] == b[c]["levels"][d])
         up = sum(1 for c in both if a[c]["levels"][d] > b[c]["levels"][d])
-        print(f"  {d:5s}  {same:7,}  {up:7,}  {len(both) - same - up:7,}", file=out)
+        rows.append({"dimension": d, "same": same, f"{la} higher": up, f"{lb} higher": len(both) - same - up,
+                     f"{la} mean": round(sum(a[c]["levels"][d] for c in both) / len(both), 2),
+                     f"{lb} mean": round(sum(b[c]["levels"][d] for c in both) / len(both), 2)})
+    return rows
+
+
+def differing(a: dict[str, dict], b: dict[str, dict]) -> tuple[list[str], list[str]]:
+    """The comments both hold whose gate differs, then those whose gate agrees
+    and a level does not."""
+    both = sorted(set(a) & set(b))
+    gate = [c for c in both if a[c]["gate"] != b[c]["gate"]]
+    level = [c for c in both if a[c]["gate"] == b[c]["gate"]
+             and any(a[c]["levels"][d] != b[c]["levels"][d] for d in DIMS)]
+    return gate, level
+
+
+def gate_text(rec: dict) -> str:
+    dims = gate_dimensions(rec)
+    if not rec["gate"]:
+        return "closed"
+    return "open (" + ", ".join(dims) + ")" if dims else "open"
+
+
+def comment_rows(ra: dict, rb: dict, labels=("A", "B")) -> list[dict]:
+    """One comment, dimension by dimension: each side's level and evidence, and
+    whether the levels differ."""
+    la, lb = labels
+    ea, _ = evidence_by_dimension(ra)
+    eb, _ = evidence_by_dimension(rb)
+    return [{"dimension": d, "differs": "*" if ra["levels"][d] != rb["levels"][d] else "",
+             la: ra["levels"][d], lb: rb["levels"][d],
+             f"{la} evidence": "\n".join(ea[d]), f"{lb} evidence": "\n".join(eb[d])} for d in DIMS]
+
+
+def compare(a: dict[str, dict], b: dict[str, dict], limit: int, out=None, labels=("A", "B")) -> int:
+    """Two sets of records, by comment id, side by side on the comments both
+    hold, as text: per dimension how many agree, which side reads higher and
+    each side's mean; the gate, band and strength; then each comment where the
+    gate differs, then each where the gate agrees and a level does not, all
+    eight dimensions with each side's level and evidence, a differing level
+    marked *, up to `limit` (0 for all). Printed to `out` (stdout when None).
+    make score-model-compare prints it; the console's Compare page shows the
+    same figures as tables."""
+    out = sys.stdout if out is None else out
+    la, lb = labels
+    w = max(len(la), len(lb))
+
+    def p(line=""):
+        print(line, file=out)
+
+    both = sorted(set(a) & set(b))
+    for label, recs in ((la, a), (lb, b)):
+        instruments = ", ".join(sorted({r["instrument"] for r in recs.values()}))
+        models = ", ".join(sorted({r["model"] for r in recs.values() if r["model"]}))
+        p(f"{label:<{w}}  {len(recs):,} comments, instrument {instruments}" + (f", model {models}" if models else ""))
+    p(f"both read {len(both):,}; only {la} {len(set(a) - set(b)):,}; only {lb} {len(set(b) - set(a)):,}")
+    if not both:
+        return 1
+
+    rows = dimension_rows(a, b, labels)
+    cols = list(rows[0])
+    widths = [max(len(c), *(len(str(r[c])) for r in rows)) for c in cols]
+    p()
+    p("  ".join(c.rjust(wd) if i else c.ljust(wd) for i, (c, wd) in enumerate(zip(cols, widths))))
+    for r in rows:
+        p("  ".join(str(r[c]).rjust(wd) if i else str(r[c]).ljust(wd) for i, (c, wd) in enumerate(zip(cols, widths))))
     same_all = sum(1 for c in both if all(a[c]["levels"][d] == b[c]["levels"][d] for d in DIMS))
-    print(f"identical on all eight: {same_all:,} of {len(both):,}", file=out)
-    gate_same = sum(1 for c in both if a[c]["gate"] == b[c]["gate"])
-    a_open = sum(1 for c in both if a[c]["gate"])
-    b_open = sum(1 for c in both if b[c]["gate"])
-    print(f"\ngate: same on {gate_same:,} of {len(both):,}; open in A {a_open:,}, in B {b_open:,},"
-          f" in both {sum(1 for c in both if a[c]['gate'] and b[c]['gate']):,}", file=out)
-    print(f"band: same on {sum(1 for c in both if a[c]['band'] == b[c]['band']):,}", file=out)
+    p(f"all eight the same on {same_all:,} of {len(both):,}")
+
+    n = len(both)
+    p()
+    p(f"gate      same on {sum(1 for c in both if a[c]['gate'] == b[c]['gate']):,} of {n:,};"
+      f" open: {la} {sum(1 for c in both if a[c]['gate']):,}, {lb} {sum(1 for c in both if b[c]['gate']):,},"
+      f" both {sum(1 for c in both if a[c]['gate'] and b[c]['gate']):,}")
+    p(f"band      same on {sum(1 for c in both if a[c]['band'] == b[c]['band']):,} of {n:,}")
+    p(f"strength  same on {sum(1 for c in both if a[c]['strength'] == b[c]['strength']):,} of {n:,};"
+      f" mean {la} {sum(a[c]['strength'] for c in both) / n:.2f}, {lb} {sum(b[c]['strength'] for c in both) / n:.2f};"
+      f" mean absolute difference {sum(abs(a[c]['strength'] - b[c]['strength']) for c in both) / n:.2f}")
     rated = [c for c in both if a[c]["a_level"] is not None and b[c]["a_level"] is not None]
     if rated:
-        print(f"answerability level: same on"
-              f" {sum(1 for c in rated if a[c]['a_level'] == b[c]['a_level']):,} of {len(rated):,} rated on both sides",
-              file=out)
+        p(f"level     same on {sum(1 for c in rated if a[c]['a_level'] == b[c]['a_level']):,} of {len(rated):,}"
+          " rated on both sides")
     else:
-        print("answerability level: not rated on both sides", file=out)
-    diff = sum(abs(a[c]["strength"] - b[c]["strength"]) for c in both)
-    print(f"strength: same on {sum(1 for c in both if a[c]['strength'] == b[c]['strength']):,};"
-          f" mean absolute difference {diff / len(both):.2f}", file=out)
+        unrated = [lab for lab, recs in ((la, a), (lb, b)) if all(recs[c]["a_level"] is None for c in both)]
+        p(f"level     not compared: {' and '.join(unrated)} carries no A level")
 
-    disagreements = [c for c in both if a[c]["gate"] != b[c]["gate"]]
-    changed = [c for c in both if a[c]["gate"] == b[c]["gate"]
-               and any(a[c]["levels"][d] != b[c]["levels"][d] for d in DIMS)]
-    listed = disagreements + changed
+    gate, level = differing(a, b)
+    listed = gate + level
     shown = listed if limit == 0 else listed[:limit]
-    print(f"\ngate disagreements: {len(disagreements):,}; the same gate with a level that differs:"
-          f" {len(changed):,}" + (f" (the first {len(shown)} listed)" if len(shown) < len(listed) else ""),
-          file=out)
+    p()
+    p(f"comments that differ: {len(gate):,} on the gate, {len(level):,} more on a level"
+      + (f" (the first {len(shown)} listed)" if len(shown) < len(listed) else ""))
     for c in shown:
-        print(f"\n{c}: A gate={a[c]['gate']} basis={a[c]['gate_basis']} | B gate={b[c]['gate']} basis={b[c]['gate_basis']}",
-              file=out)
-        print("  A " + " ".join(f"{d} {a[c]['levels'][d]}" for d in DIMS), file=out)
-        for line in evidence_lines(a[c]):
-            print(line, file=out)
-        print("  B " + " ".join(f"{d} {b[c]['levels'][d]}" for d in DIMS), file=out)
-        for line in evidence_lines(b[c]):
-            print(line, file=out)
+        ra, rb = a[c], b[c]
+        p()
+        p("=" * 78)
+        p(c)
+        p(f"  gate      {la}: {gate_text(ra)}    {lb}: {gate_text(rb)}")
+        p(f"  strength  {la}: {ra['strength']}    {lb}: {rb['strength']}")
+        p(f"  band      {la}: {ra['band']}    {lb}: {rb['band']}")
+        for row in comment_rows(ra, rb, labels):
+            p(f"  {row['differs'] or ' '} {row['dimension']:<5}  {la} {row[la]}  {lb} {row[lb]}")
+            for side in (la, lb):
+                lines = row[f"{side} evidence"].split("\n") if row[f"{side} evidence"] else ["-"]
+                for i, line in enumerate(lines):
+                    p(f"      {(side if i == 0 else ''):<{w}}  {line}")
+        for side, rec in ((la, ra), (lb, rb)):
+            for line in evidence_by_dimension(rec)[1]:
+                p(f"  {side}: {line}")
     return 0

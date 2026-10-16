@@ -240,15 +240,18 @@ def test_score_json_check_and_compare(tmp_path):
                                       "match": "fails to", "start": 0, "end": 8}]))
     score_json.write(b_dir, _record("c3", "rules", zero, "A0"))
     out = io.StringIO()
-    assert score_json.compare(score_json.read_dir(a_dir), score_json.read_dir(b_dir), 20, out) == 0
+    assert score_json.compare(score_json.read_dir(a_dir), score_json.read_dir(b_dir), 20, out,
+                              labels=("model", "rules")) == 0
     text = out.getvalue()
-    assert "in both: 2; only in A: 0; only in B: 1" in text
-    assert "  GAP          2        0        0" in text
-    assert "  LAW          1        1        0" in text
-    assert "gate: same on 1 of 2; open in A 2, in B 1, in both 1" in text
-    assert "answerability level: same on 1 of 2" in text
-    assert "gate disagreements: 1; the same gate with a level that differs: 0" in text
-    assert "\nc2: A gate=True" in text
-    # Only the disagreement's evidence is printed, each side's in its own form.
-    assert "    GAP 0 GAP.0.nothing_named: fails to" in text
+    assert "both read 2; only model 0; only rules 1" in text
+    assert "GAP           2             0             0" in text
+    assert "LAW           1             1             0" in text
+    assert "gate      same on 1 of 2; open: model 2, rules 1, both 1" in text
+    assert "level     same on 1 of 2 rated on both sides" in text
+    assert "comments that differ: 1 on the gate, 0 more on a level" in text
+    # Only the differing comment is laid out, dimension by dimension, each side's
+    # evidence under the dimension it belongs to.
+    assert "\nc2\n  gate      model: open    rules: closed" in text
+    assert "  * LAW    model 2  rules 0" in text
+    assert '      rules  GAP.0.nothing_named: "fails to"' in text
     assert "GAP.2.specific_name" not in text
