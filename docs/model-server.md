@@ -79,7 +79,7 @@ put everything but the comment in a fixed prefix that a cache serves, and the
 weighted average is what that comes to. The figures of our runs on the
 flash are recorded in the README's model-steps table as
 they are measured, and the comparison with the 27B on the same comments is made with
-`make compare-scores` (`docs/model-free-scoring.md`). Its open weights are
+`make score-model-compare` (`docs/model-free-scoring.md`). Its open weights are
 Qwen3.8-Flash-Next (https://huggingface.co/Qwen/Qwen3.8-Flash-Next; 125 billion
 parameters, 6 billion active per token, 512 experts; `qwen3.8-flash` as served is
 "the official version based on Qwen3.8-Flash-Next with more production features"),
@@ -94,8 +94,8 @@ ollama and llama.cpp.
 **Other models.** Any other model is a matter of putting its name in `.env`. Two
 things follow. The instruments were measured on the 27B, so another model's reading
 is a different reading: its rows carry its name, the downstream figures are not
-expected to match `checks/expected.json`, and `make score-model JSON=dir` with
-`make compare-scores` is how the difference is measured on the same comments. And
+expected to match `checks/expected.json`, and `make score-model-compare` puts its
+reading beside the rules' on the same comments. And
 the thinking switch is spelled differently by different servers; the client sends
 the spellings LM Studio, vLLM, llama.cpp and ollama take (above), and a pilot of a
 few hundred calls shows in its tokens-out per call whether the server honoured it.

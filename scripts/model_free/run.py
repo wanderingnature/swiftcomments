@@ -2,17 +2,16 @@
 """Model-free scoring, fully parallel to v3: the rules' reading of every class A
 comment, no model call. Step 6, beside make score-model.
 
-    uv run python scripts/model_free/run.py score [--limit N] [--comment-id ID ...] [--ids-file F] [--json DIR]
+    uv run python scripts/model_free/run.py score [--limit N] [--comment-id ID ...] [--ids-file F]
     uv run python scripts/model_free/run.py report
     uv run python scripts/model_free/run.py text "comment text ..."    # score ad-hoc text, print JSON
-    make score-model-free [LIMIT=N] [JSON=dir]
+    make score-model-free [LIMIT=N]
 
 `score` reads the class A comments of the screen from data/roadless.sqlite,
 scores every one that has no comment score under the current rule set
 version, whole (the comment's full stored text is the one unit the rules run
 over), and writes its mf_* tables in one transaction. A second run on the same
-inputs writes nothing. `--json DIR` also writes one file per comment in the
-shape of shared/score_json.py, for scripts/compare_scores.py.
+inputs writes nothing.
 
 Ported from the operator's model_free/run.py: the sentence mode read the rtca
 sentence table, which this repository does not have, so the whole-comment
@@ -38,7 +37,6 @@ from model_free.detectors import Context, SentenceInput, SentenceScore, score_se
 from model_free.nlp import parse_many  # noqa: E402
 from model_free.store import Store  # noqa: E402
 from model_free.text import normalize, split_sentences, text_key  # noqa: E402
-from shared import score_json  # noqa: E402
 
 INSTRUMENT = f"rules-{RULESET_VERSION}"
 
@@ -87,6 +85,18 @@ def json_record(comment: CommentScore, answer: Answerability, sentences: list[Se
     }
 
 
+def read_comment(u: SentenceInput, tags, authority_keys: list[str]) -> tuple[list[SentenceScore], CommentScore, Answerability]:
+    """One comment, whole, through the rules: its unit scores, its comment score
+    and its rating. The score run calls it, and so does make score-model-compare
+    (scripts/score_model_compare.py)."""
+    ctx = Context(authority_keys=authority_keys,
+                  citations=tags.citations.get(u.comment_id, []),
+                  authorities=tags.authorities.get(u.comment_id, []))
+    sentences = [score_sentence(u, d, ctx) for d in parse_many([u.text])]
+    comment = roll_up(u.comment_id, sentences)
+    return sentences, comment, rate(comment)
+
+
 def cmd_score(args: argparse.Namespace) -> int:
     from model_free import inputs as db
 
@@ -103,13 +113,11 @@ def cmd_score(args: argparse.Namespace) -> int:
         wanted = {c for c in all_ids if c not in done}
         if args.limit:
             wanted = set(sorted(wanted)[:args.limit])
-    json_dir = Path(args.json) if args.json else None
     print(f"make score-model-free: {len(all_ids):,} class A comments; {len(done):,} scored under rule set"
           f" {RULESET_VERSION}; {len(wanted):,} to score, whole, no model call"
           + (f" (--limit {args.limit})" if args.limit and not (args.comment_id or args.ids_file) else "")
           + "; writes mf_sentence_score, mf_sentence_hit, mf_comment_score, mf_comment_answerability,"
-            " one mf_score_run row"
-          + (f"; one JSON file per comment under {json_dir}" if json_dir else ""), flush=True)
+            " one mf_score_run row", flush=True)
     if not wanted:
         print("nothing to score")
         return 0
@@ -124,16 +132,9 @@ def cmd_score(args: argparse.Namespace) -> int:
     with conn.transaction():
         run_id = store.start_run(RULESET_VERSION, now())
         for u in db.iter_comments(conn, wanted):
-            ctx = Context(authority_keys=authority_keys,
-                          citations=tags.citations.get(u.comment_id, []),
-                          authorities=tags.authorities.get(u.comment_id, []))
-            sentences = [score_sentence(u, d, ctx) for d in parse_many([u.text])]
+            sentences, comment, answer = read_comment(u, tags, authority_keys)
             units += store.write_sentences(RULESET_VERSION, run_id, sentences)
-            comment = roll_up(u.comment_id, sentences)
-            answer = rate(comment)
             store.write_comments(RULESET_VERSION, run_id, [(comment, answer)])
-            if json_dir is not None:
-                score_json.write(json_dir, json_record(comment, answer, sentences))
             comments += 1
             for s in sentences:
                 for h in s.hits:
@@ -173,7 +174,6 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--limit", type=int, default=0, help="score at most this many unscored comments")
     s.add_argument("--comment-id", action="append", help="score these comments (repeatable)")
     s.add_argument("--ids-file", help="score the comment ids listed one per line in this file")
-    s.add_argument("--json", metavar="DIR", help="also write one JSON file per comment under DIR")
     s.set_defaults(fn=cmd_score)
     r = sub.add_parser("report")
     r.set_defaults(fn=cmd_report)

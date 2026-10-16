@@ -1,7 +1,8 @@
 """One JSON file per comment, the same shape from both substance readings, so
-the two can be set side by side (scripts/compare_scores.py). Written by
-`make score-model JSON=dir` (the model's reading, scripts/substance/score_comments.py)
-and `make score-model-free JSON=dir` (the rules' reading, scripts/model_free/run.py).
+the two can be set side by side. Written by `make score-model-compare`
+(scripts/score_model_compare.py), from the model's reading
+(json_record in scripts/substance/score_comments.py) and the rules' reading
+(json_record in scripts/model_free/run.py).
 
     {
       "comment_id": "FS-2025-0001-224412",

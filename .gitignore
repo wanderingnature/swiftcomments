@@ -27,3 +27,6 @@ analysis_results/
 batch_stats/
 sql_batches/
 organic/
+
+# make score-model-compare's JSON files and comparisons
+compare/

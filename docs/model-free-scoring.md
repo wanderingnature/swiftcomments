@@ -8,8 +8,9 @@ is the operator's `model_free` package, rule set 3, in `scripts/model_free/`, wi
 rules byte for byte as written; only its inputs and its store were changed to read and
 write this repository's one file.
 
-Both run on the same class A population from the screen, so the two readings are of
-the same comments and can be set side by side (below). A reader who has no model
+Both run on the same class A population from the screen, each with its own queue:
+a comment one has read is still in the other's queue until that one reads it. The
+two are set side by side by a third command of their own (below). A reader who has no model
 server can run the whole method with this reading alone; a reader who has one can run
 both and see where a rule and a model part.
 
@@ -18,7 +19,6 @@ both and see where a rule and a model part.
 ```
 make score-model-free                    # every class A comment the rules have not scored
 make score-model-free LIMIT=200          # the first 200 of them, then exit
-make score-model-free JSON=json/rules    # also one JSON file per comment, for the comparison
 ```
 
 A run scores every class A comment that has no comment score under the current rule
@@ -67,22 +67,27 @@ work as for any step.
 
 ## Setting the two readings side by side
 
-Both scorers take `JSON=dir` and write one file per comment in one shape
-(`shared/score_json.py`): the comment id, which scorer, which instrument, the eight
-levels, strength, gate, gate basis, band, the A level, and the evidence, which is the
-model's spans on one side and the rules' hits on the other.
-
 ```
-make score-model JSON=json/model
-make score-model-free JSON=json/rules
-make compare-scores A=json/model B=json/rules
+make score-model-compare LIMIT=20                  # the model of .env
+make score-model-compare LIMIT=20 SERVER=LOCAL     # the second server of .env
 ```
 
-The comparison prints, for the comments in both folders: per dimension, how many
-agree exactly and which side reads higher; the gate, band, strength and level
-agreement; then every comment where the gate differs, with both sides' levels and
-evidence. Two runs of the same scorer compare the same way, which is how a changed
-rule or a changed prompt is measured against the run before it.
+A command of its own, apart from the two scoring steps, with its own queue. It picks
+`LIMIT` class A comments, the ones `make score-model` reads as themselves (a group's
+carrier outside every family, on all of its text), sorted by comment id and taken at
+even steps across the list, so twenty comments span the docket rather than its first
+days. It reads each with the model and with the rules, and writes one JSON file per
+comment per reading under `compare/<run>/model/` and `compare/<run>/model-free/`,
+in one shape (`shared/score_json.py`): the comment id, which scorer, which instrument,
+the eight levels, strength, gate, gate basis, band, the A level, and the evidence,
+which is the model's spans on one side and the rules' hits on the other. It writes
+nothing to `data/roadless.sqlite`: both scoring steps still have every comment of
+their queues to read, and a comparison never stands in for either.
 
-The level on the model's side comes from `make rate`, so a model file written before
-`make rate` has run carries no level and the comparison says so.
+It then prints the comparison, and keeps it as `compare/<run>/comparison.txt`: per
+dimension, how many agree exactly and which side reads higher; the gate, band and
+strength agreement; then every comment where the gate differs, with both sides'
+levels and evidence. The model's side carries no A level (that comes from
+`make rate`, over the stored scores), so the level agreement reads "not rated on
+both sides". A model call that fails is listed and its comment left out of the
+comparison.
