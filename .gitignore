@@ -30,3 +30,6 @@ organic/
 
 # make score-model-compare's JSON files and comparisons
 compare/
+
+# macOS folder files
+.DS_Store
