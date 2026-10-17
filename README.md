@@ -141,13 +141,21 @@ and compare against the result the original code gave. `docs/limit-and-jump.md` 
 what `LIMIT` means for each step and which steps have none, because their result is a
 partition of every comment and a sample of it would be a different result.
 
-## Checking on a run
+## Looking at the results, and checking on a run
 
 `make console` opens a read-only browser of the file in a web page, usable while a
-step is writing: what every step has written so far, one comment across every table,
-every comparison of the two substance readings, any table a hundred rows at a time,
-and SQL typed in. It launches nothing and cannot write. `docs/console.md` describes
-the five pages.
+step is writing. Five of its pages show what the analysis found, each section as soon
+as its step has run: an overview from the docket's records to the substance reading;
+the stance and the topics, with any topic's letters to read; the copies, families and
+campaigns and who ran them; the forests, roadless areas, species, legal authorities
+and references the comments name, with the letters that name any one of them; and the
+substance reading, the floor and the screen, with every scored comment filtered by
+band, gate, answerability, stance or dimension, each opening to its text and the
+evidence for its score. Five more look into the file: one comment as the analysis read
+it and every row the steps hold about it, every comparison of the two substance
+readings, what every step has written so far, any table a hundred rows at a time, and
+SQL typed in. It launches nothing and cannot write. `docs/console.md` describes the
+ten pages.
 
 ## Comparing the two substance readings
 

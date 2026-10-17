@@ -1,15 +1,15 @@
-"""The console: a read-only Streamlit app over data/roadless.sqlite. Five pages: Steps (what every make target has written), Comment (one
-comment across every table), Compare (every make score-model-compare run, and any
-two readings of any two runs side by side), Tables (any table or view, paged) and
-Query (SQL, read-only). It launches nothing: the steps run from make. The connection is
-opened with PRAGMA query_only, so nothing here can write the file, and reading
-while a step writes is safe under WAL.
+"""The console: a read-only Streamlit app over data/roadless.sqlite. Ten pages. Five show the results (console/results.py): Overview,
+Stance and topics, Coordination, Places and citations, Substance. Five look into
+the file: Comment (one comment as the analysis read it, then every row the steps
+hold about it), Steps (what every make target has written), Compare (every make
+score-model-compare run, and any two readings of any two runs side by side), Tables
+(any table or view, paged) and Query (SQL, read-only). It launches nothing: the
+steps run from make. The connection is opened with PRAGMA query_only, so nothing
+here can write the file, and reading while a step writes is safe under WAL.
 
     make console            (uv run --group console streamlit run console/app.py)
 """
-import contextlib
 import datetime
-import io
 import json
 import os
 import sqlite3
@@ -24,44 +24,13 @@ if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
 from shared import db, score_json  # noqa: E402
+from console import results  # noqa: E402
 from console.queries import COMMENT, COMPARE_READINGS, COMPARE_RUNS, STEPS, TABLES  # noqa: E402
+from console.view import frame, open_db, scalar, show  # noqa: E402
 
 ATTACHMENTS_DIR = os.path.join(_REPO_ROOT, "attachments")
 PAGE_ROWS = 100         # the Tables page's page
 QUERY_ROWS = 10000      # the most rows the Query page fetches
-
-
-def open_db():
-    """The file, read-only. db.DB_PATH is looked up at call time so the test can
-    point it at a temporary file."""
-    try:
-        conn = db.connect(db.DB_PATH)
-    except SystemExit as exc:
-        st.error(str(exc))
-        st.stop()
-    conn.execute("PRAGMA query_only = 1")
-    return contextlib.closing(conn)
-
-
-def frame(conn, sql, params=()):
-    """A query as a DataFrame with the cursor's column names, so an empty result
-    still shows its columns."""
-    cur = conn.execute(sql, params)
-    rows = cur.fetchall()
-    return pd.DataFrame([tuple(r) for r in rows], columns=[d[0] for d in cur.description])
-
-
-def scalar(conn, sql):
-    try:
-        return conn.execute(sql).fetchone()[0]
-    except sqlite3.OperationalError as exc:
-        if "no such table" in str(exc):
-            return None
-        raise
-
-
-def show(df):
-    st.dataframe(df, hide_index=True, width="stretch")
 
 
 # ------------------------------------------------------------------ pages
@@ -95,18 +64,13 @@ def page_comment():
     comment_id = st.text_input("comment id", placeholder="FS-2025-0001-0002").strip()
     if not comment_id:
         return
-    with open_db() as conn:
-        row = conn.execute("SELECT * FROM comment WHERE comment_id = ?", (comment_id,)).fetchone()
-        if row is None:
-            st.error(f"no comment {comment_id}")
-            return
-        st.text(f"{row['comment_id']}  posted {row['posted_date']}  received {row['received_date']}"
-                f"  {len(row['comment_text']):,} characters"
-                + ("  WITHDRAWN" if row["withdrawn"] else ""))
-        st.text(row["comment_text"])
+    if not results.comment_results(comment_id):
+        st.error(f"no comment {comment_id}")
+        return
+    with st.expander("Every row the steps hold about it"), open_db() as conn:
         for title, sql in COMMENT:
             df = frame(conn, sql, (comment_id,) * sql.count("?"))
-            st.subheader(title)
+            st.markdown(f"**{title}**")
             if df.empty:
                 st.text("no row")
             else:
@@ -253,8 +217,9 @@ def page_query():
 
 
 PAGES = {
-    "Steps": page_steps,
+    **results.PAGES,
     "Comment": page_comment,
+    "Steps": page_steps,
     "Compare": page_compare,
     "Tables": page_tables,
     "Query": page_query,
@@ -276,7 +241,7 @@ def file_status():
 def main():
     st.set_page_config(page_title="swiftcomments", layout="wide")
     st.sidebar.title("swiftcomments")
-    page = st.sidebar.radio("page", list(PAGES), label_visibility="collapsed")
+    page = st.sidebar.radio("page", list(PAGES), label_visibility="collapsed", key="page")
     st.sidebar.text(file_status())
     PAGES[page]()
 
