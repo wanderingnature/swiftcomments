@@ -865,9 +865,11 @@ JOIN substance_scores s USING (comment_id);
 -- ===========================================================================
 -- 9b. The model-free reading (scripts/model_free/, rule set 3). The five mf_*
 --     tables, in the one file so the console, the extracts and the jump see
---     them; the run row's code_version (a git hash) is not kept. In
---     this repository a "sentence" row is the whole comment: unit_id is the
---     comment row's rowid, start_char 0, end_char the text's length.
+--     them; the run row's code_version (a git hash) is not kept. A
+--     unit row is a sentence of the comment (unit_id the comment row's rowid
+--     times 100,000 plus its place from one; start_char and end_char its span
+--     in the stored text) or the whole comment (unit_id the negative of its
+--     first sentence's), as hybrid mode scores both (docs/model-free-scoring.md).
 -- ===========================================================================
 
 CREATE TABLE mf_score_run (
