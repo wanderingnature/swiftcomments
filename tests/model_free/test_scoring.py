@@ -111,24 +111,38 @@ def dbfile(tmp_path, monkeypatch):
     path = tmp_path / "roadless.sqlite"
     conn = db.connect(path, create=True)
     conn.executescript(db.SCHEMA_PATH.read_text(encoding="utf-8"))
-    texts = [GAP_SENTENCE + " " + LAW_SENTENCE, EVID_SENTENCE, DISPOSITION]
+    texts = [GAP_SENTENCE + " " + LAW_SENTENCE, EVID_SENTENCE, GAP_SENTENCE]
     for cid, text in zip(CIDS, texts):
         conn.execute("INSERT INTO comment (comment_id, comment_text) VALUES (?, ?)", (cid, text))
         conn.execute("INSERT INTO substance_floor (comment_id, floored, has_entity, has_citation,"
                      " has_deficiency, has_firstperson) VALUES (?, 0, 1, 0, 1, 0)", (cid,))
-    # Two class A rows and one B2: the population is class A only.
+    # Two class A rows and one B1: the population is class A unless asked.
     conn.execute("INSERT INTO substance_screen (comment_id, screen_class, authority, reference, doc_cite,"
                  " action_ref, deficiency, evid_ner) VALUES (?, 'A', 1, 0, 0, 1, 1, 0)", (CIDS[0],))
     conn.execute("INSERT INTO substance_screen (comment_id, screen_class, authority, reference, doc_cite,"
                  " action_ref, deficiency, evid_ner) VALUES (?, 'A', 0, 0, 1, 1, 0, 0)", (CIDS[1],))
     conn.execute("INSERT INTO substance_screen (comment_id, screen_class, authority, reference, doc_cite,"
-                 " action_ref, deficiency, evid_ner) VALUES (?, 'B2', 0, 0, 0, 1, 0, 0)", (CIDS[2],))
+                 " action_ref, deficiency, evid_ner) VALUES (?, 'B1', 0, 0, 0, 1, 0, 1)", (CIDS[2],))
     conn.execute("INSERT INTO comment_authorities (comment_id, citation, mode, matched_text, family_key)"
                  " VALUES (?, '36 CFR 294', 'strict', '36 CFR 294.12', '36 cfr 294')", (CIDS[0],))
     conn.commit()
     conn.close()
     monkeypatch.setattr(db, "DB_PATH", path)
     return path
+
+
+def test_score_run_reads_the_classes_asked_for(dbfile, capsys):
+    # B1 alone: the one B1 comment, whose GAP opens the gate; class A untouched.
+    assert mf_run.main(["score", "--classes", "B1"]) == 0
+    assert "1 class B1 comments; 0 scored under rule set" in capsys.readouterr().out
+    conn = db.connect(dbfile)
+    assert [tuple(r) for r in conn.execute("SELECT comment_id, gate FROM mf_comment_score")] == [(CIDS[2], 1)]
+    conn.close()
+    # A and B1 together: the B1 comment is already scored, the two A comments are not.
+    assert mf_run.main(["score", "--classes", "A,B1"]) == 0
+    assert "3 class A/B1 comments; 1 scored under rule set" in capsys.readouterr().out
+    with pytest.raises(SystemExit, match="no class B2 comment"):
+        mf_run.main(["score", "--classes", "B2"])
 
 
 def test_score_run_over_the_file(dbfile, capsys):

@@ -4,7 +4,7 @@
     Stance and topics      make stance: the stance, its strength, the topics, by day; one topic's letters
     Coordination           the copies, the families and campaigns, who ran them, the daily wave
     Places and citations   make tag, strict layer: what comments name and cite; the letters naming one
-    Substance              the floor, the screen, either reading of class A; every scored comment, filtered
+    Substance              the floor, the screen, either reading, by screen class; every scored comment, filtered
 
 Every figure is read from data/roadless.sqlite through view.query, cached until
 the file changes. A section whose step has not run says which make target fills it.
@@ -140,21 +140,22 @@ def page_overview():
                  for r in screen.itertuples()])
     rows = []
     for name, df in readings().items():
-        if df.empty:
-            continue
-        one = one_per_letter(df)
-        gated = int(one["gate"].sum())
-        row = {"reading": name, "letters scored": len(one), "gate open": f"{gated:,} ({pct(gated, len(one))})",
-               "mean strength (of 24)": round(float(one["strength"].mean()), 1)}
-        for lv in A_LEVELS:
-            row[f"{lv} {vocab('a_level')[lv].label}"] = int((one["a_level"] == lv).sum())
-        rows.append(row)
+        for cls, part in df.groupby(df["screen_class"].fillna("none"), sort=True):
+            one = one_per_letter(part)
+            gated = int(one["gate"].sum())
+            row = {"reading": name, "class": cls, "letters scored": len(one),
+                   "gate open": f"{gated:,} ({pct(gated, len(one))})",
+                   "mean strength (of 24)": round(float(one["strength"].mean()), 1)}
+            for lv in A_LEVELS:
+                row[f"{lv} {vocab('a_level')[lv].label}"] = int((one["a_level"] == lv).sum())
+            rows.append(row)
     if rows:
         show(pd.DataFrame(rows))
-        st.caption("Each reading of class A, one row per letter (the letter's highest-scored comment). The"
-                   " Substance page opens either reading up, to every comment it scored.")
+        st.caption("Each reading, one row per screen class it read and one count per letter (the letter's"
+                   " highest-scored comment). The Substance page opens either reading up, to every comment"
+                   " it scored.")
     else:
-        st.caption("Neither reading of class A has run: make score-model-free (no model) or make score-model.")
+        st.caption("Neither substance reading has run: make score-model-free (no model) or make score-model.")
 
 
 # ------------------------------------------------------ stance and topics
@@ -424,9 +425,9 @@ SCREEN_CLASSES = {
 
 
 def readings():
-    """Each reading of class A that has rows, one row per scored comment in one
-    shape: the eight levels, strength, gate, band, A level, and the comment's
-    group and stance. The rules' under the newest rule set; the model's with the
+    """Each reading that has rows, one row per scored comment in one shape: the
+    eight levels, strength, gate, band, A level, and the comment's group, stance
+    and screen class. The rules' under the newest rule set; the model's with the
     newest answerability run."""
     out = {}
     rulesets = query(q.RULESETS)
@@ -502,7 +503,7 @@ def page_substance():
         show(screen.assign(meaning=[SCREEN_CLASSES[c] for c in screen["screen_class"]])
              [["screen_class", "comments", "meaning"]])
 
-    st.subheader("The reading of class A")
+    st.subheader("The reading")
     found = readings()
     if not found:
         st.caption("Neither reading has run: make score-model-free (no model) or make score-model.")
@@ -516,6 +517,10 @@ def page_substance():
             pick = st.selectbox("answerability run", list(runs["run_id"]), key="answer_run",
                                 format_func=lambda i: " · ".join(str(v) for v in runs[runs["run_id"] == i].iloc[0]))
             df = query(q.MODEL_READING, (int(pick),))
+    present = sorted(df["screen_class"].dropna().unique())
+    classes = st.multiselect("screen class", present, default=present, key="classes",
+                             help="make score-model-free CLASSES=B1 scores class B1 as well as A.")
+    df = df[df["screen_class"].isin(classes)]
     letters = st.toggle("one per letter", value=True, key="per_letter",
                         help="Count each comment group once, by its highest-scored comment, so a campaign's"
                              " copies do not outweigh a unique letter.")

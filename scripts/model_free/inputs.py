@@ -1,5 +1,6 @@
-"""Read-only inputs from data/roadless.sqlite: the class A comments the screen
-chose (the population make score-model reads), each comment's stored text split
+"""Read-only inputs from data/roadless.sqlite: the comments of the screen
+classes asked for (class A by default, the population make score-model reads),
+each comment's stored text split
 into its units, its confirmed citations and legal authorities, and the match
 keys of every known authority.
 
@@ -60,12 +61,15 @@ def load_authority_keys(conn: db.Connection) -> list[str]:
     return out
 
 
-def comment_ids(conn: db.Connection) -> list[str]:
-    """The population: every class A comment of the screen, as make score-model reads it."""
+def comment_ids(conn: db.Connection, classes: tuple[str, ...] = ("A",)) -> list[str]:
+    """The population: every comment of the screen in these classes (class A,
+    as make score-model reads it, unless asked for others)."""
+    marks = ",".join("?" * len(classes))
     ids = [r[0] for r in conn.execute(
-        "SELECT comment_id FROM substance_screen WHERE screen_class = 'A' ORDER BY comment_id")]
+        f"SELECT comment_id FROM substance_screen WHERE screen_class IN ({marks}) ORDER BY comment_id",
+        classes)]
     if not ids:
-        raise SystemExit("substance_screen holds no class A comment: run make screen first")
+        raise SystemExit(f"substance_screen holds no class {'/'.join(classes)} comment: run make screen first")
     return ids
 
 

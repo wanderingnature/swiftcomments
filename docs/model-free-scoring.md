@@ -17,7 +17,18 @@ both and see where a rule and a model part.
 ```
 make score-model-free                    # every class A comment the rules have not scored
 make score-model-free LIMIT=200          # the first 200 of them, then exit
+make score-model-free CLASSES=B1         # every class B1 comment instead
+make score-model-free CLASSES=A,B1       # both classes
 ```
+
+`CLASSES` names the screen classes to read, class A by default. Class B1 is the
+comments that refer to the action with a deficiency or a named entity but cite
+nothing; the model reads none of them, and the rules can, at no cost, to find the
+ones that would pass the gate all the same. The rules, the tables and the queue are
+the same for every class: a comment is scored once under a rule set whatever class
+it was asked for under, and a B1 run leaves the class A rows as they are. The
+console's Substance page filters either reading by screen class, and the Overview
+gives each class its own row.
 
 A run scores every class A comment that has no comment score under the current rule
 set version, and writes its rows in one transaction: an interrupted run leaves nothing.
