@@ -102,7 +102,8 @@ STEPS = [
         "what": "step 6: the floor filter",
         "figures": [
             ("analysed", "SELECT count(*) FROM substance_floor"),
-            ("survivors", "SELECT count(*) FROM substance_floor WHERE floored = 1"),
+            ("floored", "SELECT count(*) FROM substance_floor WHERE floored = 1"),
+            ("survivors", "SELECT count(*) FROM substance_floor WHERE floored = 0"),
         ],
         "breakdowns": [
             ("the four detectors",
@@ -372,3 +373,259 @@ COMPARE_READINGS = ("SELECT comment_id, method, record, error FROM score_compare
 
 TABLES = ("SELECT type, name FROM sqlite_master WHERE type IN ('table', 'view')"
           " AND name NOT LIKE 'sqlite_%' ORDER BY type, name")
+
+# ---------------------------------------------------------------- results
+# The results pages (console/results.py): what the analysis found, aggregated
+# over the corpus. Every query here runs on the schema in tests/test_console.py;
+# the ones with a ? take the parameters named beside them.
+
+# Overview, and the Coordination page: the records, and the comment-group
+# partition (one group is one letter: a unique comment, or every copy of one).
+RECORDS = ("SELECT count(*) AS records, coalesce(sum(comment_text <> ''), 0) AS with_text,"
+           " coalesce(sum(withdrawn), 0) AS withdrawn,"
+           " coalesce(sum(comment_text = '' AND withdrawn = 0), 0) AS blank FROM comment")
+GROUPS_BY_KIND = (
+    "SELECT g.group_kind AS kind, v.label, v.meaning, count(*) AS letters, sum(g.size) AS comments"
+    " FROM comment_group g LEFT JOIN vocabulary v ON v.kind = 'group_kind' AND v.code = g.group_kind"
+    " GROUP BY g.group_kind ORDER BY v.ordinal")
+
+# Stance and topics: the active classification of every comment (make stance
+# classifies one comment per group and copies it to the group's members).
+STANCE = (
+    "SELECT s.sentiment AS stance, s.meaning, count(*) AS comments, count(DISTINCT m.group_id) AS letters"
+    " FROM comment_classification cc JOIN sentiment s USING (sentiment_id)"
+    " LEFT JOIN comment_group_member m ON m.comment_id = cc.comment_id"
+    " WHERE cc.is_active = 1 GROUP BY s.sentiment ORDER BY comments DESC")
+STANCE_STRENGTH = (
+    "SELECT s.sentiment AS stance, cc.sentiment_strength AS strength, count(*) AS comments"
+    " FROM comment_classification cc JOIN sentiment s USING (sentiment_id)"
+    " WHERE cc.is_active = 1 GROUP BY 1, 2")
+TOPICS = (
+    "SELECT t.topic_name AS topic, t.description, count(*) AS comments,"
+    " count(DISTINCT m.group_id) AS letters, round(avg(ct.confidence), 3) AS avg_confidence"
+    " FROM classification_topics ct JOIN topics t USING (topic_id)"
+    " JOIN comment_classification cc ON cc.classification_id = ct.classification_id AND cc.is_active = 1"
+    " LEFT JOIN comment_group_member m ON m.comment_id = cc.comment_id"
+    " WHERE ct.is_active = 1 GROUP BY t.topic_name ORDER BY comments DESC")
+STANCE_BY_TOPIC = (
+    "SELECT t.topic_name AS topic, s.sentiment AS stance, count(*) AS comments"
+    " FROM classification_topics ct JOIN topics t USING (topic_id)"
+    " JOIN comment_classification cc ON cc.classification_id = ct.classification_id AND cc.is_active = 1"
+    " JOIN sentiment s ON s.sentiment_id = cc.sentiment_id"
+    " WHERE ct.is_active = 1 GROUP BY 1, 2")
+TOPIC_PAIRS = (
+    "SELECT ta.topic_name AS topic_a, tb.topic_name AS topic_b, count(*) AS comments"
+    " FROM classification_topics ca"
+    " JOIN comment_classification cc ON cc.classification_id = ca.classification_id AND cc.is_active = 1"
+    " JOIN classification_topics cb ON cb.classification_id = ca.classification_id"
+    "  AND cb.is_active = 1 AND cb.topic_id > ca.topic_id"
+    " JOIN topics ta ON ta.topic_id = ca.topic_id JOIN topics tb ON tb.topic_id = cb.topic_id"
+    " WHERE ca.is_active = 1 GROUP BY 1, 2")
+STANCE_BY_DAY = (
+    "SELECT substr(c.received_date, 1, 10) AS day, s.sentiment AS stance, count(*) AS comments"
+    " FROM comment_classification cc JOIN comment c USING (comment_id)"
+    " JOIN sentiment s ON s.sentiment_id = cc.sentiment_id"
+    " WHERE cc.is_active = 1 AND c.received_date IS NOT NULL GROUP BY 1, 2 ORDER BY 1")
+POSTED_RECEIVED = (
+    "SELECT substr(posted_date, 1, 10) AS day, 'Posted' AS series, count(*) AS comments"
+    " FROM v_source_comments WHERE posted_date IS NOT NULL GROUP BY 1"
+    " UNION ALL SELECT substr(received_date, 1, 10), 'Received', count(*)"
+    " FROM v_source_comments WHERE received_date IS NOT NULL GROUP BY 1 ORDER BY 1")
+# One topic's letters, most-sent first: ? = topic, stance or '' for any (twice),
+# limit, offset; and how many there are.
+_TOPIC_LETTERS_FROM = (
+    " FROM classification_topics ct JOIN topics t USING (topic_id)"
+    " JOIN comment_classification cc ON cc.classification_id = ct.classification_id AND cc.is_active = 1"
+    " JOIN sentiment s ON s.sentiment_id = cc.sentiment_id"
+    " JOIN comment_group_member m ON m.comment_id = cc.comment_id"
+    " JOIN comment_group g ON g.group_id = m.group_id AND g.canonical_comment_id = cc.comment_id"
+    " WHERE ct.is_active = 1 AND t.topic_name = ? AND (? = '' OR s.sentiment = ?)")
+TOPIC_LETTER_COUNT = "SELECT count(*) AS n" + _TOPIC_LETTERS_FROM
+TOPIC_LETTERS = (
+    "SELECT cc.comment_id, s.sentiment AS stance, cc.sentiment_strength AS strength,"
+    " ct.confidence, ct.supporting_phrases, g.group_kind, g.size,"
+    " (SELECT comment_text FROM comment c WHERE c.comment_id = cc.comment_id) AS comment_text"
+    + _TOPIC_LETTERS_FROM +
+    " ORDER BY g.size DESC, ct.confidence DESC, cc.comment_id LIMIT ? OFFSET ?")
+
+# Coordination: the copies, the campaigns, the daily wave.
+COPIES = (
+    "SELECT count(*) AS hashed, coalesce(sum(is_original = 0), 0) AS exact_copies,"
+    " coalesce(sum(is_original = 1 AND is_middle_original = 0), 0) AS same_body FROM comment_dedup")
+CAMPAIGNS = (
+    "SELECT f.family_id, f.n_comments AS comments, f.n_texts AS texts, f.core_kind,"
+    " (SELECT count(*) FROM text_family_member x WHERE x.family_id = f.family_id AND x.has_own_text = 1)"
+    "   AS with_own_text,"
+    " fo.organisation, v.label AS organisation_basis, s.sentiment AS stance,"
+    " f.exemplar_comment_id, c.comment_text"
+    " FROM text_family f JOIN comment c ON c.comment_id = f.exemplar_comment_id"
+    " LEFT JOIN family_organisation fo ON fo.family_id = f.family_id"
+    " LEFT JOIN vocabulary v ON v.kind = 'organisation_basis' AND v.code = fo.basis"
+    " LEFT JOIN comment_classification cc ON cc.comment_id = f.exemplar_comment_id AND cc.is_active = 1"
+    " LEFT JOIN sentiment s ON s.sentiment_id = cc.sentiment_id"
+    " WHERE f.is_campaign = 1 ORDER BY f.n_comments DESC")
+DAILY_WAVE = (
+    "SELECT substr(c.received_date, 1, 10) AS day,"
+    " sum(v.rep_comment_id = c.comment_id) AS unique_letters,"
+    " sum(v.rep_comment_id <> c.comment_id) AS repeated"
+    " FROM v_source_comments c JOIN v_comment_representative v USING (comment_id)"
+    " WHERE c.received_date IS NOT NULL GROUP BY 1 ORDER BY 1")
+
+# Places and citations: the strict (exact-match) layer of make tag. Each kind:
+# its table, its value column, the label.
+TAGS = {
+    "forest": ("comment_forests", "forest_name", "Name a national forest"),
+    "roadless area": ("comment_areas", "area_name", "Name a roadless area"),
+    "species": ("comment_species", "species_name", "Name a species"),
+    "legal authority": ("comment_authorities", "family_key", "Cite a legal authority"),
+    "cited reference": ("comment_cited_references", "citation_key", "Cite a reference"),
+    "zip code": ("comment_zipcodes", "zipcode", "Give a zip code"),
+}
+
+
+def tag_comments(kind):
+    table, _, _ = TAGS[kind]
+    return f"SELECT count(DISTINCT comment_id) FROM {table} WHERE mode = 'strict'"
+
+
+def tag_top(kind):
+    """Each value of a kind with the comments and the letters that name it."""
+    table, col, _ = TAGS[kind]
+    return (f"SELECT t.{col} AS value, count(DISTINCT t.comment_id) AS comments,"
+            f" count(DISTINCT m.group_id) AS letters"
+            f" FROM {table} t LEFT JOIN comment_group_member m ON m.comment_id = t.comment_id"
+            f" WHERE t.mode = 'strict' GROUP BY t.{col} ORDER BY comments DESC, value")
+
+
+def tag_letters(kind):
+    """The letters that name one value (?), most-sent first: per comment group,
+    how many of its comments name it, the words as written, and the text of the
+    first one."""
+    table, col, _ = TAGS[kind]
+    return ("SELECT x.*, c.comment_text FROM ("
+            f" SELECT g.group_id, g.group_kind, g.size, count(DISTINCT t.comment_id) AS naming,"
+            f" min(t.comment_id) AS comment_id, group_concat(DISTINCT t.matched_text) AS as_written"
+            f" FROM {table} t JOIN comment_group_member m ON m.comment_id = t.comment_id"
+            f" JOIN comment_group g ON g.group_id = m.group_id"
+            f" WHERE t.mode = 'strict' AND t.{col} = ? GROUP BY g.group_id) x"
+            " JOIN comment c USING (comment_id) ORDER BY x.naming DESC, x.comment_id LIMIT 100")
+
+
+_NO_TAG = " AND ".join(f"NOT EXISTS (SELECT 1 FROM {t} x WHERE x.comment_id = s.comment_id)"
+                       for t, _, _ in TAGS.values())
+NAMES_NOTHING = ("SELECT count(*) FROM v_source_comments s JOIN entity_scan_state e USING (comment_id)"
+                 f" WHERE e.is_tagged_strict = 1 AND {_NO_TAG}")
+# ? = how many, drawn at random
+NAMES_NOTHING_SAMPLE = ("SELECT s.comment_id, s.comment_text FROM v_source_comments s"
+                        " JOIN entity_scan_state e USING (comment_id)"
+                        f" WHERE e.is_tagged_strict = 1 AND {_NO_TAG} ORDER BY random() LIMIT ?")
+AREAS = (
+    "SELECT a.area_name || CASE WHEN count(DISTINCT r.forest) = 1 THEN ' (' || min(r.forest) || ')'"
+    " ELSE '' END AS area, count(DISTINCT a.comment_id) AS comments"
+    " FROM comment_areas a JOIN roadless_areas r ON r.name = a.area_name"
+    " WHERE a.mode = 'strict' GROUP BY a.area_name ORDER BY comments DESC LIMIT 25")
+STATES = ("SELECT state, count(DISTINCT comment_id) AS comments FROM comment_zipcodes"
+          " WHERE mode = 'strict' AND state IS NOT NULL AND city IS NOT NULL"
+          " GROUP BY 1 ORDER BY 2 DESC")
+AUTHORITY_FAMILIES = (
+    "SELECT a.family_key AS family,"
+    " CASE WHEN f.canonical = 1 THEN 'in the agency record' ELSE 'brought by commenters' END AS origin,"
+    " count(DISTINCT a.comment_id) AS comments, count(DISTINCT a.citation) AS variants"
+    " FROM comment_authorities a LEFT JOIN authority_family f USING (family_key)"
+    " WHERE a.mode = 'strict' GROUP BY a.family_key ORDER BY comments DESC, family")
+AUTHORITY_VARIANTS = (
+    "SELECT family_key AS family, citation AS as_written, count(DISTINCT comment_id) AS comments"
+    " FROM comment_authorities WHERE mode = 'strict' GROUP BY 1, 2 ORDER BY 1, 3 DESC")
+# Each cited reference resolved to its reference row, the agency's (seeded) row first.
+_CITED = ("WITH t AS (SELECT t.comment_id, t.citation_key,"
+          "  (SELECT c.id FROM cited_references c WHERE c.citation_key = t.citation_key"
+          "   OR c.display = t.citation_key ORDER BY c.seed_id IS NULL LIMIT 1) AS ref_id"
+          "  FROM comment_cited_references t WHERE t.mode = 'strict')")
+_ORIGIN = "CASE WHEN cr.seed_id IS NOT NULL THEN 'in the agency record' ELSE 'brought by commenters' END"
+BIBLIOGRAPHY_ORIGINS = (
+    _CITED + f" SELECT {_ORIGIN} AS origin, count(DISTINCT coalesce(cr.display, t.citation_key)) AS works,"
+    " count(DISTINCT t.comment_id) AS comments"
+    " FROM t LEFT JOIN cited_references cr ON cr.id = t.ref_id GROUP BY 1 ORDER BY 1 DESC")
+BIBLIOGRAPHY = (
+    _CITED +
+    " SELECT count(DISTINCT t.comment_id) AS comments, coalesce(cr.display, t.citation_key) AS reference,"
+    " cr.title, cr.authors, cr.year, cr.type, cr.url,"
+    f" {_ORIGIN} AS origin"
+    " FROM t LEFT JOIN cited_references cr ON cr.id = t.ref_id"
+    " GROUP BY 2, 3, 4, 5, 6, 7, 8 ORDER BY comments DESC, reference")
+
+# Substance: the floor, the screen, and the two readings of class A, one row per
+# comment in one shape. ? on the rules' reading = the rule set; on the model's,
+# the answerability run (NULL for none).
+FLOOR = ("SELECT count(*) AS analysed, coalesce(sum(floored), 0) AS floored,"
+         " coalesce(sum(1 - floored), 0) AS survivors, coalesce(sum(has_entity), 0) AS has_entity,"
+         " coalesce(sum(has_citation), 0) AS has_citation, coalesce(sum(has_deficiency), 0) AS has_deficiency,"
+         " coalesce(sum(has_firstperson), 0) AS has_firstperson FROM substance_floor")
+SCREEN = ("SELECT screen_class, count(*) AS comments, sum(authority) AS authority, sum(reference) AS reference,"
+          " sum(doc_cite) AS doc_cite, sum(deficiency) AS deficiency, sum(action_ref) AS action_ref,"
+          " sum(evid_ner) AS evid_ner FROM substance_screen GROUP BY 1 ORDER BY 1")
+_READING_CONTEXT = (
+    " LEFT JOIN comment_group_member m ON m.comment_id = s.comment_id"
+    " LEFT JOIN comment_group g ON g.group_id = m.group_id"
+    " LEFT JOIN comment_classification cc ON cc.comment_id = s.comment_id AND cc.is_active = 1"
+    " LEFT JOIN sentiment st ON st.sentiment_id = cc.sentiment_id")
+RULESETS = "SELECT DISTINCT ruleset_version FROM mf_comment_score ORDER BY 1"
+RULES_READING = (
+    "SELECT s.comment_id, s.place, s.stand, s.doc, s.gap, s.evid, s.ask, s.alt, s.law, s.strength, s.gate,"
+    " s.gate_basis, s.band, a.level AS a_level, 'direct' AS scored_via,"
+    " g.group_id, g.group_kind, g.size, st.sentiment AS stance"
+    " FROM mf_comment_score s"
+    " LEFT JOIN mf_comment_answerability a ON a.ruleset_version = s.ruleset_version AND a.comment_id = s.comment_id"
+    + _READING_CONTEXT + " WHERE s.ruleset_version = ?")
+ANSWERABILITY_RUNS = ("SELECT run_id, rater, evidence, weights_version, instrument_version, created_at"
+                      " FROM answerability_run ORDER BY run_id DESC")
+MODEL_READING = (
+    "SELECT s.comment_id, s.place, s.stand, s.doc, s.gap, s.evid, s.ask, s.alt, s.law, s.strength, s.gate,"
+    " s.gate_basis, s.band, a.a_level, s.scored_via,"
+    " g.group_id, g.group_kind, g.size, st.sentiment AS stance"
+    " FROM substance_scores s"
+    " LEFT JOIN substance_answerability a ON a.comment_id = s.comment_id AND a.run_id = ?"
+    + _READING_CONTEXT)
+# The rules that put each dimension where it is, over every comment the rules
+# read: GAP's from the sentences, the rest from the whole comment (the hybrid
+# score's evidence, model_free/run.py json_record). ? = the rule set.
+RULES_FIRED = (
+    "SELECT h.dimension, h.grade, h.rule, count(DISTINCT u.comment_id) AS comments, count(*) AS hits"
+    " FROM mf_sentence_hit h JOIN mf_sentence_score u"
+    "  ON u.ruleset_version = h.ruleset_version AND u.unit_id = h.unit_id"
+    " WHERE h.ruleset_version = ? AND (h.dimension = 'GAP') = (h.unit_id > 0)"
+    " GROUP BY 1, 2, 3 ORDER BY comments DESC")
+# One comment's evidence under the rules: ? = the rule set, the comment id.
+RULES_EVIDENCE = (
+    "SELECT h.dimension, h.grade, h.rule, h.match FROM mf_sentence_hit h"
+    " JOIN mf_sentence_score u ON u.ruleset_version = h.ruleset_version AND u.unit_id = h.unit_id"
+    " WHERE h.ruleset_version = ? AND u.comment_id = ? AND (h.dimension = 'GAP') = (h.unit_id > 0)"
+    " ORDER BY h.dimension, h.grade DESC, h.unit_id, h.start_char")
+# One comment's model reading beyond its levels: ? = the comment id.
+MODEL_DETAIL = ("SELECT scored_via, exemplar_id, model, instrument_version, rationale"
+                " FROM substance_scores WHERE comment_id = ?")
+# One comment's text and its place in the analysis: ? = the comment id.
+COMMENT_CARD = (
+    "SELECT c.comment_id, c.comment_text, c.posted_date, c.received_date, c.title,"
+    " s.sentiment AS stance, s.meaning AS stance_meaning, cc.sentiment_strength AS stance_strength,"
+    " g.group_kind, g.size, g.canonical_comment_id, f.family_id, f.is_campaign, fo.organisation,"
+    " sc.screen_class"
+    " FROM comment c"
+    " LEFT JOIN comment_classification cc ON cc.comment_id = c.comment_id AND cc.is_active = 1"
+    " LEFT JOIN sentiment s ON s.sentiment_id = cc.sentiment_id"
+    " LEFT JOIN comment_group_member m ON m.comment_id = c.comment_id"
+    " LEFT JOIN comment_group g ON g.group_id = m.group_id"
+    " LEFT JOIN text_family_member fm ON fm.comment_id = c.comment_id"
+    " LEFT JOIN text_family f ON f.family_id = fm.family_id"
+    " LEFT JOIN family_organisation fo ON fo.family_id = f.family_id"
+    " LEFT JOIN substance_screen sc ON sc.comment_id = c.comment_id"
+    " WHERE c.comment_id = ?")
+COMMENT_TOPICS = (
+    "SELECT t.topic_name AS topic, ct.confidence, ct.supporting_phrases"
+    " FROM classification_topics ct JOIN comment_classification cc USING (classification_id)"
+    " JOIN topics t USING (topic_id)"
+    " WHERE cc.comment_id = ? AND cc.is_active = 1 AND ct.is_active = 1 ORDER BY ct.rank_order")
+COMMENT_NAMES = " UNION ALL ".join(
+    f"SELECT '{kind}' AS kind, {col} AS value, group_concat(DISTINCT matched_text) AS as_written"
+    f" FROM {table} WHERE comment_id = ? AND mode = 'strict' GROUP BY {col}"
+    for kind, (table, col, _) in TAGS.items())
