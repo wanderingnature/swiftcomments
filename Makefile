@@ -71,8 +71,8 @@ stance-refused:  ## the comments a provider refused in a stance run, as docs/ref
 score-model:  ## step 6 (model): the MODEL reading, the v3 instrument over class A; LIMIT=N for a pilot
 	$(PY) scripts/substance/score_comments.py --project roadless --classes A $(if $(LIMIT),--limit $(LIMIT)) $(if $(CONCURRENCY),--concurrency $(CONCURRENCY))
 
-score-model-free:  ## step 6 (model-free): the MODEL-FREE reading of the same class A by rules, no model call; LIMIT=N for a pilot
-	$(PY) scripts/model_free/run.py score $(if $(LIMIT),--limit $(LIMIT))
+score-model-free:  ## step 6 (model-free): the MODEL-FREE reading of the same class A by rules, no model call; CLASSES=B1 or A,B1 for other screen classes; LIMIT=N for a pilot
+	$(PY) scripts/model_free/run.py score $(if $(CLASSES),--classes $(CLASSES)) $(if $(LIMIT),--limit $(LIMIT))
 
 score-model-compare:  ## LIMIT=N class A comments read by both methods, or COMMENTS_OF=<run> the comments of an earlier run; kept for the console's Compare page, JSON under compare/
 	$(PY) scripts/score_model_compare.py $(if $(LIMIT),--limit $(LIMIT)) $(if $(COMMENTS_OF),--comments-of $(COMMENTS_OF)) $(if $(CONCURRENCY),--concurrency $(CONCURRENCY))

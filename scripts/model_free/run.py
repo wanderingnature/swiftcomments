@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Model-free scoring, fully parallel to v3: the rules' reading of every class A
-comment, no model call. Step 6, beside make score-model.
+comment, no model call. Step 6, beside make score-model. --classes reads other
+screen classes as well or instead (B1: comments that refer to the action with a
+deficiency or a named entity but cite nothing), on the same rules.
 
-    uv run python scripts/model_free/run.py score [--limit N] [--comment-id ID ...] [--ids-file F]
+    uv run python scripts/model_free/run.py score [--classes A,B1] [--limit N] [--comment-id ID ...] [--ids-file F]
     uv run python scripts/model_free/run.py report
     uv run python scripts/model_free/run.py text [--mode sentence|whole|hybrid] "comment text ..."    # score ad-hoc text, print JSON
-    make score-model-free [LIMIT=N]
+    make score-model-free [CLASSES=A,B1] [LIMIT=N]
 
-`score` reads the class A comments of the screen from data/roadless.sqlite and
-scores every one that has no comment score under the current rule set version
+`score` reads the comments of the screen classes asked for (class A by default)
+from data/roadless.sqlite and scores every one that has no comment score under the current rule set version
 in hybrid mode: each sentence (split by the comment-sentences package,
 stored_units) and the whole comment are scored, and the comment score is the
 whole comment's with GAP held to what one sentence reaches
@@ -137,8 +139,9 @@ def cmd_score(args: argparse.Namespace) -> int:
     conn = db.connect()
     store = Store(conn)
     t0 = time.time()
-    all_ids = db.comment_ids(conn)
-    done = store.scored_comment_ids(RULESET_VERSION)
+    classes = tuple(c.strip() for c in args.classes.split(",") if c.strip())
+    all_ids = db.comment_ids(conn, classes)
+    done = store.scored_comment_ids(RULESET_VERSION) & set(all_ids)
     if args.comment_id or args.ids_file:
         wanted = set(args.comment_id or [])
         if args.ids_file:
@@ -147,7 +150,8 @@ def cmd_score(args: argparse.Namespace) -> int:
         wanted = {c for c in all_ids if c not in done}
         if args.limit:
             wanted = set(sorted(wanted)[:args.limit])
-    print(f"make score-model-free: {len(all_ids):,} class A comments; {len(done):,} scored under rule set"
+    print(f"make score-model-free: {len(all_ids):,} class {'/'.join(classes)} comments; {len(done):,} scored"
+          f" under rule set"
           f" {RULESET_VERSION}; {len(wanted):,} to score in hybrid mode (each sentence and the whole"
           f" comment), no model call"
           + (f" (--limit {args.limit})" if args.limit and not (args.comment_id or args.ids_file) else "")
@@ -211,6 +215,8 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("score")
+    s.add_argument("--classes", default="A",
+                   help="screen classes to score, comma-separated, e.g. A,B1 (default A)")
     s.add_argument("--limit", type=int, default=0, help="score at most this many unscored comments")
     s.add_argument("--comment-id", action="append", help="score these comments (repeatable)")
     s.add_argument("--ids-file", help="score the comment ids listed one per line in this file")

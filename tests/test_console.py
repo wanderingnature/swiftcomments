@@ -243,6 +243,12 @@ def results_file(dbfile):
     conn.execute("INSERT INTO mf_comment_score VALUES ('3', ?, 1, 2, 0, 1, 0, 0, 0, 0, 2, 5, 1,"
                  " '[{\"dimension\": \"LAW\", \"unit_id\": -100001}]', 'minimal', '[]', '[]', 1)", (CID,))
     conn.execute("INSERT INTO mf_comment_answerability VALUES ('3', ?, 1, 'A1', '[]', '[]', 0, 1)", (CID,))
+    # C4 screened B1 and read by the rules (make score-model-free CLASSES=B1): gate closed
+    conn.execute("INSERT INTO substance_screen (comment_id, screen_class, authority, reference, doc_cite,"
+                 " action_ref, deficiency, evid_ner) VALUES (?, 'B1', 0, 0, 0, 1, 0, 1)", (C4,))
+    conn.execute("INSERT INTO mf_comment_score VALUES ('3', ?, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, '[]',"
+                 " 'minimal', '[]', '[]', 1)", (C4,))
+    conn.execute("INSERT INTO mf_comment_answerability VALUES ('3', ?, 1, 'A0', '[]', '[]', 0, 0)", (C4,))
     conn.execute("INSERT INTO mf_sentence_score VALUES ('3', -100001, 1, ?, 0, 48, 'k', 2, 0, 1, 0, 0, 0, 0, 2,"
                  " 5, 1, '[]', 'minimal', '[]', '[]', 0, 0, 0, 0, 0, '[]')", (CID,))
     conn.execute("INSERT INTO mf_sentence_hit (ruleset_version, unit_id, run_id, dimension, grade, rule, match,"
@@ -269,9 +275,10 @@ def test_overview_page(results_file):
     assert figures["Records"] == "4" and figures["Unique letters"] == "3"
     assert figures["SUPPORT"] == "2 (50.0%)" and figures["Class A"] == "1"
     readings = at.dataframe[-1].value
-    assert list(readings["reading"]) == ["rules (make score-model-free, rule set 3)",
-                                         "model (make score-model, instrument v3)"]
-    assert list(readings["A1 strong"]) == [1, 1]
+    assert list(zip(readings["reading"], readings["class"])) == [
+        ("rules (make score-model-free, rule set 3)", "A"), ("rules (make score-model-free, rule set 3)", "B1"),
+        ("model (make score-model, instrument v3)", "A")]
+    assert list(readings["A1 strong"]) == [1, 0, 1]
 
 
 def test_stance_page(results_file):
@@ -311,7 +318,13 @@ def test_substance_page(results_file):
     at = _page("Substance")
     figures = {m.label: m.value for m in at.metric}
     assert figures["Floored"] == "1" and figures["Survive"] == "2"
-    assert figures["Scored letters"] == "1" and figures["A1: must be answered"] == "1"
+    assert figures["Scored letters"] == "2" and figures["A1: must be answered"] == "1"
+    at.multiselect(key="classes").set_value(["B1"])
+    _run(at)
+    figures = {m.label: m.value for m in at.metric}
+    assert figures["Scored letters"] == "1" and figures["Gate open"] == "0 (0.0%)"
+    at.multiselect(key="classes").set_value(["A"])
+    _run(at)
     card = [m.value for m in at.markdown if f"`{CID}`" in m.value]
     assert card == [f"**5 of 24** · Minimal · gate open (LAW) · A1 strong · `{CID}`"]
     # the rules' evidence under the comment's text

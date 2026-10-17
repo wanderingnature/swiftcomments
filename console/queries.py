@@ -554,8 +554,9 @@ BIBLIOGRAPHY = (
     " FROM t LEFT JOIN cited_references cr ON cr.id = t.ref_id"
     " GROUP BY 2, 3, 4, 5, 6, 7, 8 ORDER BY comments DESC, reference")
 
-# Substance: the floor, the screen, and the two readings of class A, one row per
-# comment in one shape. ? on the rules' reading = the rule set; on the model's,
+# Substance: the floor, the screen, and the two readings (class A, and any other
+# screen class make score-model-free was asked for), one row per comment in one
+# shape, with the comment's screen class. ? on the rules' reading = the rule set; on the model's,
 # the answerability run (NULL for none).
 FLOOR = ("SELECT count(*) AS analysed, coalesce(sum(floored), 0) AS floored,"
          " coalesce(sum(1 - floored), 0) AS survivors, coalesce(sum(has_entity), 0) AS has_entity,"
@@ -568,12 +569,13 @@ _READING_CONTEXT = (
     " LEFT JOIN comment_group_member m ON m.comment_id = s.comment_id"
     " LEFT JOIN comment_group g ON g.group_id = m.group_id"
     " LEFT JOIN comment_classification cc ON cc.comment_id = s.comment_id AND cc.is_active = 1"
-    " LEFT JOIN sentiment st ON st.sentiment_id = cc.sentiment_id")
+    " LEFT JOIN sentiment st ON st.sentiment_id = cc.sentiment_id"
+    " LEFT JOIN substance_screen sc ON sc.comment_id = s.comment_id")
 RULESETS = "SELECT DISTINCT ruleset_version FROM mf_comment_score ORDER BY 1"
 RULES_READING = (
     "SELECT s.comment_id, s.place, s.stand, s.doc, s.gap, s.evid, s.ask, s.alt, s.law, s.strength, s.gate,"
     " s.gate_basis, s.band, a.level AS a_level, 'direct' AS scored_via,"
-    " g.group_id, g.group_kind, g.size, st.sentiment AS stance"
+    " g.group_id, g.group_kind, g.size, st.sentiment AS stance, sc.screen_class"
     " FROM mf_comment_score s"
     " LEFT JOIN mf_comment_answerability a ON a.ruleset_version = s.ruleset_version AND a.comment_id = s.comment_id"
     + _READING_CONTEXT + " WHERE s.ruleset_version = ?")
@@ -582,7 +584,7 @@ ANSWERABILITY_RUNS = ("SELECT run_id, rater, evidence, weights_version, instrume
 MODEL_READING = (
     "SELECT s.comment_id, s.place, s.stand, s.doc, s.gap, s.evid, s.ask, s.alt, s.law, s.strength, s.gate,"
     " s.gate_basis, s.band, a.a_level, s.scored_via,"
-    " g.group_id, g.group_kind, g.size, st.sentiment AS stance"
+    " g.group_id, g.group_kind, g.size, st.sentiment AS stance, sc.screen_class"
     " FROM substance_scores s"
     " LEFT JOIN substance_answerability a ON a.comment_id = s.comment_id AND a.run_id = ?"
     + _READING_CONTEXT)

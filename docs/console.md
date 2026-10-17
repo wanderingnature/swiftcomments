@@ -28,7 +28,7 @@ body, family and campaign is one letter however many people sent it.
 and the comments by the kind of letter they sent (a unique letter, an exact copy, the
 same body, a small family, a campaign); the comments and letters of each stance, with
 what the stance means for this proposal; the screen's three classes; and each
-substance reading of class A in one row: the letters scored, the gate open, the mean
+substance reading in one row per screen class it read: the letters scored, the gate open, the mean
 strength and the letters at each answerability level.
 
 **Stance and topics.** `make stance`'s result, ported from rtca's Reports page: the
@@ -55,7 +55,8 @@ forest, area, species, authority or reference, most-sent first, with the words a
 written; and a random draw of comments that name nothing.
 
 **Substance.** The floor (floored, surviving, and the four detectors), the screen's
-classes, and either reading of class A: the rules of `make score-model-free` under the
+classes, and either reading, filtered by screen class (class A, and B1 when
+`make score-model-free CLASSES=B1` has read it): the rules of `make score-model-free` under the
 newest rule set, or the model of `make score-model` with an answerability run of
 `make rate`. One per letter by default (a letter's highest-scored comment), so a
 campaign's copies do not outweigh a unique letter. The letters scored, the gate open,
