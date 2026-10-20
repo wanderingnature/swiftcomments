@@ -1,6 +1,6 @@
 """The console over a real temporary SQLite file made by make schema's script:
 every query of console/queries.py runs on the schema, and the app renders each of
-its ten pages through Streamlit's AppTest (the script run in-process, no server)
+its eleven pages through Streamlit's AppTest (the script run in-process, no server)
 with db.DB_PATH pointed at the file, the results pages over a few rows of every
 step.
 
@@ -34,6 +34,9 @@ RESULT_QUERIES = {
     "ANSWERABILITY_RUNS": (), "MODEL_READING": (None,), "RULES_FIRED": ("3",),
     "RULES_EVIDENCE": ("3", CID), "MODEL_DETAIL": (CID,), "COMMENT_CARD": (CID,),
     "COMMENT_TOPICS": (CID,), "COMMENT_NAMES": (CID,) * 6,
+    "SENTENCE_RUN": (), "CASES": (), "CASE_TOPICS": ("c",), "CASE_CLUSTERS": ("c", 1),
+    "CLUSTER_SENTENCE_COUNT": ("c", "c", 1), "CLUSTER_SENTENCES": ("c", "c", 1, 20, 0),
+    "CLUSTER_COMMENTS": ("c", 1),
 }
 
 

@@ -674,3 +674,60 @@ COMMENT_NAMES = " UNION ALL ".join(
     f"SELECT '{kind}' AS kind, {col} AS value, group_concat(DISTINCT matched_text) AS as_written"
     f" FROM {table} WHERE comment_id = ? AND mode = 'strict' GROUP BY {col}"
     for kind, (table, col, _) in TAGS.items())
+
+
+# ------------------------------------------------------------ the Topics page
+# The sentences of the gate set (make sentences), and the clustering cases
+# (make clusters): every case with its measures; one case's topics; one topic's
+# clusters; one cluster's sentences and comments; one case's noise.
+
+SENTENCE_RUN = """
+SELECT run_id, classes, gate_comments, occurrences, distinct_sentences, comments_opening, comments_hit,
+       comments_neither, sentences_unlocated, hits_unlocated, created_at
+FROM gate_sentence_run ORDER BY run_id DESC LIMIT 1
+"""
+
+CASES = """
+SELECT case_name, sentences, view, merge, reduction, min_cluster_size AS mcs, min_samples AS ms, selection,
+       structure, noise_passes AS passes, k, seed, clusters, topics, input_sentences AS sentences_read,
+       leaders, leaders_clustered, occurrences, occurrences_clustered, largest_cluster, gate_comments,
+       comments_unclustered, opening_occurrences, opening_occurrences_clustered, eigengaps, seconds,
+       sentence_run_id, substr(code_version, 1, 10) AS code, code_dirty, created_at
+FROM cluster_case ORDER BY created_at
+"""
+
+CASE_TOPICS = """
+SELECT topic, clusters, leaders, occurrences, terms
+FROM cluster_case_topic WHERE case_name = ? ORDER BY topic
+"""
+
+CASE_CLUSTERS = """
+SELECT cluster, kind, pass, leaders, variants, occurrences, tightness, law, evid, gap, alt, terms, central
+FROM cluster_case_cluster WHERE case_name = ? AND topic = ? ORDER BY occurrences DESC, cluster
+"""
+
+# A cluster's leaders, or a case's noise (cluster 0): each with the sentences it
+# absorbed and how often it and they occur in the gate set.
+_LEADER_ROWS = """
+FROM cluster_case_member m
+JOIN gate_sentence s ON s.text_key = m.leader_key
+JOIN (SELECT l.leader_key, count(*) - 1 AS variants, sum(g.occurrences) AS occurrences,
+             sum(g.comments) AS comments
+      FROM cluster_case_leader l JOIN gate_sentence g ON g.text_key = l.text_key
+      WHERE l.case_name = ? GROUP BY l.leader_key) v ON v.leader_key = m.leader_key
+WHERE m.case_name = ? AND m.cluster = ?
+"""
+
+CLUSTER_SENTENCE_COUNT = "SELECT count(DISTINCT m.leader_key) AS n " + _LEADER_ROWS
+
+CLUSTER_SENTENCES = ("SELECT DISTINCT s.text, v.variants, v.occurrences, v.comments " + _LEADER_ROWS
+                     + " ORDER BY v.occurrences DESC, s.text LIMIT ? OFFSET ?")
+
+CLUSTER_COMMENTS = """
+SELECT DISTINCT o.comment_id
+FROM cluster_case_member m
+JOIN cluster_case_leader l ON l.case_name = m.case_name AND l.leader_key = m.leader_key
+JOIN gate_sentence_occurrence o ON o.text_key = l.text_key
+WHERE m.case_name = ? AND m.cluster = ?
+ORDER BY o.comment_id
+"""

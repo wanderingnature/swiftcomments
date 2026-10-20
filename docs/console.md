@@ -15,7 +15,7 @@ the file, its size, when it was last written, and the size of its write-ahead lo
 which is non-zero while a step is writing or until SQLite folds the log back into the
 file.
 
-## The ten pages
+## The eleven pages
 
 The first five show the results. Each section appears as soon as its step has run, and
 a section whose step has not says which `make` target fills it. Their figures are read
@@ -68,6 +68,17 @@ a dimension's level, strongest or weakest first, twenty to a page: its strength,
 gate and the dimensions that opened it, its answerability, its eight levels, its
 letter and stance, opening to its text and its evidence (the rules' hits by dimension
 with the words they matched; the model's rationale).
+
+**Topics.** The clusters and topics of `make clusters` (`docs/clusters.md`). The latest
+sentence build: the gate-open comments, their sentences, the distinct sentences, and
+the comments no sentence of which opens the gate alone. Then every case side by side,
+one row each, with its clusters, topics, leaders clustered, largest cluster, the
+gate-open comments with no sentence in a cluster and the gate-opening sentences in a
+cluster, and every value of every case on request. One case opened: its topic cut and
+the other candidates; its topics with their terms; a topic's clusters with their kind,
+pass, leaders, absorbed sentences, occurrences, tightness, gate-kind shares, terms and
+central sentences; a cluster's sentences, most-occurring first, twenty to a page, and
+the comments they come from; and the case's noise, the leaders in no cluster.
 
 The other five look into the file.
 
