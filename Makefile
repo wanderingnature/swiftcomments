@@ -12,7 +12,7 @@ PY  := LLM_SERVER=$(SERVER) uv run python
 CSV := csv/mv4-z8fw-q5jx.csv
 DB  := data/roadless.sqlite
 
-.PHONY: help all schema corpus fetch dedup ngrams ner tag floor groups screen \
+.PHONY: help all schema schema-add corpus fetch dedup ngrams ner tag floor groups screen \
         stance stance-runs score-model score-model-free assemble rate text attachments orgs \
         facts check console jump extract score-model-compare sentences embed clusters cases
 
@@ -23,6 +23,9 @@ all: schema corpus dedup ngrams ner tag floor groups screen stance score-model s
 
 schema:  ## create data/roadless.sqlite from schema/roadless.sql and load the seeds; refuses SQLite < 3.38
 	$(PY) scripts/make_schema.py
+
+schema-add:  ## add to an existing data/roadless.sqlite the tables, indexes and views of steps added since it was made; no row is touched
+	$(PY) scripts/make_schema.py --add
 
 $(CSV): $(CSV).gz
 	gunzip -k $<
