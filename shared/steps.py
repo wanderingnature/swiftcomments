@@ -38,6 +38,8 @@ STEPS = [
                      "comment_attachment_count", "comment_organisation"]),
     ("orgs", ["family_organisation"]),
     ("facts", ["comment_facts"]),
+    # The extension past the nine steps: the clusters and topics (scripts/clusters/).
+    ("sentences", ["gate_sentence_run", "gate_sentence_occurrence", "gate_sentence"]),
 ]
 
 TARGETS = [target for target, _ in STEPS]

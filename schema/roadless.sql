@@ -1138,3 +1138,55 @@ CREATE TABLE vocabulary (
     hi      INTEGER,
     PRIMARY KEY (kind, code)
 );
+
+-- ===========================================================================
+-- 13. The sentences of the gate set, for the clusters and topics (scripts/clusters/;
+--     new, after eis-analysis's model-free gate clustering). make sentences reads
+--     the model-free reading (section 9b) of the comments whose hybrid gate is
+--     open, in the screen classes asked for (A and B1 by the operator's
+--     decision of 2026-10-20), and writes each sentence occurrence and each
+--     distinct sentence (its text_key). A rebuild replaces both tables; the run
+--     row keeps the counts of every build.
+-- ===========================================================================
+
+CREATE TABLE gate_sentence_run (
+    run_id               INTEGER PRIMARY KEY AUTOINCREMENT,
+    ruleset_version      TEXT    NOT NULL,
+    classes              TEXT    NOT NULL,       -- the screen classes read, e.g. A,B1
+    created_at           TEXT    NOT NULL,
+    gate_comments        INTEGER NOT NULL,       -- comments whose hybrid gate is open
+    occurrences          INTEGER NOT NULL,       -- their sentences
+    distinct_sentences   INTEGER NOT NULL,
+    comments_opening     INTEGER NOT NULL,       -- with a sentence that opens the gate alone
+    comments_hit         INTEGER NOT NULL,       -- with a sentence that holds a whole-comment gate hit
+    comments_neither     INTEGER NOT NULL,       -- with neither
+    sentences_unlocated  INTEGER NOT NULL,       -- sentences not found in the whole comment's text
+    hits_unlocated       INTEGER NOT NULL        -- whole-comment gate hits in no located sentence
+);
+
+CREATE TABLE gate_sentence_occurrence (
+    unit_id    INTEGER PRIMARY KEY,               -- mf_sentence_score.unit_id
+    text_key   TEXT    NOT NULL,
+    comment_id TEXT    NOT NULL,
+    law        INTEGER NOT NULL,                  -- 1: the sentence reaches 2 on the dimension
+    evid       INTEGER NOT NULL,
+    gap        INTEGER NOT NULL,
+    alt        INTEGER NOT NULL,
+    opens      INTEGER NOT NULL,                  -- 1: the sentence opens the gate alone
+    holds_hit  INTEGER NOT NULL                   -- 1: it holds a gate hit of the whole comment
+);
+CREATE INDEX gate_sentence_occurrence_key ON gate_sentence_occurrence (text_key);
+CREATE INDEX gate_sentence_occurrence_comment ON gate_sentence_occurrence (comment_id);
+
+CREATE TABLE gate_sentence (
+    text_key    TEXT    PRIMARY KEY,              -- sha256 of the sentence's norm_key
+    text        TEXT    NOT NULL,                 -- the smallest of its texts in sort order
+    occurrences INTEGER NOT NULL,
+    comments    INTEGER NOT NULL,
+    law         INTEGER NOT NULL,                 -- 1 when any occurrence has it
+    evid        INTEGER NOT NULL,
+    gap         INTEGER NOT NULL,
+    alt         INTEGER NOT NULL,
+    opens       INTEGER NOT NULL,
+    holds_hit   INTEGER NOT NULL
+);

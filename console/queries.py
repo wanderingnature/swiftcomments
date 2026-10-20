@@ -299,6 +299,23 @@ STEPS = [
         ],
         "breakdowns": [],
     },
+    {
+        "target": "sentences",
+        "what": "step 10, the sentences of the comments whose model-free gate is open, for the clusters",
+        "figures": [
+            ("builds", "SELECT count(*) FROM gate_sentence_run"),
+            ("sentences (occurrences)", "SELECT count(*) FROM gate_sentence_occurrence"),
+            ("distinct sentences", "SELECT count(*) FROM gate_sentence"),
+            ("that open the gate alone", "SELECT count(*) FROM gate_sentence WHERE opens = 1"),
+            ("that hold a whole-comment gate hit", "SELECT count(*) FROM gate_sentence WHERE holds_hit = 1"),
+        ],
+        "breakdowns": [
+            ("the latest build",
+             "SELECT run_id, classes, gate_comments, occurrences, distinct_sentences, comments_opening,"
+             " comments_hit, comments_neither, sentences_unlocated, hits_unlocated, created_at"
+             " FROM gate_sentence_run ORDER BY run_id DESC LIMIT 1"),
+        ],
+    },
 ]
 
 # The Comment page: (title, query); every ? is the comment id.
