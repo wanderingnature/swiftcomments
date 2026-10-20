@@ -44,6 +44,7 @@ uv sync
 cp .env.example .env     # then fill in the two servers
 make help
 make schema              # creates data/roadless.sqlite and loads the seeds
+make schema-add          # later: adds to a filled file the tables of steps added since, touching no row
 ```
 
 `.env.example` documents every variable the pipeline reads.
