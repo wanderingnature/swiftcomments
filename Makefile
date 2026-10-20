@@ -14,12 +14,12 @@ DB  := data/roadless.sqlite
 
 .PHONY: help all schema corpus fetch dedup ngrams ner tag floor groups screen \
         stance stance-runs score-model score-model-free assemble rate text attachments orgs \
-        facts check console jump extract score-model-compare sentences embed
+        facts check console jump extract score-model-compare sentences embed clusters cases
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
 
-all: schema corpus dedup ngrams ner tag floor groups screen stance score-model score-model-free assemble rate fetch text attachments orgs facts sentences embed check  ## every step, in order
+all: schema corpus dedup ngrams ner tag floor groups screen stance score-model score-model-free assemble rate fetch text attachments orgs facts sentences embed clusters check  ## every step, in order
 
 schema:  ## create data/roadless.sqlite from schema/roadless.sql and load the seeds; refuses SQLite < 3.38
 	$(PY) scripts/make_schema.py
@@ -108,6 +108,12 @@ sentences:  ## step 10 (clusters): the sentences of the comments whose model-fre
 
 embed:  ## step 11 (clusters): one vector for each distinct sentence, from the embedding server of .env; VIEW=comment (the default), plain or topic; LIMIT=N for a pilot
 	$(PY) scripts/clusters/embed.py --view $(or $(VIEW),comment) $(if $(LIMIT),--limit $(LIMIT))
+
+clusters:  ## steps 12 to 14: one clustering case, its clusters, topics and names; SENTENCES= VIEW= MERGE= REDUCTION= MCS= MS= SELECTION= STRUCTURE= PASSES= K= SEED= (docs/clusters.md); no model call
+	$(PY) scripts/clusters/cases.py run $(if $(SENTENCES),--sentences $(SENTENCES)) $(if $(VIEW),--view $(VIEW)) $(if $(MODEL),--model $(MODEL)) $(if $(MERGE),--merge $(MERGE)) $(if $(REDUCTION),--reduction $(REDUCTION)) $(if $(MCS),--min-cluster-size $(MCS)) $(if $(MS),--min-samples $(MS)) $(if $(SELECTION),--selection $(SELECTION)) $(if $(STRUCTURE),--structure $(STRUCTURE)) $(if $(PASSES),--noise-passes $(PASSES)) $(if $(K),--k $(K)) $(if $(SEED),--seed $(SEED))
+
+cases:  ## the clustering cases so far, each with its measures
+	$(PY) scripts/clusters/cases.py list
 
 check:  ## every figure of the method beside checks/expected.json
 	$(PY) checks/check.py

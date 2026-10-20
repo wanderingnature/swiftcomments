@@ -1207,3 +1207,88 @@ CREATE TABLE sentence_embedding (
     created_at   TEXT    NOT NULL,
     PRIMARY KEY (text_key, model, instruction)
 );
+
+-- The clustering cases (make clusters, scripts/clusters/cases.py; after
+-- eis-analysis's gate_clusters.py and the studies beside it). A case is one
+-- value on each axis: the sentences, the view, the merge, the reduction, the
+-- HDBSCAN settings, the structure, the noise passes, the topic cut, the seed.
+-- Its name is made from its values; a run of a case replaces that case's rows
+-- and no other. The case row holds its values, its stamp and its measures.
+CREATE TABLE cluster_case (
+    case_name                     TEXT    PRIMARY KEY,
+    sentences                     TEXT    NOT NULL CHECK (sentences IN ('opening', 'opening+hits', 'all')),
+    view                          TEXT    NOT NULL,
+    model                         TEXT    NOT NULL,
+    merge                         REAL    NOT NULL,           -- leader-merge cosine; 0 for none
+    reduction                     TEXT    NOT NULL CHECK (reduction IN ('pca50', 'umap5')),
+    min_cluster_size              INTEGER NOT NULL,
+    min_samples                   INTEGER NOT NULL,
+    selection                     TEXT    NOT NULL CHECK (selection IN ('eom', 'leaf')),
+    structure                     TEXT    NOT NULL CHECK (structure IN ('all', 'by-kind')),
+    noise_passes                  INTEGER NOT NULL,
+    k                             INTEGER,                    -- the topic cut asked for; NULL: the largest eigengap
+    seed                          INTEGER NOT NULL,
+    sentence_run_id               INTEGER NOT NULL,           -- the gate_sentence_run it read
+    code_version                  TEXT    NOT NULL,
+    code_dirty                    INTEGER NOT NULL,
+    created_at                    TEXT    NOT NULL,
+    seconds                       REAL    NOT NULL,
+    input_sentences               INTEGER NOT NULL,           -- distinct sentences read
+    occurrences                   INTEGER NOT NULL,
+    leaders                       INTEGER NOT NULL,
+    clusters                      INTEGER NOT NULL,
+    topics                        INTEGER NOT NULL,
+    eigengaps                     TEXT    NOT NULL,           -- JSON [[k, gap], ...], largest first
+    leaders_clustered             INTEGER NOT NULL,
+    occurrences_clustered         INTEGER NOT NULL,
+    largest_cluster               INTEGER NOT NULL,           -- leaders
+    gate_comments                 INTEGER NOT NULL,
+    comments_unclustered          INTEGER NOT NULL,           -- gate-open comments with no sentence in a cluster
+    opening_occurrences           INTEGER NOT NULL,           -- sentences that open the gate alone
+    opening_occurrences_clustered INTEGER NOT NULL
+);
+
+CREATE TABLE cluster_case_leader (
+    case_name  TEXT NOT NULL,
+    text_key   TEXT NOT NULL,                     -- a sentence the case read
+    leader_key TEXT NOT NULL,                     -- the sentence that stands for it after the merge
+    PRIMARY KEY (case_name, text_key)
+);
+
+CREATE TABLE cluster_case_member (
+    case_name  TEXT    NOT NULL,
+    leader_key TEXT    NOT NULL,
+    kind       TEXT    NOT NULL,                  -- '' when the structure is all; LAW, EVID, GAP or ALT when by kind
+    cluster    INTEGER NOT NULL,                  -- 0 for noise
+    PRIMARY KEY (case_name, leader_key, kind)
+);
+CREATE INDEX cluster_case_member_cluster ON cluster_case_member (case_name, cluster);
+
+CREATE TABLE cluster_case_cluster (
+    case_name   TEXT    NOT NULL,
+    cluster     INTEGER NOT NULL,                 -- 1.. by size, largest first
+    kind        TEXT    NOT NULL,
+    pass        INTEGER NOT NULL,                 -- 1 for the first pass; 2.. for a noise pass
+    topic       INTEGER NOT NULL,
+    leaders     INTEGER NOT NULL,
+    variants    INTEGER NOT NULL,                 -- sentences the leaders absorbed
+    occurrences INTEGER NOT NULL,
+    tightness   REAL    NOT NULL,                 -- mean cosine of its leaders to its centroid
+    law         REAL    NOT NULL,                 -- the share of its leaders of each gate kind
+    evid        REAL    NOT NULL,
+    gap         REAL    NOT NULL,
+    alt         REAL    NOT NULL,
+    terms       TEXT    NOT NULL,                 -- JSON, eight distinctive terms
+    central     TEXT    NOT NULL,                 -- JSON, the two sentences nearest its centroid
+    PRIMARY KEY (case_name, cluster)
+);
+
+CREATE TABLE cluster_case_topic (
+    case_name   TEXT    NOT NULL,
+    topic       INTEGER NOT NULL,                 -- 1.. by occurrences, largest first
+    clusters    INTEGER NOT NULL,
+    leaders     INTEGER NOT NULL,
+    occurrences INTEGER NOT NULL,
+    terms       TEXT    NOT NULL,
+    PRIMARY KEY (case_name, topic)
+);

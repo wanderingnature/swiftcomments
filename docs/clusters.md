@@ -80,3 +80,73 @@ make embed VIEW=comment LIMIT=200     # a pilot
 make embed VIEW=comment               # the rest
 make embed VIEW=plain                 # a second view, for the cases that read it
 ```
+
+## Steps 12 to 14: the clustering cases (`make clusters`, `make cases`)
+
+The clusters, the topics and their names are code with no model call, so their
+choices are not decided beforehand: each set of choices is a **case**, run, recorded
+and compared with the others. A case is one value on each axis:
+
+| Axis | Variable | Values | Default |
+|---|---|---|---|
+| The sentences | `SENTENCES=` | `opening`: the sentences that open the gate alone; `opening+hits`: and the sentences that hold a whole-comment gate hit; `all`: every sentence of the gate-open comments | `opening` |
+| The view | `VIEW=` | the vectors of `make embed VIEW=`: `comment`, `plain`, `topic` | `comment` |
+| The merge | `MERGE=` | a cosine below 1: near-copies at it or more become one leader, most-copied first; 0 for none | 0 |
+| The reduction | `REDUCTION=` | `pca50`: PCA to 50 dimensions; `umap5`: UMAP to 5 (15 neighbours, min_dist 0, cosine) | `umap5` |
+| HDBSCAN | `MCS=` `MS=` `SELECTION=` | min_cluster_size, min_samples; `eom` or `leaf` | 10, 10, `eom` |
+| The structure | `STRUCTURE=` | `all`: one clustering; `by-kind`: one for each gate kind (LAW, EVID, GAP, ALT) over the leaders of that kind, the topics drawn across the kinds | `all` |
+| The noise passes | `PASSES=` | how many times the noise of the pass before is clustered again on its own, with a reduction fitted to it, until a pass finds no cluster | 0 |
+| The topic cut | `K=` | the number of topics; none: the largest eigengap | the eigengap |
+| The seed | `SEED=` | the seed of the reduction | 0 |
+
+The defaults are the first case worth reading from eis-analysis's tests 18 to 25.
+`MODEL=` names the embedding model when the file holds vectors of more than one.
+
+```
+make clusters                                        # the defaults
+make clusters SENTENCES=opening+hits                 # the same, with the whole-comment hit sentences
+make clusters REDUCTION=pca50 MCS=20 MS=10           # eis-analysis's first settings, for comparison
+make clusters STRUCTURE=by-kind                      # one clustering for each gate kind
+make cases                                           # every case with its measures
+```
+
+**What a case does.**
+
+1. **Sentences and vectors.** The distinct sentences its `SENTENCES=` selects, each with
+   the occurrences it reads and the gate kinds of those occurrences, and their vectors
+   under the view. A sentence with no vector stops the case (`make embed`).
+2. **The merge** (step 12). In order of occurrences, each sentence not yet absorbed
+   becomes a leader and absorbs every sentence at `MERGE=` cosine or more to it. Members
+   of one group are within twice the angle of each other, so the merge does not chain.
+3. **The clusters** (step 12). The leaders reduced, then HDBSCAN; a leader in no dense
+   region is noise. With `PASSES=`, the noise is clustered again on its own. By kind,
+   each kind's leaders are clustered apart, and a leader of two kinds is in both.
+4. **The topics** (step 13). One centroid for each cluster; the mean direction of all
+   centroids removed, since every comment shares the opposition to the rescission and
+   the rule's vocabulary; average linkage on cosine distance, cut at the largest
+   eigengap of the normalized Laplacian of the 5-nearest-neighbour graph of the
+   centroids, or at `K=`. The candidates are kept.
+5. **The names** (step 14). The eight most distinctive words and bigrams of each topic
+   and each cluster (class-based TF-IDF: a term's frequency in the class against the
+   number of classes that have it; a term in only one class is not counted), and the two
+   sentences of each cluster nearest its centroid. No model writes a name.
+
+**What a case keeps.** Its name is made from its values, for example
+`opening.comment.m0.umap5.10-10-eom.all.p0.kauto.s0`. A run of a case replaces that
+case's rows and no other's. `cluster_case` holds its values, its git commit, the
+sentence build it read, its seconds, and its measures:
+
+| Measure | What it tells |
+|---|---|
+| `input_sentences`, `occurrences`, `leaders` | the size of the input |
+| `clusters`, `topics`, `eigengaps` | the size of the result, and the other cuts |
+| `leaders_clustered`, `occurrences_clustered` | the share that is not noise |
+| `largest_cluster` | a cluster that swallows the rest |
+| `comments_unclustered` of `gate_comments` | gate-open comments with no sentence in a cluster: comments the topics do not show |
+| `opening_occurrences_clustered` of `opening_occurrences` | the share of the substance-carrying sentences that is grouped |
+
+`cluster_case_cluster` holds each cluster: its kind and pass, its topic, its leaders,
+the sentences they absorbed, its occurrences, its tightness (the mean cosine of its
+leaders to its centroid), the share of its leaders of each gate kind, its terms and its
+central sentences. `cluster_case_topic` holds each topic; `cluster_case_member` the
+cluster of each leader (0 for noise); `cluster_case_leader` the leader of each sentence.
