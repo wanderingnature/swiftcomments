@@ -316,6 +316,18 @@ STEPS = [
              " FROM gate_sentence_run ORDER BY run_id DESC LIMIT 1"),
         ],
     },
+    {
+        "target": "embed",
+        "what": "step 11, one vector for each distinct sentence, by model and instruction",
+        "figures": [
+            ("vectors", "SELECT count(*) FROM sentence_embedding"),
+        ],
+        "breakdowns": [
+            ("by model and view",
+             "SELECT model, CASE instruction WHEN '' THEN '(plain text)' ELSE instruction END AS instruction,"
+             " count(*) AS vectors, max(created_at) AS latest FROM sentence_embedding GROUP BY model, instruction"),
+        ],
+    },
 ]
 
 # The Comment page: (title, query); every ? is the comment id.

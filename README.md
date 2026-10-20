@@ -82,13 +82,14 @@ make attachments  step 8  MODEL  what each file is; OCR of the scans that can ho
 make orgs         step 9         who ran each campaign, on four bases
 make facts                       one row per comment
 make sentences    step 10        the sentences of the comments whose model-free gate is open, for the clusters
+make embed        step 11  EMBED one vector for each distinct sentence, from the embedding server
 make check                       every figure beside checks/expected.json
 ```
 
 `make sentences` begins the extension past the nine steps: the sentences of the
 substantive comments grouped by meaning into clusters and topics, by code, with no
-generative model (`docs/clusters.md`). The vectors and the clusters are the next
-targets.
+generative model (`docs/clusters.md`). `make embed` sends each distinct sentence once
+to an embedding server named in `.env`; the clusters are the next target.
 
 Three targets, marked `MODEL`, send text to the language model, and they are the
 three prompts of `docs/instruments/`: step 3, the stance (`make stance`); step 6, the

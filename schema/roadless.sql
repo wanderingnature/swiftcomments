@@ -1179,3 +1179,20 @@ CREATE TABLE gate_sentence (
     opens       INTEGER NOT NULL,
     holds_hit   INTEGER NOT NULL
 );
+
+-- One vector for each distinct sentence, model and instruction (make embed,
+-- scripts/clusters/embed.py). The vector is
+-- 1,024 little-endian float32; input_sha256 is the SHA-256 of the exact string
+-- sent (the instruction and the text), so a vector made another way is never
+-- taken for this one. Not keyed to a sentence build: a sentence keeps its
+-- vector across builds.
+CREATE TABLE sentence_embedding (
+    text_key     TEXT    NOT NULL,
+    model        TEXT    NOT NULL,
+    instruction  TEXT    NOT NULL,              -- '' for the plain text
+    input_sha256 TEXT    NOT NULL,
+    dimensions   INTEGER NOT NULL,
+    vector       BLOB    NOT NULL,
+    created_at   TEXT    NOT NULL,
+    PRIMARY KEY (text_key, model, instruction)
+);
