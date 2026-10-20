@@ -14,12 +14,12 @@ DB  := data/roadless.sqlite
 
 .PHONY: help all schema corpus fetch dedup ngrams ner tag floor groups screen \
         stance stance-runs score-model score-model-free assemble rate text attachments orgs \
-        facts check console jump extract score-model-compare sentences
+        facts check console jump extract score-model-compare sentences embed
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
 
-all: schema corpus dedup ngrams ner tag floor groups screen stance score-model score-model-free assemble rate fetch text attachments orgs facts sentences check  ## every step, in order
+all: schema corpus dedup ngrams ner tag floor groups screen stance score-model score-model-free assemble rate fetch text attachments orgs facts sentences embed check  ## every step, in order
 
 schema:  ## create data/roadless.sqlite from schema/roadless.sql and load the seeds; refuses SQLite < 3.38
 	$(PY) scripts/make_schema.py
@@ -105,6 +105,9 @@ facts:  ## one row per comment: comment_facts
 
 sentences:  ## step 10 (clusters): the sentences of the comments whose model-free gate is open, classes A and B1; CLASSES= for others; no model call
 	$(PY) scripts/clusters/sentences.py $(if $(CLASSES),--classes $(CLASSES))
+
+embed:  ## step 11 (clusters): one vector for each distinct sentence, from the embedding server of .env; VIEW=comment (the default), plain or topic; LIMIT=N for a pilot
+	$(PY) scripts/clusters/embed.py --view $(or $(VIEW),comment) $(if $(LIMIT),--limit $(LIMIT))
 
 check:  ## every figure of the method beside checks/expected.json
 	$(PY) checks/check.py

@@ -40,6 +40,7 @@ STEPS = [
     ("facts", ["comment_facts"]),
     # The extension past the nine steps: the clusters and topics (scripts/clusters/).
     ("sentences", ["gate_sentence_run", "gate_sentence_occurrence", "gate_sentence"]),
+    ("embed", ["sentence_embedding"]),
 ]
 
 TARGETS = [target for target, _ in STEPS]

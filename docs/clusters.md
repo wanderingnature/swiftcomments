@@ -44,3 +44,39 @@ build replaces the two sentence tables.
 The step stops when there is no model-free score, when no comment of the classes has
 an open gate, and when a comment's text gives a different sentence from the one that
 was scored (its text changed since `make score-model-free` read it).
+
+## Step 11: the vectors (`make embed`)
+
+One vector for each distinct sentence of `gate_sentence`, made by Qwen3-Embedding-8B at
+1,024 dimensions (the model of eis-analysis) on the embedding server named in `.env`:
+
+```
+EMBED_BASE_URL=https://api.fireworks.ai/inference/v1
+EMBED_API_KEY=<your key>
+EMBED_MODEL=accounts/fireworks/models/qwen3-embedding-8b
+```
+
+Any server speaking the OpenAI embeddings API (`POST <EMBED_BASE_URL>/embeddings`) that
+serves the model and honours `dimensions` will do. The step stops when `EMBED_BASE_URL`
+or `EMBED_MODEL` is not set.
+
+**The view.** Qwen3-Embedding is instruction-aware: the same sentence under two
+instructions gives two vectors. The instruction is part of the input,
+`Instruct: <instruction>\nQuery:<text>`. `VIEW=` picks one of three, eis-analysis's:
+
+| View | Instruction |
+|---|---|
+| `comment` (the default) | "Given a public comment on a federal rule, retrieve the sentence from the agency's record that addresses the specific claim the comment makes. A sentence that only states that the rule is being rescinded or describes the proposed action in general does not address the claim." |
+| `plain` | none: the sentence alone |
+| `topic` | "Represent the policy issue or subject this sentence discusses" |
+
+Each vector is kept in `sentence_embedding` with the model, the instruction and the
+SHA-256 of the exact string sent. A sentence that has a vector for the model and the
+instruction is not sent again, so the step resumes where it stopped and a new build of
+the sentences sends only the new ones. `LIMIT=N` sends the first N for a pilot.
+
+```
+make embed VIEW=comment LIMIT=200     # a pilot
+make embed VIEW=comment               # the rest
+make embed VIEW=plain                 # a second view, for the cases that read it
+```

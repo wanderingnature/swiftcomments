@@ -94,7 +94,7 @@ def _page(name):
 def test_steps_page_renders(dbfile):
     at = _page("Steps")
     headers = [h.value for h in at.subheader]
-    assert headers[0] == "make schema" and headers[-1] == "make sentences"
+    assert headers[0] == "make schema" and headers[-1] == "make embed"
     assert len(headers) == len(STEPS)
     # the corpus step has rows, the floor has none, comment_facts has no table
     texts = [t.value for t in at.text]
