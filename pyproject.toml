@@ -20,6 +20,10 @@ dependencies = [
     "striprtf",
     # The one sentence method, packages/comment-sentences (standard library only)
     "comment-sentences",
+    # The clusters and topics of the gate-opening sentences (scripts/topics/): PCA, HDBSCAN,
+    # agglomeration, the vectorizer; UMAP.
+    "scikit-learn>=1.9.1",
+    "umap-learn>=0.5.12",
 ]
 
 [dependency-groups]
