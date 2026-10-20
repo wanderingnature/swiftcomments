@@ -1,5 +1,6 @@
-"""The console: a read-only Streamlit app over data/roadless.sqlite. Ten pages. Five show the results (console/results.py): Overview,
-Stance and topics, Coordination, Places and citations, Substance. Five look into
+"""The console: a read-only Streamlit app over data/roadless.sqlite. Eleven pages. Five show the results (console/results.py): Overview,
+Stance and topics, Coordination, Places and citations, Substance. Topics
+(console/topics.py) shows the clustering cases of make clusters. Five look into
 the file: Comment (one comment as the analysis read it, then every row the steps
 hold about it), Steps (what every make target has written), Compare (every make
 score-model-compare run, and any two readings of any two runs side by side), Tables
@@ -24,7 +25,7 @@ if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
 from shared import db, score_json  # noqa: E402
-from console import results  # noqa: E402
+from console import results, topics  # noqa: E402
 from console.queries import COMMENT, COMPARE_READINGS, COMPARE_RUNS, STEPS, TABLES  # noqa: E402
 from console.view import frame, open_db, scalar, show  # noqa: E402
 
@@ -218,6 +219,7 @@ def page_query():
 
 PAGES = {
     **results.PAGES,
+    "Topics": topics.page_topics,
     "Comment": page_comment,
     "Steps": page_steps,
     "Compare": page_compare,
