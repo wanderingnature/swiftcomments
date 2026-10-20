@@ -1,110 +1,154 @@
-# The agency side: what rtca started and eis-analysis continued
+# The agency side: options for one pipeline
 
-Status: assessment, 2026-10-19, for discussion; rewritten the same day after a first version that
-misread both repositories. Read from rtca at `reproduction-source` and from the workbench copy of
-eis-analysis (`f2598ec`, equal to GitHub `main`) with its gitignored outputs copied in from the
-original (`tmp/`, `respondkit/`, `deis/`, `deis2/`, `data/`). Nothing here is decided.
+Status: options for discussion, 2026-10-20. The operator makes the decisions.
 
-The intent: rtca and eis-analysis became two pipelines when eis-analysis split from rtca;
-swiftcomments is to carry them as **one pipeline**.
+This document uses ASD-STE100 Simplified Technical English.
 
-## Where swiftcomments stops, and what its plan left out
+## 1. Purpose
 
-swiftcomments ends at rtca's step 9, substance: the v3 gate and scores, the model-free reading
-(rule set 3, hybrid), the screen classes A, B1, B2, answerability. rtca's published method
-(`docs/writing/methodologies.md`) stops there too.
+swiftcomments stops at step 9 (substance). rtca started the agency side. eis-analysis continued it.
+The two became two pipelines. swiftcomments must carry them as one pipeline.
 
-The plan (`reproduction-repo.md` §1, "Not in the repository") left out, by name, exactly the agency
-side: "the record side (`docindex/`, `record_unit`, `unit_embedding`, the DEIS Markdown), the
-concern ledger, EA issues, bucket profiles". Carrying them is a §10 revision.
+This document gives the options for each decision. The diagram in section 3 shows where each
+decision applies.
 
-## The agency side as rtca built it (in rtca at the tag)
+## 2. Sources
 
-Design: rtca `docs/design/agency-response-model.md` ("BUILT AND RUN"). The agency answers
-substantive comments once per concern, not per comment; the model produces the same artifacts as
-the agency's response appendix.
+- rtca at the tag `reproduction-source`.
+- eis-analysis at `f2598ec`. This commit is the same as GitHub `main`.
+- The gitignored outputs of eis-analysis, copied into the workbench: `tmp/`, `respondkit/`,
+  `deis/`, `deis2/`, `data/`.
 
-| Piece | rtca code or file | What it is |
+## 3. The pipeline and the decisions
+
+The boxes with a "D" number are decisions. Section 5 gives the options for each decision.
+
+```mermaid
+flowchart TD
+    S9["Step 9: substance (in swiftcomments)<br/>v3 gate, model-free reading,<br/>screen class A / B1 / B2"]
+    BINS["Agency bins: 30 bins<br/>(rtca seed file)"]
+    D1{{"D1: ledger source"}}
+    EX["Ledger 1: extract<br/>concern excerpts, one bin each"]
+    ADJ["Ledger 2: adjudicate<br/>stance or concern"]
+    PTS["Ledger 3: points<br/>excerpts grouped in each bin"]
+    STM["Ledger 4 and 5: statement, label,<br/>5 sampled dispositions per point"]
+    S0["S0: class A points,<br/>6 triggers select points"]
+    D3{{"D3: record retrieval"}}
+    BR["Bucket briefs<br/>(headings, bucket profile, document index)"]
+    S1["S1: record file per point"]
+    D2{{"D2: response path"}}
+    PROSE["Prose path S2 to S5<br/>with S3 directives"]
+    SLOTS["Slots path Steps 3 to 9"]
+    OUT["Response section per bucket,<br/>reviewed under two standards"]
+    REC["Record documents<br/>text, units, embeddings"]
+    D4{{"D4: record documents"}}
+    D5{{"D5: embedding and reranker endpoints"}}
+    RED["Redesign line:<br/>gate-sentence clusters"]
+    D6{{"D6: redesign line"}}
+
+    S9 --> D1
+    BINS --> EX
+    D1 --> EX --> ADJ --> PTS --> STM --> S0
+    S0 --> D3
+    D3 --> BR --> S1
+    D3 --> S1
+    S1 --> D2
+    D2 --> PROSE --> OUT
+    D2 --> SLOTS --> OUT
+    D4 --> REC
+    REC --> BR
+    REC --> S1
+    REC --> SLOTS
+    D5 --> PTS
+    D5 --> REC
+    D5 --> SLOTS
+    S9 --> D6 --> RED
+```
+
+## 4. What exists
+
+### 4.1 In rtca
+
+| Item | Location | Function |
 |---|---|---|
-| Agency bins | `db/migrations_pending/agency_bins.sql`, `agency_bins_disjoint_ids.sql` | 30 bins in 7 families (process, rule, eis, resources, recreation, lands, socioeconomic), authored from the FS 2008 content-analysis code families, extended for the 2026 rescission (`docs/reference/agency-comment-bucketing-reference.md`) |
-| Concern ledger | `scripts/substance/concern_ledger.py` | `extract`: every gate-open, own-scored (not inherited) v3 comment read by the model into verbatim concern excerpts, each with a bin, move, target, forum (DEIS, rule, both) and citations with the (f)(2)(iv) linkage test; `adjudicate-disposition`: per distinct excerpt, stance or concern; `respond`, `respond-strand`, `points`, `respond-point`: groupings and sampled 1b.7(f)(2) dispositions |
-| Point class | `v_concern_point_class` | a point is class A when any carrier is class A (`substance_screen`); only class A points reach the response layers |
-| Bucket profile | `scripts/substance/bucket_profile.py`, design `docs/design/bucket-profile.md` | per above-floor bucket, what it argues lexically and by meaning (`bucket_profile_excerpts`, `_terms`, `_clusters`) |
-| Response headings | `docs/design/agency-theme-standard.md` | 36 headings T-1 to T-36, the Rescission DEIS Volume I table of contents with the DEIS Appendix 3 and 2020 Alaska FEIS Appendix H counterparts, and the placement of the 29 above-floor buckets under them; frozen by the operator 2026-09-28 |
-| Record side | `scripts/docindex/` (`ingest_documents.py`, `brief.py`, `standard.py`, `phrase_curation.py`) | the agency's documents as sections and chunks with embeddings, and the heading brief (where in the record a heading's subject is addressed) |
-| EA issues | `scripts/substance/extract_ea_issues.py` | the earlier authored issue space, replaced for bucketing by the agency bins; kept for the substance report's EA coverage |
+| Agency bins | `db/migrations_pending/agency_bins.sql`, `agency_bins_disjoint_ids.sql` | 30 bins in 7 families. The bins come from the Forest Service 2008 code families, with additions for the 2026 rescission. |
+| Concern ledger | `scripts/substance/concern_ledger.py` | The model reads each gate-open comment. It writes concern excerpts with a bin, a move, a target, a forum and the citations. Later tasks group the excerpts and sample dispositions. |
+| Point class | view `v_concern_point_class` | A point is class A when one carrier is class A. Only class A points go to the response. |
+| Bucket profile | `scripts/substance/bucket_profile.py` | It records what each bucket argues, by words and by meaning. |
+| Response headings | `docs/design/agency-theme-standard.md` | 36 headings, T-1 to T-36, from the Rescission DEIS Volume I. Each bucket has a heading. The operator froze this set on 2026-09-28. |
+| Record side | `scripts/docindex/` | It divides the agency documents into sections and chunks, with embeddings. |
 
-## What eis-analysis did with it
+The swiftcomments plan (`reproduction-repo.md` §1) excludes these items by name.
 
-**The ledger moved to eis-analysis on 2026-09-29** and rtca stopped running it
-(`docs/plans/concern-ledger-in-eis-analysis.md`). Steps 1 and 2 (`extract`,
-`adjudicate-disposition`) are rtca's, the extract prompt at v5 writing no label. Points were rebuilt from excerpt meaning, with no
-labels and no model judge (`docs/design/excerpt-points-ledger-s0-s1.md`): per bin, complete
-linkage on qwen3-embedding-8b vectors cut at 0.27, joined by shared evidence markers; ids inherited
-across builds; then `point-statement`, `point-label` and five `respond-point` samples, all on
-qwen3.8-27b. The tables stay in rtca's `roadless` schema.
+### 4.2 In eis-analysis
 
-**Respondkit** (`docs/design/respondkit/V3_DESIGN.md`, the design of record, 2026-10-02) answers the
-points the way the Final EIS would:
+| Item | Location | Function |
+|---|---|---|
+| Ledger, moved from rtca on 2026-09-29 | `src/ledger/`, `scripts/ledger/` | Steps 1 and 2 are the rtca steps. The extract prompt is v5 and writes no label. Step 3 makes points from the excerpt meaning, with no labels and no model judge. |
+| S0 and S1 | `src/respondkit/s0.py`, `s1.py` | S0 selects points. S1 makes the record file for each selected point from the bucket brief. |
+| Bucket briefs | `.claude/skills/bucket-brief/scripts/brief.py all` | A model writes queries from the headings and the bucket profile. The script runs the queries on the record documents. 30 briefs exist. |
+| Prose path | `src/respondkit/s2.py` to `s5.py` | Record-supported code, directive scenarios, draft, collapse, review. Runs: 2026-09-11 to 09-30. |
+| Slots path | `src/respondkit/s05.py`, `s1p.py`, `s2s.py`, `s6.py` to `s9.py` | Each claim is divided into parts. Each part gets verbatim record spans. The code is derived by code, not by the model. Runs: 2026-10-01 to 10-03. |
+| Record documents | `deis/`, `deis2/` | 15 documents as PDF and Markdown. 26,704 units from 14 of the documents. |
+| Redesign line | `src/concerns/`, `scripts/model_free/gate_clusters.py` | Clusters of comment sentences in place of bins and points. Nothing in this line connects to respondkit. |
 
-1. **S0** (free): one cluster per class-A point in an above-floor bucket; six deterministic triggers
-   choose which get a record check (latest run 2026-10-01: 2,816 class-A points in 29 buckets,
-   1,380 selected).
-2. **Bucket briefs**: rtca's heading brief turned per bucket; queries written from the bucket's
-   response headings and its profile, run lexically and by embedding over the record documents
-   (`.claude/skills/bucket-brief/scripts/brief.py all`, the query-writing call on qwen3.8-27b, about
-   $0.30 for 29 buckets; `docs/design/bucket-brief-automation.md`). 30 briefs in
-   `docs/indexing/briefs/`.
-3. **S1** (free): each selected point's record file from its bucket's brief, plus a bucket record.
-4. Two response paths over S1:
-   - **prose path**, S2 to S5: the record-supported code, the S3 directive scenarios, the draft, the
-     collapse to the published shape, counsel's review under the deferential and hard-look
-     standards; run on buckets 2026-09-11 to 09-30;
-   - **slots path**, Steps 3 to 9 (built 2026-10-01 to 10-03, the latest respondkit work): claims
-     split into parts, per-part retrieval, slots of verbatim record spans with the code derived in
-     code, a second look before any dismissal, prose rendered from slots, structural grouping,
-     judging per part. Runs: k12px, tvm1 to tvm6, cie2 (41 selected points, 28 of 40 passed),
-     rfp1, cac1 to cac3.
-5. Not built: S5a (apply the review) and the response ledger.
+### 4.3 In swiftcomments
 
-**A separate line, 2026-10-04 to 10-10**: the comment-analysis redesign
-(`docs/design/comment-analysis-redesign.md`) tried replacing bins, excerpts and points with
-clusters of the comments' own sentences; `src/concerns/` wrote responses for three topics of the
-2026-10-05 clustering; the model-free gate was handed over from rtca and the gate-opening sentences
-clustered (tests 13 to 25). It is not wired to respondkit, and nothing in it was chosen.
+swiftcomments has the inputs of the ledger: `substance_scores` (gate, `scored_via`, instrument
+v3), `substance_screen` (class A), and `comment_group` with its members.
 
-## What is on disk to bring across
+swiftcomments does not have the agency bins, the ledger, embeddings, the record documents, the
+bucket profile, the briefs or respondkit.
 
-| Path | Holds |
-|---|---|
-| `deis/` | 15 record documents as PDF, Markdown and page maps |
-| `deis2/` | the record units of 14 of them, 26,704 (run 1; the Volume III agency letters are not cut) |
-| `docs/indexing/briefs/`, `queries/` | the 30 bucket briefs and their query files |
-| `data/bucket-brief/query_embeddings.json` | the briefs' query vectors |
-| `data/ledger/excerpt_points.json` | the 2026-09-29 point build report |
-| `respondkit/fixtures/<batch>/` | the ledger and S0/S1 output frozen per bucket for the slots runs (cie2: 85 points with statements, excerpts, triggers and the ledger's verdict; the S1 records) |
-| `respondkit/S*/`, `thread/`, `judge/`, `export/`, `reports/` | every prose and slots run, call by call |
-| `tmp/model_free/` | the score stores and `gate_clusters.sqlite` of the redesign line |
+## 5. The options
 
-The ledger's own tables (`concern_statements_llm`, `concern_strand_points`,
-`concern_strand_responses_llm`, `concern_point_responses_llm`, `concern_bucket_map`), the bucket
-profile, the document index (`doc_chunks`, `doc_chunk_embeddings`) and respondkit's rows are in
-Postgres, not in the copy.
+### D1: the source of the ledger
 
-## What swiftcomments already has that the agency side reads
+| Option | What it is | Result |
+|---|---|---|
+| D1-A | Port `concern_ledger.py` from rtca at the tag. | The extract writes labels. Points come from strands with a model judge. eis-analysis replaced this method because the labels split one claim into many points. |
+| D1-B | Port `src/ledger/` from eis-analysis. | The extract writes no label. Points come from excerpt meaning, with no model judge. S0 and the briefs read this form of the points. |
 
-`substance_scores` (gate, `scored_via`, instrument v3), `substance_screen` (class A for the point
-class), `comment_group` and its members (carriers), the authorities and references. Missing: the
-agency bins, the ledger, embeddings, the record documents and their index, the bucket profile and
-briefs, respondkit.
+### D2: the response path
 
-## For discussion
+| Option | What it is | Result |
+|---|---|---|
+| D2-A | The slots path, Steps 3 to 9. | Each answer has verbatim record spans. Code derives the disposition code. It has no directive scenarios. It ran on 12 batches. |
+| D2-B | The prose path, S2 to S5, with S3. | The model selects the code. S3 applies the political directive scenarios. It ran on buckets in September. |
+| D2-C | Both paths. | The two paths give two readings of each point, with and without directives. The cost is two sets of model calls. |
 
-1. Port source for the ledger: rtca's `concern_ledger.py` at the tag, or eis-analysis's
-   `src/ledger/` (rtca's steps 1 and 2 plus the excerpt-meaning points).
-2. Which response path: the slots path, the prose path with the S3 directives, or both.
-3. The record documents: their source for a reader (the docket's supporting documents) and the
-   conversion (`deis/` was made by `scripts/convert_deis_pdfs.py`; swiftcomments has the MinerU OCR).
-4. Endpoints beyond `LLM_BASE_URL`: an embedding endpoint (qwen3-embedding-8b) and a reranker
-   (qwen3-reranker-8b, the slots path's second look), named by the operator.
-5. The redesign line: whether any of it comes across.
+### D3: record retrieval for S1
+
+| Option | What it is | Result |
+|---|---|---|
+| D3-A | The bucket briefs, then S1. | This option needs the response headings, the bucket profile and the document index. It is the S1 that the two response paths read now. |
+| D3-B | Per-part retrieval only (slots Step 4). | This option needs the record units and their embeddings. It does not need the briefs or the bucket profile. It applies only with D2-A. |
+
+### D4: the record documents
+
+| Option | What it is | Result |
+|---|---|---|
+| D4-A | Get the documents from the docket. Convert them with the MinerU OCR that swiftcomments has now. | One conversion method for the whole repository. The units can be different from the `deis2/` units. |
+| D4-B | Port `scripts/convert_deis_pdfs.py` and `scripts/record_units.py` from eis-analysis. | The units are the same as the units of the eis-analysis runs. |
+
+Both options get the documents from their public source. The repository does not ship our
+converted text.
+
+### D5: the embedding and reranker endpoints
+
+The points (D1-B), the briefs and the slots path need embeddings (qwen3-embedding-8b). The slots
+path also needs a reranker (qwen3-reranker-8b).
+
+| Option | What it is | Result |
+|---|---|---|
+| D5-A | Each endpoint gets its own variable in `.env`. | The operator names each server. |
+| D5-B | One server, `LLM_BASE_URL`, gives all three. | This is possible only if the operator's server gives embeddings and reranking. |
+
+The repository does not name an endpoint. The operator names it.
+
+### D6: the redesign line
+
+| Option | What it is | Result |
+|---|---|---|
+| D6-A | Leave it out. | The pipeline is the ledger and respondkit only. |
+| D6-B | Port the gate-sentence clusters as a report. | The console shows the clusters beside the bins. No response step reads them. |
