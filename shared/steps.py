@@ -41,6 +41,8 @@ STEPS = [
     # The extension past the nine steps: the clusters and topics (scripts/clusters/).
     ("sentences", ["gate_sentence_run", "gate_sentence_occurrence", "gate_sentence"]),
     ("embed", ["sentence_embedding"]),
+    ("clusters", ["cluster_case", "cluster_case_leader", "cluster_case_member",
+                  "cluster_case_cluster", "cluster_case_topic"]),
 ]
 
 TARGETS = [target for target, _ in STEPS]

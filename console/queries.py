@@ -328,6 +328,20 @@ STEPS = [
              " count(*) AS vectors, max(created_at) AS latest FROM sentence_embedding GROUP BY model, instruction"),
         ],
     },
+    {
+        "target": "clusters",
+        "what": "steps 12 to 14, the clustering cases: clusters, topics and their names (the Topics page reads them)",
+        "figures": [
+            ("cases", "SELECT count(*) FROM cluster_case"),
+            ("clusters, all cases", "SELECT count(*) FROM cluster_case_cluster"),
+            ("topics, all cases", "SELECT count(*) FROM cluster_case_topic"),
+        ],
+        "breakdowns": [
+            ("the cases",
+             "SELECT case_name, clusters, topics, leaders, leaders_clustered, comments_unclustered, gate_comments,"
+             " created_at FROM cluster_case ORDER BY created_at"),
+        ],
+    },
 ]
 
 # The Comment page: (title, query); every ? is the comment id.
