@@ -96,3 +96,13 @@ def test_a_longer_vector_is_cut_to_its_leading_dimensions():
     assert embeddings.leading(same) == same.tolist()
     with pytest.raises(RuntimeError, match="768 values, fewer than 1024"):
         embeddings.leading(np.ones(768))
+
+
+def test_concurrency_from_env(monkeypatch):
+    monkeypatch.delenv("EMBED_CONCURRENCY", raising=False)
+    assert embeddings.concurrency() == 8
+    monkeypatch.setenv("EMBED_CONCURRENCY", "1")
+    assert embeddings.concurrency() == 1
+    monkeypatch.setenv("EMBED_CONCURRENCY", "0")
+    with pytest.raises(SystemExit, match="1 or more"):
+        embeddings.concurrency()

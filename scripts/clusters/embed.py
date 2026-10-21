@@ -52,7 +52,6 @@ VIEWS = {
     "plain": "",
     "topic": "Represent the policy issue or subject this sentence discusses",
 }
-CONCURRENCY = 8
 
 
 def wrap(instruction: str, text: str) -> str:
@@ -110,7 +109,7 @@ def main(argv: list[str] | None = None) -> int:
     todo = missing[:args.limit] if args.limit else missing
     chars = sum(len(wrap(instruction, t)) for _, t in todo)
     print(f"make embed: view {args.view}, model {model} at {base}; {total:,} distinct sentences,"
-          f" {total - len(missing):,} with a vector; {len(todo):,} to send"
+          f" {total - len(missing):,} with a vector; {len(todo):,} to send, {embeddings.concurrency()} requests at once"
           f" ({chars:,} characters)" + (f" (--limit {args.limit})" if args.limit else ""), flush=True)
     if args.dry_run or not todo:
         conn.close()
@@ -118,7 +117,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     batches = [todo[i:i + embeddings.BATCH] for i in range(0, len(todo), embeddings.BATCH)]
     written = tokens = 0
-    with ThreadPoolExecutor(CONCURRENCY) as ex:
+    with ThreadPoolExecutor(embeddings.concurrency()) as ex:
         results = ex.map(lambda b: embeddings.embed_batch([wrap(instruction, t) for _, t in b], base, key, model),
                          batches)
         for b, (vecs, tok) in zip(batches, results):
