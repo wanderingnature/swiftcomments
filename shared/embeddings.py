@@ -9,6 +9,14 @@ API, `POST <EMBED_BASE_URL>/embeddings`.
 
 The model is Qwen3-Embedding-8B at 1,024 dimensions. A step that needs the server and finds
 no EMBED_BASE_URL or EMBED_MODEL stops.
+
+`dimensions` is sent with every request. A server that honours it (Fireworks,
+Ollama) returns 1,024 values; one that does not (LM Studio, whose llama.cpp
+engine never reads the field) returns the model's full 4,096. The longer vector
+is cut to its first 1,024 values and re-normalised: Qwen3-Embedding's reduced
+sizes are its leading dimensions (Matryoshka), and Ollama's server does the
+same (normalize(embedding[:dimensions])). A vector shorter than 1,024 stops
+the step.
 """
 from __future__ import annotations
 
@@ -16,6 +24,7 @@ import os
 import sys
 import time
 
+import numpy as np
 import requests
 
 DIMENSIONS = 1024
@@ -40,6 +49,18 @@ def server() -> tuple[str, str, str]:
     return base, key, model
 
 
+def leading(vector) -> list[float]:
+    """The vector at DIMENSIONS: as returned when it has that length; its first
+    DIMENSIONS values re-normalised when it is longer; refused when shorter."""
+    v = np.asarray(vector, dtype=np.float64)
+    if len(v) < DIMENSIONS:
+        raise RuntimeError(f"embeddings: the server returned {len(v)} values, fewer than {DIMENSIONS}")
+    if len(v) == DIMENSIONS:
+        return v.tolist()
+    head = v[:DIMENSIONS]
+    return (head / np.linalg.norm(head)).tolist()
+
+
 def embed_batch(texts: list[str], base: str, key: str, model: str) -> tuple[list[list[float]], int]:
     """One request (at most BATCH texts): the vectors in the order of `texts`,
     and the input tokens the server reports (0 when it reports none)."""
@@ -62,7 +83,6 @@ def embed_batch(texts: list[str], base: str, key: str, model: str) -> tuple[list
         data = sorted(body["data"], key=lambda d: d["index"])
         if len(data) != len(texts):
             raise RuntimeError(f"embeddings: sent {len(texts)} texts, got {len(data)} vectors")
-        if any(len(d["embedding"]) != DIMENSIONS for d in data):
-            raise RuntimeError(f"embeddings: the server returned vectors of another length than {DIMENSIONS}")
-        return [d["embedding"] for d in data], int((body.get("usage") or {}).get("prompt_tokens") or 0)
+        return ([leading(d["embedding"]) for d in data],
+                int((body.get("usage") or {}).get("prompt_tokens") or 0))
     raise RuntimeError("unreachable")

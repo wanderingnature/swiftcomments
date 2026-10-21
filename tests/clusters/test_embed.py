@@ -84,3 +84,15 @@ def test_dry_run_sends_nothing(sentences_file, monkeypatch, capsys):
     conn = db.connect(sentences_file)
     assert conn.execute("SELECT count(*) FROM sentence_embedding").fetchone()[0] == 0
     conn.close()
+
+
+def test_a_longer_vector_is_cut_to_its_leading_dimensions():
+    full = np.arange(1, 4097, dtype=np.float64)
+    cut = np.asarray(embeddings.leading(full))
+    assert len(cut) == embeddings.DIMENSIONS
+    assert np.isclose(np.linalg.norm(cut), 1.0)
+    assert np.allclose(cut, full[:1024] / np.linalg.norm(full[:1024]))
+    same = np.ones(embeddings.DIMENSIONS)
+    assert embeddings.leading(same) == same.tolist()
+    with pytest.raises(RuntimeError, match="768 values, fewer than 1024"):
+        embeddings.leading(np.ones(768))

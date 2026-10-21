@@ -57,7 +57,12 @@ EMBED_MODEL=accounts/fireworks/models/qwen3-embedding-8b
 ```
 
 Any server speaking the OpenAI embeddings API (`POST <EMBED_BASE_URL>/embeddings`) that
-serves the model and honours `dimensions` will do. The step stops when `EMBED_BASE_URL`
+serves the model will do. Every request asks for 1,024 dimensions. Fireworks and Ollama
+honour that; LM Studio (its llama.cpp engine never reads the field) returns Qwen's full
+4,096, and the step keeps the first 1,024 and re-normalises them, as Ollama's server
+does: Qwen3-Embedding's reduced sizes are its leading dimensions. A local run of the
+full model is LM Studio with Qwen's f16 GGUF (`Qwen/Qwen3-Embedding-8B-GGUF`, 15.1 GB),
+or Ollama with `qwen3-embedding:8b-fp16`; the 4.68 GB default of both is the Q4_K_M. The step stops when `EMBED_BASE_URL`
 or `EMBED_MODEL` is not set.
 
 **The view.** Qwen3-Embedding is instruction-aware: the same sentence under two
