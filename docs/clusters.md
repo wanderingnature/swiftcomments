@@ -78,7 +78,11 @@ instructions gives two vectors. The instruction is part of the input,
 Each vector is kept in `sentence_embedding` with the model, the instruction and the
 SHA-256 of the exact string sent. A sentence that has a vector for the model and the
 instruction is not sent again, so the step resumes where it stopped and a new build of
-the sentences sends only the new ones. `LIMIT=N` sends the first N for a pilot.
+the sentences sends only the new ones. `LIMIT=N` sends the first N for a pilot. `EMBED_CONCURRENCY` in `.env`
+sets the requests in flight (8 if empty); LM Studio works one batch at a time, so a
+local server takes 1, or its queued requests wait past the timeout and are sent again.
+Measured on an M3 Ultra, LM Studio's f16 Qwen embeds about 15 plain sentences a second,
+BGE about 83.
 
 ```
 make embed VIEW=comment LIMIT=200     # a pilot

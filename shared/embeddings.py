@@ -6,6 +6,8 @@ API, `POST <EMBED_BASE_URL>/embeddings`.
     EMBED_BASE_URL   up to and including /v1, e.g. https://api.fireworks.ai/inference/v1
     EMBED_API_KEY    sent as a Bearer header when set
     EMBED_MODEL      the server's name for the model, e.g. accounts/fireworks/models/qwen3-embedding-8b
+    EMBED_CONCURRENCY  requests in flight at once (default 8); a local server that works one
+                       batch at a time (LM Studio) takes 1, or queued requests wait past the timeout
 
 The model is Qwen3-Embedding-8B at 1,024 dimensions. A step that needs the server and finds
 no EMBED_BASE_URL or EMBED_MODEL stops.
@@ -30,6 +32,10 @@ import requests
 DIMENSIONS = 1024
 # Texts per request.
 BATCH = 128
+# Requests in flight at once, unless EMBED_CONCURRENCY says otherwise.
+CONCURRENCY = 8
+# Seconds a request may take, its wait in the server's queue included.
+TIMEOUT = 600
 # Tries per request: a rate limit (429), 408/409, a 5xx or a timeout is tried
 # again after 2s, 4s, ...; any other 4xx fails at once.
 TRIES = 5
@@ -47,6 +53,16 @@ def server() -> tuple[str, str, str]:
     if base.endswith("/embeddings"):
         base = base[: -len("/embeddings")]
     return base, key, model
+
+
+def concurrency() -> int:
+    """Requests in flight at once: EMBED_CONCURRENCY, or CONCURRENCY when it is not set."""
+    raw = (os.environ.get("EMBED_CONCURRENCY") or "").strip()
+    if not raw:
+        return CONCURRENCY
+    if not raw.isdigit() or int(raw) < 1:
+        raise SystemExit(f"EMBED_CONCURRENCY={raw!r}: a whole number, 1 or more")
+    return int(raw)
 
 
 def leading(vector) -> list[float]:
@@ -67,7 +83,7 @@ def embed_batch(texts: list[str], base: str, key: str, model: str) -> tuple[list
     headers = {"Authorization": f"Bearer {key}"} if key else {}
     for attempt in range(TRIES):
         try:
-            r = requests.post(f"{base}/embeddings", timeout=120, headers=headers,
+            r = requests.post(f"{base}/embeddings", timeout=TIMEOUT, headers=headers,
                               json={"model": model, "input": texts, "dimensions": DIMENSIONS})
             if r.status_code in (408, 409, 429) or r.status_code >= 500:
                 raise requests.HTTPError(f"HTTP {r.status_code}: {r.text}", response=r)
