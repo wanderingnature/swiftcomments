@@ -7,9 +7,12 @@ the file changes. Nothing here runs a case: make clusters does.
 """
 import json
 
+import pandas as pd
 import streamlit as st
 
 from console import queries as q
+from console.view import open_db
+from shared import case_compare
 from console.results import CARDS, metrics, not_run, pager, pct
 from console.view import query, show
 
@@ -93,6 +96,34 @@ def page_topics():
 
     st.subheader("The noise")
     leader_rows(name, 0, "The leaders in no cluster, most-occurring first", "case_noise_page")
+
+    if len(names) > 1:
+        compare_cases(names, name)
+
+
+def compare_cases(names, first):
+    """Two cases side by side: how far they group the same sentences the same way."""
+    st.subheader("Two cases compared")
+    st.caption("On the sentences both cases cluster, the adjusted Rand index (1 the same grouping, 0 what"
+               " chance gives) and the normalized mutual information; then, for each cluster of the first,"
+               " the cluster of the second that holds most of its sentences, and the share it holds.")
+    others = [n for n in names if n != first]
+    second = st.selectbox("compared with", others, key="case_second")
+    with open_db() as conn:
+        m = case_compare.compare(case_compare.labels(conn, first), case_compare.labels(conn, second))
+        terms = {n: {c: ", ".join(json.loads(t)[:4]) for c, t in conn.execute(
+            "SELECT cluster, terms FROM cluster_case_cluster WHERE case_name = ?", (n,))} for n in (first, second)}
+    metrics([("Sentences in both", m["shared_sentences"], None),
+             ("Clustered by both", m["clustered_both"], f"first {m['clustered_first']:,}, second {m['clustered_second']:,}"),
+             ("Adjusted Rand", m["ari"] if m["ari"] is not None else "-", None),
+             ("NMI", m["nmi"] if m["nmi"] is not None else "-", None),
+             ("Clusters 80%+ in one", f"{m['clusters_80']} of {len(m['crossing'])}",
+              f"median share {m['median_share']}")])
+    crossing = pd.DataFrame(m["crossing"])
+    if not crossing.empty:
+        crossing.insert(1, "terms", crossing["cluster"].map(terms[first]))
+        crossing["second terms"] = crossing["best_second"].map(terms[second])
+        show(crossing.sort_values("share"))
 
 
 def leader_rows(name, cluster, title, key):

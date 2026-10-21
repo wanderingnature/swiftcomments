@@ -77,7 +77,10 @@ cluster, and every value of every case on request. One case opened: its topic cu
 the other candidates; its topics with their terms; a topic's clusters with their kind,
 pass, leaders, absorbed sentences, occurrences, tightness, gate-kind shares, terms and
 central sentences; a cluster's sentences, most-occurring first, twenty to a page, and
-the comments they come from; and the case's noise, the leaders in no cluster.
+the comments they come from; and the case's noise, the leaders in no cluster. Then the
+opened case compared with any other: the sentences both cluster, the adjusted Rand
+index and NMI between them, and for each cluster of the opened case the cluster of the
+other that holds most of its sentences, lowest share first.
 
 The other five look into the file.
 

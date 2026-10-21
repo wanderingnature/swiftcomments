@@ -14,7 +14,7 @@ DB  := data/roadless.sqlite
 
 .PHONY: help all schema schema-add corpus fetch dedup ngrams ner tag floor groups screen \
         stance stance-runs score-model score-model-free assemble rate text attachments orgs \
-        facts check console jump extract score-model-compare sentences embed clusters cases
+        facts check console jump extract score-model-compare sentences embed clusters cases compare-cases
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
@@ -117,6 +117,9 @@ clusters:  ## steps 12 to 14: one clustering case, its clusters, topics and name
 
 cases:  ## the clustering cases so far, each with its measures
 	$(PY) scripts/clusters/cases.py list
+
+compare-cases:  ## A=<case> B=<case>: how far two cases group the same sentences the same way, cluster by cluster
+	$(PY) scripts/clusters/cases.py compare "$(A)" "$(B)"
 
 check:  ## every figure of the method beside checks/expected.json
 	$(PY) checks/check.py

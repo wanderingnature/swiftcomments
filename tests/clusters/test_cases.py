@@ -154,3 +154,26 @@ def test_two_models_are_two_cases(casefile):
     assert names == ["opening+hits.comment.bge-large-en-v1-5.m0.pca50.5-5-leaf.all.p0.kauto.s0",
                      "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.kauto.s0"]
     conn.close()
+
+
+def test_compare_two_cases(casefile, capsys):
+    from shared import case_compare
+    assert cases.main(PCA_LEAF + ["--k", "2"]) == 0
+    assert cases.main(PCA_LEAF + ["--structure", "by-kind", "--k", "2"]) == 0
+    first = "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0"
+    second = "opening+hits.comment.m.m0.pca50.5-5-leaf.by-kind.p0.k2.s0"
+    conn = db.connect(casefile)
+    same = case_compare.compare(case_compare.labels(conn, first), case_compare.labels(conn, first))
+    assert (same["ari"], same["nmi"], same["clusters_80"], same["median_share"]) == (1.0, 1.0, 6, 1.0)
+    m = case_compare.compare(case_compare.labels(conn, first), case_compare.labels(conn, second))
+    # the six groups are found both ways: each cluster of the first is one cluster of the second
+    assert m["shared_sentences"] == 158 and m["clustered_both"] == 150 and m["ari"] == 1.0
+    assert [r["share"] for r in m["crossing"]] == [1.0] * 6
+    with pytest.raises(SystemExit, match="no case 'nope'"):
+        case_compare.labels(conn, "nope")
+    conn.close()
+    capsys.readouterr()
+    assert cases.main(["compare", first, second]) == 0
+    out = capsys.readouterr().out
+    assert "on the sentences both cluster: adjusted Rand 1.0, NMI 1.0" in out
+    assert "6 of 6; median share 1.0" in out

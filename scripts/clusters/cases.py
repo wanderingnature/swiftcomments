@@ -5,8 +5,10 @@
         [--merge 0.98] [--reduction pca50|umap5] [--min-cluster-size N] [--min-samples N]
         [--selection eom|leaf] [--structure all|by-kind] [--noise-passes N] [--k N] [--seed N] [--model M]
     uv run python scripts/clusters/cases.py list
+    uv run python scripts/clusters/cases.py compare CASE_A CASE_B
     make clusters [SENTENCES=... VIEW=... MERGE=... REDUCTION=... MCS=... MS=... SELECTION=... STRUCTURE=... PASSES=... K=... SEED=...]
     make cases
+    make compare-cases A=<case> B=<case>
 
 The steps are code with no model call, so their choices are run as cases and
 compared, not decided beforehand. A case is one value on each axis:
@@ -59,7 +61,7 @@ _HERE = Path(__file__).resolve()
 sys.path.insert(0, str(_HERE.parents[1]))
 sys.path.insert(0, str(_HERE.parents[2]))
 
-from shared import db  # noqa: E402
+from shared import case_compare, db  # noqa: E402
 from clusters import analysis as an  # noqa: E402
 from clusters.embed import VIEWS, unpack  # noqa: E402
 
@@ -276,6 +278,30 @@ def cmd_list(_a: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_compare(a: argparse.Namespace) -> int:
+    conn = db.connect(db.DB_PATH)
+    m = case_compare.compare(case_compare.labels(conn, a.first), case_compare.labels(conn, a.second))
+    terms = {}
+    for name in (a.first, a.second):
+        terms[name] = {c: json.loads(t) for c, t in conn.execute(
+            "SELECT cluster, terms FROM cluster_case_cluster WHERE case_name = ?", (name,))}
+    conn.close()
+    agree = (f"adjusted Rand {m['ari']}, NMI {m['nmi']}" if m["ari"] is not None
+             else "too few sentences clustered by both to compare")
+    print(f"first  {a.first}\nsecond {a.second}\n"
+          f"{m['shared_sentences']:,} sentences in both ({m['only_first']:,} only in the first,"
+          f" {m['only_second']:,} only in the second); clustered by the first {m['clustered_first']:,},"
+          f" by the second {m['clustered_second']:,}, by both {m['clustered_both']:,},"
+          f" by neither {m['clustered_neither']:,}\non the sentences both cluster: {agree}\n"
+          f"clusters of the first with 80% or more of their sentences in one cluster of the second:"
+          f" {m['clusters_80']} of {len(m['crossing'])}; median share {m['median_share']}")
+    for r in m["crossing"]:
+        print(f"  {r['cluster']:>4} ({r['sentences']} sentences; {', '.join(terms[a.first].get(r['cluster'], [])[:4])})"
+              f" -> {r['best_second']} at {r['share']:.0%} ({', '.join(terms[a.second].get(r['best_second'], [])[:4])});"
+              f" {r['noise_in_second']} noise in the second")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -295,6 +321,10 @@ def main(argv: list[str] | None = None) -> int:
     r.set_defaults(fn=cmd_run)
     ls = sub.add_parser("list")
     ls.set_defaults(fn=cmd_list)
+    cp = sub.add_parser("compare", help="two cases: how far they group the same sentences the same way")
+    cp.add_argument("first")
+    cp.add_argument("second")
+    cp.set_defaults(fn=cmd_compare)
     a = ap.parse_args(argv)
     return int(a.fn(a))
 
