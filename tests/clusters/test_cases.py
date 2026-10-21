@@ -30,7 +30,7 @@ def _case(conn, name):
 
 def test_six_groups_two_topics(casefile, capsys):
     assert cases.main(PCA_LEAF + ["--k", "2"]) == 0
-    name = "opening+hits.comment.m0.pca50.5-5-leaf.all.p0.k2.s0"
+    name = "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0"
     assert f"case {name}" in capsys.readouterr().out
     conn = db.connect(casefile)
     c = _case(conn, name)
@@ -63,7 +63,7 @@ def test_six_groups_two_topics(casefile, capsys):
 def test_the_eigengap_cut_and_its_candidates(casefile):
     assert cases.main(PCA_LEAF) == 0
     conn = db.connect(casefile)
-    c = _case(conn, "opening+hits.comment.m0.pca50.5-5-leaf.all.p0.kauto.s0")
+    c = _case(conn, "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.kauto.s0")
     gaps = json.loads(c["eigengaps"])
     assert c["topics"] == gaps[0][0] and len(gaps) >= 2
     conn.close()
@@ -75,9 +75,9 @@ def test_sentences_axis_and_merge(casefile):
     # a merge at 0.8: the members of a group (cosine about 0.87 to each other) collapse into leaders
     assert cases.main(PCA_LEAF + ["--merge", "0.8"]) == 0
     conn = db.connect(casefile)
-    c = _case(conn, "opening.comment.m0.pca50.5-5-leaf.all.p0.kauto.s0")
+    c = _case(conn, "opening.comment.m.m0.pca50.5-5-leaf.all.p0.kauto.s0")
     assert c["input_sentences"] == 146
-    m = _case(conn, "opening+hits.comment.m80.pca50.5-5-leaf.all.p0.kauto.s0")
+    m = _case(conn, "opening+hits.comment.m.m80.pca50.5-5-leaf.all.p0.kauto.s0")
     assert m["leaders"] < m["input_sentences"] == 158
     absorbed = conn.execute("SELECT count(*) FROM cluster_case_leader WHERE case_name = ? AND text_key <> leader_key",
                             (m["case_name"],)).fetchone()[0]
@@ -87,7 +87,7 @@ def test_sentences_axis_and_merge(casefile):
 
 def test_by_kind_and_cases_kept_apart(casefile):
     assert cases.main(PCA_LEAF + ["--structure", "by-kind", "--k", "2"]) == 0
-    first = "opening+hits.comment.m0.pca50.5-5-leaf.by-kind.p0.k2.s0"
+    first = "opening+hits.comment.m.m0.pca50.5-5-leaf.by-kind.p0.k2.s0"
     conn = db.connect(casefile)
     kinds = dict(conn.execute("SELECT kind, count(*) FROM cluster_case_cluster WHERE case_name = ? GROUP BY kind",
                               (first,)).fetchall())
@@ -110,9 +110,9 @@ def test_noise_passes_and_umap(casefile):
                        "--noise-passes", "3", "--sentences", "opening+hits"]) == 0
     assert cases.main(["run", "--min-cluster-size", "10", "--min-samples", "5", "--sentences", "opening+hits"]) == 0
     conn = db.connect(casefile)
-    p = _case(conn, "opening+hits.comment.m0.pca50.5-5-eom.all.p3.kauto.s0")
+    p = _case(conn, "opening+hits.comment.m.m0.pca50.5-5-eom.all.p3.kauto.s0")
     assert p["clusters"] >= 2 and p["noise_passes"] == 3
-    u = _case(conn, "opening+hits.comment.m0.umap5.10-5-eom.all.p0.kauto.s0")
+    u = _case(conn, "opening+hits.comment.m.m0.umap5.10-5-eom.all.p0.kauto.s0")
     assert u["reduction"] == "umap5" and u["clusters"] >= 2 and u["leaders_clustered"] >= 150
     conn.close()
 
@@ -137,3 +137,20 @@ def test_stops(casefile):
         cases.main(PCA_LEAF)
     with pytest.raises(SystemExit, match="cosine below 1"):
         cases.main(PCA_LEAF + ["--merge", "1.0"])
+
+
+def test_two_models_are_two_cases(casefile):
+    conn = db.connect(casefile)
+    conn.execute("INSERT INTO sentence_embedding SELECT text_key, 'BAAI/bge-large-en-v1.5', instruction,"
+                 " input_sha256, dimensions, vector, created_at FROM sentence_embedding WHERE model = 'm'")
+    conn.commit()
+    conn.close()
+    with pytest.raises(SystemExit, match="by 2 models"):
+        cases.main(PCA_LEAF)
+    assert cases.main(PCA_LEAF + ["--model", "m"]) == 0
+    assert cases.main(PCA_LEAF + ["--model", "BAAI/bge-large-en-v1.5"]) == 0
+    conn = db.connect(casefile)
+    names = sorted(r[0] for r in conn.execute("SELECT case_name FROM cluster_case"))
+    assert names == ["opening+hits.comment.bge-large-en-v1-5.m0.pca50.5-5-leaf.all.p0.kauto.s0",
+                     "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.kauto.s0"]
+    conn.close()

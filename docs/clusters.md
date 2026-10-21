@@ -130,8 +130,9 @@ make cases                                           # every case with its measu
    number of classes that have it; a term in only one class is not counted), and the two
    sentences of each cluster nearest its centroid. No model writes a name.
 
-**What a case keeps.** Its name is made from its values, for example
-`opening.comment.m0.umap5.10-10-eom.all.p0.kauto.s0`. A run of a case replaces that
+**What a case keeps.** Its name is made from its values, the embedding model among
+them, for example `opening.comment.qwen3-embedding-8b.m0.umap5.10-10-eom.all.p0.kauto.s0`,
+so the same settings on two models' vectors are two cases. A run of a case replaces that
 case's rows and no other's. `cluster_case` holds its values, its git commit, the
 sentence build it read, its seconds, and its measures:
 
