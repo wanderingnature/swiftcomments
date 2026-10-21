@@ -113,7 +113,16 @@ make clusters SENTENCES=opening+hits                 # the same, with the whole-
 make clusters REDUCTION=pca50 MCS=20 MS=10           # eis-analysis's first settings, for comparison
 make clusters STRUCTURE=by-kind                      # one clustering for each gate kind
 make cases                                           # every case with its measures
+make compare-cases A=<case> B=<case>                 # two cases, sentence by sentence
 ```
+
+**Two cases compared** (`make compare-cases`, and the Topics page under the opened
+case). A sentence's cluster in a case is its leader's. On the sentences both cases
+cluster, the adjusted Rand index (1 the same grouping, 0 what chance gives) and the
+normalized mutual information; then, for each cluster of the first case, the cluster
+of the second that holds most of its sentences and the share it holds, with the count
+of clusters at 80% or more and the median share. The same settings on two models'
+vectors compare the models; two settings on one model compare the settings.
 
 **What a case does.**
 

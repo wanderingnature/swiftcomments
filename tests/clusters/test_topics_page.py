@@ -46,7 +46,7 @@ def test_two_cases_and_one_opened(casefile):
     assert cases.main(PCA_LEAF + ["--structure", "by-kind"]) == 0
     at = _topics()
     headers = [h.value for h in at.subheader]
-    assert headers == ["The cases", "Its topics", "The clusters of topic 1", "The noise"]
+    assert headers == ["The cases", "Its topics", "The clusters of topic 1", "The noise", "Two cases compared"]
     # the latest case is opened; pick the first, then its second topic and a cluster
     at.selectbox(key="case_pick").set_value("opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0")
     at.run()
@@ -59,3 +59,5 @@ def test_two_cases_and_one_opened(casefile):
     texts = [m.value for m in at.markdown]
     assert any(t.startswith("**The sentences of cluster") and "(25)" in t for t in texts)
     assert any(t.startswith("**The leaders in no cluster") and "(8)" in t for t in texts)
+    labels = [m.label for m in at.metric]
+    assert "Adjusted Rand" in labels and "Clusters 80%+ in one" in labels
