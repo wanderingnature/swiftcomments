@@ -48,7 +48,7 @@ def test_two_cases_and_one_opened(casefile):
     headers = [h.value for h in at.subheader]
     assert headers == ["The cases", "Its topics", "The clusters of topic 1", "The noise"]
     # the latest case is opened; pick the first, then its second topic and a cluster
-    at.selectbox(key="case_pick").set_value("opening+hits.comment.m0.pca50.5-5-leaf.all.p0.k2.s0")
+    at.selectbox(key="case_pick").set_value("opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0")
     at.run()
     at.selectbox(key="case_topic").set_value(1)
     at.run()

@@ -36,7 +36,8 @@ centroids (the candidates are kept); each topic and cluster named by its eight
 most distinctive words and bigrams (class-based tf-idf), each cluster shown by
 its two sentences nearest its centroid.
 
-A case's name is made from its values. Its run replaces its rows in the five
+A case's name is made from its values, the embedding model among them, so the
+same settings on two models' vectors are two cases. Its run replaces its rows in the five
 cluster_case tables and no other case's; the case row keeps its values, its
 git commit, the sentence build it read and its measures.
 
@@ -51,6 +52,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -71,9 +73,16 @@ SENTENCES = {"opening": "o.opens = 1", "opening+hits": "(o.opens = 1 OR o.holds_
 TABLES = ("cluster_case", "cluster_case_leader", "cluster_case_member", "cluster_case_cluster", "cluster_case_topic")
 
 
+def model_slug(model: str) -> str:
+    """The model's name as a part of a case name: its last path part, lower case, letters and digits."""
+    return re.sub(r"[^a-z0-9]+", "-", model.rsplit("/", 1)[-1].lower()).strip("-")
+
+
 def case_name(a: argparse.Namespace) -> str:
+    """The case's name from its values; `a.model` is the resolved embedding model."""
     merge = f"m{int(round(a.merge * 100))}" if a.merge > 0 else "m0"
-    return (f"{a.sentences}.{a.view}.{merge}.{a.reduction}.{a.min_cluster_size}-{a.min_samples}-{a.selection}"
+    return (f"{a.sentences}.{a.view}.{model_slug(a.model)}.{merge}.{a.reduction}"
+            f".{a.min_cluster_size}-{a.min_samples}-{a.selection}"
             f".{a.structure}.p{a.noise_passes}.k{a.k or 'auto'}.s{a.seed}")
 
 
@@ -135,8 +144,8 @@ def cluster_group(LV: np.ndarray, a: argparse.Namespace) -> list[tuple[int, np.n
 
 def run_case(conn, a: argparse.Namespace) -> dict:
     t0 = time.time()
+    model = a.model = resolve_model(conn, a.view, a.model)
     name = case_name(a)
-    model = resolve_model(conn, a.view, a.model)
     srun = conn.execute("SELECT max(run_id) FROM gate_sentence_run").fetchone()[0]
     keys, texts, occ, kinds, V = load(conn, a.sentences, a.view, model)
     leader = an.leader_merge(V, occ, texts, a.merge)
@@ -242,6 +251,7 @@ def cmd_run(a: argparse.Namespace) -> int:
     if a.merge < 0 or a.merge >= 1:
         raise SystemExit("--merge is a cosine below 1, or 0 for none")
     conn = db.connect(db.DB_PATH)
+    a.model = resolve_model(conn, a.view, a.model)
     print(f"make clusters: case {case_name(a)}", flush=True)
     m = run_case(conn, a)
     conn.close()

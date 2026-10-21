@@ -43,7 +43,7 @@ def page_topics():
         return
 
     st.subheader("The cases")
-    st.caption("One row per case, named from its values (sentences.view.merge.reduction.mcs-ms-selection"
+    st.caption("One row per case, named from its values (sentences.view.model.merge.reduction.mcs-ms-selection"
                ".structure.passes.k.seed). Comments unclustered: gate-open comments with no sentence in a"
                " cluster. Opening clustered: of the sentences that open the gate alone, those in a cluster.")
     show(cases[MEASURES].assign(
