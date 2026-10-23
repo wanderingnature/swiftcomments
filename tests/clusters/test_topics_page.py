@@ -70,3 +70,10 @@ def test_the_four_tabs(casefile):
     assert not at.exception, [e.value for e in at.exception]
     shown = {m.label: m.value for m in at.tabs[3].metric}
     assert shown["Adjusted Rand"] == "1.0" and shown["Clusters kept together"] == "6 of 6"
+    # the charts: the coverage map; the topics by kind, the sizes, the cut, the cluster map; the share
+    # spread and the crossing; and, once asked for, the agreement of every pair
+    assert len(at.get("vega_lite_chart")) == 7
+    at.toggle(key="agreement_on").set_value(True)
+    at.run()
+    assert not at.exception, [e.value for e in at.exception]
+    assert len(at.get("vega_lite_chart")) == 8

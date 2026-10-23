@@ -32,11 +32,11 @@ Use these six checks. The first two are the most important.
 | Check | What to look for | Where to look | Good sign | Bad sign |
 |---|---|---|---|---|
 | 1. One claim per cluster | The sentences of a cluster make the same claim. | Read a case: open a cluster and read its sentences. | You can state the claim in one sentence. | The sentences make two or more different claims. |
-| 2. Coverage | Few gate-open comments have no sentence in a cluster. | Cases: "Comments not covered". | A low number. | Many substantive comments are not in any cluster. |
-| 3. No catch-all cluster | No cluster collects unrelated sentences. | Cases: "Largest cluster". Read a case: the largest cluster. | The largest cluster is a few hundred sentences of one claim. | One cluster has thousands of sentences on many subjects. |
-| 4. Topics are subjects | Each topic is one subject that you can name. | Read a case: the topic terms and its clusters. | The terms name one subject, for example roads and wildfire. | The terms are general words, for example "rule" or "forest". |
-| 5. Clusters keep one kind | Most sentences of a cluster have the same gate kind. | Read a case: "Main kind" of each cluster. | Most clusters are mostly one kind. | Many clusters mix LAW, EVID, GAP and ALT. |
-| 6. Clusters stay together | The same groups appear with another model or setting. | Compare two cases. | Most clusters stay 80% or more in one cluster of the other case. | Most clusters break into many pieces. |
+| 2. Coverage | Few gate-open comments have no sentence in a cluster. | Cases: "Comments not covered", and the chart "Coverage against clustering". | A low number. | Many substantive comments are not in any cluster. |
+| 3. No catch-all cluster | No cluster collects unrelated sentences. | Cases: "Largest cluster". Read a case: the chart "The cluster sizes". | The largest cluster is a few hundred sentences of one claim. | One cluster has thousands of sentences on many subjects. |
+| 4. Topics are subjects | Each topic is one subject that you can name. | Read a case: the topic terms, "The map of the clusters" and "The topic cut". | The terms name one subject, for example roads and wildfire. | The terms are general words, for example "rule" or "forest". |
+| 5. Clusters keep one kind | Most sentences of a cluster have the same gate kind. | Read a case: "The topics, by gate kind" and the "Main kind" of each cluster. | Most clusters are mostly one kind. | Many clusters mix LAW, EVID, GAP and ALT. |
+| 6. Clusters stay together | The same groups appear with another model or setting. | Cases: "How much the cases agree". Compare two cases: the two charts. | Most clusters stay 80% or more in one cluster of the other case. | Most clusters break into many pieces. |
 
 A case can pass check 2 and fail check 1. For example, many noise passes put every
 sentence into a cluster, but some clusters then collect unrelated sentences. Do not
