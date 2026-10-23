@@ -12,6 +12,10 @@ two are set side by side by a third command of their own (below). A reader who h
 server can run the whole method with this reading alone; a reader who has one can run
 both and see where a rule and a model part.
 
+`docs/methods-scoring.md` explains the method: the sentences, the eight dimensions and
+their rules, the three reading modes, answerability, how the rules were built, and the
+agreement with the model reading.
+
 ## Running it
 
 ```

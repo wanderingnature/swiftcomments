@@ -93,7 +93,8 @@ substantive comments grouped by meaning into clusters and topics, by code, with 
 generative model (`docs/clusters.md`). `make embed` sends each distinct sentence once
 to an embedding server named in `.env`. `make clusters` runs one clustering case and
 records it beside the others, so the settings are compared on the results, not chosen
-beforehand.
+beforehand. The methods, with the reasons for each choice and the
+measurements, are in `docs/methods-scoring.md` and `docs/methods-clustering.md`.
 
 Three targets, marked `MODEL`, send text to the language model, and they are the
 three prompts of `docs/instruments/`: step 3, the stance (`make stance`); step 6, the
