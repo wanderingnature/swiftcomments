@@ -226,7 +226,7 @@ as law, as evidence and as a missing analysis.
 
 **What the reference run found.** By kind, 79% (BGE) and 80% (Qwen) of the sentences were in a
 cluster, against 73% clustered together. The comments with no sentence in a cluster fell
-from 1,838 to 1,676 (BGE) and from 1,880 to 1,640 (Qwen).
+from 1,838 to 1,652 (BGE) and from 1,880 to 1,610 (Qwen).
 
 ## 8. The topics
 
@@ -336,7 +336,7 @@ on each model with the plain view, and 3 on Qwen with the comment view.
 | `all` | 1,375, 52%, 1,611 | 1,466, 55%, 1,509 | 0.552 |
 | PCA-50, 20/10 | 61, 32%, 3,854 | 63, 36%, 3,610 | 0.770 |
 | UMAP, 5/1 | 649, 80%, 1,529 | 707, 80%, 1,564 | 0.411 |
-| By gate kind | 327, 79%, 1,676 | 332, 80%, 1,640 | 0.581 |
+| By gate kind | 327, 79%, 1,652 | 332, 80%, 1,610 | 0.581 |
 | 3 noise passes | 263, 100%, 970 | 331, 100%, 970 | 0.053 |
 
 What the table shows:
