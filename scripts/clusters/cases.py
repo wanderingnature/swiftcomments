@@ -6,9 +6,11 @@
         [--selection eom|leaf] [--structure all|by-kind] [--noise-passes N] [--k N] [--seed N] [--model M]
     uv run python scripts/clusters/cases.py list
     uv run python scripts/clusters/cases.py compare CASE_A CASE_B
+    uv run python scripts/clusters/cases.py choose CASE [--note TEXT]
     make clusters [SENTENCES=... VIEW=... MERGE=... REDUCTION=... MCS=... MS=... SELECTION=... STRUCTURE=... PASSES=... K=... SEED=...]
     make cases
     make compare-cases A=<case> B=<case>
+    make choose CASE=<case> [NOTE="..."]
 
 The steps are code with no model call, so their choices are run as cases and
 compared, not decided beforehand. A case is one value on each axis:
@@ -73,6 +75,19 @@ from clusters.embed import VIEWS, unpack  # noqa: E402
 KINDS = ("LAW", "EVID", "GAP", "ALT")
 SENTENCES = {"opening": "o.opens = 1", "opening+hits": "(o.opens = 1 OR o.holds_hit = 1)", "all": "1 = 1"}
 TABLES = ("cluster_case", "cluster_case_leader", "cluster_case_member", "cluster_case_cluster", "cluster_case_topic")
+
+
+def choose(conn, case_name: str, note: str | None) -> str:
+    """Record the case as the choice of its embedding model; a new choice replaces the old.
+    Returns the model."""
+    row = conn.execute("SELECT model FROM cluster_case WHERE case_name = ?", (case_name,)).fetchone()
+    if row is None:
+        raise SystemExit(f"no case {case_name!r}: make cases lists them")
+    with conn.transaction():
+        conn.execute("INSERT OR REPLACE INTO cluster_case_choice (model, case_name, note, chosen_at)"
+                     " VALUES (?, ?, ?, ?)",
+                     (row[0], case_name, note, datetime.now(timezone.utc).isoformat(timespec="seconds")))
+    return row[0]
 
 
 def model_slug(model: str) -> str:
@@ -307,6 +322,17 @@ def cmd_compare(a: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_choose(a: argparse.Namespace) -> int:
+    conn = db.connect(db.DB_PATH)
+    model = choose(conn, a.case, a.note)
+    chosen = conn.execute("SELECT model, case_name FROM cluster_case_choice ORDER BY model").fetchall()
+    conn.close()
+    print(f"make choose: {a.case} is the choice for {model}")
+    for m, c in chosen:
+        print(f"  {m}: {c}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -330,6 +356,10 @@ def main(argv: list[str] | None = None) -> int:
     cp.add_argument("first")
     cp.add_argument("second")
     cp.set_defaults(fn=cmd_compare)
+    ch = sub.add_parser("choose", help="record a case as the choice of its embedding model")
+    ch.add_argument("case")
+    ch.add_argument("--note", help="why it was chosen")
+    ch.set_defaults(fn=cmd_choose)
     a = ap.parse_args(argv)
     return int(a.fn(a))
 

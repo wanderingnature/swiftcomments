@@ -27,45 +27,60 @@ setting, run a new case to answer it.
 
 ## What a good case looks like
 
-Use these six checks. The first two are the most important.
+Use these six checks in step 1. The first two are the most important.
 
 | Check | What to look for | Where to look | Good sign | Bad sign |
 |---|---|---|---|---|
 | 1. One claim per cluster | The sentences of a cluster make the same claim. | Read a case: open a cluster and read its sentences. | You can state the claim in one sentence. | The sentences make two or more different claims. |
-| 2. Coverage | Few gate-open comments have no sentence in a cluster. | Cases: "Comments not covered", and the chart "Coverage against clustering". | A low number. | Many substantive comments are not in any cluster. |
-| 3. No catch-all cluster | No cluster collects unrelated sentences. | Cases: "Largest cluster". Read a case: the chart "The cluster sizes". | The largest cluster is a few hundred sentences of one claim. | One cluster has thousands of sentences on many subjects. |
+| 2. Coverage | Few gate-open comments have no sentence in a cluster. | Step 1: "Comments not covered", and the chart "Coverage against clustering". | A low number. | Many substantive comments are not in any cluster. |
+| 3. No catch-all cluster | No cluster collects unrelated sentences. | Step 1: "Largest cluster". Read a case: the chart "The cluster sizes". | The largest cluster is a few hundred sentences of one claim. | One cluster has thousands of sentences on many subjects. |
 | 4. Topics are subjects | Each topic is one subject that you can name. | Read a case: the topic terms, "The map of the clusters" and "The topic cut". | The terms name one subject, for example roads and wildfire. | The terms are general words, for example "rule" or "forest". |
 | 5. Clusters keep one kind | Most sentences of a cluster have the same gate kind. | Read a case: "The topics, by gate kind" and the "Main kind" of each cluster. | Most clusters are mostly one kind. | Many clusters mix LAW, EVID, GAP and ALT. |
-| 6. Clusters stay together | The same groups appear with another model or setting. | Cases: "How much the cases agree". Compare two cases: the two charts. | Most clusters stay 80% or more in one cluster of the other case. | Most clusters break into many pieces. |
+| 6. Clusters stay together | The same groups appear with a nearby setting. | Step 1: "How stable the cases of this model are". | Most clusters stay 80% or more in one cluster of the other case. | Most clusters break into many pieces. |
 
 A case can pass check 2 and fail check 1. For example, many noise passes put every
 sentence into a cluster, but some clusters then collect unrelated sentences. Do not
 choose a case on coverage alone.
 
-## How to read a case
+## How to choose: two steps
 
-1. Open the **Read a case** tab.
-2. Select a case.
-3. Open the largest topic.
-4. Read the example sentence of each cluster.
-5. Open two or three clusters in **Open a cluster**.
-6. Read the sentences of each cluster.
-7. Decide if each cluster makes one claim.
-8. Open **Sentences in no cluster** and read some of them.
-9. If many of them repeat a claim that has no cluster, record it as a weakness of the case.
+Choose in two steps. First find the best case of each model. Then compare the two
+choices. The settings that suit one model can fail the other, so judge each model at its
+own best settings.
 
-## How to compare two cases
+### Step 1: the best case of each model
 
-1. Open the **Compare two cases** tab.
-2. Select the first case.
-3. Select the second case.
-4. Read the three figures at the top.
+1. Open the tab **Step 1: The best case of each model**.
+2. Select a model.
+3. Read the chart "Coverage against clustering". Note the cases that are low and to the
+   right, and the cases with a red ring.
+4. Open each promising case in the **Read a case** tab.
+5. Apply checks 1 to 5 to each case. Check 1 is the most important.
+6. Turn on "Compare every pair of this model's cases". Prefer a case that agrees with
+   its neighbours: a small change of setting does not change its clusters much.
+7. Select the best case in "Choose the case".
+8. Run the command that the page shows, for example:
+
+   ```
+   make choose CASE="opening+hits.comment.text-embedding-qwen3-embedding-8b-f16.m0.umap5.10-10-eom.all.p0.kauto.s0" NOTE="fewest comments not covered; clusters read as one claim"
+   ```
+
+9. Do steps 2 to 8 again for the other model.
+
+The console does not write the file. Run `make choose` in a terminal. A new choice for a
+model replaces the old choice. `make choose` keeps the note with the choice.
+
+### Step 2: compare the two choices
+
+1. Open the tab **Step 2: Compare the two choices**. It opens on the two choices of
+   step 1.
+2. Read the three figures at the top.
+3. Read the chart "How the clusters of the first case hold together".
+4. Read the chart "Where the largest clusters go".
 5. Read the table. The clusters that break the most are at the top.
-6. Open the clusters at the top in the **Read a case** tab.
-7. Decide which case groups those sentences better.
-
-Compare cases that differ in one setting only. Then the difference comes from that
-setting. For example, compare the same settings on two models.
+6. Open the clusters at the top in the **Read a case** tab, in both cases.
+7. Decide which case groups those sentences by claim better.
+8. If you change your decision, run `make choose` again for that model.
 
 The figures:
 
@@ -77,6 +92,20 @@ The figures:
 - **Clusters kept together** counts the clusters of the first case that keep 80% or
   more of their sentences in one cluster of the second case.
 
+### How to read a case
+
+1. Open the **Read a case** tab.
+2. Select a case.
+3. Read the charts: the topics by gate kind, the cluster sizes, the topic cut and the map
+   of the clusters.
+4. Open the largest topic.
+5. Read the example sentence of each cluster.
+6. Open two or three clusters in **Open a cluster**.
+7. Read the sentences of each cluster.
+8. Decide if each cluster makes one claim.
+9. Open **Sentences in no cluster** and read some of them.
+10. If many of them repeat a claim that has no cluster, record it as a weakness of the case.
+
 ## Glossary
 
 | Term | Meaning |
@@ -84,6 +113,7 @@ The figures:
 | Adjusted Rand index | A score from 0 to 1 for how much two cases agree on the sentences that both cluster. 1 is the same grouping. 0 is chance. |
 | BGE-large-en-v1.5 | An embedding model of 335 million parameters, built on BERT. It reads English only. |
 | Case | One run of the clustering with one set of settings. The console keeps each case. |
+| Choice | The case that `make choose` records for a model. Step 2 compares the choices. |
 | Central sentence | The sentence of a cluster that is nearest to the centre of the cluster. It is the best example of the cluster. |
 | Cluster | A group of sentences that HDBSCAN found close together. It is one claim if the case is good. |
 | Comment instruction | The instruction "retrieve the sentence from the agency's record that addresses the specific claim". The model makes a vector for that task. |

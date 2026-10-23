@@ -69,24 +69,26 @@ gate and the dimensions that opened it, its answerability, its eight levels, its
 letter and stance, opening to its text and its evidence (the rules' hits by dimension
 with the words they matched; the model's rationale).
 
-**Topics.** The clustering cases of `make clusters`, in four tabs.
+**Topics.** The clustering cases of `make clusters`, in four tabs. Choosing a case is two
+steps: the best case of each model, then the two choices compared.
 
-- **Guide** explains why the cases exist, what makes a good case, how to read and
-  compare cases, and the terms. The text is `docs/choosing-a-case.md`.
-- **Cases** lists each case in words, with its clusters, topics, sentences clustered,
-  comments not covered and largest cluster. A chart places each case by sentences
-  clustered and comments not covered, with the model, the view and the largest cluster.
-  On request, a heatmap gives the adjusted Rand index of every pair of cases.
+- **Guide** explains why the cases exist, what makes a good case, the two steps, and the
+  terms. The text is `docs/choosing-a-case.md`.
+- **Step 1: The best case of each model** shows the cases of one model at a time. It
+  shows the model's current choice, a table of its cases, a chart of the cases by
+  sentences clustered and comments not covered (a red ring marks a catch-all cluster),
+  and on request the adjusted Rand index of every pair of its cases. "Choose the case"
+  gives the `make choose` command for the selected case.
 - **Read a case** opens one case. Charts show the topics by gate kind, the cluster sizes,
   the eigengap at each number of topics, and a map of the clusters by topic. Each topic
   opens to its clusters, with one example sentence for each cluster. Then you can open a
   cluster to read all its sentences and the comments that hold them, and read the
   sentences in no cluster.
-- **Compare two cases** sets two cases side by side. It shows the sentences that both
-  cluster, the adjusted Rand index and the clusters kept together. Two charts show how the
-  clusters of the first case hold together, and where its 20 largest clusters go. A table
-  gives each cluster of the first case with the cluster of the second that holds most of
-  its sentences.
+- **Step 2: Compare the two choices** opens on the two chosen cases. It shows the
+  sentences that both cluster, the adjusted Rand index and the clusters kept together.
+  Two charts show how the clusters of the first case hold together, and where its 20
+  largest clusters go. A table gives each cluster of the first case with the cluster of
+  the second that holds most of its sentences.
 
 The other five look into the file.
 

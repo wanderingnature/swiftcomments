@@ -1292,3 +1292,13 @@ CREATE TABLE cluster_case_topic (
     terms       TEXT    NOT NULL,
     PRIMARY KEY (case_name, topic)
 );
+
+-- The case chosen for each embedding model (make choose, scripts/clusters/cases.py choose):
+-- step 1 of choosing a case picks the best case of each model; step 2 compares the two
+-- choices. One row per model; a new choice replaces the old one.
+CREATE TABLE cluster_case_choice (
+    model      TEXT PRIMARY KEY,
+    case_name  TEXT NOT NULL,
+    note       TEXT,
+    chosen_at  TEXT NOT NULL
+);

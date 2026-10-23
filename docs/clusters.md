@@ -122,7 +122,13 @@ make clusters REDUCTION=pca50 MCS=20 MS=10           # eis-analysis's first sett
 make clusters STRUCTURE=by-kind                      # one clustering for each gate kind
 make cases                                           # every case with its measures
 make compare-cases A=<case> B=<case>                 # two cases, sentence by sentence
+make choose CASE=<case> NOTE="why"                   # record the case as its model's choice
 ```
+
+**The choice** (`make choose`). Choosing is two steps (`docs/choosing-a-case.md`): the
+best case of each model, then the two choices compared. `make choose` records a case as
+the choice of its embedding model in `cluster_case_choice`, with a note. A new choice for
+a model replaces the old one. The console reads the choices; it does not write them.
 
 **Two cases compared** (`make compare-cases`, and the Topics page under the opened
 case). A sentence's cluster in a case is its leader's. On the sentences both cases

@@ -177,3 +177,28 @@ def test_compare_two_cases(casefile, capsys):
     out = capsys.readouterr().out
     assert "on the sentences both cluster: adjusted Rand 1.0, NMI 1.0" in out
     assert "6 of 6; median share 1.0" in out
+
+
+def test_choose_a_case_for_each_model(casefile, capsys):
+    conn = db.connect(casefile)
+    conn.execute("INSERT INTO sentence_embedding SELECT text_key, 'BAAI/bge-large-en-v1.5', instruction,"
+                 " input_sha256, dimensions, vector, created_at FROM sentence_embedding WHERE model = 'm'")
+    conn.commit()
+    conn.close()
+    assert cases.main(PCA_LEAF + ["--model", "m"]) == 0
+    assert cases.main(PCA_LEAF + ["--model", "m", "--k", "2"]) == 0
+    assert cases.main(PCA_LEAF + ["--model", "BAAI/bge-large-en-v1.5"]) == 0
+    first = "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.kauto.s0"
+    again = "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0"
+    bge = "opening+hits.comment.bge-large-en-v1-5.m0.pca50.5-5-leaf.all.p0.kauto.s0"
+    assert cases.main(["choose", first]) == 0
+    assert cases.main(["choose", bge, "--note", "fewest comments not covered"]) == 0
+    # a new choice for a model replaces the old one
+    assert cases.main(["choose", again]) == 0
+    assert f"make choose: {again} is the choice for m" in capsys.readouterr().out
+    conn = db.connect(casefile)
+    rows = [tuple(r) for r in conn.execute("SELECT model, case_name, note FROM cluster_case_choice ORDER BY model")]
+    assert rows == [("BAAI/bge-large-en-v1.5", bge, "fewest comments not covered"), ("m", again, None)]
+    conn.close()
+    with pytest.raises(SystemExit, match="no case 'nope'"):
+        cases.main(["choose", "nope"])
