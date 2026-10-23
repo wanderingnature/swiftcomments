@@ -171,7 +171,7 @@ sentence build it read, its seconds, and its measures:
 | `clusters`, `topics`, `eigengaps` | the size of the result, and the other cuts |
 | `leaders_clustered`, `occurrences_clustered` | the share that is not noise |
 | `largest_cluster` | a cluster that swallows the rest |
-| `comments_unclustered` of `gate_comments` | gate-open comments with no sentence in a cluster: comments the topics do not show |
+| `comments_unclustered` of `gate_comments` | gate-open comments with no substantive sentence in a cluster: comments the topics do not show. A substantive sentence opens the gate alone or holds a whole-comment gate hit; a clustered subject line or thank-you line does not cover a comment. `make cases-remeasure` counts every stored case again from its rows |
 | `opening_occurrences_clustered` of `opening_occurrences` | the share of the substance-carrying sentences that is grouped |
 
 `cluster_case_cluster` holds each cluster: its kind and pass, its topic, its leaders,
