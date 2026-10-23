@@ -731,3 +731,5 @@ JOIN gate_sentence_occurrence o ON o.text_key = l.text_key
 WHERE m.case_name = ? AND m.cluster = ?
 ORDER BY o.comment_id
 """
+
+CHOICES = "SELECT model, case_name, note, chosen_at FROM cluster_case_choice ORDER BY model"

@@ -143,25 +143,41 @@ def page_topics():
     if cases.empty:
         not_run("clusters")
         return
-    cases = cases.assign(description=[describe(c) for _, c in cases.iterrows()])
-    guide, overview, read, compare = st.tabs(["Guide", "Cases", "Read a case", "Compare two cases"])
+    cases = cases.assign(description=[describe(c) for _, c in cases.iterrows()],
+                         model_label=lambda d: [model_name(m) for m in d["model"]])
+    choices = query(q.CHOICES)
+    guide, step1, read, step2 = st.tabs(["Guide", "Step 1: The best case of each model", "Read a case",
+                                         "Step 2: Compare the two choices"])
     with guide:
         st.markdown(GUIDE.read_text(encoding="utf-8"))
-    with overview:
-        tab_cases(srun.iloc[0], cases)
+    with step1:
+        tab_step1(srun.iloc[0], cases, choices)
     with read:
         tab_read(cases)
-    with compare:
-        tab_compare(cases)
+    with step2:
+        tab_compare(cases, choices)
 
 
-def tab_cases(s, cases):
+def tab_step1(s, all_cases, choices):
     metrics([("Gate-open comments", int(s["gate_comments"]), f"Screen classes {s['classes']}."),
              ("Distinct sentences", int(s["distinct_sentences"]), "The sentences of the gate-open comments."),
-             ("Cases", len(cases), "One case is one run of make clusters.")])
-    st.caption("One row for each case, newest last. A lower \"comments not covered\" is better. A very large"
-               " \"largest cluster\" can be a catch-all cluster. The Guide tab explains each column.")
+             ("Cases", len(all_cases), "One case is one run of make clusters.")])
+    st.caption("Select a model. Read its cases with the checks of the Guide, and choose its best case. Then do the"
+               " same for the other model.")
+    models = sorted(all_cases["model_label"].unique())
+    label = st.radio("Model", models, horizontal=True, key="step1_model")
+    cases = all_cases[all_cases["model_label"] == label].reset_index(drop=True)
+    chosen = {r.model: r for r in choices.itertuples()}
+    mine = next((chosen[m] for m in cases["model"].unique() if m in chosen), None)
+    if mine is not None:
+        st.success(f"The choice for {label}: {describe(cases[cases['case_name'] == mine.case_name].iloc[0])}"
+                   if (cases["case_name"] == mine.case_name).any() else f"The choice for {label}: {mine.case_name}")
+    else:
+        st.info(f"No case is chosen for {label} yet.")
+    st.caption("One row for each case of this model, newest last. A lower \"comments not covered\" is better. A"
+               " very large \"largest cluster\" can be a catch-all cluster. The Guide tab explains each column.")
     table = pd.DataFrame({
+        "chosen": ["yes" if mine is not None and n == mine.case_name else "" for n in cases["case_name"]],
         "case": cases["description"],
         "clusters": cases["clusters"],
         "topics": cases["topics"],
@@ -207,10 +223,11 @@ def tab_cases(s, cases):
     chart(alt.layer(dots, rings, notes).resolve_legend(color="independent", shape="independent")
           .properties(height=380))
 
-    st.subheader("How much the cases agree")
-    st.caption("The adjusted Rand index of each pair of cases, on the sentences both cluster. Dark cells are"
-               " cases that find the same groups. A setting whose cases agree with many others is stable.")
-    if st.toggle("Compare every pair of cases", key="agreement_on"):
+    st.subheader("How stable the cases of this model are")
+    st.caption("The adjusted Rand index of each pair of this model's cases, on the sentences both cluster. Dark"
+               " cells are cases that find the same groups. A case that agrees with its neighbours is stable: a"
+               " small change of setting does not change its clusters much.")
+    if st.toggle("Compare every pair of this model's cases", key="agreement_on"):
         names = list(cases["case_name"])
         label = dict(zip(cases["case_name"], [short(c) for _, c in cases.iterrows()]))
         m = pd.DataFrame(agreement_matrix(tuple(names), file_signature()), columns=["a", "b", "ARI"])
@@ -223,8 +240,15 @@ def tab_cases(s, cases):
             color=alt.Color("ARI:Q", scale=alt.Scale(domain=[0, 1], scheme="greens"), title="adjusted Rand"),
             tooltip=["first:N", "second:N", alt.Tooltip("ARI:Q", format=".3f")]).properties(height=alt.Step(22)))
 
-    with st.expander("Every value of every case"):
-        show(cases.drop(columns=["description"]))
+    st.subheader("Choose the case")
+    st.caption("The console does not write the file. To record a choice, run the command below in a terminal."
+               " A new choice for a model replaces the old one.")
+    pick = st.selectbox("Case to choose", range(len(cases)), index=len(cases) - 1,
+                        format_func=lambda j: cases.iloc[j]["description"], key="step1_choose")
+    st.code(f'make choose CASE="{cases.iloc[pick]["case_name"]}" NOTE="why this case"', language="bash")
+
+    with st.expander("Every value of every case of this model"):
+        show(cases.drop(columns=["description", "model_label"]))
 
 
 def pick_case(cases, key, label="Case", index=None):
@@ -320,13 +344,22 @@ def tab_read(cases):
         leader_rows(name, 0, "Sentences in no cluster, most frequent first", "read_noise_page")
 
 
-def tab_compare(cases):
+def tab_compare(cases, choices):
     if len(cases) < 2:
         st.caption("Run a second case to compare two cases.")
         return
-    st.caption("Select two cases that differ in one setting. The Guide tab explains the figures.")
-    first = pick_case(cases, "compare_first", "First case", index=0)
-    second = pick_case(cases, "compare_second", "Second case")
+    names = list(cases["case_name"])
+    picked = [r.case_name for r in choices.itertuples() if r.case_name in names]
+    if len(picked) >= 2:
+        st.caption("The two cases below are the choices of step 1, one for each model. Compare them and decide"
+                   " which model groups the sentences by claim better. You can select other cases.")
+        i, j = names.index(picked[0]), names.index(picked[1])
+    else:
+        st.warning("Step 1 has not chosen a case for each model yet. Select two cases here, or choose them first"
+                   " with make choose.")
+        i, j = 0, len(names) - 1
+    first = pick_case(cases, "compare_first", "First case", index=i)
+    second = pick_case(cases, "compare_second", "Second case", index=j)
     if first["case_name"] == second["case_name"]:
         st.caption("Select two different cases.")
         return
