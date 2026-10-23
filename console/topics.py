@@ -26,6 +26,9 @@ SENTENCES = {"opening": "gate-opening sentences",
              "opening+hits": "gate-opening and whole-comment hit sentences",
              "all": "every sentence"}
 KINDS = ("law", "evid", "gap", "alt")
+CATCH_ALL = 1000
+MODEL_COLOURS = ["#c6863d", "#2f6b4e", "#4c78a8", "#9e4a6e"]
+VIEW_SHAPES = ["square", "circle", "triangle-up"]
 KIND_SCALE = alt.Scale(domain=["LAW", "EVID", "GAP", "ALT"], range=["#4c78a8", "#2f6b4e", "#c6863d", "#9e4a6e"])
 
 
@@ -170,8 +173,10 @@ def tab_cases(s, cases):
     show(table)
 
     st.subheader("Coverage against clustering")
-    st.caption("Each point is a case. A good case is low and to the right: many sentences in a cluster and few"
-               " comments not covered. A large point has a large largest cluster: read it before you trust it.")
+    st.caption("Each point is a case. The colour is the model and the shape is the view. A good case is low and"
+               " to the right: many sentences in a cluster and few comments not covered. A red ring marks a case"
+               f" whose largest cluster has {CATCH_ALL:,} or more sentences: read that cluster before you trust"
+               " the case. Point to a case to see its settings.")
     pts = pd.DataFrame({
         "case": cases["description"],
         "model": [model_name(m) for m in cases["model"]],
@@ -181,14 +186,26 @@ def tab_cases(s, cases):
         "largest cluster": cases["largest_cluster"],
         "clusters": cases["clusters"],
     })
-    chart(alt.Chart(pts).mark_point(filled=True, opacity=0.8).encode(
-        x=alt.X("sentences clustered (%):Q", scale=alt.Scale(zero=False)),
-        y=alt.Y("comments not covered:Q"),
-        color=alt.Color("model:N", title="model"),
-        shape=alt.Shape("view:N", title="view"),
-        size=alt.Size("largest cluster:Q", scale=alt.Scale(range=[60, 900])),
-        tooltip=["case:N", "clusters:Q", "sentences clustered (%):Q", "comments not covered:Q",
-                 "largest cluster:Q"]).properties(height=380))
+    models = sorted(pts["model"].unique())
+    views = [v for v in ("plain", "comment", "topic") if v in set(pts["view"])]
+    x = alt.X("sentences clustered (%):Q", scale=alt.Scale(zero=False))
+    y = alt.Y("comments not covered:Q")
+    tip = ["case:N", "clusters:Q", "sentences clustered (%):Q", "comments not covered:Q", "largest cluster:Q"]
+    dots = alt.Chart(pts).mark_point(filled=True, size=140, opacity=0.8).encode(
+        x=x, y=y,
+        color=alt.Color("model:N", scale=alt.Scale(domain=models, range=MODEL_COLOURS[:len(models)]),
+                        legend=alt.Legend(title="model (colour)", symbolType="diamond", symbolSize=200)),
+        shape=alt.Shape("view:N", scale=alt.Scale(domain=views, range=VIEW_SHAPES[:len(views)]),
+                        legend=alt.Legend(title="view (shape)")),
+        tooltip=tip)
+    big = pts[pts["largest cluster"] >= CATCH_ALL].assign(
+        note=lambda d: [f"{m.split('-')[0]}: largest cluster {n:,}" for m, n in zip(d["model"], d["largest cluster"])])
+    rings = alt.Chart(big).mark_point(shape="circle", size=520, filled=False, color="#d62728",
+                                      strokeWidth=2).encode(x=x, y=y, tooltip=tip)
+    notes = alt.Chart(big).mark_text(align="left", dx=14, dy=-10, color="#d62728", fontSize=11).encode(
+        x=x, y=y, text="note:N")
+    chart(alt.layer(dots, rings, notes).resolve_legend(color="independent", shape="independent")
+          .properties(height=380))
 
     st.subheader("How much the cases agree")
     st.caption("The adjusted Rand index of each pair of cases, on the sentences both cluster. Dark cells are"
