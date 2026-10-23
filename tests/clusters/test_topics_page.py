@@ -1,6 +1,7 @@
 """The console's Topics page (console/topics.py) through Streamlit's AppTest,
 over the case fixture: before any sentence build, before any case, and with
-two cases, one opened from its topics to a cluster's sentences and its noise.
+two cases: the guide, the cases in words, one case read from its topics to a
+cluster's sentences, and two cases compared.
 
     uv run pytest tests/clusters
 """
@@ -41,23 +42,31 @@ def test_before_any_case(casefile):
     assert any("make sentences has not run" in c.value for c in at.caption)
 
 
-def test_two_cases_and_one_opened(casefile):
+def test_the_four_tabs(casefile):
     assert cases.main(PCA_LEAF + ["--k", "2"]) == 0
     assert cases.main(PCA_LEAF + ["--structure", "by-kind"]) == 0
     at = _topics()
-    headers = [h.value for h in at.subheader]
-    assert headers == ["The cases", "Its topics", "The clusters of topic 1", "The noise", "Two cases compared"]
-    # the latest case is opened; pick the first, then its second topic and a cluster
-    at.selectbox(key="case_pick").set_value("opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0")
+    assert [t.label for t in at.tabs] == ["Guide", "Cases", "Read a case", "Compare two cases"]
+    guide = at.tabs[0].markdown[0].value
+    assert guide.startswith("# Choosing a clustering case") and "## Glossary" in guide
+    # the cases in words
+    descriptions = list(at.tabs[1].dataframe[0].value["case"])
+    assert descriptions == ["m, comment view · gate-opening and whole-comment hit sentences · PCA, HDBSCAN 5/5 leaf"
+                            " · 2 topics",
+                            "m, comment view · gate-opening and whole-comment hit sentences · PCA, HDBSCAN 5/5 leaf,"
+                            " by gate kind · topics at the eigengap"]
+    # read the first case: its two topics, a cluster's 25 sentences, the 8 in no cluster
+    at.selectbox(key="read_case").set_value(0)
     at.run()
-    at.selectbox(key="case_topic").set_value(1)
-    at.run()
-    at.selectbox(key="case_cluster").set_value(2)
+    labels = [e.label for e in at.tabs[2].expander]
+    assert sum(1 for x in labels if x.startswith("Topic ")) == 2
+    texts = [m.value for m in at.tabs[2].markdown]
+    assert any(t.startswith("**The sentences of cluster 1**") and "(25)" in t for t in texts)
+    assert any(t.startswith("**Sentences in no cluster") and "(8)" in t for t in texts)
+    # compare the two: the six groups are found both ways
+    at.selectbox(key="compare_first").set_value(0)
+    at.selectbox(key="compare_second").set_value(1)
     at.run()
     assert not at.exception, [e.value for e in at.exception]
-    assert "The clusters of topic 2" in [h.value for h in at.subheader]
-    texts = [m.value for m in at.markdown]
-    assert any(t.startswith("**The sentences of cluster") and "(25)" in t for t in texts)
-    assert any(t.startswith("**The leaders in no cluster") and "(8)" in t for t in texts)
-    labels = [m.label for m in at.metric]
-    assert "Adjusted Rand" in labels and "Clusters 80%+ in one" in labels
+    shown = {m.label: m.value for m in at.tabs[3].metric}
+    assert shown["Adjusted Rand"] == "1.0" and shown["Clusters kept together"] == "6 of 6"
