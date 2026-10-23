@@ -235,8 +235,9 @@ def tab_step1(s, all_cases, choices):
         m["second"] = m["b"].map(label)
         order = [label[n] for n in names]
         chart(alt.Chart(m).mark_rect().encode(
-            x=alt.X("second:N", sort=order, title=None, axis=alt.Axis(labelAngle=-45, labelLimit=260)),
-            y=alt.Y("first:N", sort=order, title=None, axis=alt.Axis(labelLimit=260)),
+            x=alt.X("second:N", sort=order, title=None,
+                    axis=alt.Axis(labelAngle=-45, labelLimit=260, labelOverlap=False, labelAlign="right")),
+            y=alt.Y("first:N", sort=order, title=None, axis=alt.Axis(labelLimit=260, labelOverlap=False)),
             color=alt.Color("ARI:Q", scale=alt.Scale(domain=[0, 1], scheme="greens"), title="adjusted Rand"),
             tooltip=["first:N", "second:N", alt.Tooltip("ARI:Q", format=".3f")]).properties(height=alt.Step(22)))
 
@@ -275,7 +276,8 @@ def tab_read(cases):
     left, right = st.columns(2)
     with left:
         st.markdown("**The topics, by gate kind**")
-        st.caption("Each bar is a topic. The colours show the gate kind of its clusters' sentences.")
+        st.caption("Each bar is a topic. The colours show how its claims are argued: by law, evidence, a missing"
+                   " analysis or an alternative. A mix is normal: one claim is often argued in more than one way.")
         chart(alt.Chart(every).mark_bar().encode(
             x=alt.X("sum(leaders):Q", title="sentences"),
             y=alt.Y("topic:O", title="topic", sort="ascending"),
