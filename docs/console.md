@@ -68,19 +68,18 @@ gate and the dimensions that opened it, its answerability, its eight levels, its
 letter and stance, opening to its text and its evidence (the rules' hits by dimension
 with the words they matched; the model's rationale).
 
-**Topics.** The clusters and topics of `make clusters` (`docs/clusters.md`). The latest
-sentence build: the gate-open comments, their sentences, the distinct sentences, and
-the comments no sentence of which opens the gate alone. Then every case side by side,
-one row each, with its clusters, topics, leaders clustered, largest cluster, the
-gate-open comments with no sentence in a cluster and the gate-opening sentences in a
-cluster, and every value of every case on request. One case opened: its topic cut and
-the other candidates; its topics with their terms; a topic's clusters with their kind,
-pass, leaders, absorbed sentences, occurrences, tightness, gate-kind shares, terms and
-central sentences; a cluster's sentences, most-occurring first, twenty to a page, and
-the comments they come from; and the case's noise, the leaders in no cluster. Then the
-opened case compared with any other: the sentences both cluster, the adjusted Rand
-index and NMI between them, and for each cluster of the opened case the cluster of the
-other that holds most of its sentences, lowest share first.
+**Topics.** The clustering cases of `make clusters`, in four tabs.
+
+- **Guide** explains why the cases exist, what makes a good case, how to read and
+  compare cases, and the terms. The text is `docs/choosing-a-case.md`.
+- **Cases** lists each case in words, with its clusters, topics, sentences clustered,
+  comments not covered and largest cluster.
+- **Read a case** opens one case. Each topic opens to its clusters, with one example
+  sentence for each cluster. Then you can open a cluster to read all its sentences and
+  the comments that hold them, and read the sentences in no cluster.
+- **Compare two cases** sets two cases side by side. It shows the sentences that both
+  cluster, the adjusted Rand index, the clusters kept together, and each cluster of the
+  first case with the cluster of the second that holds most of its sentences.
 
 The other five look into the file.
 

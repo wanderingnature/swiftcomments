@@ -162,8 +162,8 @@ campaigns and who ran them; the forests, roadless areas, species, legal authorit
 and references the comments name, with the letters that name any one of them; and the
 substance reading, the floor and the screen, with every scored comment filtered by
 band, gate, answerability, stance or dimension, each opening to its text and the
-evidence for its score. A Topics page sets the clustering cases side by side and opens
-any one from its topics to a cluster's sentences. Five more look into the file: one comment as the analysis read
+evidence for its score. The Topics page shows the clustering cases. Its Guide tab tells
+you how to choose one (`docs/choosing-a-case.md`). Five more look into the file: one comment as the analysis read
 it and every row the steps hold about it, every comparison of the two substance
 readings, what every step has written so far, any table a hundred rows at a time, and
 SQL typed in. It launches nothing and cannot write. `docs/console.md` describes the
