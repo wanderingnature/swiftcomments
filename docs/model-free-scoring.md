@@ -75,7 +75,7 @@ uv run python scripts/model_free/run.py report      # counts by band, gate, leve
 | the confirmed citations and legal authorities of each comment | `comment_cited_references`, `comment_authorities` (`matched_text`) |
 | the match keys of every known authority | `legal_authority.match_keys` |
 | the place list | `seeds/entity_tagging/seed_places.csv`, the file the v3 grader reads too |
-| the 27 vocabulary lists | `scripts/model_free/vocab/` |
+| the 26 vocabulary lists | `scripts/model_free/vocab/` |
 | spaCy `en_core_web_md` | the parse: parts of speech, dependencies, entities |
 
 The package read its sentences from the eis-analysis table `comment_unit`, which the
