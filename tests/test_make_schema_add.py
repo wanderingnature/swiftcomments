@@ -35,7 +35,8 @@ def test_add_creates_what_the_file_lacks(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(sys, "argv", ["make_schema.py", "--add"])
     make_schema.main()
     out = capsys.readouterr().out
-    assert "added 12:" in out and "table gate_sentence_run" in out and "index cluster_case_member_cluster" in out
+    assert "added 13:" in out and "table gate_sentence_run" in out and "index cluster_case_member_cluster" in out
+    assert "index cluster_case_leader_leader" in out
     conn = db.connect(path)
     names = {r[0] for r in conn.execute("SELECT name FROM sqlite_master")}
     assert set(LATER) <= names
