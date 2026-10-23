@@ -3,6 +3,7 @@
 This page explains how steps 10 to 14 group the substantive sentences into clusters and
 topics, why each method was chosen, and what the measurements show. `docs/clusters.md`
 explains how to run the steps. `docs/choosing-a-case.md` explains how to choose a case.
+`docs/background.md` gives the law and the established methods of de-duplication.
 The figures are those of the reference run of this repository, with their dates.
 
 ## 1. Purpose and constraints
@@ -130,6 +131,22 @@ densest regions and can dominate the clusters. The leader merge joins them first
 3. The leader takes every free sentence at cosine $\tau$ or more to it.
 4. Repeat from step 2 until every sentence has a leader.
 
+Formally: order the items so that $n_1 \ge n_2 \ge \dots$. Let
+$N_\tau(i) = \{ j \ne i : \hat v_i \cdot \hat v_j \ge \tau \}$. For each $i$ in order, if $i$ has no
+leader, set $\lambda(i) = i$ and $\lambda(j) = i$ for each $j \in N_\tau(i)$ that has no leader.
+The leaders are $L = \{ i : \lambda(i) = i \}$. A leader's occurrences are
+$\sum_{j : \lambda(j) = i} n_j$.
+
+Three properties follow:
+
+1. Each member is within $\tau$ of its leader: $\hat v_j \cdot \hat v_{\lambda(j)} \ge \tau$.
+2. Two leaders are below $\tau$: if leaders $i < i'$ had $\cos \ge \tau$, $i'$ would be a member of $i$.
+3. There is no chaining. The angle $\theta(a, b) = \arccos(\hat a \cdot \hat b)$ is a metric on the
+   sphere. Two members of one group therefore have $\theta(j, j') \le 2 \arccos \tau$.
+
+The step computes $N_\tau$ exactly, by blocks of products $V_{[a, a+2048)} V^{\top}$: time
+$O(n^2 d)$, memory $O(2048\, n)$ for each block.
+
 **Why a leader, not linkage.** Each member is within $\tau$ of its leader, so two members
 are within twice that angle of each other. At $\tau = 0.98$ that is 22.96°, a cosine of
 0.921 or more. Single linkage at the same threshold can chain sentences that are each near
@@ -144,9 +161,11 @@ clusters then collapse. `MERGE=` is an axis of the cases (`docs/topics-guide.md`
 
 HDBSCAN works badly in 1,024 dimensions, so the step reduces the vectors first.
 
-- **PCA** keeps the 50 directions of largest variance.
-- **UMAP** keeps the near neighbours of each sentence in 5 dimensions (15 neighbours,
-  `min_dist` 0, cosine distance; the defaults of BERTopic).
+- **PCA** keeps the 50 directions of largest variance. With $X$ the unit vectors and $\bar X$
+  their column means, it takes the top 50 right singular vectors $U_{50}$ of
+  $X - \mathbf{1} \bar X$ and projects: $P = (X - \mathbf{1} \bar X)\, U_{50}$.
+- **UMAP** [9] keeps the near neighbours of each sentence in 5 dimensions (15 neighbours,
+  `min_dist` 0, cosine distance; the defaults of BERTopic [10]).
 
 **Why UMAP.** With PCA, HDBSCAN estimates density in a space that keeps only part of the
 variance, and most sentences become noise. UMAP keeps the neighbours, and density
@@ -163,13 +182,24 @@ neighbour:
 
 $$d_{\mathrm{mreach}}(a, b) = \max\{\mathrm{core}_k(a),\ \mathrm{core}_k(b),\ \lVert a - b \rVert_2\}.$$
 
-This distance pushes sparse points away and leaves dense regions as they are. A minimum
-spanning tree under this distance gives a hierarchy. A split that leaves fewer than
-`min_cluster_size` points on one side is a loss of points, not a new cluster. The method
-then selects clusters from the tree:
+This distance is symmetric. It pushes sparse points away and leaves dense regions as they
+are. The method then works in these steps [1, 2]:
 
-- **eom** (excess of mass) keeps the clusters that last longest in the tree.
-- **leaf** keeps the smallest clusters at the bottom of the tree.
+1. Build the minimum spanning tree of the complete graph under $d_{\mathrm{mreach}}$.
+2. Remove its edges in decreasing order of weight. This gives a single-linkage hierarchy,
+   indexed by density $\lambda = 1 / d_{\mathrm{mreach}}$.
+3. Condense the hierarchy. A split that leaves fewer than $m$ = `min_cluster_size` points on
+   one side is a loss of points from the parent, not a new cluster. Each condensed cluster
+   $C$ starts at $\lambda_{\text{birth}}(C)$, and each point $p$ leaves it at $\lambda_p$.
+4. Give each cluster its stability:
+   $$\sigma(C) = \sum_{p \in C} \big(\lambda_p - \lambda_{\text{birth}}(C)\big).$$
+5. Select the clusters:
+   - **eom** (excess of mass) selects a set of clusters, no one inside another, with the
+     largest total stability. From the leaves up,
+     $\hat\sigma(C) = \max\{\sigma(C),\ \sum_{C' \in \mathrm{children}(C)} \hat\sigma(C')\}$, and a
+     cluster is selected when its own stability is the larger. The root is not a candidate.
+   - **leaf** selects the leaves of the condensed tree: the smallest clusters it supports.
+6. Mark the points in no selected cluster as noise.
 
 **Why density and not a cut through a hierarchy.** A dense cluster is the core of a
 repeated claim. A one-off wording is noise, not a forced member of a neighbour. Forcing a count of groups chains unrelated
@@ -205,23 +235,41 @@ The topics group the clusters by subject.
 1. Take one centroid for each cluster: the mean of its unit vectors, normalized.
 2. Remove the shared direction. Write each centroid as $c_k = \mu + \epsilon_k$, with
    $\mu$ the mean of all centroids. Keep $\epsilon_k$ and normalize it.
-3. Build the graph of the 5 nearest neighbours of each centroid.
-4. Compute the eigenvalues of its normalized Laplacian, $\mathcal{L} = I - D^{-1/2} W D^{-1/2}$.
-5. Take the number of topics at the largest gap between two eigenvalues:
-   $k^* = \arg\max_k (\lambda_{k+1} - \lambda_k)$.
-6. Group the centroids by average linkage on cosine distance, until $k^*$ groups remain.
+3. Build the graph of the 5 nearest neighbours of each centroid, with cosine distance
+   $\delta$. Give each edge the weight $w_{kl} = \max(1 - \delta_{kl}, 10^{-6})$, and make the
+   graph symmetric: $W \leftarrow \max(W, W^{\top})$.
+4. With $D = \mathrm{diag}(W \mathbf{1})$, compute the eigenvalues
+   $0 = \lambda_1 \le \lambda_2 \le \dots \le 2$ of the normalized Laplacian
+   $\mathcal{L} = I - D^{-1/2} W D^{-1/2}$.
+5. Take the number of topics at the largest gap: $k^* = \arg\max_{2 \le k < 40} (\lambda_{k+1} - \lambda_k)$.
+6. Group the centroids by average linkage on $\Delta_{kl} = 1 - c'_k \cdot c'_l$. Start with
+   one group for each centroid. Join the two groups with the smallest
+   $$\Delta(A, B) = \frac{1}{|A|\,|B|} \sum_{k \in A} \sum_{l \in B} \Delta_{kl},$$
+   and after each join use
+   $\Delta(A \cup B, C) = \frac{|A|\,\Delta(A, C) + |B|\,\Delta(B, C)}{|A| + |B|}$.
+   Stop at $k^*$ groups.
 
 **Why remove the shared direction.** Almost every comment opposes the rescission and uses
 the rule's words. That shared direction makes every pair of centroids look alike, and clusters on different
 subjects, fire and wildlife for example, fall into one group with general opposition.
 
-**Why the eigengap.** A large gap between eigenvalues $k$ and $k+1$ is the signature of
-$k$ separate groups. The number comes from the data, not from a choice made beforehand.
+Removing the shared direction is a decomposition of the cosine. With
+$c_k = \mu + \epsilon_k$ and $\sum_k \epsilon_k = 0$,
+
+$$c_k \cdot c_l = \lVert \mu \rVert^2 + \mu \cdot (\epsilon_k + \epsilon_l) + \epsilon_k \cdot \epsilon_l.$$
+
+When $\lVert \mu \rVert$ is large, every pair looks similar, and the term that tells
+subjects apart, $\epsilon_k \cdot \epsilon_l$, is a small part of the cosine.
+
+**Why the eigengap.** If the graph had $k$ separate components, the eigenvalue 0 would
+occur $k$ times, and $\lambda_{k+1}$ would be above 0. In a connected graph, perturbation
+theory (Davis and Kahan [3]) makes a large gap between $\lambda_k$ and $\lambda_{k+1}$ the
+signature of $k$ well-separated groups [4]. The number comes from the data, not from a choice made beforehand.
 The case keeps the next candidates too, and `K=` can cut at one of them.
 
 ## 9. The names
 
-Each cluster and topic gets a name by class-based TF-IDF. Each class (a cluster or a
+Each cluster and topic gets a name by class-based TF-IDF [10]. Each class (a cluster or a
 topic) is one document, all its sentences joined. With $n_{t,c}$ the count of term $t$ in
 class $c$, and $N$ the number of classes:
 
@@ -259,10 +307,17 @@ measures. A reader compares the cases and chooses one (`docs/choosing-a-case.md`
 Two cases can group the same sentences differently. `make compare-cases` measures the
 agreement on the sentences that both cases put in a cluster.
 
-- The **adjusted Rand index** counts the pairs of sentences that both cases put together
-  or both put apart, corrected for chance. 1 is the same grouping. 0 is chance.
-- The **normalized mutual information** measures how much one grouping tells about the
-  other, from 0 to 1.
+- The **adjusted Rand index** [5] counts the pairs of sentences that both cases put
+  together or both put apart, corrected for chance. With $n_{ij}$ the sentences in cluster
+  $i$ of the first case and cluster $j$ of the second, $a_i = \sum_j n_{ij}$, $b_j = \sum_i n_{ij}$
+  and $n$ the sentences:
+
+  $$\mathrm{ARI} = \frac{\sum_{ij} \binom{n_{ij}}{2} - \Big[\sum_i \binom{a_i}{2} \sum_j \binom{b_j}{2}\Big] \big/ \binom{n}{2}}{\tfrac12 \Big[\sum_i \binom{a_i}{2} + \sum_j \binom{b_j}{2}\Big] - \Big[\sum_i \binom{a_i}{2} \sum_j \binom{b_j}{2}\Big] \big/ \binom{n}{2}}.$$
+
+  1 is the same grouping. 0 is chance.
+- The **normalized mutual information** [6] measures how much one grouping tells about the
+  other. With $I$ the mutual information and $H$ the entropy of a grouping $U$ or $V$:
+  $\mathrm{NMI}(U, V) = I(U; V) \,/\, \tfrac12 \big(H(U) + H(V)\big)$, from 0 to 1.
 - The **crossing** takes each cluster of the first case and finds the cluster of the
   second case that holds most of its sentences. The share shows if the cluster stays
   together or breaks.
@@ -311,3 +366,46 @@ habitat and species, and timber production under the executive orders.
   miss the most specific word of a cluster.
 - **Steps 15 and 16 are not built.** A concern statement for each cluster and the response
   need a model call. They come after the choice of a case.
+
+## 13. Cost
+
+| Stage | Time | Space |
+|---|---|---|
+| Vectors | one request for each distinct sentence | 1,024 floats for each distinct sentence |
+| Leader merge | $O(n^2 d)$ | $O(2048\, n)$ for each block |
+| PCA | $O(n d \cdot 50)$, randomized | $O(n d)$ |
+| UMAP | about $O(n \log n)$, nearest-neighbour descent | $O(n)$ beyond the data |
+| HDBSCAN | the spanning tree dominates; about $O(n^2)$ here | $O(n)$ beyond the data |
+| Topics | $O(K^3)$ for $K$ clusters | $O(K^2)$ |
+
+In the reference run (2026-10-21), a case on the 11,563 gate-opening sentences took 4 seconds (PCA) to
+37 seconds (UMAP, by gate kind),
+and a case on all 125,825 sentences took 146 to 158 seconds. The vectors took 23.5 minutes
+for BGE and 2.3 hours for Qwen f16 on an M3 Ultra.
+
+## 14. Software
+
+| Component | Library | Version in this repository |
+|---|---|---|
+| Language | Python | 3.14 |
+| Linear algebra | NumPy, SciPy | 2.5.4, 1.18.1 |
+| PCA, HDBSCAN, linkage, nearest-neighbour graph, the term counts, ARI and NMI | scikit-learn | 1.9.1 |
+| UMAP | umap-learn, pynndescent | 0.5.12, 0.6.0 |
+| Vectors | Qwen3-Embedding-8B [7]; BGE-large-en-v1.5 [8] | through any OpenAI embeddings server |
+
+The seed of each case sets PCA and UMAP. HDBSCAN and the linkage give the same result for
+the same input.
+
+## References
+
+1. Ricardo J. G. B. Campello, Davoud Moulavi and Joerg Sander, "Density-Based Clustering Based on Hierarchical Density Estimates," *PAKDD 2013*, Springer, 160–72. <https://doi.org/10.1007/978-3-642-37456-2_14>
+2. Leland McInnes, John Healy and Steve Astels, "hdbscan: Hierarchical Density Based Clustering," *Journal of Open Source Software* 2, no. 11 (2017): 205. <https://doi.org/10.21105/joss.00205>
+3. Chandler Davis and W. M. Kahan, "The Rotation of Eigenvectors by a Perturbation. III," *SIAM Journal on Numerical Analysis* 7, no. 1 (1970): 1–46. <https://doi.org/10.1137/0707001>
+4. Ulrike von Luxburg, "A Tutorial on Spectral Clustering," *Statistics and Computing* 17, no. 4 (2007): 395–416. <https://doi.org/10.1007/s11222-007-9033-z>
+5. Lawrence Hubert and Phipps Arabie, "Comparing Partitions," *Journal of Classification* 2 (1985): 193–218. <https://doi.org/10.1007/BF01908075>
+6. Alexander Strehl and Joydeep Ghosh, "Cluster Ensembles: A Knowledge Reuse Framework for Combining Multiple Partitions," *Journal of Machine Learning Research* 3 (2002). <https://jmlr.org/papers/v3/strehl02a.html>
+7. Yanzhao Zhang et al., "Qwen3 Embedding: Advancing Text Embedding and Reranking Through Foundation Models," arXiv:2506.05176, 2025. <https://arxiv.org/abs/2506.05176>
+8. Shitao Xiao, Zheng Liu, Peitian Zhang et al., "C-Pack: Packed Resources For General Chinese Embeddings," arXiv:2309.07597, 2023 (the paper that describes the BGE models). <https://arxiv.org/abs/2309.07597>
+9. Leland McInnes, John Healy and James Melville, "UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction," arXiv:1802.03426, 2018. <https://arxiv.org/abs/1802.03426>
+10. Maarten Grootendorst, "BERTopic: Neural Topic Modeling with a Class-Based TF-IDF Procedure," arXiv:2203.05794, 2022. <https://arxiv.org/abs/2203.05794>
+11. Fabian Pedregosa et al., "Scikit-learn: Machine Learning in Python," *Journal of Machine Learning Research* 12 (2011): 2825–30. <https://www.jmlr.org/papers/v12/pedregosa11a.html>
