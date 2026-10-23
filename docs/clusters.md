@@ -9,7 +9,8 @@ eis-analysis's model-free gate clustering. No generative model reads a comment i
 The steps run after `make score-model-free`. This page describes each step as it is built.
 
 To choose among the cases, read `docs/choosing-a-case.md`. The console's Topics page
-shows the same guide.
+shows the same guide. `docs/methods-clustering.md` explains each method, why it was
+chosen, and what the measurements show.
 
 ## Step 10: the sentences of the gate set (`make sentences`)
 
