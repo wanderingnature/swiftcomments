@@ -74,13 +74,19 @@ with the words they matched; the model's rationale).
 - **Guide** explains why the cases exist, what makes a good case, how to read and
   compare cases, and the terms. The text is `docs/choosing-a-case.md`.
 - **Cases** lists each case in words, with its clusters, topics, sentences clustered,
-  comments not covered and largest cluster.
-- **Read a case** opens one case. Each topic opens to its clusters, with one example
-  sentence for each cluster. Then you can open a cluster to read all its sentences and
-  the comments that hold them, and read the sentences in no cluster.
+  comments not covered and largest cluster. A chart places each case by sentences
+  clustered and comments not covered, with the model, the view and the largest cluster.
+  On request, a heatmap gives the adjusted Rand index of every pair of cases.
+- **Read a case** opens one case. Charts show the topics by gate kind, the cluster sizes,
+  the eigengap at each number of topics, and a map of the clusters by topic. Each topic
+  opens to its clusters, with one example sentence for each cluster. Then you can open a
+  cluster to read all its sentences and the comments that hold them, and read the
+  sentences in no cluster.
 - **Compare two cases** sets two cases side by side. It shows the sentences that both
-  cluster, the adjusted Rand index, the clusters kept together, and each cluster of the
-  first case with the cluster of the second that holds most of its sentences.
+  cluster, the adjusted Rand index and the clusters kept together. Two charts show how the
+  clusters of the first case hold together, and where its 20 largest clusters go. A table
+  gives each cluster of the first case with the cluster of the second that holds most of
+  its sentences.
 
 The other five look into the file.
 

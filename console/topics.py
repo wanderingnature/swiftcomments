@@ -10,12 +10,15 @@ the file changes. Nothing here runs a case: make clusters does.
 import json
 from pathlib import Path
 
+import altair as alt
+import numpy as np
 import pandas as pd
 import streamlit as st
 
 from console import queries as q
-from console.results import CARDS, metrics, not_run, pager, pct
-from console.view import open_db, query, show
+from console.results import CARDS, chart, metrics, not_run, pager, pct
+from console.view import file_signature, open_db, query, show
+from scripts.clusters.embed import VIEWS, unpack
 from shared import case_compare
 
 GUIDE = Path(__file__).resolve().parents[1] / "docs" / "choosing-a-case.md"
@@ -23,6 +26,72 @@ SENTENCES = {"opening": "gate-opening sentences",
              "opening+hits": "gate-opening and whole-comment hit sentences",
              "all": "every sentence"}
 KINDS = ("law", "evid", "gap", "alt")
+KIND_SCALE = alt.Scale(domain=["LAW", "EVID", "GAP", "ALT"], range=["#4c78a8", "#2f6b4e", "#c6863d", "#9e4a6e"])
+
+
+def short(c):
+    """A case in a few words, for the axes of a chart."""
+    sel = {"opening": "opening", "opening+hits": "opening+hits", "all": "all"}[c["sentences"]]
+    parts = [model_name(c["model"]).split("-")[0], c["view"], sel,
+             ("UMAP" if c["reduction"] == "umap5" else "PCA") + f" {int(c['mcs'])}/{int(c['ms'])}"]
+    if c["structure"] == "by-kind":
+        parts.append("by kind")
+    if c["passes"]:
+        parts.append(f"{int(c['passes'])} passes")
+    if c["k"] == c["k"] and c["k"] is not None:
+        parts.append(f"K={int(c['k'])}")
+    return " · ".join(parts)
+
+
+@st.cache_data(show_spinner="comparing every pair of cases", max_entries=20)
+def agreement_matrix(names, signature):
+    """The adjusted Rand index of every pair of cases, on the sentences both cluster."""
+    with open_db() as conn:
+        labels = {n: case_compare.labels(conn, n) for n in names}
+    rows = []
+    for a in names:
+        for b in names:
+            m = case_compare.compare(labels[a], labels[b]) if a != b else {"ari": 1.0}
+            rows.append((a, b, m["ari"]))
+    return rows
+
+
+@st.cache_data(show_spinner="placing the clusters", max_entries=20)
+def cluster_map(case_name, model, view, signature):
+    """Each cluster's centroid placed in two dimensions (the first two principal components
+    of the centroids), with its topic, size and terms."""
+    with open_db() as conn:
+        members = conn.execute(
+            "SELECT m.leader_key, m.cluster FROM cluster_case_member m WHERE m.case_name = ? AND m.cluster > 0",
+            (case_name,)).fetchall()
+        keys = sorted({k for k, _ in members})
+        vec = {}
+        for i in range(0, len(keys), 900):
+            part = keys[i:i + 900]
+            marks = ",".join("?" * len(part))
+            vec.update(dict(conn.execute(
+                f"SELECT text_key, vector FROM sentence_embedding WHERE model = ? AND instruction = ?"
+                f" AND text_key IN ({marks})", (model, VIEWS[view], *part))))
+        info = conn.execute("SELECT cluster, topic, leaders, terms FROM cluster_case_cluster WHERE case_name = ?",
+                            (case_name,)).fetchall()
+    by = {}
+    for k, c in members:
+        if k in vec:
+            v = unpack(vec[k]).astype(np.float64)
+            by.setdefault(c, []).append(v / np.linalg.norm(v))
+    clusters = sorted(by)
+    if len(clusters) < 3:
+        return pd.DataFrame()
+    C = np.array([np.mean(by[c], axis=0) for c in clusters])
+    C = C / np.linalg.norm(C, axis=1, keepdims=True)
+    C = C - C.mean(0)
+    u, sv, vt = np.linalg.svd(C, full_matrices=False)
+    xy = u[:, :2] * sv[:2]
+    meta = {c: (t, n, ", ".join(json.loads(terms)[:4])) for c, t, n, terms in info}
+    return pd.DataFrame({"cluster": clusters, "x": xy[:, 0], "y": xy[:, 1],
+                         "topic": [f"Topic {meta[c][0]}" for c in clusters],
+                         "sentences": [meta[c][1] for c in clusters],
+                         "terms": [meta[c][2] for c in clusters]})
 
 
 def model_name(model):
@@ -99,6 +168,44 @@ def tab_cases(s, cases):
         "largest cluster": cases["largest_cluster"],
     })
     show(table)
+
+    st.subheader("Coverage against clustering")
+    st.caption("Each point is a case. A good case is low and to the right: many sentences in a cluster and few"
+               " comments not covered. A large point has a large largest cluster: read it before you trust it.")
+    pts = pd.DataFrame({
+        "case": cases["description"],
+        "model": [model_name(m) for m in cases["model"]],
+        "view": cases["view"],
+        "sentences clustered (%)": (100 * cases["leaders_clustered"] / cases["leaders"]).round(1),
+        "comments not covered": cases["comments_unclustered"],
+        "largest cluster": cases["largest_cluster"],
+        "clusters": cases["clusters"],
+    })
+    chart(alt.Chart(pts).mark_point(filled=True, opacity=0.8).encode(
+        x=alt.X("sentences clustered (%):Q", scale=alt.Scale(zero=False)),
+        y=alt.Y("comments not covered:Q"),
+        color=alt.Color("model:N", title="model"),
+        shape=alt.Shape("view:N", title="view"),
+        size=alt.Size("largest cluster:Q", scale=alt.Scale(range=[60, 900])),
+        tooltip=["case:N", "clusters:Q", "sentences clustered (%):Q", "comments not covered:Q",
+                 "largest cluster:Q"]).properties(height=380))
+
+    st.subheader("How much the cases agree")
+    st.caption("The adjusted Rand index of each pair of cases, on the sentences both cluster. Dark cells are"
+               " cases that find the same groups. A setting whose cases agree with many others is stable.")
+    if st.toggle("Compare every pair of cases", key="agreement_on"):
+        names = list(cases["case_name"])
+        label = dict(zip(cases["case_name"], [short(c) for _, c in cases.iterrows()]))
+        m = pd.DataFrame(agreement_matrix(tuple(names), file_signature()), columns=["a", "b", "ARI"])
+        m["first"] = m["a"].map(label)
+        m["second"] = m["b"].map(label)
+        order = [label[n] for n in names]
+        chart(alt.Chart(m).mark_rect().encode(
+            x=alt.X("second:N", sort=order, title=None, axis=alt.Axis(labelAngle=-45, labelLimit=260)),
+            y=alt.Y("first:N", sort=order, title=None, axis=alt.Axis(labelLimit=260)),
+            color=alt.Color("ARI:Q", scale=alt.Scale(domain=[0, 1], scheme="greens"), title="adjusted Rand"),
+            tooltip=["first:N", "second:N", alt.Tooltip("ARI:Q", format=".3f")]).properties(height=alt.Step(22)))
+
     with st.expander("Every value of every case"):
         show(cases.drop(columns=["description"]))
 
@@ -121,6 +228,50 @@ def tab_read(cases):
     if topics.empty:
         st.caption("This case found no cluster.")
         return
+    every = query("SELECT cluster, topic, leaders, law, evid, gap, alt, terms FROM cluster_case_cluster"
+                  " WHERE case_name = ?", (name,))
+    every["main kind"] = [KINDS[i].upper() for i in every[list(KINDS)].to_numpy().argmax(1)]
+    left, right = st.columns(2)
+    with left:
+        st.markdown("**The topics, by gate kind**")
+        st.caption("Each bar is a topic. The colours show the gate kind of its clusters' sentences.")
+        chart(alt.Chart(every).mark_bar().encode(
+            x=alt.X("sum(leaders):Q", title="sentences"),
+            y=alt.Y("topic:O", title="topic", sort="ascending"),
+            color=alt.Color("main kind:N", scale=KIND_SCALE, title="main kind"),
+            tooltip=["topic:O", "main kind:N", alt.Tooltip("sum(leaders):Q", title="sentences")])
+              .properties(height=alt.Step(18)))
+    with right:
+        st.markdown("**The cluster sizes**")
+        st.caption("Most clusters should be small. A bar far to the right is a catch-all cluster.")
+        chart(alt.Chart(every).mark_bar(color="#2f6b4e").encode(
+            x=alt.X("leaders:Q", bin=alt.Bin(maxbins=40), title="sentences in the cluster"),
+            y=alt.Y("count():Q", title="clusters"),
+            tooltip=[alt.Tooltip("count():Q", title="clusters")]).properties(height=260))
+        gaps = pd.DataFrame(json.loads(c["eigengaps"]), columns=["topics", "gap"])
+        if not gaps.empty:
+            st.markdown("**The topic cut**")
+            st.caption("The gap at each number of topics. The cut is at the tallest bar unless K is set.")
+            gaps["cut"] = gaps["topics"] == int(c["topics"])
+            chart(alt.Chart(gaps).mark_bar().encode(
+                x=alt.X("topics:O", title="number of topics"), y=alt.Y("gap:Q", title="eigengap"),
+                color=alt.condition("datum.cut", alt.value("#c6863d"), alt.value("#9e9e9e")),
+                tooltip=["topics:O", alt.Tooltip("gap:Q", format=".4f")]).properties(height=180))
+
+    st.subheader("The map of the clusters")
+    st.caption("Each point is a cluster, placed by its centre. Clusters near each other say similar things. The"
+               " colour is the topic, the size is the number of sentences. Points of one colour should lie together.")
+    cmap = cluster_map(name, c["model"], c["view"], file_signature())
+    if cmap.empty:
+        st.caption("Too few clusters to place.")
+    else:
+        chart(alt.Chart(cmap).mark_circle(opacity=0.75).encode(
+            x=alt.X("x:Q", title=None, axis=None), y=alt.Y("y:Q", title=None, axis=None),
+            color=alt.Color("topic:N", title="topic", sort=sorted(cmap["topic"].unique(),
+                                                                   key=lambda t: int(t.split()[1]))),
+            size=alt.Size("sentences:Q", scale=alt.Scale(range=[20, 700])),
+            tooltip=["cluster:Q", "topic:N", "sentences:Q", "terms:N"]).properties(height=460))
+
     st.subheader("Topics")
     st.caption("Open a topic to see its clusters. Each cluster shows one example sentence.")
     for r in topics.itertuples():
@@ -177,6 +328,40 @@ def tab_compare(cases):
     crossing = pd.DataFrame(m["crossing"])
     if crossing.empty:
         return
+    left, right = st.columns(2)
+    with left:
+        st.markdown("**How the clusters of the first case hold together**")
+        st.caption("Each bar counts the clusters of the first case by the share that stays in one cluster of the"
+                   " second. Bars to the right of the line stay together.")
+        dist = pd.DataFrame({"share": crossing["share"] * 100})
+        chart(alt.layer(
+            alt.Chart(dist).mark_bar(color="#2f6b4e").encode(
+                x=alt.X("share:Q", bin=alt.Bin(step=5), title="share in one cluster of the second case (%)"),
+                y=alt.Y("count():Q", title="clusters of the first case")),
+            alt.Chart(pd.DataFrame({"x": [80]})).mark_rule(color="#c6863d", strokeDash=[4, 3]).encode(x="x:Q"))
+              .properties(height=260))
+    with right:
+        st.markdown("**Where the largest clusters go**")
+        st.caption("The 20 largest clusters of the first case, and the clusters of the second case that hold their"
+                   " sentences. One dark cell in a row is a cluster that stays together.")
+        with open_db() as conn:
+            a = case_compare.labels(conn, first["case_name"])
+            b = case_compare.labels(conn, second["case_name"])
+        top = list(crossing.sort_values("sentences", ascending=False)["cluster"][:20])
+        cells = {}
+        for k, ca in a.items():
+            if ca in top and b.get(k, 0) > 0:
+                cells[(ca, b[k])] = cells.get((ca, b[k]), 0) + 1
+        size = dict(zip(crossing["cluster"], crossing["sentences"]))
+        heat = pd.DataFrame([(f"{ca}", f"{cb}", n / size[ca]) for (ca, cb), n in cells.items()],
+                            columns=["first", "second", "share"])
+        if not heat.empty:
+            heat = heat[heat["share"] >= 0.05]
+            chart(alt.Chart(heat).mark_rect().encode(
+                x=alt.X("second:N", title="cluster of the second case", sort=None),
+                y=alt.Y("first:N", title="cluster of the first case", sort=[str(t) for t in top]),
+                color=alt.Color("share:Q", scale=alt.Scale(domain=[0, 1], scheme="greens"), title="share"),
+                tooltip=["first:N", "second:N", alt.Tooltip("share:Q", format=".0%")]).properties(height=alt.Step(16)))
     st.caption("Each row is a cluster of the first case. \"Share\" is the part of its sentences in one cluster of"
                " the second case. The clusters that break the most are at the top.")
     show(pd.DataFrame({
