@@ -14,7 +14,7 @@ DB  := data/roadless.sqlite
 
 .PHONY: help all schema schema-add corpus fetch dedup ngrams ner tag floor groups screen \
         stance stance-runs score-model score-model-free assemble rate text attachments orgs \
-        facts check console jump extract score-model-compare sentences embed clusters cases compare-cases choose
+        facts check console jump extract score-model-compare sentences embed clusters cases compare-cases choose cases-remeasure
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
@@ -120,6 +120,9 @@ cases:  ## the clustering cases so far, each with its measures
 
 compare-cases:  ## A=<case> B=<case>: how far two cases group the same sentences the same way, cluster by cluster
 	$(PY) scripts/clusters/cases.py compare "$(A)" "$(B)"
+
+cases-remeasure:  ## count the coverage of every stored case again from its stored rows (comments not covered, on substantive sentences); no case runs again
+	$(PY) scripts/clusters/cases.py remeasure
 
 choose:  ## CASE=<case> [NOTE="..."]: record the case as the choice of its embedding model (step 1 of docs/choosing-a-case.md)
 	$(PY) scripts/clusters/cases.py choose "$(CASE)" $(if $(NOTE),--note "$(NOTE)")

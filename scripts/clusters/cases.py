@@ -7,6 +7,7 @@
     uv run python scripts/clusters/cases.py list
     uv run python scripts/clusters/cases.py compare CASE_A CASE_B
     uv run python scripts/clusters/cases.py choose CASE [--note TEXT]
+    uv run python scripts/clusters/cases.py remeasure
     make clusters [SENTENCES=... VIEW=... MERGE=... REDUCTION=... MCS=... MS=... SELECTION=... STRUCTURE=... PASSES=... K=... SEED=...]
     make cases
     make compare-cases A=<case> B=<case>
@@ -135,6 +136,42 @@ def load(conn, sentences: str, view: str, model: str):
             np.array([[r[2], r[3], r[4], r[5]] for r in rows], dtype=bool), V)
 
 
+def coverage(conn, clustered_keys: set[str]) -> tuple[int, int, int, int]:
+    """The gate-open comments, those not covered, the gate-opening sentence occurrences, and those in
+    a cluster. A comment is covered when one of its substantive sentences (it opens the gate alone,
+    or it holds a whole-comment gate hit) is a clustered sentence. A clustered subject line or
+    thank-you line does not cover a comment."""
+    comments: dict[str, bool] = {}
+    opening = opening_in = 0
+    for cid, key, opens, holds in conn.execute(
+            "SELECT comment_id, text_key, opens, holds_hit FROM gate_sentence_occurrence"):
+        inside = key in clustered_keys
+        comments[cid] = comments.get(cid, False) or (inside and bool(opens or holds))
+        if opens:
+            opening += 1
+            opening_in += int(inside)
+    return len(comments), sum(1 for v in comments.values() if not v), opening, opening_in
+
+
+def remeasure(conn) -> list[tuple[str, int, int]]:
+    """Every stored case's coverage counted again from its stored rows, with no case run again.
+    Returns (case, the old count of comments not covered, the new count)."""
+    out = []
+    for (name,) in conn.execute("SELECT case_name FROM cluster_case ORDER BY case_name").fetchall():
+        keys = {k for (k,) in conn.execute(
+            "SELECT l.text_key FROM cluster_case_leader l JOIN cluster_case_member m"
+            " ON m.case_name = l.case_name AND m.leader_key = l.leader_key"
+            " WHERE l.case_name = ? AND m.cluster > 0", (name,))}
+        old = conn.execute("SELECT comments_unclustered FROM cluster_case WHERE case_name = ?", (name,)).fetchone()[0]
+        _, uncovered, opening, opening_in = coverage(conn, keys)
+        with conn.transaction():
+            conn.execute("UPDATE cluster_case SET comments_unclustered = ?, opening_occurrences = ?,"
+                         " opening_occurrences_clustered = ? WHERE case_name = ?",
+                         (uncovered, opening, opening_in, name))
+        out.append((name, old, uncovered))
+    return out
+
+
 def cluster_group(LV: np.ndarray, a: argparse.Namespace) -> list[tuple[int, np.ndarray]]:
     """The clusters of one group of leaders: (pass, the row indices of each cluster).
     The first pass, then the noise clustered again, pass by pass."""
@@ -199,22 +236,15 @@ def run_case(conn, a: argparse.Namespace) -> dict:
     clustered = np.zeros(len(lead), dtype=bool)
     for _, _, m in found:
         clustered[m] = True
-    key_clustered = {keys[i]: bool(clustered[pos[int(leader[i])]]) for i in range(len(keys))}
-    comments: dict[str, bool] = {}
-    opening = opening_in = 0
-    for cid, key, opens in conn.execute("SELECT comment_id, text_key, opens FROM gate_sentence_occurrence"):
-        inside = key_clustered.get(key, False)
-        comments[cid] = comments.get(cid, False) or inside
-        if opens:
-            opening += 1
-            opening_in += int(inside)
+    key_clustered = {keys[i] for i in range(len(keys)) if clustered[pos[int(leader[i])]]}
+    gate_comments, uncovered, opening, opening_in = coverage(conn, key_clustered)
     head, dirty = an.code_version()
     m = {"case_name": name, "model": model, "sentence_run_id": srun, "input_sentences": len(keys),
          "occurrences": int(occ.sum()), "leaders": len(lead), "clusters": len(found), "topics": len(t_order),
          "eigengaps": json.dumps(gaps[:10]), "leaders_clustered": int(clustered.sum()),
          "occurrences_clustered": int(L_occ[clustered].sum()),
          "largest_cluster": max((len(f[2]) for f in found), default=0),
-         "gate_comments": len(comments), "comments_unclustered": sum(1 for v in comments.values() if not v),
+         "gate_comments": gate_comments, "comments_unclustered": uncovered,
          "opening_occurrences": opening, "opening_occurrences_clustered": opening_in}
 
     with conn.transaction():
@@ -317,6 +347,16 @@ def cmd_compare(a: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_remeasure(_a: argparse.Namespace) -> int:
+    conn = db.connect(db.DB_PATH)
+    rows = remeasure(conn)
+    conn.close()
+    print(f"make cases-remeasure: {len(rows)} cases; comments not covered, counted on substantive sentences:")
+    for name, old, new in rows:
+        print(f"  {old:>6,} -> {new:>6,}  {name}")
+    return 0
+
+
 def cmd_choose(a: argparse.Namespace) -> int:
     conn = db.connect(db.DB_PATH)
     model = choose(conn, a.case, a.note)
@@ -351,6 +391,8 @@ def main(argv: list[str] | None = None) -> int:
     cp.add_argument("first")
     cp.add_argument("second")
     cp.set_defaults(fn=cmd_compare)
+    rm = sub.add_parser("remeasure", help="count every stored case's coverage again from its stored rows")
+    rm.set_defaults(fn=cmd_remeasure)
     ch = sub.add_parser("choose", help="record a case as the choice of its embedding model")
     ch.add_argument("case")
     ch.add_argument("--note", help="why it was chosen")

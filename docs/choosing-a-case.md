@@ -32,7 +32,7 @@ Use these five checks in step 1. The first two are the most important.
 | Check | What to look for | Where to look | Good sign | Bad sign |
 |---|---|---|---|---|
 | 1. One claim per cluster | The sentences of a cluster make the same claim. | Read a case: open a cluster and read its sentences. | You can state the claim in one sentence. | The sentences make two or more different claims. |
-| 2. Coverage | Few gate-open comments have no sentence in a cluster. | Step 1: "Comments not covered", and the chart "Coverage against clustering". | A low number. | Many substantive comments are not in any cluster. |
+| 2. Coverage | Few gate-open comments have no substantive sentence in a cluster. | Step 1: "Comments not covered", and the chart "Coverage against clustering". | A low number. | Many substantive comments are not in any cluster. |
 | 3. No catch-all cluster | No cluster collects unrelated sentences. | Step 1: "Largest cluster". Read a case: the chart "The cluster sizes". | The largest cluster is a few hundred sentences of one claim. | One cluster has thousands of sentences on many subjects. |
 | 4. Topics are subjects | Each topic is one subject that you can name. | Read a case: the topic terms, "The map of the clusters" and "The topic cut". | The terms name one subject, for example roads and wildfire. | The terms are general words, for example "rule" or "forest". |
 | 5. Clusters stay together | The same groups appear with a nearby setting. | Step 1: "How stable the cases of this model are". | Dark cells between the case and the cases with nearby settings. | Light cells: a small change of setting changes the clusters. |
@@ -126,7 +126,7 @@ The figures:
 | Central sentence | The sentence of a cluster that is nearest to the centre of the cluster. It is the best example of the cluster. |
 | Cluster | A group of sentences that HDBSCAN found close together. It is one claim if the case is good. |
 | Comment instruction | The instruction "retrieve the sentence from the agency's record that addresses the specific claim". The model makes a vector for that task. |
-| Comments not covered | Gate-open comments that have no sentence in any cluster. |
+| Comments not covered | Gate-open comments with no substantive sentence in a cluster. A substantive sentence opens the gate alone, or holds a whole-comment gate hit. A clustered subject line or thank-you line does not cover a comment. |
 | eom, leaf | Two ways for HDBSCAN to select clusters. eom keeps the clusters that last longest. leaf keeps the smallest clusters. |
 | Eigengap | The method that sets the number of topics. It finds the largest step between eigenvalues of the cluster graph. |
 | Embedding model | A model that changes a sentence into a vector of numbers. Similar sentences get similar vectors. |

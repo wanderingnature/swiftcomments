@@ -202,3 +202,27 @@ def test_choose_a_case_for_each_model(casefile, capsys):
     conn.close()
     with pytest.raises(SystemExit, match="no case 'nope'"):
         cases.main(["choose", "nope"])
+
+
+def test_coverage_counts_substantive_sentences_only(casefile, capsys):
+    # the 25 sentences of group 5 become register lines: they neither open the gate nor hold a hit
+    conn = db.connect(casefile)
+    conn.execute("UPDATE gate_sentence_occurrence SET opens = 0, holds_hit = 0 WHERE text_key LIKE 'g5s%'")
+    conn.commit()
+    conn.close()
+    assert cases.main(["run", "--reduction", "pca50", "--min-cluster-size", "5", "--min-samples", "5",
+                       "--selection", "leaf", "--sentences", "all", "--k", "2"]) == 0
+    name = "all.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0"
+    conn = db.connect(casefile)
+    c = _case(conn, name)
+    # group 5 is clustered, but its 25 comments hold no substantive sentence: not covered, with the 8 strays
+    assert c["leaders_clustered"] == 150 and c["comments_unclustered"] == 33
+    # remeasure counts the stored case again from its rows
+    conn.execute("UPDATE cluster_case SET comments_unclustered = 0 WHERE case_name = ?", (name,))
+    conn.commit()
+    conn.close()
+    assert cases.main(["remeasure"]) == 0
+    assert f"0 ->     33  {name}" in capsys.readouterr().out
+    conn = db.connect(casefile)
+    assert _case(conn, name)["comments_unclustered"] == 33
+    conn.close()

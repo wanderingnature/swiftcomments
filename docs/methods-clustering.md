@@ -50,7 +50,7 @@ no sentence that opens the gate alone, so `opening` leaves it out. Step 10 finds
 sentences that hold the hits that opened it, and `opening+hits` adds them. In the reference
 run (2026-10-21), 5,544 of the 6,516 comments have a sentence that opens the gate alone, and
 25 have neither kind of sentence. The case with `opening+hits` cut the comments with no
-sentence in a cluster from 1,813 to 1,053 on BGE, and from 1,859 to 1,019 on Qwen.
+sentence in a cluster from 1,838 to 1,091 on BGE, and from 1,880 to 1,046 on Qwen.
 
 **How a hit is placed in a sentence.** The whole-comment reading uses the normalized
 comment text. A sentence uses the rendered text. Step 10 joins the two texts on their
@@ -226,7 +226,7 @@ as law, as evidence and as a missing analysis.
 
 **What the reference run found.** By kind, 79% (BGE) and 80% (Qwen) of the sentences were in a
 cluster, against 73% clustered together. The comments with no sentence in a cluster fell
-from 1,813 to 1,631 (BGE) and from 1,859 to 1,591 (Qwen).
+from 1,838 to 1,676 (BGE) and from 1,880 to 1,640 (Qwen).
 
 ## 8. The topics
 
@@ -297,7 +297,7 @@ measures. A reader compares the cases and chooses one (`docs/choosing-a-case.md`
 |---|---|
 | Sentences clustered | The share of the input that is not noise. |
 | Largest cluster | A sign of a catch-all cluster. |
-| Comments not covered | Gate-open comments with no sentence in a cluster. |
+| Comments not covered | Gate-open comments with no substantive sentence in a cluster. A substantive sentence opens the gate alone, or holds a whole-comment gate hit. A clustered subject line or thank-you line does not cover a comment. |
 | Gate-opening sentences clustered | The share of the substance-carrying sentences in a cluster. |
 | Tightness | The mean cosine of a cluster's sentences to its centroid. |
 | Gate-kind shares | How the claim of a cluster is argued: by law, evidence, a missing analysis or an alternative. It is not a measure of quality: one claim can be argued in several ways, and different claims in the same way. |
@@ -331,13 +331,13 @@ on each model with the plain view, and 3 on Qwen with the comment view.
 
 | Setting | BGE: clusters, clustered, comments not covered | Qwen: clusters, clustered, comments not covered | BGE against Qwen: adjusted Rand |
 |---|---|---|---|
-| `opening`, UMAP, 10/10 eom | 261, 73%, 1,813 | 264, 73%, 1,859 | 0.644 |
-| `opening+hits` | 296, 73%, 1,053 | 293, 74%, 1,019 | 0.608 |
-| `all` | 1,375, 52%, 34 | 1,466, 55%, 26 | 0.552 |
-| PCA-50, 20/10 | 61, 32%, 3,792 | 63, 36%, 3,555 | 0.770 |
-| UMAP, 5/1 | 649, 80%, 1,507 | 707, 80%, 1,547 | 0.411 |
-| By gate kind | 327, 79%, 1,631 | 332, 80%, 1,591 | 0.581 |
-| 3 noise passes | 263, 100%, 956 | 331, 100%, 956 | 0.053 |
+| `opening`, UMAP, 10/10 eom | 261, 73%, 1,838 | 264, 73%, 1,880 | 0.644 |
+| `opening+hits` | 296, 73%, 1,091 | 293, 74%, 1,046 | 0.608 |
+| `all` | 1,375, 52%, 1,611 | 1,466, 55%, 1,509 | 0.552 |
+| PCA-50, 20/10 | 61, 32%, 3,854 | 63, 36%, 3,610 | 0.770 |
+| UMAP, 5/1 | 649, 80%, 1,529 | 707, 80%, 1,564 | 0.411 |
+| By gate kind | 327, 79%, 1,676 | 332, 80%, 1,640 | 0.581 |
+| 3 noise passes | 263, 100%, 970 | 331, 100%, 970 | 0.053 |
 
 What the table shows:
 
@@ -346,9 +346,15 @@ What the table shows:
   differently.
 - PCA agrees most between models because it clusters only a third of the sentences, the
   densest ones.
+- Every sentence (`all`) covers fewer comments than `opening+hits` (1,611 and 1,509 not
+  covered, against 1,091 and 1,046), with five times as many clusters. Many of its dense
+  clusters are letter lines: the subject line "RE: Rescission of the Roadless Area
+  Conservation Rule, Docket FS-2025-0001" (1,539 times) and "Thank you for considering my
+  comment" (125 times). A first count of coverage credited these lines and gave 26 and 34
+  comments not covered. The measure now counts substantive sentences only (section 10.2).
 - The noise passes on BGE made one catch-all cluster of 3,076 sentences. That is why the
   two models disagree on that case.
-- The whole-comment hit sentences cut the comments not covered by 42% (BGE) and 45%
+- The whole-comment hit sentences cut the comments not covered by 41% (BGE) and 44%
   (Qwen), with no loss of clustering.
 
 Both models found topics on the agency's ignition and fire-density data, the economic
