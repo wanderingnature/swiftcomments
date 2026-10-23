@@ -1242,6 +1242,7 @@ CREATE TABLE cluster_case_leader (
     leader_key TEXT NOT NULL,                     -- the sentence that stands for it after the merge
     PRIMARY KEY (case_name, text_key)
 );
+CREATE INDEX cluster_case_leader_leader ON cluster_case_leader (case_name, leader_key);
 
 CREATE TABLE cluster_case_member (
     case_name  TEXT    NOT NULL,
