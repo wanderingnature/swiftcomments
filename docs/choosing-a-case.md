@@ -27,7 +27,7 @@ setting, run a new case to answer it.
 
 ## What a good case looks like
 
-Use these six checks in step 1. The first two are the most important.
+Use these five checks in step 1. The first two are the most important.
 
 | Check | What to look for | Where to look | Good sign | Bad sign |
 |---|---|---|---|---|
@@ -35,12 +35,20 @@ Use these six checks in step 1. The first two are the most important.
 | 2. Coverage | Few gate-open comments have no sentence in a cluster. | Step 1: "Comments not covered", and the chart "Coverage against clustering". | A low number. | Many substantive comments are not in any cluster. |
 | 3. No catch-all cluster | No cluster collects unrelated sentences. | Step 1: "Largest cluster". Read a case: the chart "The cluster sizes". | The largest cluster is a few hundred sentences of one claim. | One cluster has thousands of sentences on many subjects. |
 | 4. Topics are subjects | Each topic is one subject that you can name. | Read a case: the topic terms, "The map of the clusters" and "The topic cut". | The terms name one subject, for example roads and wildfire. | The terms are general words, for example "rule" or "forest". |
-| 5. Clusters keep one kind | Most sentences of a cluster have the same gate kind. | Read a case: "The topics, by gate kind" and the "Main kind" of each cluster. | Most clusters are mostly one kind. | Many clusters mix LAW, EVID, GAP and ALT. |
-| 6. Clusters stay together | The same groups appear with a nearby setting. | Step 1: "How stable the cases of this model are". | Most clusters stay 80% or more in one cluster of the other case. | Most clusters break into many pieces. |
+| 5. Clusters stay together | The same groups appear with a nearby setting. | Step 1: "How stable the cases of this model are". | Dark cells between the case and the cases with nearby settings. | Light cells: a small change of setting changes the clusters. |
 
 A case can pass check 2 and fail check 1. For example, many noise passes put every
 sentence into a cluster, but some clusters then collect unrelated sentences. Do not
 choose a case on coverage alone.
+
+**The gate kinds are not a check.** The gate kind of a sentence tells how the sentence
+argues: by law (LAW), by evidence (EVID), by a missing analysis (GAP) or by an
+alternative (ALT). It does not tell what the claim is. Different claims can argue the
+same way: claims about wildfire, sediment and habitat can each cite a law. One claim can
+argue in more than one way: the maintenance backlog appears as evidence and as a missing
+analysis. A cluster of one kind can therefore hold several claims, and a cluster of mixed
+kinds can hold one claim. Use the kinds to see how a claim is argued. Use check 1 to see
+if a cluster is one claim.
 
 ## How to choose: two steps
 
@@ -55,9 +63,10 @@ own best settings.
 3. Read the chart "Coverage against clustering". Note the cases that are low and to the
    right, and the cases with a red ring.
 4. Open each promising case in the **Read a case** tab.
-5. Apply checks 1 to 5 to each case. Check 1 is the most important.
-6. Turn on "Compare every pair of this model's cases". Prefer a case that agrees with
-   its neighbours: a small change of setting does not change its clusters much.
+5. Apply checks 1 to 4 to each case. Check 1 is the most important.
+6. Turn on "Compare every pair of this model's cases" (check 5). Prefer a case that
+   agrees with its neighbours: a small change of setting does not change its clusters
+   much.
 7. Select the best case in "Choose the case".
 8. Run the command that the page shows, for example:
 
@@ -126,7 +135,7 @@ The figures:
 | Gate-opening sentence | A sentence that opens the gate alone. |
 | HDBSCAN | A clustering method. It groups the sentences in dense areas. It does not need the number of clusters. |
 | Leader | A sentence that represents its near-copies after a merge. Without a merge, each sentence is its own leader. |
-| Main kind | The gate kind that most sentences of a cluster have. |
+| Main kind | The gate kind that most sentences of a cluster have. It tells how the claim is argued, not what the claim is. |
 | Merge | A step that joins near-copies into one leader before the clustering. |
 | min cluster size, min samples | Two HDBSCAN values. The first is the smallest cluster. The second sets how dense an area must be. |
 | Noise | The sentences that HDBSCAN puts in no cluster. |

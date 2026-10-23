@@ -300,7 +300,7 @@ measures. A reader compares the cases and chooses one (`docs/choosing-a-case.md`
 | Comments not covered | Gate-open comments with no sentence in a cluster. |
 | Gate-opening sentences clustered | The share of the substance-carrying sentences in a cluster. |
 | Tightness | The mean cosine of a cluster's sentences to its centroid. |
-| Gate-kind shares | How much a cluster mixes LAW, EVID, GAP and ALT. |
+| Gate-kind shares | How the claim of a cluster is argued: by law, evidence, a missing analysis or an alternative. It is not a measure of quality: one claim can be argued in several ways, and different claims in the same way. |
 
 ### 10.3 The agreement of two cases
 
