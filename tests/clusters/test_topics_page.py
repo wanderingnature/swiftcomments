@@ -125,3 +125,27 @@ def test_a_selected_case_is_chosen_with_the_button(casefile):
     assert any(x.value.startswith("The choice for m is case 2:") for x in at.tabs[1].success)
     assert "This case is the choice for m." in [x.value for x in at.tabs[1].success]
     assert list(at.tabs[1].dataframe[0].value["chosen"]) == ["", "yes"]
+
+
+def test_a_sentence_opens_to_its_comments(casefile):
+    conn = db.connect(casefile)
+    conn.execute("INSERT INTO comment (comment_id, comment_text) SELECT o.comment_id, 'The whole letter of '"
+                 " || o.comment_id || '. ' || s.text FROM gate_sentence_occurrence o JOIN gate_sentence s"
+                 " ON s.text_key = o.text_key")
+    conn.commit()
+    conn.close()
+    assert cases.main(PCA_LEAF) == 0
+    at = _topics()
+    # the sentences of cluster 1, each a card with its whole text and a switch for its comments
+    toggles = [t for t in at.tabs[2].toggle if t.key.startswith("read_cluster_page_")]
+    assert len(toggles) == 20      # one page of 25
+    first = toggles[0]
+    first.set_value(True)
+    at.run()
+    assert not at.exception, [e.value for e in at.exception]
+    opened = [e for e in at.tabs[2].expander if e.label.startswith("c")]
+    assert len(opened) == 1 and "The whole letter of" in opened[0].label
+    assert opened[0].markdown[0].value.startswith("The whole letter of ")
+    # the topics show each cluster's central sentence whole
+    assert sum(1 for m in at.tabs[2].markdown if m.value.startswith("**Cluster ")) == 6
+

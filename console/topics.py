@@ -19,8 +19,8 @@ import pandas as pd
 import streamlit as st
 
 from console import queries as q
-from console.results import CARDS, chart, metrics, not_run, pager, pct
-from console.view import file_signature, open_db, query, show
+from console.results import CARDS, chart, metrics, not_run, pager, pct, snippet, texts
+from console.view import file_signature, open_db, query, show, show_text
 from scripts.clusters.embed import VIEWS, unpack
 from shared import case_compare, db
 
@@ -128,6 +128,10 @@ def cut(c):
 def describe(c):
     """A case in words, for the tables and the pickers."""
     return (f"{model_name(c['model'])}, {c['view']} view · {SENTENCES[c['sentences']]} · {method(c)} · {cut(c)}")
+
+
+def count(n, one, many=None):
+    return f"{n:,} {one if n == 1 else many or one + 's'}"
 
 
 def terms(cell, n=8):
@@ -357,18 +361,19 @@ def tab_read(cases):
             tooltip=["cluster:Q", "topic:N", "sentences:Q", "terms:N"]).properties(height=460))
 
     st.subheader("Topics")
-    st.caption("Open a topic to see its clusters. Each cluster shows one example sentence.")
+    st.caption("Open a topic to see its clusters. Each cluster shows its most central sentence in full. Select"
+               " the cluster under \"Open a cluster\" to read all its sentences and comments.")
     for r in topics.itertuples():
         with st.expander(f"Topic {r.topic}: {terms(r.terms, 5) or '(no term)'} ·"
                          f" {r.clusters} clusters · {r.occurrences:,} sentences"):
             clusters = query(q.CASE_CLUSTERS, (name, int(r.topic)))
-            show(pd.DataFrame({
-                "cluster": clusters["cluster"],
-                "sentences": clusters["leaders"],
-                "main kind": [KINDS[i].upper() for i in clusters[list(KINDS)].to_numpy().argmax(1)],
-                "terms": clusters["terms"].map(lambda x: terms(x, 4)),
-                "example": clusters["central"].map(lambda x: json.loads(x)[0] if json.loads(x) else ""),
-            }))
+            for cl in clusters.itertuples():
+                kind = KINDS[int(np.argmax([cl.law, cl.evid, cl.gap, cl.alt]))].upper()
+                central = json.loads(cl.central)
+                with st.container(border=True):
+                    st.markdown(f"**Cluster {cl.cluster}** · {cl.leaders:,} sentences · {kind} ·"
+                                f" {terms(cl.terms, 4)}")
+                    show_text(central[0] if central else "")
 
     st.subheader("Open a cluster")
     all_clusters = query("SELECT cluster, topic, leaders, terms FROM cluster_case_cluster WHERE case_name = ?"
@@ -473,7 +478,25 @@ def leader_rows(name, cluster, title, key):
     st.markdown(f"**{title}** ({total:,})")
     if not total:
         return
+    st.caption("Each card is one sentence, with the near-copies joined to it. Turn on \"Read the comments\" to"
+               " see the comments that hold the sentence. Open a comment to read its full text.")
     off = pager(total, key)
     rows = query(q.CLUSTER_SENTENCES, (name, name, cluster, CARDS, off))
-    show(rows.rename(columns={"text": "sentence", "variants": "near-copies joined",
-                              "occurrences": "times written", "comments": "comments"}))
+    for r in rows.itertuples():
+        with st.container(border=True):
+            show_text(r.text)
+            st.caption(f"Written {count(r.occurrences, 'time')} in {count(r.comments, 'comment')}."
+                       f" {count(r.variants, 'near-copy', 'near-copies')} joined.")
+            if st.toggle("Read the comments", key=f"{key}_{r.leader_key}"):
+                leader_comments(name, r.leader_key, f"{key}_{r.leader_key}_page")
+
+
+def leader_comments(name, leader_key, key):
+    """The comments that hold one sentence, a page at a time, each opening to its full text."""
+    ids = list(query(q.LEADER_COMMENTS, (name, leader_key))["comment_id"])
+    off = pager(len(ids), key)
+    page = ids[off:off + CARDS]
+    text_of = texts(page)
+    for cid in page:
+        with st.expander(f"{cid} · {snippet(text_of.get(cid))}"):
+            show_text(text_of.get(cid))
