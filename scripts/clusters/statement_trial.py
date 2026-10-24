@@ -3,6 +3,7 @@
 
     uv run python scripts/clusters/statement_trial.py --clusters 207 104 52 1 --runs 3 --temperatures 0 0.7
     make statement-trial CLUSTERS="207 104 52 1" RUNS=3 TEMPERATURES="0 0.7" SERVER=LOCAL
+    make statement-trial CASE=<case> CLUSTERS="187 94 47 1" RUNS=3 TEMPERATURES="0 0.7" SERVER=LOCAL
 
 Step 15 is not built. This trial asks how far the statement depends on the
 wordings sent and how far on the model's sampling, before the step is built.
@@ -15,7 +16,8 @@ at each temperature, one call per run:
                sentences it absorbed), folded by eis-analysis collapse() at
                cosine 0.95, each group standing as its longest text
 
-The system prompt and the fold are eis-analysis's, verbatim
+The clusters are the concern map's, or with --case those of any stored case
+(the other model's choice, for one). The system prompt and the fold are eis-analysis's, verbatim
 (src/concerns/respond.py: STATEMENT_SYS, Stmt, collapse, DUPLICATE_COSINE,
 wordings_block). The server is the reader's (shared/llm_client.py), the
 vectors the case's own (its model, its view). Nothing is written to the file.
@@ -129,16 +131,19 @@ def cluster_wordings(conn, case: str, cluster: int) -> dict:
                         "collapse": {"wordings": [g[0] for g in groups], "stands_for": groups}}}
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--clusters", type=int, nargs="+", required=True)
     ap.add_argument("--runs", type=int, required=True)
     ap.add_argument("--temperatures", type=float, nargs="+", required=True)
+    ap.add_argument("--case", help="a stored case (default: the concern map)")
     ap.add_argument("--db", default=str(db.DB_PATH), help="the analysis file (default data/roadless.sqlite)")
-    args = ap.parse_args()
+    args = ap.parse_args(argv)
 
     conn = db.connect(args.db)
-    case = concern_map(conn)
+    case = args.case or concern_map(conn)
+    if conn.execute("SELECT 1 FROM cluster_case WHERE case_name = ?", (case,)).fetchone() is None:
+        raise SystemExit(f"no case {case!r}: make cases lists them")
     clusters = [cluster_wordings(conn, case, c) for c in args.clusters]
     conn.close()
 
