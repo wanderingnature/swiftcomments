@@ -268,7 +268,6 @@ Two inputs of the rules are not read.
 | Segmentation | $O(\lvert x \rvert)$ for each comment | $O(\lvert x \rvert)$ |
 | Scoring | $O(\lvert x \rvert \cdot \max \lvert p \rvert)$ for the matching, plus the parse | for each text |
 
-
 ## 12. Software
 
 | Component | Library | Version in this repository |

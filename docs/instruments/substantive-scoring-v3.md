@@ -232,7 +232,6 @@ Temperature 0. Strict tool use on Anthropic, `json_schema` on Together and LM St
 
 `scripts/substance/grade.py` turns this object into the seven dimension scores and the classification fields: PLACE from the places list and the locus patterns, DOC from the document patterns, EVID/ASK/ALT/STAND from span tests over the span copied here plus the matching yes/no, GAP from `gap` with a `none` span forced to 0, T2 from the comment's own words, T4 from the confirmed-citation scan, M4 from the ALT answer, topics and flags from keyword lists, `originality` constant, `language` from a detector. LAW, the gate, the strength sum and the band are `finalize_record`'s, unchanged.
 
-
 ## Invalid results
 
 A result that fails the schema, lacks a field, or arrives as an API error is an error, not a score: it is logged whole, nothing is stored, and the comment stays in the queue. No zero-fill.

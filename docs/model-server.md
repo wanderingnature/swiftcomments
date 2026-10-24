@@ -40,20 +40,14 @@ a smaller model runs on a laptop and reads less well; a larger one reads better,
 slow or impossible to run locally, and costs money through an API. Three things a
 reader needs to know, and this page keeps current.
 
-**The 27B.** Qwen3.8-27B (https://huggingface.co/Qwen/Qwen3.8-27B; Apache
-2.0, 27 billion parameters, 262,144 tokens of context), through a paid API, for every
-model step of the analysis published at roadless.org: the 190 million tokens of the
-README's model-steps table are more than a local server gets through in the time the
-docket allowed. The figures in the method's pages and `docs/first-run.md`, and those
-token counts, are from it. It also runs locally: a 4-bit quantisation is 16 to 17 GB
-on disk and runs on a machine with 24 GB of memory or more, which is how the pilots
-of this repository were made; the full-precision weights need a GPU with about 60 GB.
-The measured repeatability of the substance instrument on this model is
-65 of 100 readings identical between two runs, so two runs of the pipeline do not
-match row for row. The method's pages say what that means for the figures.
+**Qwen3.8-27B.** (https://huggingface.co/Qwen/Qwen3.8-27B; Apache 2.0, 27 billion
+parameters, 262,144 tokens of context.) It runs locally: a 4-bit quantisation is 16 to
+17 GB on disk and runs on a machine with 24 GB of memory or more; the full-precision
+weights need a GPU with about 60 GB. Two runs of a model step do not match row for
+row. The method's pages say what that means for the figures.
 
-**The model this repository's runs use.** Qwen3.8-Flash (`qwen/qwen3.8-flash`),
-through a paid API, chosen on 2026-10-13 for cost and speed. OpenRouter posts, beside
+**The model of the reference run.** Qwen3.8-Flash (`qwen/qwen3.8-flash`), through a
+paid API, for cost and speed. OpenRouter posts, beside
 each provider's list price, the weighted average price its customers actually pay,
 with caching and discounts folded in. On 2026-10-13, for Alibaba International:
 
@@ -68,7 +62,7 @@ flash is about a quarter of the 27B's cost on this method. The list prices tell 
 different story (the flash's input is listed four times the
 27B's and the method sends twelve tokens in for every one out), because both prompts
 put everything but the comment in a fixed prefix that a cache serves, and the
-weighted average is what that comes to. the figures of the reference run on the
+weighted average is what that comes to. The figures of the reference run on the
 flash are recorded in the README's model-steps table as
 they are measured, and the comparison with the 27B on the same comments is made with
 `make score-model-compare` (`docs/model-free-scoring.md`). Its open weights are

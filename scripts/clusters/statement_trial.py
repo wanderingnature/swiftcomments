@@ -17,8 +17,7 @@ at each temperature, one call per run:
                cosine 0.95, each group standing as its longest text
 
 The clusters are the concern map's, or with --case those of any stored case
-(the other model's choice, for one). The system prompt and the fold: STATEMENT_SYS, Stmt, collapse,
-DUPLICATE_COSINE, wordings_block. The server is the reader's (shared/llm_client.py), the
+(the other model's choice, for one). The server is the reader's (shared/llm_client.py), the
 vectors the case's own (its model, its view). Nothing is written to the file.
 
 One JSON file per trial, trials/statements/<run_id>.json: the settings, the

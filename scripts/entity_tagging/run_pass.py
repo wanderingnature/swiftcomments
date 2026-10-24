@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Run one entity-tagging pass (strict or loose) over a project's comments.
 
-
 - strict: Aho-Corasick over lowercased raw text (exact vocabulary, word-boundary
   guarded, longest-match-wins per entity type), plus the deterministic detectors:
   legal-citation regexes (discovering authorities not in the seed), DOI regex

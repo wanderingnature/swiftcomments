@@ -25,8 +25,7 @@
 -- 1. The corpus. One row per record of the bulk download,
 --    blanks and withdrawn rows kept and flagged; one row per attachment
 --    rendition. v_source_comments is every step's view of the text and
---    excludes
---    the records with no text.
+--    excludes the records with no text.
 -- ===========================================================================
 
 CREATE TABLE comment (
@@ -865,8 +864,7 @@ JOIN substance_scores s USING (comment_id);
 -- ===========================================================================
 -- 9b. The model-free reading (scripts/model_free/, rule set 3). The five mf_*
 --     tables, in the one file so the console, the extracts and the jump see
---     them; the run row's code_version (a git hash) is not kept. A
---     unit row is a sentence of the comment (unit_id the comment row's rowid
+--     them. A unit row is a sentence of the comment (unit_id the comment row's rowid
 --     times 100,000 plus its place from one; start_char and end_char its span
 --     in the stored text) or the whole comment (unit_id the negative of its
 --     first sentence's), as hybrid mode scores both (docs/model-free-scoring.md).
@@ -1012,7 +1010,8 @@ CREATE TABLE comment_attachment_text (
 );
 
 -- Per comment with a text attachment: its own text, and its own text followed
--- by each attachment's longest rendition (a union ranked by row_number; ties by format name, as ORDER BY chars DESC, fmt).
+-- by each attachment's longest rendition (ranked by row_number; ties by format
+-- name, as ORDER BY chars DESC, fmt).
 CREATE VIEW v_merged_comments AS
 WITH rendition AS (
     SELECT comment_id, attachment_id, title, 'pdf' AS fmt, pdf_text AS body, pdf_chars AS chars
