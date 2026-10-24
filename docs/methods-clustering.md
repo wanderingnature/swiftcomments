@@ -343,7 +343,7 @@ agreement on the sentences that both cases put in a cluster.
 
   $$\mathrm{ARI} = \frac{\sum_{ij} \binom{n_{ij}}{2} - \Big[\sum_i \binom{a_i}{2} \sum_j \binom{b_j}{2}\Big] \big/ \binom{n}{2}}{\tfrac12 \Big[\sum_i \binom{a_i}{2} + \sum_j \binom{b_j}{2}\Big] - \Big[\sum_i \binom{a_i}{2} \sum_j \binom{b_j}{2}\Big] \big/ \binom{n}{2}}.$$
 
-  1 is the same grouping. 0 is chance.
+  1 means the same clusters. Near 0 means different clusters.
 - The **normalized mutual information** [6] measures how much one grouping tells about the
   other. With $I$ the mutual information and $H$ the entropy of a grouping $U$ or $V$:
   $\mathrm{NMI}(U, V) = I(U; V) \,/\, \tfrac12 \big(H(U) + H(V)\big)$, from 0 to 1.
