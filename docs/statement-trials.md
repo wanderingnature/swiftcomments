@@ -83,3 +83,72 @@ the model's sampling change it more?
 - Check that each statement ends with a full stop, a question mark or an exclamation
   mark. Finding 5 shows that a cut statement can parse as valid JSON.
 - Two clusters can give the same concern. Step 16 has to answer each concern once.
+
+## Trials 20261024_163447 (Qwen) and 20261024_163949 (BGE)
+
+**The question.** Does the cut statement come back with the model loaded again? Do the
+statements of the BGE choice differ from those of the Qwen choice?
+
+**The settings.**
+
+| Setting | Value |
+|---|---|
+| Files | `trials/statements/20261024_163447.json`, `trials/statements/20261024_163949.json` |
+| Code | `9f182ee` |
+| Model | `qwen/qwen3.8-27b`, loaded again at 12:32 local time with 262,000 tokens of context configured (LM Studio's log: "configured=262,000 fitted=262,144 effective=262,144"). For the first trial the log shows "configured=8,192 fitted=262,144 effective=262,144". |
+| Qwen case | the concern map; clusters 207, 104, 52, 1, as in the first trial |
+| BGE case | `opening.plain.text-embedding-bge-large-en-v1-5.m95.umap5.10-10-eom.all.p0.kauto.s0`, the choice of BGE in stage 4 |
+| BGE clusters | 187, 94, 47, 1: by leaders, the smallest, the median, the cluster a quarter down from the top, and the largest. 30, 121, 8, 12: for each Qwen cluster of the trial, the BGE cluster that holds most of its sentences (`make compare-cases`) |
+| Runs | 3 for each cluster, method and temperature (0 and 0.7): 48 calls for Qwen, 96 for BGE |
+| Tokens | Qwen 301,560 in, 3,789 out; BGE 343,314 in, 7,140 out; no cost |
+
+**How the BGE clusters hold the Qwen clusters.**
+
+| Qwen cluster | Sentences | BGE cluster with most of them | Share | In BGE noise |
+|---|---|---|---|---|
+| 1 | 541 | 30 | 16% | 212 |
+| 52 | 45 | 121 | 4% | 37 |
+| 104 | 26 | 8 | 88% | 1 |
+| 207 | 11 | 12 | 9% | 8 |
+
+**What the trials found.**
+
+1. No statement was cut: 0 of 48 (Qwen) and 0 of 96 (BGE) fail to end with a full stop,
+   a question mark or an exclamation mark. The first trial had 1 of 48.
+2. A check of the double quote, on cluster 52 with the `collapse` wordings at 0.7 and the
+   model loaded again: with no answer schema, 13 of 20 statements put the phrase "hard
+   look" in double quotes. With the schema, 0 of 20 statements were cut. The cut
+   statement of the first trial stopped where that phrase starts ("fails to meet the ").
+3. At temperature 0, the runs are not always the same now. In 10 of the 24 settings at
+   temperature 0, the 3 runs give 2 different statements. In 8 of the 10, run 1 differs
+   and runs 2 and 3 are the same. Run 1 is the first call with that prompt, so LM
+   Studio has no cache of the prompt for it. In the first trial, every call of a prompt
+   came after the pilots, and all runs at 0 were the same.
+4. The differences at temperature 0 are small. For example, Qwen cluster 207 has "roads
+   increase ignition rates" in one run and "roads drive ignition rates upward" in the
+   other.
+5. At temperature 0.7, each run gives a different statement, as in the first trial.
+6. The two methods of the wordings again give almost the same statement at temperature 0,
+   for both models.
+7. BGE cluster 12 gives the Table 21 concern by name: "reconcile the proposal with the
+   ignition data in DEIS Table 21, which reports far higher fire density on roaded land
+   than inside the affected roadless areas." BGE cluster 30 gives the wildfire concern of
+   Qwen clusters 1 and 207: "the agency's own environmental impact statement finds that
+   building roads into high-risk forests increases the incidence of human-caused fires."
+8. BGE cluster 8 (189 sentences, 107 leaders) holds 88% of Qwen cluster 104 (26
+   sentences). Its statement adds to the timber revenue the recreation losses ($6.1
+   million a year), the net present value (-$92 million to +$199 million) and the road
+   maintenance backlog ($6.9 billion). The Qwen statement has the timber revenue alone.
+9. Qwen cluster 52 (the legal mix) has no match in BGE: 37 of its 45 sentences are BGE
+   noise, and the best BGE cluster holds 4%.
+10. The BGE statements name a source more often: DEIS Table 35 (cluster 47), DEIS Table
+    21 (cluster 12), 36 CFR Part 294 Subpart B (clusters 94 and 121).
+
+**For step 15.**
+
+- Use temperature 0, and expect small changes of words between a cold call and a
+  cached call.
+- Check the end of each statement, as before.
+- The choice of the concern map changes the concerns more than the method of the
+  wordings or the run: one BGE cluster can hold what Qwen splits into several, and the
+  reverse.
