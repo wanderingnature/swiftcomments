@@ -178,9 +178,24 @@ both choices, and we chose again. The screenshots show the second choices.
 ## Read a case
 
 The tab **Read a case** shows one case. It opens the case that you clicked in stage 4. If
-you did not click a case, it opens the concern map.
+you did not click a case, it opens the concern map. To read another case, select it in
+the list **Case** at the top of the tab.
 
-![The top of Read a case: the topics by gate kind, the cluster sizes and the topic cut.](images/topics/17-read-charts.png)
+The tab has six parts, from top to bottom. Each part has a heading. The last two parts
+are under the list of topics. Scroll down past the topics to find them.
+
+| Part | Heading in the tab | What you do there |
+|---|---|---|
+| 1 | The topics, by gate kind; The cluster sizes; The topic cut | Read the three charts. |
+| 2 | The map of the clusters | Point to a cluster to see its words. |
+| 3 | Topics | Open a topic to see its clusters. Do check 4 here. |
+| 4 | Open a cluster | Select a cluster in the list **Cluster**. Do check 1 here. |
+| 5 | The ids of the N comments that hold these sentences | Open it to copy the comment ids. |
+| 6 | Sentences in no cluster | Open it to read the sentences that the case left out. |
+
+### Part 1: the three charts
+
+![Part 1: the topics by gate kind, the cluster sizes and the topic cut.](images/topics/17-read-charts.png)
 
 - **The topics, by gate kind**: one bar for each topic. The colours show how its sentences
   argue: by law, evidence, a missing analysis or an alternative.
@@ -189,21 +204,36 @@ you did not click a case, it opens the concern map.
 - **The topic cut**: the score for each number of topics. The orange bar is the number
   that the case uses.
 
-![The map of the clusters.](images/topics/18-read-map.png)
+### Part 2: the map of the clusters
 
-- **The map of the clusters**: one point for each cluster. Clusters near each other say
-  similar things. Point to a cluster to see its words.
+![Part 2: the map of the clusters.](images/topics/18-read-map.png)
 
-![A topic, opened. Each cluster shows its most typical sentence.](images/topics/19-read-topic.png)
+Each point is one cluster. Clusters near each other say similar things.
 
-- **Topics**: open a topic to see its clusters. Each cluster shows its most typical
-  sentence. Use this list for check 4.
+### Part 3: the topics
 
-![A cluster, opened, with the comments of one sentence.](images/topics/20-read-cluster.png)
+![Part 3: a topic, opened. Each cluster shows its most typical sentence.](images/topics/19-read-topic.png)
 
-- **Open a cluster**: select a cluster to read all its sentences. Use this for check 1.
-  Turn on **Read the comments** under a sentence to see the comments that hold it. Click a
-  comment to read all of it.
+1. Click a topic to open it.
+2. Read the words of the topic and the typical sentence of each cluster.
+3. Do check 4: the words of the topic name one subject.
+
+### Part 4: one cluster, with its sentences and comments
+
+![Part 4: the heading Open a cluster, the list Cluster, and a sentence with its comments.](images/topics/20-read-cluster.png)
+
+1. Scroll down past the topics to the heading **Open a cluster**.
+2. In the list **Cluster**, select a cluster. The list gives its number, topic, size and words.
+3. Read the sentences. Each card is one sentence.
+4. If a cluster has more than 20 sentences, use the **page** box to see the next 20.
+5. To see the comments that hold a sentence, turn on **Read the comments** under it.
+6. Click a comment to read all of it.
+7. Do check 1: you can say the claim of the cluster in one sentence.
+
+### Parts 5 and 6
+
+- **The ids of the N comments that hold these sentences**: the comment ids of the selected
+  cluster. Paste an id into the page Comment to read the comment with its readings.
 - **Sentences in no cluster**: the sentences that the case left out. If many of them make
   one claim, the case missed that claim.
 
