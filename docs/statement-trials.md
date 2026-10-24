@@ -93,42 +93,6 @@ the model's sampling change it more?
 
 Case `opening.plain.text-embedding-qwen3-embedding-8b-f16.m95.umap5.10-10-eom.all.p1.kauto.s0`. Model `qwen/qwen3.8-27b`. File `trials/statements/20261024_162538.json`.
 
-#### Cluster 207, topic 2: justifies rescission, management grounds, fuels management, ignition, justifies, grounds, solution, proposal justifies
-
-11 sentences; 10 wordings as `leaders`, 10 as `collapse`.
-
-Temperature 0:
-
-- `leaders`, runs 1, 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-- `collapse`, runs 1, 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-
-Temperature 0.7:
-
-- `leaders`, run 1: The agency justifies the rescission in part on wildfire and fuels management grounds, yet its own data demonstrates that roads drive ignition rates rather than reduce fire risk.
-- `leaders`, run 2: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own record data, which demonstrates that road access significantly increases ignition rates, thereby failing to explain how adding roads reduces fire risk.
-- `leaders`, run 3: The agency must explain how its reliance on wildfire and fuels management as justifications for rescission is consistent with its own prior data demonstrating that road construction significantly increases ignition rates.
-- `collapse`, run 1: The proposal justifies rescission in part on wildfire and fuels management grounds, yet fails to reconcile this rationale with the agency’s own data establishing that roads drive ignition rates upward.
-- `collapse`, run 2: The proposal justifies rescission based on wildfire and fuels management, yet the agency's own data shows that roads increase ignition rates, creating an unexplained contradiction between the stated rationale and the agency's findings.
-- `collapse`, run 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own findings that road construction increases ignition rates.
-
-#### Cluster 104, topic 5: revenue, treasury, million, treasury forest, revenue treasury, million year, unlikely, timber industry
-
-26 sentences; 26 wordings as `leaders`, 26 as `collapse`.
-
-Temperature 0:
-
-- `leaders`, runs 1, 2, 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
-- `collapse`, runs 1, 2, 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
-
-Temperature 0.7:
-
-- `leaders`, run 1: The projected annual revenue from expanded timber harvesting in previously roadless areas is modest, capped at $5.2 to $11.4 million for the federal government and $4.6 to $10.6 million for the timber industry, and is contingent on harvesting conditions that the Department itself acknowledges are unlikely to be fully realized due to budgetary, operability, and market constraints.
-- `leaders`, run 2: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are negligible and inadequately weighed against potential losses, noting that even under the agency's own unlikely scenario of full operability, the estimated annual revenue increases are capped at $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry, representing only a 5 to 10 percent increase in national sawtimber harvest.
-- `leaders`, run 3: The projected economic gains from rescinding the Roadless Rule are negligible, with annual revenue to the Treasury and Forest Service estimated at only $5.2 to $11.4 million and $4.6 to $10.6 million to the timber industry, figures that assume a 5–10% increase in harvest volume on approximately 4.8 million operable acres—a scenario the agency itself deems unlikely due to budget, operability, and market constraints.
-- `collapse`, run 1: Commenters argue that the proposed rule's estimated annual timber revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for industry are disproportionately small relative to the broader economic, environmental, and social costs of expanding logging, and they are based on a 5-10 percent harvest increase that the agency itself concedes is unlikely to be fully realized due to budget, operability, and market constraints.
-- `collapse`, run 2: The economic analysis projects minimal annual revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the timber industry based on a 5-10% increase in sawtimber harvest, which the proposal itself deems unlikely to be fully realized due to budget, operability, and market constraints.
-- `collapse`, run 3: The proposed rule's economic analysis is flawed because it projects a maximum annual revenue gain of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the timber industry from a 5-10% increase in harvest, while simultaneously acknowledging that full realization is unlikely due to budget, operability, and market constraints, thereby presenting a minimal and uncertain economic benefit that does not justify the broader ecological and social costs.
-
 #### Cluster 52, topic 1: nepa, cir, usda cir, clause, california rel, rel, rel lockyer, circuit
 
 45 sentences; 41 wordings as `leaders`, 41 as `collapse`.
@@ -164,6 +128,42 @@ Temperature 0.7:
 - `collapse`, run 1: Whether the proposed rescission of the Roadless Rule, justified in part by wildfire risk reduction, is inconsistent with peer-reviewed research and the agency's own draft environmental impact statement findings, which indicate that road construction significantly increases human-caused wildfire ignition density in otherwise protected roadless areas.
 - `collapse`, run 2: The proposed rescission is justified in part by the need for improved wildfire and fuels management, but the agency's own draft environmental impact statement and peer-reviewed data demonstrate that road construction increases human-caused ignition risk, creating a direct contradiction with the stated rationale. The agency must explain why it departs from these findings, quantify the expected increase in human-caused ignitions resulting from new road access, and weigh that increase against any claimed reduction in wildfire hazard.
 - `collapse`, run 3: The commenters contend that the proposal's wildfire justification is invalidated by peer-reviewed and agency data demonstrating that road access increases human-caused ignition rates, and they request the final EIS quantify the net increase in ignition risk from new roads to reconcile the rescission with these findings.
+
+#### Cluster 207, topic 2: justifies rescission, management grounds, fuels management, ignition, justifies, grounds, solution, proposal justifies
+
+11 sentences; 10 wordings as `leaders`, 10 as `collapse`.
+
+Temperature 0:
+
+- `leaders`, runs 1, 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+- `collapse`, runs 1, 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+
+Temperature 0.7:
+
+- `leaders`, run 1: The agency justifies the rescission in part on wildfire and fuels management grounds, yet its own data demonstrates that roads drive ignition rates rather than reduce fire risk.
+- `leaders`, run 2: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own record data, which demonstrates that road access significantly increases ignition rates, thereby failing to explain how adding roads reduces fire risk.
+- `leaders`, run 3: The agency must explain how its reliance on wildfire and fuels management as justifications for rescission is consistent with its own prior data demonstrating that road construction significantly increases ignition rates.
+- `collapse`, run 1: The proposal justifies rescission in part on wildfire and fuels management grounds, yet fails to reconcile this rationale with the agency’s own data establishing that roads drive ignition rates upward.
+- `collapse`, run 2: The proposal justifies rescission based on wildfire and fuels management, yet the agency's own data shows that roads increase ignition rates, creating an unexplained contradiction between the stated rationale and the agency's findings.
+- `collapse`, run 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own findings that road construction increases ignition rates.
+
+#### Cluster 104, topic 5: revenue, treasury, million, treasury forest, revenue treasury, million year, unlikely, timber industry
+
+26 sentences; 26 wordings as `leaders`, 26 as `collapse`.
+
+Temperature 0:
+
+- `leaders`, runs 1, 2, 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
+- `collapse`, runs 1, 2, 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
+
+Temperature 0.7:
+
+- `leaders`, run 1: The projected annual revenue from expanded timber harvesting in previously roadless areas is modest, capped at $5.2 to $11.4 million for the federal government and $4.6 to $10.6 million for the timber industry, and is contingent on harvesting conditions that the Department itself acknowledges are unlikely to be fully realized due to budgetary, operability, and market constraints.
+- `leaders`, run 2: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are negligible and inadequately weighed against potential losses, noting that even under the agency's own unlikely scenario of full operability, the estimated annual revenue increases are capped at $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry, representing only a 5 to 10 percent increase in national sawtimber harvest.
+- `leaders`, run 3: The projected economic gains from rescinding the Roadless Rule are negligible, with annual revenue to the Treasury and Forest Service estimated at only $5.2 to $11.4 million and $4.6 to $10.6 million to the timber industry, figures that assume a 5–10% increase in harvest volume on approximately 4.8 million operable acres—a scenario the agency itself deems unlikely due to budget, operability, and market constraints.
+- `collapse`, run 1: Commenters argue that the proposed rule's estimated annual timber revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for industry are disproportionately small relative to the broader economic, environmental, and social costs of expanding logging, and they are based on a 5-10 percent harvest increase that the agency itself concedes is unlikely to be fully realized due to budget, operability, and market constraints.
+- `collapse`, run 2: The economic analysis projects minimal annual revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the timber industry based on a 5-10% increase in sawtimber harvest, which the proposal itself deems unlikely to be fully realized due to budget, operability, and market constraints.
+- `collapse`, run 3: The proposed rule's economic analysis is flawed because it projects a maximum annual revenue gain of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the timber industry from a 5-10% increase in harvest, while simultaneously acknowledging that full realization is unlikely due to budget, operability, and market constraints, thereby presenting a minimal and uncertain economic benefit that does not justify the broader ecological and social costs.
 
 <!-- end statements -->
 
@@ -241,43 +241,6 @@ statements of the BGE choice differ from those of the Qwen choice?
 
 Case `opening.plain.text-embedding-qwen3-embedding-8b-f16.m95.umap5.10-10-eom.all.p1.kauto.s0`. Model `qwen/qwen3.8-27b`. File `trials/statements/20261024_163447.json`.
 
-#### Cluster 207, topic 2: justifies rescission, management grounds, fuels management, ignition, justifies, grounds, solution, proposal justifies
-
-11 sentences; 10 wordings as `leaders`, 10 as `collapse`.
-
-Temperature 0:
-
-- `leaders`, runs 1, 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-- `collapse`, run 1: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-- `collapse`, runs 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-
-Temperature 0.7:
-
-- `leaders`, run 1: The agency must reconcile its reliance on wildfire and fuels management as justifications for the rescission with its own data demonstrating that roads drive higher ignition rates, explaining how adding roads reduces fire risk when its analysis identifies roads as an accelerant rather than a solution.
-- `leaders`, run 2: The agency justifies the rescission on wildfire and fuels management grounds, yet its own data demonstrates that roads increase ignition rates rather than reduce fire risk, requiring the agency to reconcile this contradiction.
-- `leaders`, run 3: The agency must reconcile the use of wildfire and fuels management as a justification for rescission with its own data establishing that roads drive ignition rates, rather than reducing fire risk.
-- `collapse`, run 1: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, rather than reducing fire risk.
-- `collapse`, run 2: The agency must reconcile its reliance on wildfire and fuels management as a justification for the rescission with its own prior data demonstrating that roads drive ignition rates upward rather than reducing fire risk.
-- `collapse`, run 3: The agency must explain how it can justify the rescission on wildfire and fuels management grounds when its own data and findings establish that road construction increases ignition rates and acts as a fire accelerant rather than a solution.
-
-#### Cluster 104, topic 5: revenue, treasury, million, treasury forest, revenue treasury, million year, unlikely, timber industry
-
-26 sentences; 26 wordings as `leaders`, 26 as `collapse`.
-
-Temperature 0:
-
-- `leaders`, runs 1, 2, 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
-- `collapse`, runs 1, 2, 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
-
-Temperature 0.7:
-
-- `leaders`, run 1: Commenters question the validity of the economic analysis, which projects only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry even under a fully realized, albeit unlikely, harvest scenario. They argue these modest figures are disproportionately low and cannot be honestly weighed against the projected losses to recreation, tourism, and broader economic benefits.
-- `leaders`, run 2: The projected economic benefits of expanded timber harvesting are minimal, limited to an estimated $5.2 to $11.4 million in annual revenue for the federal government and $4.6 to $10.6 million for the timber industry, and are contingent on full harvest realization in operable areas that the agency itself deems unlikely due to budget, operability, and market constraints.
-- `leaders`, run 3: The proposed rule projects only modest annual revenue increases of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry, assuming a 5 to 10 percent increase in sawtimber harvest that the Department itself deems unlikely due to budget, operability, and market constraints. Commenters contend that these limited economic gains are disproportionately small and cannot honestly justify the broader losses to recreation, tourism, and local economies estimated in the billions of dollars.
-- `collapse`, run 1: The Department’s economic analysis projects a maximum annual revenue gain of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry, figures based on a 5-10% increase in harvest volume that the agency itself acknowledges is unlikely to be fully realized due to budget, operability, and market constraints.
-- `collapse`, run 2: Commenters assert that the projected annual timber revenue increments of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the industry are modest, conditional on unlikely full harvest realization due to budget, operability, and market constraints, and disproportionately small relative to the estimated economic and recreational losses from rescinding the rule.
-- `collapse`, run 3: Commenters assert that the estimated incremental revenue from expanded timber harvesting is disproportionately low relative to the projected economic losses to recreation and tourism, and that the agency's own analysis identifies the full realization of these revenue figures as unlikely due to budget, operability, and market constraints.
-
 #### Cluster 52, topic 1: nepa, cir, usda cir, clause, california rel, rel, rel lockyer, circuit
 
 45 sentences; 41 wordings as `leaders`, 41 as `collapse`.
@@ -315,6 +278,43 @@ Temperature 0.7:
 - `collapse`, run 2: The proposal justifies rescission on wildfire and fuels management grounds, but the agency's own draft EIS and peer-reviewed data show that new roads dramatically increase human-caused ignition risk; the agency must quantify this increase and explain how it reconciles the rescission with its own findings that roadless areas have significantly lower fire ignition densities.
 - `collapse`, run 3: The proposal justifies rescission on wildfire and fuels management grounds, yet its own draft environmental impact statement and cited peer-reviewed data demonstrate that new road construction would significantly increase human-caused wildfire ignition risk, which the agency has failed to quantify or weigh against any claimed reduction in wildfire hazard.
 
+#### Cluster 207, topic 2: justifies rescission, management grounds, fuels management, ignition, justifies, grounds, solution, proposal justifies
+
+11 sentences; 10 wordings as `leaders`, 10 as `collapse`.
+
+Temperature 0:
+
+- `leaders`, runs 1, 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+- `collapse`, run 1: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+- `collapse`, runs 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+
+Temperature 0.7:
+
+- `leaders`, run 1: The agency must reconcile its reliance on wildfire and fuels management as justifications for the rescission with its own data demonstrating that roads drive higher ignition rates, explaining how adding roads reduces fire risk when its analysis identifies roads as an accelerant rather than a solution.
+- `leaders`, run 2: The agency justifies the rescission on wildfire and fuels management grounds, yet its own data demonstrates that roads increase ignition rates rather than reduce fire risk, requiring the agency to reconcile this contradiction.
+- `leaders`, run 3: The agency must reconcile the use of wildfire and fuels management as a justification for rescission with its own data establishing that roads drive ignition rates, rather than reducing fire risk.
+- `collapse`, run 1: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, rather than reducing fire risk.
+- `collapse`, run 2: The agency must reconcile its reliance on wildfire and fuels management as a justification for the rescission with its own prior data demonstrating that roads drive ignition rates upward rather than reducing fire risk.
+- `collapse`, run 3: The agency must explain how it can justify the rescission on wildfire and fuels management grounds when its own data and findings establish that road construction increases ignition rates and acts as a fire accelerant rather than a solution.
+
+#### Cluster 104, topic 5: revenue, treasury, million, treasury forest, revenue treasury, million year, unlikely, timber industry
+
+26 sentences; 26 wordings as `leaders`, 26 as `collapse`.
+
+Temperature 0:
+
+- `leaders`, runs 1, 2, 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
+- `collapse`, runs 1, 2, 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
+
+Temperature 0.7:
+
+- `leaders`, run 1: Commenters question the validity of the economic analysis, which projects only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry even under a fully realized, albeit unlikely, harvest scenario. They argue these modest figures are disproportionately low and cannot be honestly weighed against the projected losses to recreation, tourism, and broader economic benefits.
+- `leaders`, run 2: The projected economic benefits of expanded timber harvesting are minimal, limited to an estimated $5.2 to $11.4 million in annual revenue for the federal government and $4.6 to $10.6 million for the timber industry, and are contingent on full harvest realization in operable areas that the agency itself deems unlikely due to budget, operability, and market constraints.
+- `leaders`, run 3: The proposed rule projects only modest annual revenue increases of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry, assuming a 5 to 10 percent increase in sawtimber harvest that the Department itself deems unlikely due to budget, operability, and market constraints. Commenters contend that these limited economic gains are disproportionately small and cannot honestly justify the broader losses to recreation, tourism, and local economies estimated in the billions of dollars.
+- `collapse`, run 1: The Department’s economic analysis projects a maximum annual revenue gain of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry, figures based on a 5-10% increase in harvest volume that the agency itself acknowledges is unlikely to be fully realized due to budget, operability, and market constraints.
+- `collapse`, run 2: Commenters assert that the projected annual timber revenue increments of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the industry are modest, conditional on unlikely full harvest realization due to budget, operability, and market constraints, and disproportionately small relative to the estimated economic and recreational losses from rescinding the rule.
+- `collapse`, run 3: Commenters assert that the estimated incremental revenue from expanded timber harvesting is disproportionately low relative to the projected economic losses to recreation and tourism, and that the agency's own analysis identifies the full realization of these revenue figures as unlikely due to budget, operability, and market constraints.
+
 <!-- end statements -->
 
 ### The statements, BGE (trial 20261024_163949)
@@ -325,63 +325,6 @@ Qwen 1, 12 for Qwen 207, 121 for Qwen 52.
 <!-- statements 20261024_163949 -->
 
 Case `opening.plain.text-embedding-bge-large-en-v1-5.m95.umap5.10-10-eom.all.p0.kauto.s0`. Model `qwen/qwen3.8-27b`. File `trials/statements/20261024_163949.json`.
-
-#### Cluster 187, topic 1: biodiversity percent, reduces biodiversity, fragmentation reduces, finding habitat, acres potentially, biodiversity, cites finding, reduces
-
-19 sentences; 10 wordings as `leaders`, 10 as `collapse`.
-
-Temperature 0:
-
-- `leaders`, run 1: The DEIS fails to project the cited 13 to 75 percent biodiversity reduction from habitat fragmentation across the 40.1 million acres of potentially affected environment, and it does not carry quantitative measures of habitat connectivity and patch size into the comparison of alternatives, including the specific overlap of species between adjacent units.
-- `leaders`, runs 2, 3: The DEIS fails to project the cited 13 to 75 percent biodiversity reduction range across the 40.1 million acres of potentially affected environment, and it ignores the shared habitat of 14 species between planning area 418040 and the adjacent 418006 area.
-- `collapse`, runs 1, 2, 3: The DEIS fails to project the cited 13 to 75 percent biodiversity reduction range from habitat fragmentation across the 40.1 million acres of potentially affected environment, and it does not carry quantitative habitat connectivity and patch size measures into the comparison of alternatives.
-
-Temperature 0.7:
-
-- `leaders`, run 1: The DEIS fails to apply the cited finding that habitat fragmentation reduces biodiversity by 13 to 75 percent to the 40.1 million acres of potentially affected environment, and it isolates specific species (such as 418040) from nearby units (such as 418006) while failing to carry quantitative habitat connectivity results into the comparison of alternatives.
-- `leaders`, run 2: The DEIS fails to project the cited 13 to 75 percent reduction in biodiversity due to habitat fragmentation across the 40.1 million acres of potentially affected environment, nor does it carry quantitative measures of habitat connectivity and patch size into the comparison of alternatives, including specific instances where isolated analysis ignores shared species with nearby units.
-- `leaders`, run 3: The DEIS fails to project the cited 13-75 percent biodiversity reduction from habitat fragmentation across the 40.1 million acres of potentially affected environment, nor does it carry quantitative measures of habitat connectivity into the comparison of alternatives or account for specific species shared across forest units.
-- `collapse`, run 1: The DEIS fails to project the cited 13 to 75 percent biodiversity reduction from habitat fragmentation across the 40.1 million acres of potentially affected environment, nor does it carry quantitative connectivity measures into the alternatives comparison or integrate them with specific species data shared with adjacent units.
-- `collapse`, run 2: The DEIS fails to project the cited 13 to 75 percent reduction in biodiversity due to habitat fragmentation across the 40.1 million acres of potentially affected environment, and it analyzes specific areas in isolation while neglecting to carry quantitative fragmentation and connectivity measures through the comparison of alternatives.
-- `collapse`, run 3: The DEIS fails to project the cited 13 to 75 percent reduction in biodiversity from habitat fragmentation across the 40.1 million acres of potentially affected environment, and it isolates roadless area 418040 from the 14 shared species and connectivity metrics associated with adjacent area 418006.
-
-#### Cluster 94, topic 3: cfr subpart, subpart, cfr, retain, preserve, retain cfr, remove reserve, conservation rule
-
-28 sentences; 25 wordings as `leaders`, 25 as `collapse`.
-
-Temperature 0:
-
-- `leaders`, run 1: Commenters urge the Forest Service to retain 36 CFR Part 294, Subpart B, and select the No Action alternative rather than rescinding the 2001 Roadless Area Conservation Rule, arguing that the national-level protections for inventoried roadless areas must remain intact to safeguard natural resources and wildlife habitat.
-- `leaders`, runs 2, 3: Commenters request that the Forest Service retain 36 CFR Part 294, Subpart B, and select the No Action alternative to preserve the national-level protections for inventoried roadless areas, rather than rescinding the rule to replace them with forest-by-forest protections.
-- `collapse`, runs 1, 2, 3: Commenters request that the Forest Service retain 36 CFR Part 294, Subpart B, and select the No Action alternative to preserve the national-level protections for inventoried roadless areas, rather than rescinding the rule to prevent new road construction and commercial timber harvesting.
-
-Temperature 0.7:
-
-- `leaders`, run 1: Commenters urge the Forest Service to retain 36 CFR Part 294, Subpart B and select the No Action alternative rather than rescinding the 2001 Roadless Area Conservation Rule, arguing that the current national-level protections for inventoried roadless areas should be preserved intact to safeguard natural resources and wildlife habitat.
-- `leaders`, run 2: Commenters urge the Forest Service to retain 36 CFR Part 294, Subpart B, and the 2001 Roadless Area Conservation Rule, opposing the rescission of these national protections for inventoried roadless areas.
-- `leaders`, run 3: Commenters urge the Forest Service to retain the national-level protections of the 2001 Roadless Area Conservation Rule (36 CFR Part 294, Subpart B) rather than rescinding or removing and reserving them, arguing that this rule is the most effective mechanism to safeguard inventoried roadless areas, natural resources, and wildlife habitat from new road construction and timber harvest.
-- `collapse`, run 1: Commenters oppose the removal and reservation of 36 CFR Part 294, Subpart B, urging the Forest Service to retain the 2001 Roadless Area Conservation Rule and its national-level protections for inventoried roadless areas as the most effective safeguard for natural resources, wildlife habitat, and wilderness, rather than replacing them with less comprehensive forest-by-forest management or opening these lands to new road construction and commercial timber.
-- `collapse`, run 2: The rescission of 36 CFR Part 294, Subpart B would eliminate the uniform national protections for inventoried roadless areas, and commenters urge the Forest Service to retain these regulations entirely rather than replacing them with forest-specific management.
-- `collapse`, run 3: Commenters urge the Forest Service to retain 36 CFR Part 294, Subpart B and the 2001 Roadless Area Conservation Rule in full, arguing that the national-level protections are the most effective mechanism to safeguard inventoried roadless areas, preserve natural resources and wildlife habitat, and prevent irreversible damage from new road construction and commercial timber harvesting.
-
-#### Cluster 47, topic 1: watersheds containing, water intakes, intakes, containing, containing affected, municipal water, municipal, sit watersheds
-
-51 sentences; 43 wordings as `leaders`, 43 as `collapse`.
-
-Temperature 0:
-
-- `leaders`, runs 1, 3: The rescission fails to adequately analyze the water quality and cost impacts on the more than 7,000 municipal water intakes located in watersheds containing affected roadless areas, as documented in DEIS Table 35, by relying on qualitative assertions rather than specific modeling of sediment, pathogen risk, and treatment costs.
-- `leaders`, run 2: The rescission fails to adequately analyze the water quality and public health impacts on the more than 7,000 municipal water intakes located in watersheds containing affected roadless areas, as documented in DEIS Table 35, by relying on qualitative assertions rather than specific modeling of sediment loads, pathogen risks, and treatment costs.
-- `collapse`, runs 1, 2, 3: The agency's own DEIS Table 35 documents that more than 7,000 municipal water intakes across all regions sit in watersheds containing potentially affected roadless areas, yet the environmental analysis fails to quantify the specific water quality, sediment, and treatment cost impacts on these downstream communities, relying instead on qualitative assertions and procedural dismissals.
-
-Temperature 0.7:
-
-- `leaders`, run 1: Commenters assert that the rescission proposal fails to adequately analyze the water quality and cost impacts on the more than 7,000 municipal water intakes located within watersheds containing inventoried roadless areas, arguing that the DEIS relies on qualitative or programmatic language rather than specific modeling of sediment, pathogen risks, and downstream treatment costs.
-- `leaders`, run 2: The agency failed to adequately analyze the water quality and public health risks to the more than 7,000 municipal water intakes located in watersheds containing inventoried roadless areas, relying on qualitative assertions rather than specific modeling of sediment, erosion, and treatment costs.
-- `leaders`, run 3: Municipal water intakes within watersheds containing roadless areas face water quality and treatment cost risks that the agency's qualitative analysis and cost-benefit assessment fail to adequately quantify or account for.
-- `collapse`, run 1: Commenters assert that the rescission fails to adequately analyze the water quality impacts on the more than 7,000 municipal water intakes located in watersheds containing affected roadless areas, as the DEIS provides only qualitative and programmatic assessments rather than specific modeling of sediment loads, pathogen risks, or drinking water treatment costs. They argue that the agency has not properly weighed the downstream reliance interests of these communities or the long-term costs and risks associated with road-building in these critical watersheds.
-- `collapse`, run 2: The rescission fails to adequately analyze the water quality impacts and increased costs to the more than 7,000 municipal water intakes located in watersheds containing roadless areas, relying instead on qualitative assertions and inadequate cost-benefit analysis.
-- `collapse`, run 3: The DEIS acknowledges that more than 7,000 municipal water intakes are located within watersheds containing roadless areas, yet the agency fails to provide specific, quantitative analysis of the water quality impacts, sediment loads, and treatment cost increases to these communities, relying instead on qualitative assertions and procedural dismissals.
 
 #### Cluster 1, topic 1: sediment, water, road, water quality, trout, roads, quality, construction
 
@@ -419,6 +362,82 @@ Temperature 0.7:
 - `collapse`, run 1: The proposal justifies the rescission of the Roadless Rule by citing wildfire and fuels management benefits, but this rationale conflicts with the agency's own environmental impact statement findings that building new roads into high-risk forests significantly increases the incidence of human-caused fires, creates a self-defeating cycle where timber harvest requires roads that raise fire risk, and fails to quantify the expected increase in ignitions or compare nationwide rescission against alternatives limited to areas with demonstrated significant wildfire risk.
 - `collapse`, run 2: The agency justifies the rescission of the Roadless Rule partly on wildfire and fuels management grounds, yet its own environmental impact statement and prior findings indicate that building roads into forests at high risk from uncharacteristic wildfire effects could increase the incidence of human-caused fires, creating a self-defeating cycle where the primary justification for the rule change requires road construction that demonstrably increases fire risk.
 - `collapse`, run 3: The proposal justifies rescission on wildfire and fuels management grounds, yet the agency's own environmental record indicates that building roads into high-risk forests increases the incidence of human-caused fires.
+
+#### Cluster 47, topic 1: watersheds containing, water intakes, intakes, containing, containing affected, municipal water, municipal, sit watersheds
+
+51 sentences; 43 wordings as `leaders`, 43 as `collapse`.
+
+Temperature 0:
+
+- `leaders`, runs 1, 3: The rescission fails to adequately analyze the water quality and cost impacts on the more than 7,000 municipal water intakes located in watersheds containing affected roadless areas, as documented in DEIS Table 35, by relying on qualitative assertions rather than specific modeling of sediment, pathogen risk, and treatment costs.
+- `leaders`, run 2: The rescission fails to adequately analyze the water quality and public health impacts on the more than 7,000 municipal water intakes located in watersheds containing affected roadless areas, as documented in DEIS Table 35, by relying on qualitative assertions rather than specific modeling of sediment loads, pathogen risks, and treatment costs.
+- `collapse`, runs 1, 2, 3: The agency's own DEIS Table 35 documents that more than 7,000 municipal water intakes across all regions sit in watersheds containing potentially affected roadless areas, yet the environmental analysis fails to quantify the specific water quality, sediment, and treatment cost impacts on these downstream communities, relying instead on qualitative assertions and procedural dismissals.
+
+Temperature 0.7:
+
+- `leaders`, run 1: Commenters assert that the rescission proposal fails to adequately analyze the water quality and cost impacts on the more than 7,000 municipal water intakes located within watersheds containing inventoried roadless areas, arguing that the DEIS relies on qualitative or programmatic language rather than specific modeling of sediment, pathogen risks, and downstream treatment costs.
+- `leaders`, run 2: The agency failed to adequately analyze the water quality and public health risks to the more than 7,000 municipal water intakes located in watersheds containing inventoried roadless areas, relying on qualitative assertions rather than specific modeling of sediment, erosion, and treatment costs.
+- `leaders`, run 3: Municipal water intakes within watersheds containing roadless areas face water quality and treatment cost risks that the agency's qualitative analysis and cost-benefit assessment fail to adequately quantify or account for.
+- `collapse`, run 1: Commenters assert that the rescission fails to adequately analyze the water quality impacts on the more than 7,000 municipal water intakes located in watersheds containing affected roadless areas, as the DEIS provides only qualitative and programmatic assessments rather than specific modeling of sediment loads, pathogen risks, or drinking water treatment costs. They argue that the agency has not properly weighed the downstream reliance interests of these communities or the long-term costs and risks associated with road-building in these critical watersheds.
+- `collapse`, run 2: The rescission fails to adequately analyze the water quality impacts and increased costs to the more than 7,000 municipal water intakes located in watersheds containing roadless areas, relying instead on qualitative assertions and inadequate cost-benefit analysis.
+- `collapse`, run 3: The DEIS acknowledges that more than 7,000 municipal water intakes are located within watersheds containing roadless areas, yet the agency fails to provide specific, quantitative analysis of the water quality impacts, sediment loads, and treatment cost increases to these communities, relying instead on qualitative assertions and procedural dismissals.
+
+#### Cluster 187, topic 1: biodiversity percent, reduces biodiversity, fragmentation reduces, finding habitat, acres potentially, biodiversity, cites finding, reduces
+
+19 sentences; 10 wordings as `leaders`, 10 as `collapse`.
+
+Temperature 0:
+
+- `leaders`, run 1: The DEIS fails to project the cited 13 to 75 percent biodiversity reduction from habitat fragmentation across the 40.1 million acres of potentially affected environment, and it does not carry quantitative measures of habitat connectivity and patch size into the comparison of alternatives, including the specific overlap of species between adjacent units.
+- `leaders`, runs 2, 3: The DEIS fails to project the cited 13 to 75 percent biodiversity reduction range across the 40.1 million acres of potentially affected environment, and it ignores the shared habitat of 14 species between planning area 418040 and the adjacent 418006 area.
+- `collapse`, runs 1, 2, 3: The DEIS fails to project the cited 13 to 75 percent biodiversity reduction range from habitat fragmentation across the 40.1 million acres of potentially affected environment, and it does not carry quantitative habitat connectivity and patch size measures into the comparison of alternatives.
+
+Temperature 0.7:
+
+- `leaders`, run 1: The DEIS fails to apply the cited finding that habitat fragmentation reduces biodiversity by 13 to 75 percent to the 40.1 million acres of potentially affected environment, and it isolates specific species (such as 418040) from nearby units (such as 418006) while failing to carry quantitative habitat connectivity results into the comparison of alternatives.
+- `leaders`, run 2: The DEIS fails to project the cited 13 to 75 percent reduction in biodiversity due to habitat fragmentation across the 40.1 million acres of potentially affected environment, nor does it carry quantitative measures of habitat connectivity and patch size into the comparison of alternatives, including specific instances where isolated analysis ignores shared species with nearby units.
+- `leaders`, run 3: The DEIS fails to project the cited 13-75 percent biodiversity reduction from habitat fragmentation across the 40.1 million acres of potentially affected environment, nor does it carry quantitative measures of habitat connectivity into the comparison of alternatives or account for specific species shared across forest units.
+- `collapse`, run 1: The DEIS fails to project the cited 13 to 75 percent biodiversity reduction from habitat fragmentation across the 40.1 million acres of potentially affected environment, nor does it carry quantitative connectivity measures into the alternatives comparison or integrate them with specific species data shared with adjacent units.
+- `collapse`, run 2: The DEIS fails to project the cited 13 to 75 percent reduction in biodiversity due to habitat fragmentation across the 40.1 million acres of potentially affected environment, and it analyzes specific areas in isolation while neglecting to carry quantitative fragmentation and connectivity measures through the comparison of alternatives.
+- `collapse`, run 3: The DEIS fails to project the cited 13 to 75 percent reduction in biodiversity from habitat fragmentation across the 40.1 million acres of potentially affected environment, and it isolates roadless area 418040 from the 14 shared species and connectivity metrics associated with adjacent area 418006.
+
+#### Cluster 12, topic 2: density roaded, roaded land, far higher, higher density, land inside, inside affected, reports far, deis table
+
+206 sentences; 87 wordings as `leaders`, 86 as `collapse`.
+
+Temperature 0:
+
+- `leaders`, run 1: The agency must explain on the record why the rescission departs from its own prior findings that roads increase ignition risk, and reconcile the proposal with the ignition data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
+- `leaders`, runs 2, 3: Commenters contend that the agency must explain on the record why the rescission departs from its own prior findings that roads increase ignition risk, and reconcile the proposal with the ignition data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
+- `collapse`, runs 1, 2, 3: The agency must explain why the rescission departs from its own prior findings that roads increase ignition risk, and reconcile the proposal with the ignition data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
+
+Temperature 0.7:
+
+- `leaders`, run 1: Commenters require the agency to explain on the record why the rescission departs from its own prior findings that roads increase ignition risk, and to reconcile the proposal with the ignition data in its own draft environmental impact statement (DEIS Table 21), which reports far higher fire density on roaded land than inside the affected roadless areas.
+- `leaders`, run 2: The agency must explain on the record why the rescission departs from its own prior findings that roads increase ignition risk, and reconcile the action with the data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
+- `leaders`, run 3: How the agency reconciles the rescission of the Roadless Rule with its own draft environmental impact statement (DEIS) findings, specifically Table 21, which reports significantly higher fire density and ignition risk on roaded land than in the affected roadless areas, and explains why expanding the road network into these protected areas advances rather than undermines fire and fuels management objectives.
+- `collapse`, run 1: Commenters assert that the agency must explain why the rescission departs from its own prior findings that roads increase ignition risk and reconcile this action with DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
+- `collapse`, run 2: The agency must explain on the record why the rescission departs from its own prior findings that roads increase ignition risk and fire density, and how the justification of fire and fuels management reconciles with the data in DEIS Table 21 reporting far higher fire density on roaded land than inside the affected roadless areas.
+- `collapse`, run 3: The agency must explain why the rescission departs from its own prior findings that roads increase ignition risk and reconcile the action with the data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
+
+#### Cluster 94, topic 3: cfr subpart, subpart, cfr, retain, preserve, retain cfr, remove reserve, conservation rule
+
+28 sentences; 25 wordings as `leaders`, 25 as `collapse`.
+
+Temperature 0:
+
+- `leaders`, run 1: Commenters urge the Forest Service to retain 36 CFR Part 294, Subpart B, and select the No Action alternative rather than rescinding the 2001 Roadless Area Conservation Rule, arguing that the national-level protections for inventoried roadless areas must remain intact to safeguard natural resources and wildlife habitat.
+- `leaders`, runs 2, 3: Commenters request that the Forest Service retain 36 CFR Part 294, Subpart B, and select the No Action alternative to preserve the national-level protections for inventoried roadless areas, rather than rescinding the rule to replace them with forest-by-forest protections.
+- `collapse`, runs 1, 2, 3: Commenters request that the Forest Service retain 36 CFR Part 294, Subpart B, and select the No Action alternative to preserve the national-level protections for inventoried roadless areas, rather than rescinding the rule to prevent new road construction and commercial timber harvesting.
+
+Temperature 0.7:
+
+- `leaders`, run 1: Commenters urge the Forest Service to retain 36 CFR Part 294, Subpart B and select the No Action alternative rather than rescinding the 2001 Roadless Area Conservation Rule, arguing that the current national-level protections for inventoried roadless areas should be preserved intact to safeguard natural resources and wildlife habitat.
+- `leaders`, run 2: Commenters urge the Forest Service to retain 36 CFR Part 294, Subpart B, and the 2001 Roadless Area Conservation Rule, opposing the rescission of these national protections for inventoried roadless areas.
+- `leaders`, run 3: Commenters urge the Forest Service to retain the national-level protections of the 2001 Roadless Area Conservation Rule (36 CFR Part 294, Subpart B) rather than rescinding or removing and reserving them, arguing that this rule is the most effective mechanism to safeguard inventoried roadless areas, natural resources, and wildlife habitat from new road construction and timber harvest.
+- `collapse`, run 1: Commenters oppose the removal and reservation of 36 CFR Part 294, Subpart B, urging the Forest Service to retain the 2001 Roadless Area Conservation Rule and its national-level protections for inventoried roadless areas as the most effective safeguard for natural resources, wildlife habitat, and wilderness, rather than replacing them with less comprehensive forest-by-forest management or opening these lands to new road construction and commercial timber.
+- `collapse`, run 2: The rescission of 36 CFR Part 294, Subpart B would eliminate the uniform national protections for inventoried roadless areas, and commenters urge the Forest Service to retain these regulations entirely rather than replacing them with forest-specific management.
+- `collapse`, run 3: Commenters urge the Forest Service to retain 36 CFR Part 294, Subpart B and the 2001 Roadless Area Conservation Rule in full, arguing that the national-level protections are the most effective mechanism to safeguard inventoried roadless areas, preserve natural resources and wildlife habitat, and prevent irreversible damage from new road construction and commercial timber harvesting.
 
 #### Cluster 121, topic 3: cfr, cfr rin, rin, federal register, register, comment, cfr comment, federal
 
@@ -458,25 +477,6 @@ Temperature 0.7:
 - `collapse`, run 1: The agency must reconcile the proposal with its own cost-benefit analysis, which projects $5.2 to $11.4 million in annual timber revenue against $6.1 million in annual recreation losses and a net present value ranging from -$92 million to +$199 million, and explain how an action that cannot establish a clear net benefit justifies expanding a road system already carrying a $6.9 billion maintenance backlog.
 - `collapse`, run 2: The proposal rests on economic benefits that the agency's own Cost Benefit Analysis fails to establish as a net benefit, projecting only $5.2 to $11.4 million in annual timber revenue to the federal government and $4.6 to $10.6 million to the industry against recreation losses of at least $6.1 million per year, a net present value ranging from -$92 million to +$199 million, and the expansion of a road system already carrying a $6.9 billion maintenance backlog.
 - `collapse`, run 3: The agency’s own cost-benefit analysis projects that rescission would yield only $5.2 to $11.4 million in annual timber revenue against estimated recreation losses of at least $6.1 million and a net present value ranging from -$92 million to +$199 million, and commenters ask the agency to reconcile this failure to establish a clear net economic benefit with the decision to expand a road system already carrying a $6.9 billion maintenance backlog.
-
-#### Cluster 12, topic 2: density roaded, roaded land, far higher, higher density, land inside, inside affected, reports far, deis table
-
-206 sentences; 87 wordings as `leaders`, 86 as `collapse`.
-
-Temperature 0:
-
-- `leaders`, run 1: The agency must explain on the record why the rescission departs from its own prior findings that roads increase ignition risk, and reconcile the proposal with the ignition data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
-- `leaders`, runs 2, 3: Commenters contend that the agency must explain on the record why the rescission departs from its own prior findings that roads increase ignition risk, and reconcile the proposal with the ignition data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
-- `collapse`, runs 1, 2, 3: The agency must explain why the rescission departs from its own prior findings that roads increase ignition risk, and reconcile the proposal with the ignition data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
-
-Temperature 0.7:
-
-- `leaders`, run 1: Commenters require the agency to explain on the record why the rescission departs from its own prior findings that roads increase ignition risk, and to reconcile the proposal with the ignition data in its own draft environmental impact statement (DEIS Table 21), which reports far higher fire density on roaded land than inside the affected roadless areas.
-- `leaders`, run 2: The agency must explain on the record why the rescission departs from its own prior findings that roads increase ignition risk, and reconcile the action with the data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
-- `leaders`, run 3: How the agency reconciles the rescission of the Roadless Rule with its own draft environmental impact statement (DEIS) findings, specifically Table 21, which reports significantly higher fire density and ignition risk on roaded land than in the affected roadless areas, and explains why expanding the road network into these protected areas advances rather than undermines fire and fuels management objectives.
-- `collapse`, run 1: Commenters assert that the agency must explain why the rescission departs from its own prior findings that roads increase ignition risk and reconcile this action with DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
-- `collapse`, run 2: The agency must explain on the record why the rescission departs from its own prior findings that roads increase ignition risk and fire density, and how the justification of fire and fuels management reconciles with the data in DEIS Table 21 reporting far higher fire density on roaded land than inside the affected roadless areas.
-- `collapse`, run 3: The agency must explain why the rescission departs from its own prior findings that roads increase ignition risk and reconcile the action with the data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas.
 
 <!-- end statements -->
 
@@ -540,63 +540,6 @@ run to run.
 
 Case `opening.plain.text-embedding-qwen3-embedding-8b-f16.m95.umap5.10-10-eom.all.p1.kauto.s0`. Model `qwen/qwen3.8-27b`. File `trials/statements/20261024_170736.json`.
 
-#### Cluster 207, topic 2: justifies rescission, management grounds, fuels management, ignition, justifies, grounds, solution, proposal justifies
-
-11 sentences; 10 wordings as `leaders`, 10 as `collapse`.
-
-Temperature 0.1:
-
-- `leaders`, runs 1, 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-- `collapse`, runs 1, 2: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-- `collapse`, run 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-
-Temperature 0.2:
-
-- `leaders`, run 1: The agency must reconcile the use of wildfire and fuels management as a justification for rescission with its own data showing that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-- `leaders`, runs 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data showing that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-- `collapse`, runs 1, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data showing that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-- `collapse`, run 2: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-
-Temperature 0.4:
-
-- `leaders`, run 1: The agency must reconcile its reliance on wildfire and fuels management as a justification for rescission with its own data and findings, which establish that road construction increases ignition rates and that roads drive fire risk rather than mitigate it.
-- `leaders`, run 2: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data, which demonstrates that roads increase ignition rates rather than reduce fire risk.
-- `leaders`, run 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
-- `collapse`, run 1: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that road construction increases ignition rates.
-- `collapse`, run 2: The agency must reconcile its reliance on wildfire and fuels management as a justification for rescission with its own data demonstrating that roads drive ignition rates upward.
-- `collapse`, run 3: The agency must reconcile its justification of the rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when the record indicates they are the cause of ignition rather than the solution.
-
-#### Cluster 104, topic 5: revenue, treasury, million, treasury forest, revenue treasury, million year, unlikely, timber industry
-
-26 sentences; 26 wordings as `leaders`, 26 as `collapse`.
-
-Temperature 0.1:
-
-- `leaders`, run 1: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures that represent a modest 5-10% increase in harvest volume and are contingent on unlikely full realization due to budget, operability, and market constraints.
-- `leaders`, run 2: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
-- `leaders`, run 3: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures that represent a modest 5-10% increase in harvest volume and are contingent on full operability that the agency itself deems unlikely due to budget, market, and physical constraints.
-- `collapse`, run 1: Commenters assert that the projected annual timber revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry are disproportionately small relative to the estimated losses in recreation, tourism, and other ecosystem services, and that these figures are unreliable because they assume full harvest on all operable acres, a scenario the agency itself deems unlikely due to budget, operability, and market constraints.
-- `collapse`, run 2: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures that represent a modest 5-10% increase in harvest volume and are acknowledged by the agency as unlikely to be fully realized due to budget, operability, and market constraints.
-- `collapse`, run 3: Commenters argue that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures the agency itself acknowledges are unlikely to be fully realized due to budget, operability, and market constraints.
-
-Temperature 0.2:
-
-- `leaders`, run 1: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, a figure they argue is further diminished by the agency's own acknowledgment that full harvest is unlikely due to budget, operability, and market constraints.
-- `leaders`, run 2: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
-- `leaders`, run 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small and unlikely to be realized, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry based on a 5-10% increase in harvest volume that the agency itself deems unlikely due to budget, operability, and market constraints.
-- `collapse`, run 1: Commenters contend that the projected annual revenue from expanded timber harvesting is disproportionately low relative to the anticipated losses, noting that the estimated $5.2 to $11.4 million in government revenue and $4.6 to $10.6 million in industry revenue are based on a 5-10% harvest increase that the agency itself deems unlikely to be fully realized due to budget, operability, and market constraints.
-- `collapse`, run 2: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures the agency itself acknowledges are unlikely to be fully realized due to budget, operability, and market constraints.
-- `collapse`, run 3: Commenters assert that the projected annual timber revenue of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry is disproportionately small relative to the estimated losses to recreation and tourism, and that these figures are unreliable because they assume full harvest on all operable acres, a scenario the agency itself deems unlikely due to budget, operability, and market constraints.
-
-Temperature 0.4:
-
-- `leaders`, run 1: The projected annual revenue gains from expanded timber harvesting are modest, capped at $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry, and are contingent on full harvest realization that the agency itself deems unlikely due to budget, operability, and market constraints.
-- `leaders`, run 2: Commenters contend that the projected annual revenue gains from expanded timber harvesting—estimated at $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry—are disproportionately small relative to the potential losses to recreation, tourism, and local economies, particularly because the Department itself acknowledges that full realization of these figures is unlikely due to budget, operability, and market constraints.
-- `leaders`, run 3: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small and unlikely to be realized, citing the agency's own estimates that expanded timber harvesting would yield only $5.2 to $11.4 million annually in government revenue and $4.6 to $10.6 million in industry revenue, even under a maximum scenario that the Department acknowledges is improbable due to budget, operability, and market constraints.
-- `collapse`, run 1: Commenters assert that the proposed rule's economic analysis is flawed because it compares the modest, unlikely-to-be-realized annual revenue estimates of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry against the significantly larger projected costs and losses to recreation, tourism, and local economies.
-- `collapse`, run 2: Commenters contend that the projected economic benefits of rescinding the 2001 Roadless Rule are disproportionately small, noting that the estimated annual revenue gains of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry are based on a 5 to 10 percent increase in sawtimber harvest that the agency itself acknowledges is unlikely to be fully realized due to budget, operability, and market constraints.
-- `collapse`, run 3: Commenters assert that the projected annual timber revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry are disproportionately small relative to the broader economic and environmental costs of roadless area development, particularly given that the agency itself acknowledges these figures are unlikely to be fully realized due to budget, operability, and market constraints.
-
 #### Cluster 52, topic 1: nepa, cir, usda cir, clause, california rel, rel, rel lockyer, circuit
 
 45 sentences; 41 wordings as `leaders`, 41 as `collapse`.
@@ -658,6 +601,63 @@ Temperature 0.4:
 - `collapse`, run 1: The agency must explain how the proposal’s justification of rescission for wildfire and fuels management is reconciled with its own draft environmental impact statement findings and peer-reviewed data demonstrating that new road construction significantly increases human-caused ignition risk, and must quantify the expected increase in human-caused ignitions from new road access to weigh it against any claimed reduction in wildfire hazard.
 - `collapse`, run 2: Commenters assert that the proposal's justification of rescission on wildfire and fuels management grounds is contradicted by peer-reviewed research and the agency's own draft EIS data, which demonstrate that road construction significantly increases human-caused ignition density and that inventoried roadless areas experience substantially lower fire rates than roaded lands. They request that the agency quantify the expected increase in human-caused ignitions from new road access, reconcile the proposal with its own ignition data and prior findings, and explain how it weighs this increased ignition risk against any claimed reduction in wildfire hazard.
 - `collapse`, run 3: Commenters assert that the proposal's justification for rescission based on wildfire and fuels management is contradicted by peer-reviewed research and the agency's own Draft EIS, which indicate that road construction increases human-caused ignition risk and that inventoried roadless areas have significantly lower fire ignition densities than roaded lands. Commenters request that the agency quantify the expected increase in human-caused ignitions resulting from new road access, reconcile the proposal with its own ignition data, and explain how the claimed benefits of increased access outweigh the documented increase in fire risk.
+
+#### Cluster 207, topic 2: justifies rescission, management grounds, fuels management, ignition, justifies, grounds, solution, proposal justifies
+
+11 sentences; 10 wordings as `leaders`, 10 as `collapse`.
+
+Temperature 0.1:
+
+- `leaders`, runs 1, 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+- `collapse`, runs 1, 2: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+- `collapse`, run 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+
+Temperature 0.2:
+
+- `leaders`, run 1: The agency must reconcile the use of wildfire and fuels management as a justification for rescission with its own data showing that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+- `leaders`, runs 2, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data showing that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+- `collapse`, runs 1, 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data showing that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+- `collapse`, run 2: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+
+Temperature 0.4:
+
+- `leaders`, run 1: The agency must reconcile its reliance on wildfire and fuels management as a justification for rescission with its own data and findings, which establish that road construction increases ignition rates and that roads drive fire risk rather than mitigate it.
+- `leaders`, run 2: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data, which demonstrates that roads increase ignition rates rather than reduce fire risk.
+- `leaders`, run 3: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.
+- `collapse`, run 1: The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that road construction increases ignition rates.
+- `collapse`, run 2: The agency must reconcile its reliance on wildfire and fuels management as a justification for rescission with its own data demonstrating that roads drive ignition rates upward.
+- `collapse`, run 3: The agency must reconcile its justification of the rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when the record indicates they are the cause of ignition rather than the solution.
+
+#### Cluster 104, topic 5: revenue, treasury, million, treasury forest, revenue treasury, million year, unlikely, timber industry
+
+26 sentences; 26 wordings as `leaders`, 26 as `collapse`.
+
+Temperature 0.1:
+
+- `leaders`, run 1: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures that represent a modest 5-10% increase in harvest volume and are contingent on unlikely full realization due to budget, operability, and market constraints.
+- `leaders`, run 2: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
+- `leaders`, run 3: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures that represent a modest 5-10% increase in harvest volume and are contingent on full operability that the agency itself deems unlikely due to budget, market, and physical constraints.
+- `collapse`, run 1: Commenters assert that the projected annual timber revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry are disproportionately small relative to the estimated losses in recreation, tourism, and other ecosystem services, and that these figures are unreliable because they assume full harvest on all operable acres, a scenario the agency itself deems unlikely due to budget, operability, and market constraints.
+- `collapse`, run 2: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures that represent a modest 5-10% increase in harvest volume and are acknowledged by the agency as unlikely to be fully realized due to budget, operability, and market constraints.
+- `collapse`, run 3: Commenters argue that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures the agency itself acknowledges are unlikely to be fully realized due to budget, operability, and market constraints.
+
+Temperature 0.2:
+
+- `leaders`, run 1: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, a figure they argue is further diminished by the agency's own acknowledgment that full harvest is unlikely due to budget, operability, and market constraints.
+- `leaders`, run 2: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.
+- `leaders`, run 3: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small and unlikely to be realized, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry based on a 5-10% increase in harvest volume that the agency itself deems unlikely due to budget, operability, and market constraints.
+- `collapse`, run 1: Commenters contend that the projected annual revenue from expanded timber harvesting is disproportionately low relative to the anticipated losses, noting that the estimated $5.2 to $11.4 million in government revenue and $4.6 to $10.6 million in industry revenue are based on a 5-10% harvest increase that the agency itself deems unlikely to be fully realized due to budget, operability, and market constraints.
+- `collapse`, run 2: Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures the agency itself acknowledges are unlikely to be fully realized due to budget, operability, and market constraints.
+- `collapse`, run 3: Commenters assert that the projected annual timber revenue of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry is disproportionately small relative to the estimated losses to recreation and tourism, and that these figures are unreliable because they assume full harvest on all operable acres, a scenario the agency itself deems unlikely due to budget, operability, and market constraints.
+
+Temperature 0.4:
+
+- `leaders`, run 1: The projected annual revenue gains from expanded timber harvesting are modest, capped at $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry, and are contingent on full harvest realization that the agency itself deems unlikely due to budget, operability, and market constraints.
+- `leaders`, run 2: Commenters contend that the projected annual revenue gains from expanded timber harvesting—estimated at $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry—are disproportionately small relative to the potential losses to recreation, tourism, and local economies, particularly because the Department itself acknowledges that full realization of these figures is unlikely due to budget, operability, and market constraints.
+- `leaders`, run 3: Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small and unlikely to be realized, citing the agency's own estimates that expanded timber harvesting would yield only $5.2 to $11.4 million annually in government revenue and $4.6 to $10.6 million in industry revenue, even under a maximum scenario that the Department acknowledges is improbable due to budget, operability, and market constraints.
+- `collapse`, run 1: Commenters assert that the proposed rule's economic analysis is flawed because it compares the modest, unlikely-to-be-realized annual revenue estimates of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry against the significantly larger projected costs and losses to recreation, tourism, and local economies.
+- `collapse`, run 2: Commenters contend that the projected economic benefits of rescinding the 2001 Roadless Rule are disproportionately small, noting that the estimated annual revenue gains of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry are based on a 5 to 10 percent increase in sawtimber harvest that the agency itself acknowledges is unlikely to be fully realized due to budget, operability, and market constraints.
+- `collapse`, run 3: Commenters assert that the projected annual timber revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry are disproportionately small relative to the broader economic and environmental costs of roadless area development, particularly given that the agency itself acknowledges these figures are unlikely to be fully realized due to budget, operability, and market constraints.
 
 <!-- end statements -->
 
@@ -726,3 +726,65 @@ Thus two different concerns are at 0.51 to 0.60. One concern in two clusters is 
 **For step 15.** Temperature 0 is still the choice, because it gives the same text from
 run to run. But the meaning of the statement does not depend much on the temperature:
 at 0.7 each statement is still nearer its own concern than any other concern is.
+
+
+## Trial 20261024_183009: every cluster of the concern map at temperature 0
+
+**The settings.** The Qwen concern map, all 207 clusters, both methods, one run at
+temperature 0: 414 calls, 804,570 tokens in, 28,766 out, 46 minutes on the local machine,
+no cost. Code `b3f36f9`. Every statement is in `docs/concern-statements.md`, by topic.
+The similarity step (`trials/statements/similarity_20261024_191714.json`, code
+`dbdf73e` and later) embedded the 350 different statements with
+`text-embedding-qwen3-embedding-8b@f16`.
+
+**What the trial found.**
+
+1. No statement was cut. All 414 end with a full stop, a question mark or an
+   exclamation mark.
+2. The two methods give the same statement for 64 of the 207 clusters. By the
+   embeddings, the two statements of a cluster are at a median cosine of 0.978. 15
+   clusters are below 0.85, and the lowest is 0.675.
+3. Where the methods differ most, one statement is wider than the other. The five
+   clusters with the lowest cosine between the methods:
+
+| Cluster | Cosine | `leaders` | `collapse` |
+|---|---|---|---|
+| 55 | 0.675 | The rescission of the Roadless Rule would expose wildlife, including mule deer, elk, moose, and grizzly bears, to documented harms such as altered migration routes, increased movement speed, loss of unroaded security, and heightened human-wildlife conflict, while eliminating the protections that the agency's own records credit with the recovery of these populations. | Road construction and resource extraction alter wildlife migration routes, increase movement speed, and disrupt unroaded security, while road corridors attract animals like moose to road salt, increasing human-wildlife conflict and mortality. |
+| 133 | 0.733 | Commenters contend that rescinding the 2001 Roadless Rule replaces a durable, consistent national conservation standard with fragmented, case-by-case forest-level planning, which exposes remaining intact roadless areas to inconsistent management, political pressure, and long-term ecological degradation. They argue this shift does not eliminate regulatory burden but instead invites inconsistent outcomes, increased litigation, and the potential erosion of protections over time, without demonstrating that local decision-making better protects these finite national resources. | Replacing the consistent national conservation standard of 36 CFR Part 294, Subpart B with case-by-case, forest-level planning removes a durable baseline, exposing inventoried roadless areas to inconsistent management, political pressure, and long-term ecological degradation that varies by administration and location. |
+| 5 | 0.760 | The agency must complete formal Section 7 consultation with USFWS and NMFS, prepare a Biological Opinion, and conduct a supplemental environmental analysis that addresses the likely adverse effects on 327 ESA-listed species and 71 designated critical habitats, including specific impacts to habitat connectivity, fragmentation, and water quality, before finalizing the rescission. | The rescission of the Roadless Rule constitutes a federal action that is likely to adversely affect over 300 threatened and endangered species and 71 designated critical habitats by fragmenting intact ecosystems, degrading habitat connectivity, and increasing human disturbance, yet the agency has not completed the required Section 7 consultation or provided a Biological Opinion to address these impacts. |
+| 119 | 0.769 | The rescission would open timberland where the agency's own data show that old and mature stands constitute the overwhelming majority of the forest, yet the document identifies no old-growth-specific protection or safeguards beyond general land management plan compliance before these stands could be harvested. | The draft EIS identifies no old-growth-specific safeguards beyond general land management plan compliance for the operable areas most likely to be affected by timber harvest, where the agency's own data show that approximately 11-16 percent is old-growth forest and 54-63 percent is mature forest. |
+| 68 | 0.791 | The agency must explain how the proposal to expand road access into roadless areas reconciles with its own draft EIS findings, specifically the ignition data in Table 21 showing far higher fire density on roaded land, and the admission that the comparative wildfire-emissions analysis was not performed. | The agency must explain on the record why the rescission departs from its own prior findings and the ignition data in DEIS Table 21, which reports far higher fire density on roaded land than inside affected roadless areas, and reconcile the proposal's fire-management justification with that data. |
+
+
+4. Some clusters give the same concern as another cluster. Of the 21,321 pairs of
+   clusters (`leaders` statements), the median cosine is 0.532. 13 pairs are at 0.90 or
+   more, 73 at 0.85 or more, and 291 at 0.80 or more. In the trials before, clusters 1
+   and 207, one concern in two clusters, were at 0.874. The 13 pairs at 0.90 or more:
+
+| Clusters | Topics | Cosine | Statement of the first | Statement of the second |
+|---|---|---|---|---|
+| 43 and 178 | 4, 4 | 0.955 | Commenters assert that rescinding the 2001 Roadless Rule would cause direct, irreversible harm to specific local ecosystems, water quality, and wildlife habitats, while simultaneously threatening the economic stability of communities that rely on outdoor recreation, tourism, and the preservation of roadless character. | Commenters assert that the rescission of the 2001 Roadless Rule will cause severe, irreversible harm to the ecological integrity, clean water, and public safety of roadless areas, while simultaneously devastating local economies, outdoor recreation industries, and community resources across diverse geographic regions. |
+| 85 and 176 | 8, 8 | 0.950 | The agency's own preliminary biological assessment and Draft EIS determine that rescinding the 2001 Roadless Rule is likely to adversely affect 327 threatened and endangered species and 71 designated critical habitats, yet the agency has not completed the required Section 7 biological opinions or fully assessed the specific impacts on these protected populations and habitats. | The agency's own biological assessment and DEIS determine that rescinding the Roadless Rule is likely to adversely affect 327 threatened and endangered species, 71 designated critical habitats, and 3,409 sensitive species, yet the agency has not provided the required species-specific analysis of how the action impacts habitat, movement, reproduction, and long-term viability for these populations. |
+| 39 and 134 | 2, 1 | 0.932 | Commenters ask the agency to explain why the proposal departs from its own prior findings on fire occurrence and fuel treatment in roadless areas, and to reconcile the rescission with the ignition data in DEIS Table 21, which reports far higher fire density on roaded land than inside the affected roadless areas. | The agency must explain why the proposal departs from its own prior findings on fire occurrence and fuel treatment in roadless areas, and reconcile the rescission with the ignition and fire density data in DEIS Table 21. |
+| 13 and 205 | 4, 4 | 0.931 | The proposed full rescission of the 2001 Roadless Rule would eliminate the uniform national prohibitions on road construction, road reconstruction, and timber harvesting in inventoried roadless areas, shifting decision-making to local forest plans without a guaranteed baseline of protection, thereby exposing approximately 58.5 million acres to increased development, mining, and ecological degradation. | Rescinding the 2001 Roadless Rule would remove federal prohibitions on road construction and commercial timber harvesting from approximately 45 to 58.5 million acres of Inventoried Roadless Areas, causing irreversible degradation to wildlife habitat, clean drinking water sources, and local outdoor recreation economies, while failing to meet legal requirements and scientific standards for land management. |
+| 9 and 76 | 3, 3 | 0.928 | Commenters assert that rescinding the Roadless Rule would compromise the drinking water supply for millions of Americans by removing the primary federal protection for headwaters and river systems, thereby increasing erosion, sedimentation, and contamination risks that would degrade water quality and raise treatment costs for downstream communities. | Rescinding the Roadless Rule would degrade drinking water quality and increase contamination risks for millions of Americans, particularly in drought-affected regions, by allowing road construction and development in roadless areas that serve as critical watersheds and headwaters. |
+| 56 and 76 | 3, 3 | 0.928 | Rescinding the Roadless Rule will degrade drinking water quality and quantity for millions of Americans by increasing sedimentation, erosion, and contamination in headwaters and municipal source watersheds, while simultaneously increasing wildfire risk and fragmenting habitats for aquatic and terrestrial species. | Rescinding the Roadless Rule would degrade drinking water quality and increase contamination risks for millions of Americans, particularly in drought-affected regions, by allowing road construction and development in roadless areas that serve as critical watersheds and headwaters. |
+| 9 and 56 | 3, 3 | 0.926 | Commenters assert that rescinding the Roadless Rule would compromise the drinking water supply for millions of Americans by removing the primary federal protection for headwaters and river systems, thereby increasing erosion, sedimentation, and contamination risks that would degrade water quality and raise treatment costs for downstream communities. | Rescinding the Roadless Rule will degrade drinking water quality and quantity for millions of Americans by increasing sedimentation, erosion, and contamination in headwaters and municipal source watersheds, while simultaneously increasing wildfire risk and fragmenting habitats for aquatic and terrestrial species. |
+| 60 and 88 | 7, 7 | 0.925 | Commenters assert that the 2001 Roadless Rule already contains sufficient exceptions for wildfire mitigation, fuel reduction, and forest health management, and challenge the agency to identify specific projects that the rule has actually prevented or delayed, arguing that the rule does not block these necessary actions. | Commenters assert that the 2001 Roadless Rule already contains sufficient exceptions under 36 CFR §§ 294.12 and 294.13 to address wildfire mitigation, public safety, and forest health needs, making the rescission unnecessary and the stated intent to alleviate local decision-making disingenuous. |
+| 16 and 47 | 2, 2 | 0.916 | The proposal justifies opening roadless areas to new road construction by citing wildfire and fuels management, but this rationale is contradicted by the agency's own data, including DEIS Table 21, which shows that roaded land has a significantly higher fire density and ignition risk than roadless areas. The agency must explain on the record how expanding the road network reduces fire risk rather than increasing it, and reconcile this departure from its prior findings that roads increase human-caused ignitions. | Commenters assert that the agency's own data in DEIS Table 21 demonstrates that roaded land has significantly higher fire density and ignition risk than roadless areas, creating a direct contradiction with the proposal's justification for opening roadless areas to new roads for fire and fuels management purposes. |
+| 90 and 165 | 4, 4 | 0.912 | Commenters assert that scientific research demonstrates inventoried roadless areas are among the nation's most ecologically valuable, least disturbed, and cost-effective landscapes for conserving biodiversity, maintaining habitat connectivity, and providing critical ecosystem services such as water quality and carbon storage. They argue that rescinding the Roadless Rule would remove essential protections for these irreplaceable intact ecosystems, exposing them to fragmentation, invasive species, and degradation that would undermine global and national conservation goals. | Commenters assert that rescinding the Roadless Rule would degrade the highest-integrity forest ecosystems in the United States, specifically Inventoried Roadless Areas, by threatening old-growth structures, reducing carbon storage, and compromising biodiversity, clean water, and climate regulation benefits that recent studies and the Forest Landscape Integrity Index confirm are unique to these protected landscapes. |
+| 198 and 205 | 4, 4 | 0.912 | Rescinding the 2001 Roadless Rule will expose remaining intact public lands to road construction, commercial logging, and other extractive activities, causing long-term ecological degradation, habitat fragmentation, and watershed damage that threatens irreplaceable ecosystems and future generations. | Rescinding the 2001 Roadless Rule would remove federal prohibitions on road construction and commercial timber harvesting from approximately 45 to 58.5 million acres of Inventoried Roadless Areas, causing irreversible degradation to wildlife habitat, clean drinking water sources, and local outdoor recreation economies, while failing to meet legal requirements and scientific standards for land management. |
+| 56 and 201 | 3, 3 | 0.904 | Rescinding the Roadless Rule will degrade drinking water quality and quantity for millions of Americans by increasing sedimentation, erosion, and contamination in headwaters and municipal source watersheds, while simultaneously increasing wildfire risk and fragmenting habitats for aquatic and terrestrial species. | The rescission of the Roadless Rule would increase soil erosion, landslide risk, and sediment pollution in watersheds that supply drinking water to millions of Americans, thereby degrading water quality and compromising public health. |
+| 26 and 94 | 2, 2 | 0.903 | Commenters assert that the agency's rationale for rescinding the Roadless Rule is contradicted by scientific evidence showing that the vast majority of wildfires are human-caused and that ignition rates are significantly higher near roads than in roadless areas, meaning that adding roads to previously roadless areas would increase, rather than decrease, wildfire risk. | Commenters assert that the rescission ignores scientific evidence and the agency's own records indicating that the vast majority of wildfires ignite near roads, with studies showing ignition rates are significantly higher in roaded areas than in roadless tracts. They argue that because roads facilitate human-caused ignitions, removing roadless protections will increase fire risk rather than improve fire management. |
+
+5. 12 of the 13 pairs are in one topic; clusters 39 and 134 (topics 2 and 1) are the
+   exception. Clusters 9, 56, 76 and 201 (topic 3) all give the
+   concern about drinking water. Thus the topics hold most of the repeated concerns, and
+   step 16 can find them inside a topic.
+
+**For step 15.**
+
+- The statements of all clusters can be written on the local machine in under an hour.
+- Before step 16 answers the concerns, join the clusters whose statements are the same
+  concern. A cosine of 0.90 between the statements finds 13 pairs; the right threshold
+  needs a reading of the pairs between 0.85 and 0.90.

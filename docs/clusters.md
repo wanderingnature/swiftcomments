@@ -226,7 +226,8 @@ The trial writes one JSON file to `trials/statements/<run_id>.json`. The file ho
 
 Beside the JSON file, `trials/statements/<run_id>.md` gives every statement, cluster by
 cluster. The results of each trial and all its statements are in
-`docs/statement-trials.md`. `--render-doc` writes the statements of each trial into that
+`docs/statement-trials.md`. The statements of every cluster of the concern map are in
+`docs/concern-statements.md`. `--render-doc` writes the statements of each trial into that
 page again from the JSON files.
 
 **How far the statements move** (`make statement-similarity`). Two statements can use

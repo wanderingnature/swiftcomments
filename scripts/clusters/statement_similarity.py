@@ -23,7 +23,9 @@ measure for each temperature, and for each cluster and temperature. Nothing is w
 to the analysis file.
 
 For scale, the file also holds the cosine between the reference statements of every
-two clusters of one method: how close two different concerns are.
+two clusters of one method: how close two different concerns are; and, for every
+cluster, temperature and run that both methods wrote, the two methods' statements
+compared by both measures.
 """
 from __future__ import annotations
 
@@ -114,6 +116,14 @@ def main(argv: list[str] | None = None) -> None:
     between = [{"method": a[1], "cluster_a": a[0], "cluster_b": b[0],
                 "cosine": round(float(vecs[refs[a]] @ vecs[refs[b]]), 4)}
                for i, a in enumerate(keys) for b in keys[i + 1:] if a[1] == b[1]]
+    both: dict[tuple, dict[str, str]] = {}
+    for x in calls:
+        both.setdefault((x["trial"], x["cluster"], x["temperature"], x["run"]), {})[x["method"]] = x["concern"]
+    methods = [{"trial": k[0], "cluster": k[1], "temperature": k[2], "run": k[3],
+                "same": v["leaders"] == v["collapse"],
+                "cosine": round(float(vecs[v["leaders"]] @ vecs[v["collapse"]]), 4),
+                "words": round(words(v["leaders"], v["collapse"]), 4)}
+               for k, v in sorted(both.items()) if len(v) == 2]
     by_temp = summarise(rows, ("temperature",))
     by_cluster = summarise(rows, ("cluster", "temperature"))
     run_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
@@ -121,7 +131,7 @@ def main(argv: list[str] | None = None) -> None:
               "trials": args.trials, "case": cases.pop(), "embedding_model": model, "embedding_base_url": base,
               "statements_embedded": len(texts),
               "references": [{"cluster": c, "method": m, "concern": t} for (c, m), t in sorted(refs.items())],
-              "between_clusters": between, "rows": rows, "by_temperature": by_temp, "by_cluster": by_cluster}
+              "between_clusters": between, "between_methods": methods, "rows": rows, "by_temperature": by_temp, "by_cluster": by_cluster}
     path = OUT / f"similarity_{run_id}.json"
     path.write_text(json.dumps(record, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"{len(texts)} distinct statements embedded by {model}")
@@ -136,6 +146,10 @@ def main(argv: list[str] | None = None) -> None:
     print("between the reference statements of two clusters (same method)")
     for b in between:
         print(f"  {b['method']:<9} {b['cluster_a']:>4} - {b['cluster_b']:<4} {b['cosine']}")
+    if methods:
+        cos = sorted(m["cosine"] for m in methods)
+        print(f"the two methods: {sum(m['same'] for m in methods)} of {len(methods)} the same statement;"
+              f" cosine median {statistics.median(cos)}, lowest {cos[0]}")
     print(f"wrote {path.relative_to(_REPO)}")
 
 
