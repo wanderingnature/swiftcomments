@@ -482,7 +482,7 @@ def compare_two(cases, choices):
     metrics([("Clustered by both", m["clustered_both"],
               f"First case {m['clustered_first']:,}, second case {m['clustered_second']:,}."),
              ("Adjusted Rand", m["ari"] if m["ari"] is not None else "-",
-              "1 is the same grouping. 0 is the agreement that chance gives."),
+              "How alike the two cases cluster the same sentences. 1: the same clusters. Near 0: different clusters."),
              ("Clusters kept together", f"{m['clusters_80']} of {len(m['crossing'])}",
               "Clusters of the first case with 80% or more of their sentences in one cluster of the second.")])
     crossing = pd.DataFrame(m["crossing"])

@@ -98,9 +98,9 @@ The figures:
 
 - **Clustered by both** is the number of sentences that both cases put in a cluster.
   The other figures count these sentences only.
-- **Adjusted Rand** measures how much the two cases agree on these sentences. A value
-  of 1 means the same grouping. A value of 0 means the agreement that chance gives.
-  Values from 0.6 to 0.7 mean the same main groups with different edges.
+- **Adjusted Rand** tells how alike the two cases cluster these sentences. 1 means the
+  same clusters. Near 0 means different clusters. From 0.6 to 0.7, the large clusters
+  are the same and their edges differ.
 - **Clusters kept together** counts the clusters of the first case that keep 80% or
   more of their sentences in one cluster of the second case.
 
@@ -122,7 +122,7 @@ The figures:
 
 | Term | Meaning |
 |---|---|
-| Adjusted Rand index | A score from 0 to 1 for how much two cases agree on the sentences that both cluster. 1 is the same grouping. 0 is chance. |
+| Adjusted Rand index | How alike two cases cluster the same sentences. 1 means the same clusters. Near 0 means different clusters. |
 | BGE-large-en-v1.5 | An embedding model of 335 million parameters, built on BERT. It reads English only. |
 | Case | One run of the clustering with one set of settings. The console keeps each case. |
 | Choice | The case that you record for a model in step 1, or with `make choose`. Step 2 compares the choices. |
