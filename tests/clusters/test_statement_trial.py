@@ -60,3 +60,16 @@ def test_a_case_named_on_the_command_line(casefile):
     with pytest.raises(SystemExit, match="no case 'nope'"):
         statement_trial.main(["--clusters", "1", "--runs", "1", "--temperatures", "0", "--case", "nope",
                                    "--db", str(casefile)])
+
+
+def test_render_gives_each_statement_once_with_its_runs():
+    record = {"case": "c", "model": "m", "run_id": "20261024_000000", "temperatures": [0.0],
+              "clusters": [{"cluster": 3, "topic": 1, "terms": ["fire", "roads"], "texts": 4,
+                            "methods": {"leaders": {"wordings": ["a", "b"]}, "collapse": {"wordings": ["a"]}}}],
+              "calls": [{"cluster": 3, "method": "leaders", "temperature": 0.0, "run": r, "concern": "Same."}
+                        for r in (1, 2)] +
+                       [{"cluster": 3, "method": "collapse", "temperature": 0.0, "run": 1, "concern": "Other."}]}
+    md = statement_trial.render(record)
+    assert "#### Cluster 3, topic 1: fire, roads" in md
+    assert "4 sentences; 2 wordings as `leaders`, 1 as `collapse`." in md
+    assert "- `leaders`, runs 1, 2: Same." in md and "- `collapse`, run 1: Other." in md

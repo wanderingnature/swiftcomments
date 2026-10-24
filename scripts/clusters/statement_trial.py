@@ -24,12 +24,16 @@ vectors the case's own (its model, its view). Nothing is written to the file.
 One JSON file per trial, trials/statements/<run_id>.json: the settings, the
 code version, the wordings of each cluster under each method, every call with
 its statement and its tokens, and for each cluster, method and temperature the
-number of distinct statements among the runs.
+number of distinct statements among the runs. Beside it, <run_id>.md: every
+statement, cluster by cluster, the same statement of several runs given once with
+its runs. --render-doc fills each trial's statements into docs/statement-trials.md
+between its markers, <!-- statements RUN_ID --> and <!-- end statements -->.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 import time
@@ -49,6 +53,7 @@ from shared import db  # noqa: E402
 from shared.llm_client import ChatClient  # noqa: E402
 
 OUT = _REPO / "trials" / "statements"
+DOC = _REPO / "docs" / "statement-trials.md"
 METHODS = ("leaders", "collapse")
 
 STATEMENT_SYS = (
@@ -129,14 +134,64 @@ def cluster_wordings(conn, case: str, cluster: int) -> dict:
                         "collapse": {"wordings": [g[0] for g in groups], "stands_for": groups}}}
 
 
+def runs_text(runs: list[int]) -> str:
+    return f"run {runs[0]}" if len(runs) == 1 else "runs " + ", ".join(map(str, runs))
+
+
+def render(record: dict) -> str:
+    """Every statement of a trial in Markdown, cluster by cluster: the cluster's topic, terms
+    and sizes, then for each temperature and method the statements, each once with its runs."""
+    out = [f"Case `{record['case']}`. Model `{record['model']}`. File"
+           f" `trials/statements/{record['run_id']}.json`.", ""]
+    for c in record["clusters"]:
+        n = {m: len(c["methods"][m]["wordings"]) for m in METHODS}
+        out += [f"#### Cluster {c['cluster']}, topic {c['topic']}: {', '.join(c['terms'])}", "",
+                f"{c['texts']} sentences; {n['leaders']} wordings as `leaders`, {n['collapse']} as `collapse`.", ""]
+        for temp in record["temperatures"]:
+            out += [f"Temperature {temp:g}:", ""]
+            for method in METHODS:
+                seen: dict[str, list[int]] = {}
+                for x in record["calls"]:
+                    if x["cluster"] == c["cluster"] and x["method"] == method and x["temperature"] == temp:
+                        seen.setdefault(x["concern"], []).append(x["run"])
+                for text, runs in seen.items():
+                    out.append(f"- `{method}`, {runs_text(runs)}: {text}")
+            out.append("")
+    return "\n".join(out)
+
+
+def render_doc() -> None:
+    """Fill each trial's marked block of docs/statement-trials.md from its JSON file."""
+    doc = DOC.read_text(encoding="utf-8")
+    marks = re.findall(r"<!-- statements (\d{8}_\d{6}) -->", doc)
+    if not marks:
+        raise SystemExit(f"{DOC.relative_to(_REPO)} has no <!-- statements RUN_ID --> marker")
+    for run_id in marks:
+        path = OUT / f"{run_id}.json"
+        if not path.exists():
+            raise SystemExit(f"no trial file {path.relative_to(_REPO)}")
+        body = render(json.loads(path.read_text(encoding="utf-8")))
+        doc = re.sub(rf"<!-- statements {run_id} -->.*?<!-- end statements -->",
+                     lambda _: f"<!-- statements {run_id} -->\n\n{body}\n<!-- end statements -->", doc, flags=re.S)
+    DOC.write_text(doc, encoding="utf-8")
+    print(f"wrote the statements of {len(marks)} trials into {DOC.relative_to(_REPO)}")
+
+
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--clusters", type=int, nargs="+", required=True)
-    ap.add_argument("--runs", type=int, required=True)
-    ap.add_argument("--temperatures", type=float, nargs="+", required=True)
+    ap.add_argument("--clusters", type=int, nargs="+")
+    ap.add_argument("--runs", type=int)
+    ap.add_argument("--temperatures", type=float, nargs="+")
     ap.add_argument("--case", help="a stored case (default: the concern map)")
     ap.add_argument("--db", default=str(db.DB_PATH), help="the analysis file (default data/roadless.sqlite)")
+    ap.add_argument("--render-doc", action="store_true",
+                    help="fill the statements of every marked trial into docs/statement-trials.md; no call")
     args = ap.parse_args(argv)
+    if args.render_doc:
+        render_doc()
+        return
+    if not (args.clusters and args.runs and args.temperatures):
+        ap.error("a trial needs --clusters, --runs and --temperatures")
 
     conn = db.connect(args.db)
     case = args.case or concern_map(conn)
@@ -182,6 +237,7 @@ def main(argv: list[str] | None = None) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / f"{run_id}.json"
     path.write_text(json.dumps(record, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    path.with_suffix(".md").write_text(f"# Trial {run_id}\n\n" + render(record), encoding="utf-8")
     for s in summary:
         print(f"  cluster {s['cluster']} {s['method']} t={s['temperature']}:"
               f" {s['distinct_statements']} distinct of {s['runs']}")

@@ -222,4 +222,7 @@ The trial writes one JSON file to `trials/statements/<run_id>.json`. The file ho
 - for each cluster, method and temperature, the number of different statements among
   the runs.
 
-The results of each trial are in `docs/statement-trials.md`.
+Beside the JSON file, `trials/statements/<run_id>.md` gives every statement, cluster by
+cluster. The results of each trial and all its statements are in
+`docs/statement-trials.md`. `--render-doc` writes the statements of each trial into that
+page again from the JSON files.
