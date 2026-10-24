@@ -54,3 +54,9 @@ def test_the_wordings_of_a_cluster_both_ways(casefile):
     with pytest.raises(SystemExit, match="has no cluster 99"):
         statement_trial.cluster_wordings(conn, case, 99)
     conn.close()
+
+
+def test_a_case_named_on_the_command_line(casefile):
+    with pytest.raises(SystemExit, match="no case 'nope'"):
+        statement_trial.main(["--clusters", "1", "--runs", "1", "--temperatures", "0", "--case", "nope",
+                                   "--db", str(casefile)])
