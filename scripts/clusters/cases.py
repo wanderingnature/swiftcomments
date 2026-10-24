@@ -89,11 +89,11 @@ def choose(conn, case_name: str, note: str | None) -> str:
 
 
 def concern_map(conn, case_name: str, note: str | None) -> None:
-    """Record the case as the concern map: step 2 decides between the choices of step 1, so
+    """Record the case as the concern map: stage 5 decides between the choices of stage 4, so
     the case has to be one of them. A new decision replaces the old."""
     chosen = {r[0] for r in conn.execute("SELECT case_name FROM cluster_case_choice")}
     if case_name not in chosen:
-        raise SystemExit(f"{case_name!r} is not a choice of step 1: make choose records one for each model first")
+        raise SystemExit(f"{case_name!r} is not a choice of stage 4: choose a case for each model first (make choose)")
     with conn.transaction():
         conn.execute("INSERT OR REPLACE INTO cluster_concern_map (one, case_name, note, decided_at)"
                      " VALUES (1, ?, ?, ?)",
@@ -419,7 +419,7 @@ def main(argv: list[str] | None = None) -> int:
     ch.add_argument("case")
     ch.add_argument("--note", help="why it was chosen")
     ch.set_defaults(fn=cmd_choose)
-    cm = sub.add_parser("concern-map", help="record one of the two choices as the concern map (step 2)")
+    cm = sub.add_parser("concern-map", help="record one of the two choices as the concern map (stage 5)")
     cm.add_argument("case")
     cm.add_argument("--note", help="why it was decided")
     cm.set_defaults(fn=cmd_concern_map)

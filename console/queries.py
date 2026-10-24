@@ -743,3 +743,8 @@ ORDER BY o.comment_id
 CHOICES = "SELECT model, case_name, note, chosen_at FROM cluster_case_choice ORDER BY model"
 
 CONCERN_MAP = "SELECT case_name, note, decided_at FROM cluster_concern_map"
+
+# The vectors of each model in its most complete view (the primary key's index covers
+# it; no vector is read).
+VECTORS = ("SELECT model, max(n) AS n FROM (SELECT model, instruction, count(*) AS n FROM sentence_embedding"
+           " GROUP BY model, instruction) GROUP BY model ORDER BY model")

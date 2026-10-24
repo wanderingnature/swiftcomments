@@ -1,14 +1,15 @@
-"""The console's Topics page (new): the clustering cases of make clusters, in
-four tabs. Guide shows docs/choosing-a-case.md (why the cases exist, what to
-look for, the glossary). Step 1 shows the cases of one model on a chart; a click
-on a point selects its case, and a button records it as the model's choice.
-Read a case opens one case from its topics to a cluster's sentences. Step 2
-sets two cases side by side, the two choices first.
+"""The console's Topics page (new): the path from the sentences to the concern
+map, in five stages (docs/choosing-a-case.md). The status lines at the top show
+each stage done, next or waiting. Four tabs: Guide (docs/choosing-a-case.md);
+Stage 4, the cases of one model on a chart, a click selecting a case and a
+button recording it as the model's choice; Stage 5, the two choices compared and
+a button for each recording it as the concern map; Read a case, one case from
+its topics to a cluster's sentences and the comments that hold them.
 
 Every figure is read from data/roadless.sqlite through view.query, cached until
 the file changes. Nothing here runs a case: make clusters does. The two writes are
-the choice of step 1 (cluster_case_choice, as make choose) and the decision of
-step 2 (cluster_concern_map, as make concern-map).
+the choice of stage 4 (cluster_case_choice, as make choose) and the concern map of
+stage 5 (cluster_concern_map, as make concern-map).
 """
 import contextlib
 import json
@@ -20,7 +21,7 @@ import pandas as pd
 import streamlit as st
 
 from console import queries as q
-from console.results import CARDS, chart, metrics, not_run, pager, pct, snippet, texts
+from console.results import CARDS, chart, metrics, pager, pct, snippet, texts
 from console.view import file_signature, open_db, query, show, show_text
 from scripts.clusters.embed import VIEWS, unpack
 from shared import case_compare, db
@@ -141,61 +142,96 @@ def terms(cell, n=8):
 
 def page_topics():
     st.header("Topics")
-    st.caption("The substantive sentences, grouped by claim into clusters and by subject into topics."
-               " Start with the Guide tab.")
+    st.caption("Make the concern map in five stages. The lines below show the stages that are done and the stage"
+               " that is next. The Guide tab tells you each step.")
     srun = query(q.SENTENCE_RUN)
-    if srun.empty:
-        not_run("sentences")
-        return
+    vectors = query(q.VECTORS)
     cases = query(q.CASES)
-    if cases.empty:
-        not_run("clusters")
-        return
     cases = cases.assign(description=[describe(c) for _, c in cases.iterrows()],
-                         model_label=lambda d: [model_name(m) for m in d["model"]])
+                         model_label=[model_name(m) for m in cases["model"]])
     choices = query(q.CHOICES)
-    guide, step1, read, step2 = st.tabs(["Guide", "Step 1: The best case of each model", "Read a case",
-                                         "Step 2: Compare the two choices"])
+    current = query(q.CONCERN_MAP)
+    status(srun, vectors, cases, choices, current)
+    if cases.empty:
+        guide, = st.tabs(["Guide"])
+        with guide:
+            st.markdown(GUIDE.read_text(encoding="utf-8"))
+        return
+    guide, stage4, stage5, read = st.tabs(["Guide", "Stage 4: Best case of each model", "Stage 5: Concern map",
+                                           "Read a case"])
     with guide:
         st.markdown(GUIDE.read_text(encoding="utf-8"))
-    with step1:
-        tab_step1(srun.iloc[0], cases, choices)
+    with stage4:
+        tab_stage4(cases, choices)
+    with stage5:
+        tab_stage5(cases, choices, current)
     with read:
         tab_read(cases)
-    with step2:
-        tab_compare(cases, choices)
 
 
-def tab_step1(s, all_cases, choices):
-    metrics([("Gate-open comments", int(s["gate_comments"]), f"Screen classes {s['classes']}."),
-             ("Distinct sentences", int(s["distinct_sentences"]), "The sentences of the gate-open comments."),
-             ("Cases", len(all_cases), "One case is one run of make clusters.")])
-    st.caption("Select a model. Read its cases with the checks of the Guide, and choose its best case. Then do the"
-               " same for the other model.")
+def status(srun, vectors, cases, choices, current):
+    """The five stages, each done, next or waiting, with its figure from the file."""
+    sentences = int(srun.iloc[0]["distinct_sentences"]) if not srun.empty else 0
+    complete = [m for m, n in zip(vectors["model"], vectors["n"]) if sentences and n == sentences]
+    with_cases = sorted(cases["model"].unique()) if not cases.empty else []
+    chosen = set(choices["model"])
+    stages = [
+        ("1. Sentences", not srun.empty,
+         f"{sentences:,} sentences of {int(srun.iloc[0]['gate_comments']):,} gate-open comments."
+         if not srun.empty else "", "make sentences"),
+        ("2. Vectors", len(complete) >= 2,
+         "; ".join(f"{model_name(m)} {n:,} of {sentences:,}" for m, n in zip(vectors["model"], vectors["n"]))
+         or "No vectors.", "make embed VIEW=plain"),
+        ("3. Cases", len(with_cases) >= 2,
+         "; ".join(f"{model_name(m)} {int((cases['model'] == m).sum())} cases" for m in with_cases) or "No cases.",
+         'make case-set MODEL="<model>"'),
+        ("4. Best case of each model", len(with_cases) >= 2 and all(m in chosen for m in with_cases),
+         "; ".join(f"{model_name(m)}: chosen" if m in chosen else f"{model_name(m)}: not chosen"
+                   for m in with_cases), None),
+        ("5. Concern map", not current.empty,
+         f"The {model_name(cases[cases['case_name'] == current.iloc[0]['case_name']].iloc[0]['model'])} choice."
+         if not current.empty and (cases["case_name"] == current.iloc[0]["case_name"]).any() else "Not decided.",
+         None),
+    ]
+    nxt = next((i for i, s in enumerate(stages) if not s[1]), None)
+    with st.container(border=True):
+        for i, (name, done, figure, command) in enumerate(stages):
+            state = "done" if done else ("**next**" if i == nxt else "waiting")
+            st.markdown(f"**{name}**: {state}. {figure}".rstrip())
+            if i == nxt and command:
+                st.code(command, language="bash")
+            elif i == nxt:
+                st.markdown(f"Open the tab **Stage {name.split('.')[0]}** below.")
+
+
+def tab_stage4(all_cases, choices):
+    st.markdown("**What to do here**\n\n"
+                "1. Select a model.\n"
+                "2. Click a point on the chart. The case shows under the chart.\n"
+                "3. Open the tab **Read a case** and do the four checks of the Guide.\n"
+                "4. Click the point of the best case, type a note and click **Choose case N**.\n"
+                "5. Do steps 1 to 4 for the other model.")
     models = sorted(all_cases["model_label"].unique())
     label = st.radio("Model", models, horizontal=True, key="step1_model")
     cases = all_cases[all_cases["model_label"] == label].reset_index(drop=True)
     chosen = {r.model: r for r in choices.itertuples()}
     mine = next((chosen[m] for m in cases["model"].unique() if m in chosen), None)
     number = {n: i + 1 for i, n in enumerate(cases["case_name"])}
-    if mine is not None:
+    if mine is not None and mine.case_name in number:
         st.success(f"The choice for {label} is case {number[mine.case_name]}:"
                    f" {describe(cases[cases['case_name'] == mine.case_name].iloc[0])}"
                    + (f". Note: {mine.note}" if mine.note else ""))
     else:
-        st.info(f"No case is chosen for {label} yet.")
-    if all_cases["model"].nunique() >= 2 and all(m in chosen for m in all_cases["model"].unique()):
-        st.markdown("Each model has a choice. Open the tab **Step 2: Compare the two choices** to decide between"
-                    " them.")
+        mine = None
+        st.info(f"No case is chosen for {label}.")
     picked = st.session_state.get("step1_case")
     if picked not in number:
         picked = mine.case_name if mine is not None else None
 
-    st.subheader("Coverage against clustering")
-    st.caption("Each point is a case, with its number from the table below. The colour is the model and the shape"
-               " is the view. A good case is low and to the right: many sentences in a cluster and few comments"
-               f" not covered. A red ring marks a case whose largest cluster has {CATCH_ALL:,} or more sentences."
-               " A black ring marks the choice. Click a point to select its case.")
+    st.subheader("The cases of this model")
+    st.caption("Each point is a case. The number is the case number in the table. A good case is low and to the"
+               " right. Colour: the model. Shape: the view. Red ring: a cluster of 1,000 or more sentences. Black"
+               " ring: the choice. Click a point to select the case.")
     pts = pd.DataFrame({
         "case_name": cases["case_name"],
         "number": [number[n] for n in cases["case_name"]],
@@ -222,7 +258,8 @@ def tab_step1(s, all_cases, choices):
                         legend=alt.Legend(title="view (shape)")),
         opacity=alt.condition(select, alt.value(0.9), alt.value(0.25)),
         tooltip=tip).add_params(select)
-    numbers = alt.Chart(pts).mark_text(align="left", dx=17, dy=-15, fontSize=12, fontWeight="bold").encode(x=x, y=y, text="number:Q")
+    numbers = alt.Chart(pts).mark_text(align="left", dx=17, dy=-15, fontSize=12, fontWeight="bold").encode(
+        x=x, y=y, text="number:Q")
     big = pts[pts["largest cluster"] >= CATCH_ALL]
     rings = alt.Chart(big).mark_point(shape="circle", size=520, filled=False, color="#d62728",
                                       strokeWidth=2).encode(x=x, y=y, tooltip=tip)
@@ -242,7 +279,8 @@ def tab_step1(s, all_cases, choices):
         st.caption(f"{c['clusters']:,} clusters in {c['topics']:,} topics."
                    f" {pct(c['leaders_clustered'], c['leaders'])} of {c['leaders']:,} sentences are in a cluster."
                    f" {c['comments_unclustered']:,} of {c['gate_comments']:,} gate-open comments are not covered."
-                   f" The largest cluster has {c['largest_cluster']:,} sentences. Read it in the Read a case tab.")
+                   f" The largest cluster has {c['largest_cluster']:,} sentences. The tab Read a case shows this"
+                   " case.")
         if mine is not None and mine.case_name == picked:
             st.success(f"This case is the choice for {label}.")
         else:
@@ -251,8 +289,8 @@ def tab_step1(s, all_cases, choices):
                 record_choice(picked, note.strip() or None)
                 st.rerun()
 
-    st.caption("One row for each case of this model, newest last. A lower \"comments not covered\" is better. A"
-               " very large \"largest cluster\" can be a catch-all cluster. The Guide tab explains each column.")
+    st.caption("The cases of this model, oldest first. \"Comments not covered\": gate-open comments with no"
+               " substantive sentence in a cluster.")
     show(pd.DataFrame({
         "case": [number[n] for n in cases["case_name"]],
         "chosen": ["yes" if mine is not None and n == mine.case_name else "" for n in cases["case_name"]],
@@ -265,11 +303,9 @@ def tab_step1(s, all_cases, choices):
         "largest cluster": cases["largest_cluster"],
     }))
 
-    st.subheader("How stable the cases of this model are")
-    st.caption("The adjusted Rand index of each pair of this model's cases, on the sentences both cluster. Dark"
-               " cells are cases that find the same groups. A case that agrees with its neighbours is stable: a"
-               " small change of setting does not change its clusters much.")
-    if st.toggle("Compare every pair of this model's cases", key="agreement_on"):
+    if st.toggle("Show how alike the cases of this model are", key="agreement_on"):
+        st.caption("Each cell is the adjusted Rand index of two cases. Dark: the two cases make the same clusters."
+                   " Light: they make different clusters.")
         names = list(cases["case_name"])
         tag = {n: f"{number[n]}. {short(c)}" for n, (_, c) in zip(names, cases.iterrows())}
         m = pd.DataFrame(agreement_matrix(tuple(names), file_signature()), columns=["a", "b", "ARI"])
@@ -283,8 +319,9 @@ def tab_step1(s, all_cases, choices):
             color=alt.Color("ARI:Q", scale=alt.Scale(domain=[0, 1], scheme="greens"), title="adjusted Rand"),
             tooltip=["first:N", "second:N", alt.Tooltip("ARI:Q", format=".3f")]).properties(height=alt.Step(22)))
 
-    with st.expander("Every value of every case of this model"):
+    with st.expander("All the values of the cases of this model"):
         show(cases.drop(columns=["description", "model_label"]))
+    st.markdown("**Next:** when each model has a choice, open the tab **Stage 5: Concern map**.")
 
 
 def _selected():
@@ -301,23 +338,22 @@ def record_choice(case_name, note):
         case_runs.choose(conn, case_name, note)
 
 
-def pick_case(cases, key, label="Case", index=None):
-    """A case picked by its description; returns its row."""
-    opts = list(range(len(cases)))
-    i = st.selectbox(label, opts, index=len(opts) - 1 if index is None else index,
-                     format_func=lambda j: cases.iloc[j]["description"], key=key)
-    return cases.iloc[i]
-
-
 def tab_read(cases):
-    c = pick_case(cases, "read_case")
+    names = list(cases["case_name"])
+    selected = st.session_state.get("step1_case")
+    if selected in names and st.session_state.get("read_follows") != selected:
+        st.session_state["read_case"] = names.index(selected)
+        st.session_state["read_follows"] = selected
+    i = st.selectbox("Case", range(len(cases)), index=len(cases) - 1,
+                     format_func=lambda j: cases.iloc[j]["description"], key="read_case")
+    c = cases.iloc[i]
     name = c["case_name"]
     st.caption(f"{c['clusters']:,} clusters in {c['topics']:,} topics. {pct(c['leaders_clustered'], c['leaders'])}"
                f" of {c['leaders']:,} sentences are in a cluster. {c['comments_unclustered']:,} of"
-               f" {c['gate_comments']:,} gate-open comments have no sentence in a cluster.")
+               f" {c['gate_comments']:,} gate-open comments are not covered.")
     topics = query(q.CASE_TOPICS, (name,))
     if topics.empty:
-        st.caption("This case found no cluster.")
+        st.caption("This case has no cluster.")
         return
     every = query("SELECT cluster, topic, leaders, law, evid, gap, alt, terms FROM cluster_case_cluster"
                   " WHERE case_name = ?", (name,))
@@ -325,8 +361,8 @@ def tab_read(cases):
     left, right = st.columns(2)
     with left:
         st.markdown("**The topics, by gate kind**")
-        st.caption("Each bar is a topic. The colours show how its claims are argued: by law, evidence, a missing"
-                   " analysis or an alternative. A mix is normal: one claim is often argued in more than one way.")
+        st.caption("One bar for each topic. The colours show how its sentences argue: by law, evidence, a missing"
+                   " analysis or an alternative.")
         chart(alt.Chart(every).mark_bar().encode(
             x=alt.X("sum(leaders):Q", title="sentences"),
             y=alt.Y("topic:O", title="topic", sort="ascending"),
@@ -335,7 +371,7 @@ def tab_read(cases):
               .properties(height=alt.Step(18)))
     with right:
         st.markdown("**The cluster sizes**")
-        st.caption("Most clusters should be small. A bar far to the right is a catch-all cluster.")
+        st.caption("The number of clusters of each size. A bar far to the right is a catch-all cluster.")
         chart(alt.Chart(every).mark_bar(color="#0072B2").encode(
             x=alt.X("leaders:Q", bin=alt.Bin(maxbins=40), title="sentences in the cluster"),
             y=alt.Y("count():Q", title="clusters"),
@@ -343,7 +379,7 @@ def tab_read(cases):
         gaps = pd.DataFrame(json.loads(c["eigengaps"]), columns=["topics", "gap"])
         if not gaps.empty:
             st.markdown("**The topic cut**")
-            st.caption("The gap at each number of topics. The cut is at the tallest bar unless K is set.")
+            st.caption("The score for each number of topics. The orange bar is the number that the case uses.")
             gaps["cut"] = gaps["topics"] == int(c["topics"])
             chart(alt.Chart(gaps).mark_bar().encode(
                 x=alt.X("topics:O", title="number of topics"), y=alt.Y("gap:Q", title="eigengap"),
@@ -351,11 +387,11 @@ def tab_read(cases):
                 tooltip=["topics:O", alt.Tooltip("gap:Q", format=".4f")]).properties(height=180))
 
     st.subheader("The map of the clusters")
-    st.caption("Each point is a cluster, placed by its centre. Clusters near each other say similar things. The"
-               " colour is the topic, the size is the number of sentences. Points of one colour should lie together.")
+    st.caption("One point for each cluster. Clusters near each other say similar things. Colour: the topic. Size:"
+               " the number of sentences.")
     cmap = cluster_map(name, c["model"], c["view"], file_signature())
     if cmap.empty:
-        st.caption("Too few clusters to place.")
+        st.caption("The case has fewer than three clusters.")
     else:
         chart(alt.Chart(cmap).mark_circle(opacity=0.75).encode(
             x=alt.X("x:Q", title=None, axis=None), y=alt.Y("y:Q", title=None, axis=None),
@@ -365,8 +401,7 @@ def tab_read(cases):
             tooltip=["cluster:Q", "topic:N", "sentences:Q", "terms:N"]).properties(height=460))
 
     st.subheader("Topics")
-    st.caption("Open a topic to see its clusters. Each cluster shows its most central sentence in full. Select"
-               " the cluster under \"Open a cluster\" to read all its sentences and comments.")
+    st.caption("Open a topic to see its clusters. Each cluster shows its most typical sentence.")
     for r in topics.itertuples():
         with st.expander(f"Topic {r.topic}: {terms(r.terms, 5) or '(no term)'} ·"
                          f" {r.clusters} clusters · {r.occurrences:,} sentences"):
@@ -388,43 +423,103 @@ def tab_read(cases):
     cluster = int(all_clusters.iloc[k]["cluster"])
     leader_rows(name, cluster, f"The sentences of cluster {cluster}", "read_cluster_page")
     comments = query(q.CLUSTER_COMMENTS, (name, cluster))
-    with st.expander(f"The {len(comments):,} comments that hold these sentences"):
-        st.caption("Copy an id into the Comment page to read the comment.")
+    with st.expander(f"The ids of the {len(comments):,} comments that hold these sentences"):
+        st.caption("Paste an id into the Comment page to read the comment with its readings.")
         st.text(", ".join(comments["comment_id"]))
     with st.expander("Sentences in no cluster"):
-        st.caption("If many of these repeat one claim, the case missed that claim.")
+        st.caption("The sentences that the case left out. If many of them make one claim, the case missed that"
+                   " claim.")
         leader_rows(name, 0, "Sentences in no cluster, most frequent first", "read_noise_page")
 
 
-def tab_compare(cases, choices):
-    st.markdown("**What to do in this step**")
-    st.markdown("1. Read the three figures and the two charts below. They show how far the two choices agree.\n"
-                "2. Read the table. The clusters that break the most are at the top.\n"
-                "3. Open those clusters in the **Read a case** tab, in both cases.\n"
-                "4. Decide which case groups the sentences by claim better.\n"
-                "5. Under **The decision** at the bottom of this tab, type a note and click the button of that"
-                " case.")
-    compare_two(cases, choices)
-    decision(cases, choices)
-
-
-def decision(cases, choices):
-    """Step 2's result: one of the two choices recorded as the concern map."""
-    st.subheader("The decision")
+def tab_stage5(cases, choices, current):
     names = list(cases["case_name"])
-    current = query(q.CONCERN_MAP)
-    decided = current.iloc[0]["case_name"] if not current.empty else None
-    if decided in names:
-        r = current.iloc[0]
-        st.success(f"The concern map is the {model_label_of(cases, decided)} case:"
-                   f" {cases[cases['case_name'] == decided].iloc[0]['description']}"
-                   + (f". Note: {r['note']}" if r["note"] else ""))
-    else:
-        st.info("No case is the concern map yet.")
     picked = [r for r in choices.itertuples() if r.case_name in names]
     if len(picked) < 2:
-        st.caption("The decision needs a choice for each model. Choose them in step 1.")
+        st.info("Stage 4 is not done. Choose a case for each model in the tab Stage 4 first.")
         return
+    st.markdown("**What to do here**\n\n"
+                "1. Read the three numbers.\n"
+                "2. Read the table. The second choice splits the clusters at the top most.\n"
+                "3. Open two or three of these clusters in the tab **Read a case**, in both choices.\n"
+                "4. Decide which choice keeps one claim in each cluster.\n"
+                "5. Type a note and click **Use this case as the concern map** under that choice.")
+    first = cases[cases["case_name"] == picked[0].case_name].iloc[0]
+    second = cases[cases["case_name"] == picked[1].case_name].iloc[0]
+    st.markdown(f"**First choice**: {first['description']}  \n**Second choice**: {second['description']}")
+    with open_db() as conn:
+        a = case_compare.labels(conn, first["case_name"])
+        b = case_compare.labels(conn, second["case_name"])
+        names_of = {n: {c: terms(t, 4) for c, t in conn.execute(
+            "SELECT cluster, terms FROM cluster_case_cluster WHERE case_name = ?", (n,))}
+            for n in (first["case_name"], second["case_name"])}
+    m = case_compare.compare(a, b)
+    metrics([("Clustered by both", m["clustered_both"],
+              f"The first choice clusters {m['clustered_first']:,} sentences, the second {m['clustered_second']:,}."),
+             ("Adjusted Rand", m["ari"] if m["ari"] is not None else "-",
+              "How alike the two choices cluster the same sentences. 1: the same clusters. Near 0: different"
+              " clusters."),
+             ("Clusters kept together", f"{m['clusters_80']} of {len(m['crossing'])}",
+              "Clusters of the first choice with 80% or more of their sentences in one cluster of the second.")])
+    crossing = pd.DataFrame(m["crossing"])
+    if not crossing.empty:
+        left, right = st.columns(2)
+        with left:
+            st.markdown("**How much of each cluster stays together**")
+            st.caption("The clusters of the first choice, by the part of their sentences in one cluster of the"
+                       " second choice. Bars right of the line: the cluster stays together.")
+            dist = pd.DataFrame({"share": crossing["share"] * 100})
+            chart(alt.layer(
+                alt.Chart(dist).mark_bar(color="#0072B2").encode(
+                    x=alt.X("share:Q", bin=alt.Bin(step=5), title="part in one cluster of the second choice (%)"),
+                    y=alt.Y("count():Q", title="clusters of the first choice")),
+                alt.Chart(pd.DataFrame({"x": [80]})).mark_rule(color="#D55E00", strokeDash=[4, 3]).encode(x="x:Q"))
+                  .properties(height=260))
+        with right:
+            st.markdown("**Where the 20 largest clusters go**")
+            st.caption("Rows: the 20 largest clusters of the first choice. Columns: the clusters of the second"
+                       " choice. One dark cell in a row: the cluster stays together.")
+            top = list(crossing.sort_values("sentences", ascending=False)["cluster"][:20])
+            cells = {}
+            for k, ca in a.items():
+                if ca in top and b.get(k, 0) > 0:
+                    cells[(ca, b[k])] = cells.get((ca, b[k]), 0) + 1
+            size = dict(zip(crossing["cluster"], crossing["sentences"]))
+            heat = pd.DataFrame([(f"{ca}", f"{cb}", n / size[ca]) for (ca, cb), n in cells.items()],
+                                columns=["first", "second", "share"])
+            if not heat.empty:
+                heat = heat[heat["share"] >= 0.05]
+                chart(alt.Chart(heat).mark_rect().encode(
+                    x=alt.X("second:N", title="cluster of the second choice", sort=None),
+                    y=alt.Y("first:N", title="cluster of the first choice", sort=[str(t) for t in top]),
+                    color=alt.Color("share:Q", scale=alt.Scale(domain=[0, 1], scheme="greens"), title="part"),
+                    tooltip=["first:N", "second:N", alt.Tooltip("share:Q", format=".0%")])
+                      .properties(height=alt.Step(16)))
+        st.caption("Each row is a cluster of the first choice. \"Part\": the part of its sentences in one cluster"
+                   " of the second choice. The clusters that the second choice splits most are at the top.")
+        show(pd.DataFrame({
+            "cluster": crossing["cluster"],
+            "terms": crossing["cluster"].map(names_of[first["case_name"]]),
+            "sentences": crossing["sentences"],
+            "goes mostly to": crossing["best_second"],
+            "part": [f"{s:.0%}" for s in crossing["share"]],
+            "its terms": crossing["best_second"].map(names_of[second["case_name"]]),
+            "in no cluster there": crossing["noise_in_second"],
+        }).iloc[crossing["share"].argsort(kind="stable")])
+    decision(cases, picked, current)
+
+
+def decision(cases, picked, current):
+    """Stage 5's result: one of the two choices recorded as the concern map."""
+    st.subheader("The decision")
+    decided = current.iloc[0]["case_name"] if not current.empty else None
+    if decided in set(cases["case_name"]):
+        r = current.iloc[0]
+        c = cases[cases["case_name"] == decided].iloc[0]
+        st.success(f"The concern map is the {model_name(c['model'])} choice: {c['description']}"
+                   + (f". Note: {r['note']}" if r["note"] else ""))
+    else:
+        st.info("No case is the concern map.")
     note = st.text_input("Note: why this case", key="step2_note")
     for col, r in zip(st.columns(len(picked)), picked):
         c = cases[cases["case_name"] == r.case_name].iloc[0]
@@ -435,16 +530,11 @@ def decision(cases, choices):
                        f" {c['gate_comments']:,} gate-open comments are not covered.")
             if r.case_name == decided:
                 st.markdown("This case is the concern map.")
-            elif st.button(f"Use the {model_name(r.model)} case as the concern map", key=f"step2_use_{r.model}"):
+            elif st.button("Use this case as the concern map", key=f"step2_use_{r.model}"):
                 record_concern_map(r.case_name, note.strip() or None)
                 st.rerun()
-    st.caption("The concern map is the clustering that the next step reads: step 15 writes one concern statement"
-               " for each cluster. Step 15 is not built yet. In a terminal, make concern-map CASE=<case name>"
-               " records the same decision.")
-
-
-def model_label_of(cases, case_name):
-    return cases[cases["case_name"] == case_name].iloc[0]["model_label"]
+    st.markdown("**Next:** the next step of the method writes one concern statement for each cluster of the"
+                " concern map. That step is not built yet.")
 
 
 def record_concern_map(case_name, note):
@@ -452,87 +542,6 @@ def record_concern_map(case_name, note):
     from scripts.clusters import cases as case_runs
     with contextlib.closing(db.connect(db.DB_PATH)) as conn:
         case_runs.concern_map(conn, case_name, note)
-
-
-def compare_two(cases, choices):
-    if len(cases) < 2:
-        st.caption("Run a second case to compare two cases.")
-        return
-    names = list(cases["case_name"])
-    picked = [r.case_name for r in choices.itertuples() if r.case_name in names]
-    if len(picked) >= 2:
-        st.caption("The two cases below are the choices of step 1, one for each model. Compare them and decide"
-                   " which model groups the sentences by claim better. You can select other cases.")
-        i, j = names.index(picked[0]), names.index(picked[1])
-    else:
-        st.warning("Step 1 has not chosen a case for each model yet. Select two cases here, or choose a case for"
-                   " each model in step 1.")
-        i, j = 0, len(names) - 1
-    first = pick_case(cases, "compare_first", "First case", index=i)
-    second = pick_case(cases, "compare_second", "Second case", index=j)
-    if first["case_name"] == second["case_name"]:
-        st.caption("Select two different cases.")
-        return
-    with open_db() as conn:
-        m = case_compare.compare(case_compare.labels(conn, first["case_name"]),
-                                 case_compare.labels(conn, second["case_name"]))
-        names = {n: {c: terms(t, 4) for c, t in conn.execute(
-            "SELECT cluster, terms FROM cluster_case_cluster WHERE case_name = ?", (n,))}
-            for n in (first["case_name"], second["case_name"])}
-    metrics([("Clustered by both", m["clustered_both"],
-              f"First case {m['clustered_first']:,}, second case {m['clustered_second']:,}."),
-             ("Adjusted Rand", m["ari"] if m["ari"] is not None else "-",
-              "How alike the two cases cluster the same sentences. 1: the same clusters. Near 0: different clusters."),
-             ("Clusters kept together", f"{m['clusters_80']} of {len(m['crossing'])}",
-              "Clusters of the first case with 80% or more of their sentences in one cluster of the second.")])
-    crossing = pd.DataFrame(m["crossing"])
-    if crossing.empty:
-        return
-    left, right = st.columns(2)
-    with left:
-        st.markdown("**How the clusters of the first case hold together**")
-        st.caption("Each bar counts the clusters of the first case by the share that stays in one cluster of the"
-                   " second. Bars to the right of the line stay together.")
-        dist = pd.DataFrame({"share": crossing["share"] * 100})
-        chart(alt.layer(
-            alt.Chart(dist).mark_bar(color="#0072B2").encode(
-                x=alt.X("share:Q", bin=alt.Bin(step=5), title="share in one cluster of the second case (%)"),
-                y=alt.Y("count():Q", title="clusters of the first case")),
-            alt.Chart(pd.DataFrame({"x": [80]})).mark_rule(color="#D55E00", strokeDash=[4, 3]).encode(x="x:Q"))
-              .properties(height=260))
-    with right:
-        st.markdown("**Where the largest clusters go**")
-        st.caption("The 20 largest clusters of the first case, and the clusters of the second case that hold their"
-                   " sentences. One dark cell in a row is a cluster that stays together.")
-        with open_db() as conn:
-            a = case_compare.labels(conn, first["case_name"])
-            b = case_compare.labels(conn, second["case_name"])
-        top = list(crossing.sort_values("sentences", ascending=False)["cluster"][:20])
-        cells = {}
-        for k, ca in a.items():
-            if ca in top and b.get(k, 0) > 0:
-                cells[(ca, b[k])] = cells.get((ca, b[k]), 0) + 1
-        size = dict(zip(crossing["cluster"], crossing["sentences"]))
-        heat = pd.DataFrame([(f"{ca}", f"{cb}", n / size[ca]) for (ca, cb), n in cells.items()],
-                            columns=["first", "second", "share"])
-        if not heat.empty:
-            heat = heat[heat["share"] >= 0.05]
-            chart(alt.Chart(heat).mark_rect().encode(
-                x=alt.X("second:N", title="cluster of the second case", sort=None),
-                y=alt.Y("first:N", title="cluster of the first case", sort=[str(t) for t in top]),
-                color=alt.Color("share:Q", scale=alt.Scale(domain=[0, 1], scheme="greens"), title="share"),
-                tooltip=["first:N", "second:N", alt.Tooltip("share:Q", format=".0%")]).properties(height=alt.Step(16)))
-    st.caption("Each row is a cluster of the first case. \"Share\" is the part of its sentences in one cluster of"
-               " the second case. The clusters that break the most are at the top.")
-    show(pd.DataFrame({
-        "cluster": crossing["cluster"],
-        "terms": crossing["cluster"].map(names[first["case_name"]]),
-        "sentences": crossing["sentences"],
-        "goes mostly to": crossing["best_second"],
-        "share": [f"{s:.0%}" for s in crossing["share"]],
-        "its terms": crossing["best_second"].map(names[second["case_name"]]),
-        "in no cluster there": crossing["noise_in_second"],
-    }).iloc[crossing["share"].argsort(kind="stable")])
 
 
 def leader_rows(name, cluster, title, key):

@@ -203,7 +203,7 @@ def test_choose_a_case_for_each_model(casefile, capsys):
     with pytest.raises(SystemExit, match="no case 'nope'"):
         cases.main(["choose", "nope"])
     # step 2: the concern map is one of the choices, and a new decision replaces the old
-    with pytest.raises(SystemExit, match="is not a choice of step 1"):
+    with pytest.raises(SystemExit, match="is not a choice of stage 4"):
         cases.main(["concern-map", first])
     assert cases.main(["concern-map", bge]) == 0
     assert cases.main(["concern-map", again, "--note", "groups by claim"]) == 0
