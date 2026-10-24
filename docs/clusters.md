@@ -195,7 +195,8 @@ wordings (`collapse`) are in `scripts/clusters/statement_trial.py`. The model ge
 wordings, one on each line, and writes the concern in one or two sentences.
 
 The clusters are the concern map's. `CASE=` names another stored case, for example the
-choice of the other embedding model.
+choice of the other embedding model. With no `CLUSTERS=`, the trial runs every cluster
+of the case.
 
 The trial builds the wordings of each cluster in two ways:
 
@@ -211,6 +212,7 @@ writes nothing to the analysis file.
 ```
 make statement-trial CLUSTERS="207 104 52 1" RUNS=3 TEMPERATURES="0 0.7" SERVER=LOCAL
 make statement-trial CASE=<case> CLUSTERS="187 94 47 1" RUNS=3 TEMPERATURES="0 0.7" SERVER=LOCAL
+make statement-trial RUNS=1 TEMPERATURES=0 SERVER=LOCAL          # every cluster of the concern map
 ```
 
 The trial writes one JSON file to `trials/statements/<run_id>.json`. The file holds:

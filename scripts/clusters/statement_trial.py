@@ -180,6 +180,7 @@ def render_doc() -> None:
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--clusters", type=int, nargs="+")
+    ap.add_argument("--all", action="store_true", help="every cluster of the case, in place of --clusters")
     ap.add_argument("--runs", type=int)
     ap.add_argument("--temperatures", type=float, nargs="+")
     ap.add_argument("--case", help="a stored case (default: the concern map)")
@@ -190,20 +191,22 @@ def main(argv: list[str] | None = None) -> None:
     if args.render_doc:
         render_doc()
         return
-    if not (args.clusters and args.runs and args.temperatures):
-        ap.error("a trial needs --clusters, --runs and --temperatures")
+    if not ((args.clusters or args.all) and args.runs and args.temperatures) or (args.clusters and args.all):
+        ap.error("a trial needs --clusters or --all, --runs and --temperatures")
 
     conn = db.connect(args.db)
     case = args.case or concern_map(conn)
     if conn.execute("SELECT 1 FROM cluster_case WHERE case_name = ?", (case,)).fetchone() is None:
         raise SystemExit(f"no case {case!r}: make cases lists them")
-    clusters = [cluster_wordings(conn, case, c) for c in args.clusters]
+    asked = args.clusters or [r[0] for r in conn.execute(
+        "SELECT cluster FROM cluster_case_cluster WHERE case_name = ? ORDER BY cluster", (case,))]
+    clusters = [cluster_wordings(conn, case, c) for c in asked]
     conn.close()
 
     client = ChatClient()
     head, dirty = code_version()
     run_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    print(f"trial {run_id}: case {case}; clusters {args.clusters}; {args.runs} runs at temperatures"
+    print(f"trial {run_id}: case {case}; {len(asked)} clusters; {args.runs} runs at temperatures"
           f" {args.temperatures}; {client.model} at {client.base_url}", flush=True)
     calls = []
     for c in clusters:
@@ -231,7 +234,7 @@ def main(argv: list[str] | None = None) -> None:
                                 "runs": len(got), "distinct_statements": len(set(got))})
     record = {"run_id": run_id, "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
               "code_version": head, "code_dirty": dirty, "model": client.model, "base_url": client.base_url,
-              "case": case, "clusters_asked": args.clusters, "runs": args.runs, "temperatures": args.temperatures,
+              "case": case, "clusters_asked": asked, "runs": args.runs, "temperatures": args.temperatures,
               "system_prompt": STATEMENT_SYS, "schema": STMT_SCHEMA, "duplicate_cosine": DUPLICATE_COSINE,
               "clusters": clusters, "calls": calls, "summary": summary}
     OUT.mkdir(parents=True, exist_ok=True)
