@@ -720,7 +720,7 @@ WHERE m.case_name = ? AND m.cluster = ?
 
 CLUSTER_SENTENCE_COUNT = "SELECT count(DISTINCT m.leader_key) AS n " + _LEADER_ROWS
 
-CLUSTER_SENTENCES = ("SELECT DISTINCT s.text, v.variants, v.occurrences, v.comments " + _LEADER_ROWS
+CLUSTER_SENTENCES = ("SELECT DISTINCT m.leader_key, s.text, v.variants, v.occurrences, v.comments " + _LEADER_ROWS
                      + " ORDER BY v.occurrences DESC, s.text LIMIT ? OFFSET ?")
 
 CLUSTER_COMMENTS = """
@@ -729,6 +729,14 @@ FROM cluster_case_member m
 JOIN cluster_case_leader l ON l.case_name = m.case_name AND l.leader_key = m.leader_key
 JOIN gate_sentence_occurrence o ON o.text_key = l.text_key
 WHERE m.case_name = ? AND m.cluster = ?
+ORDER BY o.comment_id
+"""
+
+# The comments that hold one leader's sentence or a near-copy joined to it.
+LEADER_COMMENTS = """
+SELECT DISTINCT o.comment_id
+FROM cluster_case_leader l JOIN gate_sentence_occurrence o ON o.text_key = l.text_key
+WHERE l.case_name = ? AND l.leader_key = ?
 ORDER BY o.comment_id
 """
 

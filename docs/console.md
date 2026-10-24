@@ -84,9 +84,10 @@ steps: the best case of each model, then the two choices compared.
   choice.
 - **Read a case** opens one case. Charts show the topics by gate kind, the cluster sizes,
   the eigengap at each number of topics, and a map of the clusters by topic. Each topic
-  opens to its clusters, with one example sentence for each cluster. Then you can open a
-  cluster to read all its sentences and the comments that hold them, and read the
-  sentences in no cluster.
+  opens to its clusters, each with its most central sentence in full. Then you can open a
+  cluster. Each of its sentences is a card with the full text. A switch on the card lists
+  the comments that hold the sentence, and each comment opens to its full text. The
+  sentences in no cluster show in the same way.
 - **Step 2: Compare the two choices** opens on the two chosen cases. It shows the
   sentences that both cluster, the adjusted Rand index and the clusters kept together.
   Two charts show how the clusters of the first case hold together, and where its 20
