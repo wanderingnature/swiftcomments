@@ -1,156 +1,182 @@
-# Choosing a clustering case
+# Topics: from the sentences to the concern map
 
-This guide explains the clustering cases on the console's Topics page. It tells you why
-the cases exist, what to look for, and how to compare two cases. The glossary at the end
-defines each term.
+This guide tells you how to make the concern map. The concern map is one clustering of
+the substantive sentences. In a good concern map, each cluster is one claim that
+commenters make.
 
-## Why we cluster
+The work has five stages. Do them in order. The status lines at the top of the Topics
+page show the stages that are done and the stage that is next.
 
-Thousands of comments make the same claim in different words. The agency answers each
-claim once, not each comment. Clustering puts sentences that make the same claim into
-one group. A reader can then see each claim once, with every wording and every comment
-that makes it.
+| Stage | You do | Where | Result |
+|---|---|---|---|
+| 1. Sentences | Run `make sentences`. | terminal | The substantive sentences. |
+| 2. Vectors | Run `make embed VIEW=plain` for each model. | terminal | One vector for each sentence and model. |
+| 3. Cases | Run `make case-set MODEL=<model>` for each model. | terminal | Nine clustering cases for each model. |
+| 4. Best case of each model | Read the cases of one model and choose the best case. Do it again for the other model. | console | One choice for each model. |
+| 5. Concern map | Compare the two choices and decide on one. | console | The concern map. |
 
-The clustering reads only substantive sentences. These are sentences from comments that
-the gate opened. No language model reads the comments in this step. The grouping comes
-from sentence vectors and from density.
+The next step of the method writes one concern statement for each cluster of the concern
+map. That step is not built yet.
 
-## Why we run cases
+## Stage 1: Sentences
 
-The clustering has settings: the sentences, the model, the instruction, the reduction
-and the HDBSCAN values. Each setting changes the clusters. There is no correct value
-that we can know before we look. Each run with one set of settings is a case. The
-console keeps every case, so you can compare the results and choose one.
+1. Run `make sentences`.
 
-A run costs no money and takes less than three minutes. If you have a question about a
-setting, run a new case to answer it.
+The step splits each gate-open comment into sentences. It keeps one row for each
+different sentence.
 
-## What a good case looks like
+## Stage 2: Vectors
 
-Use these five checks in step 1. The first two are the most important.
+1. In `.env`, set `EMBED_BASE_URL`, `EMBED_API_KEY` and `EMBED_MODEL` for the first model.
+2. Run `make embed VIEW=plain LIMIT=200`.
+3. Read the output. It shows the vectors written and the time.
+4. Run `make embed VIEW=plain`.
+5. Do steps 1 to 4 again for the second model.
 
-| Check | What to look for | Where to look | Good sign | Bad sign |
-|---|---|---|---|---|
-| 1. One claim per cluster | The sentences of a cluster make the same claim. | Read a case: open a cluster and read its sentences. | You can state the claim in one sentence. | The sentences make two or more different claims. |
-| 2. Coverage | Few gate-open comments have no substantive sentence in a cluster. | Step 1: "Comments not covered", and the chart "Coverage against clustering". | A low number. | Many substantive comments are not in any cluster. |
-| 3. No catch-all cluster | No cluster collects unrelated sentences. | Step 1: "Largest cluster". Read a case: the chart "The cluster sizes". | The largest cluster is a few hundred sentences of one claim. | One cluster has thousands of sentences on many subjects. |
-| 4. Topics are subjects | Each topic is one subject that you can name. | Read a case: the topic terms, "The map of the clusters" and "The topic cut". | The terms name one subject, for example roads and wildfire. | The terms are general words, for example "rule" or "forest". |
-| 5. Clusters stay together | The same groups appear with a nearby setting. | Step 1: "How stable the cases of this model are". | Dark cells between the case and the cases with nearby settings. | Light cells: a small change of setting changes the clusters. |
+The step sends each sentence to the model and keeps the vector that the model returns.
+Sentences with the same meaning get similar vectors.
 
-A case can pass check 2 and fail check 1. For example, many noise passes put every
-sentence into a cluster, but some clusters then collect unrelated sentences. Do not
-choose a case on coverage alone.
+## Stage 3: Cases
 
-**The gate kinds are not a check.** The gate kind of a sentence tells how the sentence
-argues: by law (LAW), by evidence (EVID), by a missing analysis (GAP) or by an
-alternative (ALT). It does not tell what the claim is. Different claims can argue the
-same way: claims about wildfire, sediment and habitat can each cite a law. One claim can
-argue in more than one way: the maintenance backlog appears as evidence and as a missing
-analysis. A cluster of one kind can therefore hold several claims, and a cluster of mixed
-kinds can hold one claim. Use the kinds to see how a claim is argued. Use check 1 to see
-if a cluster is one claim.
+A case is one clustering with one set of settings. You cannot know the best settings
+before you see the result. Thus you run a set of cases and compare them.
 
-## How to choose: two steps
+1. Run `make case-set MODEL=<model>` for the first model.
+2. Run `make case-set MODEL=<model>` for the second model.
 
-Choose in two steps. First find the best case of each model. Then compare the two
-choices. The settings that suit one model can fail the other, so judge each model at its
-own best settings.
+`MODEL` is the model name that `make embed` wrote, for example
+`text-embedding-qwen3-embedding-8b@f16`. `make cases` lists the cases. One case takes
+from 4 seconds to 3 minutes.
 
-### Step 1: the best case of each model
+The case set has nine cases. Each case changes one setting of the base case:
 
-1. Open the tab **Step 1: The best case of each model**.
-2. Select a model.
-3. Read the chart "Coverage against clustering". Note the cases that are low and to the
-   right, and the cases with a red ring.
-4. Open each promising case in the **Read a case** tab.
-5. Apply checks 1 to 4 to each case. Check 1 is the most important.
-6. Turn on "Compare every pair of this model's cases" (check 5). Prefer a case that
-   agrees with its neighbours: a small change of setting does not change its clusters
-   much.
-7. Click the point of the best case on the chart. "The selected case" shows its values.
-8. Type a note that tells why you chose the case.
-9. Click "Choose case N". A black ring marks the choice on the chart.
-10. Do steps 2 to 9 again for the other model.
+| Case | Setting changed | What it tests |
+|---|---|---|
+| Base | none: gate-opening sentences, UMAP, HDBSCAN 10/10 eom | the starting point |
+| Opening and hits | `SENTENCES=opening+hits` | also the sentences that hold a whole-comment hit |
+| All sentences | `SENTENCES=all` | every sentence of the gate-open comments |
+| By gate kind | `STRUCTURE=by-kind` | one clustering for each gate kind |
+| Noise passes | `PASSES=3` | three more clusterings of the sentences in no cluster |
+| 21 topics | `K=21` | a fixed number of topics |
+| 23 topics | `K=23` | a fixed number of topics |
+| PCA | `REDUCTION=pca50 MCS=20 MS=10` | the settings of the first eis-analysis run |
+| Small clusters | `MCS=5 MS=1` | smaller clusters |
 
-A new choice for a model replaces the old choice. The note stays with the choice. In a
-terminal, `make choose CASE=<case name> NOTE="..."` records the same choice.
+Qwen also accepts an instruction. To test it, run `make embed VIEW=comment`, then
+`make case-set MODEL=<model> VIEW=comment`. To test another setting, run `make clusters`
+with that setting. `docs/clusters.md` lists the settings.
 
-### Step 2: compare the two choices
+## Stage 4: Best case of each model
 
-1. Open the tab **Step 2: Compare the two choices**. It opens on the two choices of
-   step 1.
-2. Read the three figures at the top.
-3. Read the chart "How the clusters of the first case hold together".
-4. Read the chart "Where the largest clusters go".
-5. Read the table. The clusters that break the most are at the top.
-6. Open the clusters at the top in the **Read a case** tab, in both cases.
-7. Decide which case groups those sentences by claim better.
-8. Go to **The decision** at the bottom of the tab.
-9. Type a note that tells why you decided for the case.
-10. Click the button of that case. The case becomes the concern map.
+Open the console. Go to Topics, then the tab **Stage 4: Best case of each model**.
 
-The concern map is the clustering that step 15 reads. Step 15 writes one concern
-statement for each cluster. Step 15 is not built yet. A new decision replaces the old
-decision. In a terminal, `make concern-map CASE=<case name> NOTE="..."` records the same
-decision. The case must be one of the two choices of step 1.
+1. Select a model.
+2. Read the chart. Each point is a case.
+3. Find the cases low and to the right. These cases put many sentences in clusters and
+   leave few comments out.
+4. Click a point. The case shows under the chart.
+5. Open the tab **Read a case**. It shows the case that you clicked.
+6. Do the four checks below.
+7. Do steps 4 to 6 for the other good cases.
+8. Go back to the tab of stage 4. Click the point of the best case.
+9. Type a note that tells why the case is best.
+10. Click **Choose case N**. A black ring marks the choice on the chart.
+11. Do steps 1 to 10 for the other model.
 
-The figures:
+A new choice for a model replaces the old choice.
 
-- **Clustered by both** is the number of sentences that both cases put in a cluster.
-  The other figures count these sentences only.
-- **Adjusted Rand** tells how alike the two cases cluster these sentences. 1 means the
-  same clusters. Near 0 means different clusters. From 0.6 to 0.7, the large clusters
-  are the same and their edges differ.
-- **Clusters kept together** counts the clusters of the first case that keep 80% or
-  more of their sentences in one cluster of the second case.
+### The four checks
 
-### How to read a case
+| Check | Where | Good | Bad |
+|---|---|---|---|
+| 1. One claim in each cluster | Read a case: open a cluster and read its sentences. | You can say the claim in one sentence. | The sentences make two or more claims. |
+| 2. No catch-all cluster | Stage 4: the column "largest cluster", and a red ring on the chart. | The largest cluster has a few hundred sentences. | One cluster has thousands of sentences on many subjects. |
+| 3. Few comments not covered | Stage 4: the column "comments not covered". | A low number. | Many gate-open comments have no sentence in a cluster. |
+| 4. Topics that you can name | Read a case: the list of topics. | The words of each topic name one subject. | The words are general, for example "rule" or "forest". |
 
-1. Open the **Read a case** tab.
-2. Select a case.
-3. Read the charts: the topics by gate kind, the cluster sizes, the topic cut and the map
-   of the clusters.
-4. Open the largest topic.
-5. Read the example sentence of each cluster.
-6. Open two or three clusters in **Open a cluster**.
-7. Read the sentences of each cluster.
-8. Decide if each cluster makes one claim.
-9. Open **Sentences in no cluster** and read some of them.
-10. If many of them repeat a claim that has no cluster, record it as a weakness of the case.
+Check 1 is the most important. A case can pass check 3 and fail check 1. For example,
+noise passes put almost every sentence in a cluster, but some clusters then mix claims.
+
+## Stage 5: Concern map
+
+Go to the tab **Stage 5: Concern map**. The tab shows the two choices of stage 4.
+
+1. Read the three numbers at the top.
+2. Read the table. Each row is a cluster of the first choice. The second choice splits
+   the clusters at the top of the table most.
+3. Open two or three of these clusters in **Read a case**, in both choices.
+4. Decide which choice keeps one claim in each cluster.
+5. Type a note that tells why.
+6. Click **Use this case as the concern map** under that choice.
+
+A new decision replaces the old decision.
+
+The three numbers:
+
+- **Clustered by both**: the sentences that both choices put in a cluster. The other two
+  numbers use these sentences only.
+- **Adjusted Rand**: how alike the two choices cluster these sentences. 1 means the same
+  clusters. Near 0 means different clusters.
+- **Clusters kept together**: the clusters of the first choice that keep 80% or more of
+  their sentences in one cluster of the second choice.
+
+## Read a case
+
+The tab **Read a case** shows one case.
+
+- **The topics, by gate kind**: one bar for each topic. The colours show how its
+  sentences argue: by law, evidence, a missing analysis or an alternative.
+- **The cluster sizes**: the number of clusters of each size. A bar far to the right is a
+  catch-all cluster.
+- **The topic cut**: the score for each number of topics. The orange bar is the number
+  that the case uses.
+- **The map of the clusters**: one point for each cluster. Clusters near each other say
+  similar things.
+- **Topics**: open a topic to see its clusters. Each cluster shows its most typical
+  sentence.
+- **Open a cluster**: select a cluster to read all its sentences. Turn on **Read the
+  comments** under a sentence to see the comments that hold it. Click a comment to read
+  all of it.
+- **Sentences in no cluster**: the sentences that the case left out. If many of them make
+  one claim, the case missed that claim.
+
+## The terminal commands
+
+| Command | What it does |
+|---|---|
+| `make cases` | Lists every case with its numbers. |
+| `make choose CASE=<case> NOTE="..."` | Records a choice of stage 4, as the button does. |
+| `make concern-map CASE=<case> NOTE="..."` | Records the concern map of stage 5, as the button does. |
+| `make compare-cases A=<case> B=<case>` | Compares two cases, cluster by cluster. |
 
 ## Glossary
 
 | Term | Meaning |
 |---|---|
 | Adjusted Rand index | How alike two cases cluster the same sentences. 1 means the same clusters. Near 0 means different clusters. |
-| BGE-large-en-v1.5 | An embedding model of 335 million parameters, built on BERT. It reads English only. |
-| Case | One run of the clustering with one set of settings. The console keeps each case. |
-| Choice | The case that you record for a model in step 1, or with `make choose`. Step 2 compares the choices. |
-| Central sentence | The sentence of a cluster that is nearest to the centre of the cluster. It is the best example of the cluster. |
-| Cluster | A group of sentences that HDBSCAN found close together. It is one claim if the case is good. |
-| Concern map | The case that step 2 decides on. It is one of the two choices. Step 15 reads its clusters. |
-| Comment instruction | The instruction "retrieve the sentence from the agency's record that addresses the specific claim". The model makes a vector for that task. |
-| Comments not covered | Gate-open comments with no substantive sentence in a cluster. A substantive sentence opens the gate alone, or holds a whole-comment gate hit. A clustered subject line or thank-you line does not cover a comment. |
+| BGE-large-en-v1.5 | An embedding model with 335 million parameters. It reads English only. |
+| Case | One clustering with one set of settings. |
+| Catch-all cluster | A very large cluster with sentences on many subjects. |
+| Choice | The best case of one model, recorded in stage 4. |
+| Cluster | A group of sentences that are close together. In a good case, a cluster is one claim. |
+| Comment view | Each sentence goes to the model with an instruction: find the agency text that answers the claim. Only Qwen accepts an instruction. |
+| Comments not covered | Gate-open comments with no substantive sentence in a cluster. |
+| Concern map | The case that you decide on in stage 5. It is one of the two choices. |
 | eom, leaf | Two ways for HDBSCAN to select clusters. eom keeps the clusters that last longest. leaf keeps the smallest clusters. |
-| Eigengap | The method that sets the number of topics. It finds the largest step between eigenvalues of the cluster graph. |
-| Embedding model | A model that changes a sentence into a vector of numbers. Similar sentences get similar vectors. |
-| Gate | The test that tells if a comment is substantive. It opens when GAP, EVID, ALT or LAW reaches 2. |
-| Gate kind | The dimension that opens the gate for a sentence: LAW (a law), EVID (evidence), GAP (a missing analysis) or ALT (an alternative). |
+| Gate | The test that tells if a comment is substantive. |
+| Gate kind | How a sentence argues: LAW (a law), EVID (evidence), GAP (a missing analysis) or ALT (an alternative). |
 | Gate-opening sentence | A sentence that opens the gate alone. |
-| HDBSCAN | A clustering method. It groups the sentences in dense areas. It does not need the number of clusters. |
-| Leader | A sentence that represents its near-copies after a merge. Without a merge, each sentence is its own leader. |
-| Main kind | The gate kind that most sentences of a cluster have. It tells how the claim is argued, not what the claim is. |
-| Merge | A step that joins near-copies into one leader before the clustering. |
-| min cluster size, min samples | Two HDBSCAN values. The first is the smallest cluster. The second sets how dense an area must be. |
-| Noise | The sentences that HDBSCAN puts in no cluster. |
-| Noise pass | A second clustering of the noise. It puts more sentences into clusters, but it can make catch-all clusters. |
-| NMI | Normalized mutual information. A second score from 0 to 1 for the agreement of two cases. |
-| PCA, UMAP | Two methods that reduce a vector to fewer dimensions before HDBSCAN. UMAP keeps the near neighbours of each sentence. |
-| Plain view | The sentence goes to the model with no instruction. |
-| Qwen3-Embedding-8B | An embedding model of 8 billion parameters. It reads more than 100 languages and accepts an instruction. |
-| Sentences clustered | The share of the sentences of a case that are in a cluster. |
-| Terms | The eight words or two-word phrases that are frequent in a cluster or topic and rare in the others. |
-| Tightness | The mean similarity of the sentences of a cluster to its centre. A higher value is a closer cluster. |
+| HDBSCAN | The clustering method. It finds groups of sentences that are close together. It needs no number of clusters. |
+| Leader | A sentence that stands for its near-copies when a case merges them. |
+| MCS, MS | Two HDBSCAN settings. MCS is the smallest cluster size. MS sets how close the sentences of a cluster must be. |
+| Noise | The sentences that a case puts in no cluster. |
+| Noise pass | One more clustering of the noise. It puts more sentences in clusters, but it can make catch-all clusters. |
+| PCA, UMAP | Two methods that make the vectors shorter before HDBSCAN. |
+| Plain view | Each sentence goes to the model with no instruction. |
+| Qwen3-Embedding-8B | An embedding model with 8 billion parameters. It reads more than 100 languages and accepts an instruction. |
+| Sentences clustered | The part of the sentences of a case that is in a cluster. |
+| Substantive sentence | A sentence that opens the gate alone, or holds a whole-comment gate hit. |
+| Terms | The words that are frequent in one cluster or topic and rare in the others. |
 | Topic | A group of clusters on one subject. |
-| View | The instruction that the model receives with each sentence: plain, comment or topic. |
-| Whole-comment hit sentence | A sentence that holds a rule hit that opened the gate when the rules read the whole comment. |
+| Vector | A list of numbers that a model makes for a sentence. |
+| Whole-comment hit | A rule hit that opened the gate when the rules read the whole comment. |

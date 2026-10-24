@@ -126,13 +126,13 @@ make choose CASE=<case> NOTE="why"                   # record the case as its mo
 make concern-map CASE=<case> NOTE="why"              # record one of the two choices as the concern map
 ```
 
-**The choice** (`make choose`). Choosing is two steps (`docs/choosing-a-case.md`): the
-best case of each model, then the two choices compared. `make choose` records a case as
-the choice of its embedding model in `cluster_case_choice`, with a note. A new choice for
-a model replaces the old one. The console's Topics page records the same choice with a click and a button.
-`make concern-map` records one of the two choices as the concern map in
-`cluster_concern_map`, with a note. It is step 2's decision, and the clustering that
-step 15 reads. The Topics page records it with a button in step 2.
+**The case set, the choice and the concern map.** `docs/choosing-a-case.md` gives the
+path in five stages. `make case-set MODEL=<model>` runs the nine cases of stage 3 for one
+model. `make choose` records a case as the choice of its embedding model in
+`cluster_case_choice`, with a note (stage 4). `make concern-map` records one of the two
+choices as the concern map in `cluster_concern_map`, with a note (stage 5). The concern
+map is the clustering that step 15 reads. A new choice or decision replaces the old one.
+The console's Topics page records both with buttons.
 
 **Two cases compared** (`make compare-cases`, and the Topics page under the opened
 case). A sentence's cluster in a case is its leader's. On the sentences both cases

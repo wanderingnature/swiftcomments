@@ -1295,8 +1295,8 @@ CREATE TABLE cluster_case_topic (
 );
 
 -- The case chosen for each embedding model (make choose, scripts/clusters/cases.py choose):
--- step 1 of choosing a case picks the best case of each model; step 2 compares the two
--- choices. One row per model; a new choice replaces the old one.
+-- stage 4 of docs/choosing-a-case.md picks the best case of each model; stage 5 compares
+-- the two choices. One row per model; a new choice replaces the old one.
 CREATE TABLE cluster_case_choice (
     model      TEXT PRIMARY KEY,
     case_name  TEXT NOT NULL,
@@ -1304,8 +1304,8 @@ CREATE TABLE cluster_case_choice (
     chosen_at  TEXT NOT NULL
 );
 
--- The concern map (make concern-map, scripts/clusters/cases.py concern-map): step 2 of
--- choosing a case decides between the two choices of step 1, and the decided case is the
+-- The concern map (make concern-map, scripts/clusters/cases.py concern-map): stage 5 of
+-- docs/choosing-a-case.md decides between the two choices of stage 4, and the decided case is the
 -- clustering that the later steps read. One row; a new decision replaces the old one.
 CREATE TABLE cluster_concern_map (
     one        INTEGER PRIMARY KEY CHECK (one = 1),

@@ -71,31 +71,24 @@ gate and the dimensions that opened it, its answerability, its eight levels, its
 letter and stance, opening to its text and its evidence (the rules' hits by dimension
 with the words they matched; the model's rationale).
 
-**Topics.** The clustering cases of `make clusters`, in four tabs. Choosing a case is two
-steps: the best case of each model, then the two choices compared.
+**Topics.** The path from the sentences to the concern map, in five stages
+(`docs/choosing-a-case.md`). Status lines at the top show each stage as done, next or
+waiting, with its figure from the file. For the next stage, they show the command to run.
 
-- **Guide** explains why the cases exist, what makes a good case, the two steps, and the
-  terms. The text is `docs/choosing-a-case.md`.
-- **Step 1: The best case of each model** shows the cases of one model at a time. It
-  shows the model's current choice, a table of its cases, a chart of the cases by
-  sentences clustered and comments not covered (a red ring marks a catch-all cluster),
-  and on request the adjusted Rand index of every pair of its cases. Each case has a
-  number in the chart and in the table. A black ring marks the choice. Click a point to
-  select its case. The button under the chart records the selected case as the model's
-  choice.
-- **Read a case** opens one case. Charts show the topics by gate kind, the cluster sizes,
-  the eigengap at each number of topics, and a map of the clusters by topic. Each topic
-  opens to its clusters, each with its most central sentence in full. Then you can open a
-  cluster. Each of its sentences is a card with the full text. A switch on the card lists
-  the comments that hold the sentence, and each comment opens to its full text. The
-  sentences in no cluster show in the same way.
-- **Step 2: Compare the two choices** opens on the two chosen cases. Numbered steps at the
-  top tell what to do. It shows the sentences that both cluster, the adjusted Rand index
-  and the clusters kept together. Two charts show how the clusters of the first case hold
-  together, and where its 20 largest clusters go. A table gives each cluster of the first
-  case with the cluster of the second that holds most of its sentences. "The decision" at
-  the bottom has a button for each choice. The button records that case as the concern
-  map.
+- **Guide** shows `docs/choosing-a-case.md`: the five stages, the four checks, how to read
+  a case, the commands and the glossary.
+- **Stage 4: Best case of each model** shows the cases of one model on a chart. Each point
+  is a case, with its number from the table. A red ring marks a cluster of 1,000 or more
+  sentences. A black ring marks the choice. Click a point to select the case. A note and a
+  button record the selected case as the model's choice.
+- **Stage 5: Concern map** shows the two choices of stage 4, and no other case. It shows
+  how far they agree: three numbers, two charts and a table of the clusters of the first
+  choice. A note and a button under each choice record it as the concern map.
+- **Read a case** shows the case selected in stage 4, or another case. Charts show the
+  topics by gate kind, the cluster sizes, the topic cut and a map of the clusters. Each
+  topic opens to its clusters, each with its most typical sentence. Open a cluster to
+  read each of its sentences in full. A switch under a sentence lists the comments that
+  hold it. Each comment opens to its full text.
 
 The other five look into the file.
 
