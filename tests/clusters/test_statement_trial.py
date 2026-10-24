@@ -73,3 +73,16 @@ def test_render_gives_each_statement_once_with_its_runs():
     assert "#### Cluster 3, topic 1: fire, roads" in md
     assert "4 sentences; 2 wordings as `leaders`, 1 as `collapse`." in md
     assert "- `leaders`, runs 1, 2: Same." in md and "- `collapse`, run 1: Other." in md
+
+
+def test_the_reference_is_the_commonest_statement_at_temperature_0():
+    from clusters import statement_similarity as ss
+    calls = [{"cluster": 1, "method": "leaders", "temperature": 0.0, "concern": t} for t in ("A.", "B.", "B.")] + \
+            [{"cluster": 1, "method": "leaders", "temperature": 0.7, "concern": "C."},
+             {"cluster": 2, "method": "leaders", "temperature": 0.0, "concern": "D."},
+             {"cluster": 2, "method": "leaders", "temperature": 0.0, "concern": "E."}]
+    refs = ss.references(calls)
+    assert refs == {(1, "leaders"): "B.", (2, "leaders"): "E."}
+    assert ss.words("a b c d", "a b c d") == 1.0 and ss.words("a b c d", "a b x y") == 0.5
+    with pytest.raises(SystemExit, match="no statement at temperature 0"):
+        ss.references([{"cluster": 3, "method": "collapse", "temperature": 0.4, "concern": "F."}])

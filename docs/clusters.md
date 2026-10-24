@@ -226,3 +226,15 @@ Beside the JSON file, `trials/statements/<run_id>.md` gives every statement, clu
 cluster. The results of each trial and all its statements are in
 `docs/statement-trials.md`. `--render-doc` writes the statements of each trial into that
 page again from the JSON files.
+
+**How far the statements move** (`make statement-similarity`). Two statements can use
+other words and say the same thing. This step embeds every distinct statement of the
+trials named, with the embedding server of `.env`, the text alone. It compares each
+statement with the reference statement of its cluster and method: the statement that
+the most runs at temperature 0 gave. It gives two measures, each 1 for the same
+statement: the cosine of the two vectors, and the share of words in the same order.
+It writes `trials/statements/similarity_<run_id>.json`. The trials must be of one case.
+
+```
+make statement-similarity TRIALS="20261024_163447 20261024_170736"
+```
