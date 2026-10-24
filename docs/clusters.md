@@ -182,3 +182,40 @@ the sentences they absorbed, its occurrences, its tightness (the mean cosine of 
 leaders to its centroid), the share of its leaders of each gate kind, its terms and its
 central sentences. `cluster_case_topic` holds each topic; `cluster_case_member` the
 cluster of each leader (0 for noise); `cluster_case_leader` the leader of each sentence.
+
+## Step 15 trial: the concern statement (`make statement-trial`)
+
+Step 15 is not built. It will write one concern statement for each cluster of the
+concern map, with one model call for each cluster. The trial runs that call on a few
+clusters before the step is built. It measures two things: how much the statement
+depends on the wordings that the call gets, and how much on the model's sampling.
+
+The system prompt (`STATEMENT_SYS`), the answer schema and the fold of near-duplicate
+wordings (`collapse`) are in `scripts/clusters/statement_trial.py`. The model gets the
+wordings, one on each line, and writes the concern in one or two sentences.
+
+The trial builds the wordings of each cluster in two ways:
+
+| Method | The wordings |
+|---|---|
+| `leaders` | The text of each leader in the cluster. The case's merge already put the near-copies under the most-copied text. |
+| `collapse` | Every distinct sentence of the cluster: each leader and the sentences that it absorbed. `collapse()` folds them at cosine 0.95, and the longest text of each group stands for the group. |
+
+The trial sends each set `RUNS=` times at each temperature in `TEMPERATURES=`. The model
+server is the one in `.env`. `SERVER=LOCAL` selects the `LLM_LOCAL_*` set. The trial
+writes nothing to the analysis file.
+
+```
+make statement-trial CLUSTERS="207 104 52 1" RUNS=3 TEMPERATURES="0 0.7" SERVER=LOCAL
+```
+
+The trial writes one JSON file to `trials/statements/<run_id>.json`. The file holds:
+
+- the settings, the git commit and the model;
+- the system prompt;
+- the wordings of each cluster under each method;
+- every call, with its statement, its tokens and its seconds;
+- for each cluster, method and temperature, the number of different statements among
+  the runs.
+
+The results of each trial are in `docs/statement-trials.md`.

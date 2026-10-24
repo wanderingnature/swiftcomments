@@ -115,7 +115,10 @@ embed:  ## step 11 (clusters): one vector for each distinct sentence, from the e
 clusters:  ## steps 12 to 14: one clustering case, its clusters, topics and names; SENTENCES= VIEW= MERGE= REDUCTION= MCS= MS= SELECTION= STRUCTURE= PASSES= K= SEED= (docs/clusters.md); no model call
 	$(PY) scripts/clusters/cases.py run $(if $(SENTENCES),--sentences $(SENTENCES)) $(if $(VIEW),--view $(VIEW)) $(if $(MODEL),--model $(MODEL)) $(if $(MERGE),--merge $(MERGE)) $(if $(REDUCTION),--reduction $(REDUCTION)) $(if $(MCS),--min-cluster-size $(MCS)) $(if $(MS),--min-samples $(MS)) $(if $(SELECTION),--selection $(SELECTION)) $(if $(STRUCTURE),--structure $(STRUCTURE)) $(if $(PASSES),--noise-passes $(PASSES)) $(if $(K),--k $(K)) $(if $(SEED),--seed $(SEED))
 
-CASE_RUN = $(PY) scripts/clusters/cases.py run --model "$(MODEL)" --view $(or $(VIEW),plain)
+statement-trial:  ## step 15 trial (model): CLUSTERS="207 104 52" of the concern map, RUNS=N calls at each of TEMPERATURES="0 0.7", wordings two ways; JSON under trials/statements/
+	$(PY) scripts/clusters/statement_trial.py --clusters $(CLUSTERS) --runs $(RUNS) --temperatures $(TEMPERATURES)
+
+CASE_RUN =$(PY) scripts/clusters/cases.py run --model "$(MODEL)" --view $(or $(VIEW),plain)
 
 case-set:  ## stage 3 of docs/topics-guide.md: the nine cases of the case set for one model; MODEL=<model> [VIEW=plain]
 	@test -n "$(MODEL)" || { echo "make case-set needs MODEL=<model>, the model name that make embed wrote"; exit 1; }
