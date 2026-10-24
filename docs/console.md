@@ -1,10 +1,12 @@
 # The console
 
-A read-only browser of `data/roadless.sqlite`: what the analysis found, and what the
-steps wrote. It is not the analysis: the nine steps run from `make`, and the console
-launches nothing. It opens the file with SQLite's `query_only` pragma, so
-nothing typed into it can write, and it can be open while a step is writing (the file
-is in write-ahead-log mode; readers do not block the writer or wait for it).
+A browser of `data/roadless.sqlite`: what the analysis found, and what the steps
+wrote. It is not the analysis: the nine steps run from `make`, and the console
+launches nothing. It opens the file with SQLite's `query_only` pragma, so nothing
+typed into it can write, and it can be open while a step is writing (the file is in
+write-ahead-log mode; readers do not block the writer or wait for it). The one write
+is the choice of a clustering case on the Topics page. It is the same write as
+`make choose`.
 
 ```
 make console
@@ -77,8 +79,10 @@ steps: the best case of each model, then the two choices compared.
 - **Step 1: The best case of each model** shows the cases of one model at a time. It
   shows the model's current choice, a table of its cases, a chart of the cases by
   sentences clustered and comments not covered (a red ring marks a catch-all cluster),
-  and on request the adjusted Rand index of every pair of its cases. "Choose the case"
-  gives the `make choose` command for the selected case.
+  and on request the adjusted Rand index of every pair of its cases. Each case has a
+  number in the chart and in the table. A black ring marks the choice. Click a point to
+  select its case. The button under the chart records the selected case as the model's
+  choice.
 - **Read a case** opens one case. Charts show the topics by gate kind, the cluster sizes,
   the eigengap at each number of topics, and a map of the clusters by topic. Each topic
   opens to its clusters, with one example sentence for each cluster. Then you can open a

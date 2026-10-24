@@ -128,7 +128,7 @@ make choose CASE=<case> NOTE="why"                   # record the case as its mo
 **The choice** (`make choose`). Choosing is two steps (`docs/choosing-a-case.md`): the
 best case of each model, then the two choices compared. `make choose` records a case as
 the choice of its embedding model in `cluster_case_choice`, with a note. A new choice for
-a model replaces the old one. The console reads the choices; it does not write them.
+a model replaces the old one. The console's Topics page records the same choice with a click and a button.
 
 **Two cases compared** (`make compare-cases`, and the Topics page under the opened
 case). A sentence's cluster in a case is its leader's. On the sentences both cases
