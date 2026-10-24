@@ -67,17 +67,13 @@ own best settings.
 6. Turn on "Compare every pair of this model's cases" (check 5). Prefer a case that
    agrees with its neighbours: a small change of setting does not change its clusters
    much.
-7. Select the best case in "Choose the case".
-8. Run the command that the page shows, for example:
+7. Click the point of the best case on the chart. "The selected case" shows its values.
+8. Type a note that tells why you chose the case.
+9. Click "Choose case N". A black ring marks the choice on the chart.
+10. Do steps 2 to 9 again for the other model.
 
-   ```
-   make choose CASE="opening+hits.comment.text-embedding-qwen3-embedding-8b-f16.m0.umap5.10-10-eom.all.p0.kauto.s0" NOTE="fewest comments not covered; clusters read as one claim"
-   ```
-
-9. Do steps 2 to 8 again for the other model.
-
-The console does not write the file. Run `make choose` in a terminal. A new choice for a
-model replaces the old choice. `make choose` keeps the note with the choice.
+A new choice for a model replaces the old choice. The note stays with the choice. In a
+terminal, `make choose CASE=<case name> NOTE="..."` records the same choice.
 
 ### Step 2: compare the two choices
 
@@ -89,7 +85,7 @@ model replaces the old choice. `make choose` keeps the note with the choice.
 5. Read the table. The clusters that break the most are at the top.
 6. Open the clusters at the top in the **Read a case** tab, in both cases.
 7. Decide which case groups those sentences by claim better.
-8. If you change your decision, run `make choose` again for that model.
+8. If you change your decision, choose a different case for that model in step 1.
 
 The figures:
 
@@ -122,7 +118,7 @@ The figures:
 | Adjusted Rand index | A score from 0 to 1 for how much two cases agree on the sentences that both cluster. 1 is the same grouping. 0 is chance. |
 | BGE-large-en-v1.5 | An embedding model of 335 million parameters, built on BERT. It reads English only. |
 | Case | One run of the clustering with one set of settings. The console keeps each case. |
-| Choice | The case that `make choose` records for a model. Step 2 compares the choices. |
+| Choice | The case that you record for a model in step 1, or with `make choose`. Step 2 compares the choices. |
 | Central sentence | The sentence of a cluster that is nearest to the centre of the cluster. It is the best example of the cluster. |
 | Cluster | A group of sentences that HDBSCAN found close together. It is one claim if the case is good. |
 | Comment instruction | The instruction "retrieve the sentence from the agency's record that addresses the specific claim". The model makes a vector for that task. |

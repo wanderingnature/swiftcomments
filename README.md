@@ -156,7 +156,7 @@ partition of every comment and a sample of it would be a different result.
 
 ## Looking at the results, and checking on a run
 
-`make console` opens a read-only browser of the file in a web page, usable while a
+`make console` opens a browser of the file in a web page, usable while a
 step is writing. Five of its pages show what the analysis found, each section as soon
 as its step has run: an overview from the docket's records to the substance reading;
 the stance and the topics, with any topic's letters to read; the copies, families and
@@ -272,7 +272,7 @@ packages/             comment-sentences, the one sentence method
 comments_db/          the copy-finding scripts and NER
 scripts/              the loader, the substance steps, model_free/ (the rules' reading), the entity tagging, the stance chain, the attachment steps, compare_scores.py
 checks/               figures.sql, expected.json, check.py
-console/              the read-only browser of the file; `make console`
+console/              the browser of the file; `make console`
 tests/                the tests; `uv run pytest`
 docs/                 the method and the pages it cites; instruments/ (the prompts); prompts.md; model-free-scoring.md; model-server.md; mineru.md; console.md; limit-and-jump.md; first-run.md
 attachments/, data/   the fetched files and the SQLite file, git-ignored

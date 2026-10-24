@@ -1,12 +1,14 @@
-"""The console: a read-only Streamlit app over data/roadless.sqlite. Eleven pages. Five show the results (console/results.py): Overview,
+"""The console: a Streamlit app that reads data/roadless.sqlite. Eleven pages. Five show the results (console/results.py): Overview,
 Stance and topics, Coordination, Places and citations, Substance. Topics
 (console/topics.py) shows the clustering cases of make clusters. Five look into
 the file: Comment (one comment as the analysis read it, then every row the steps
 hold about it), Steps (what every make target has written), Compare (every make
 score-model-compare run, and any two readings of any two runs side by side), Tables
 (any table or view, paged) and Query (SQL, read-only). It launches nothing: the
-steps run from make. The connection is opened with PRAGMA query_only, so nothing
-here can write the file, and reading while a step writes is safe under WAL.
+steps run from make. The connection is opened with PRAGMA query_only, so no page
+or query can write the file, and reading while a step writes is safe under WAL.
+The one write is the Topics page's choice of a case (cluster_case_choice), the
+same write as make choose.
 
     make console            (uv run --group console streamlit run console/app.py)
 """

@@ -49,12 +49,13 @@ def test_the_four_tabs(casefile):
     assert [t.label for t in at.tabs] == ["Guide", "Step 1: The best case of each model", "Read a case",
                                           "Step 2: Compare the two choices"]
     assert "No case is chosen for m yet." in [x.value for x in at.tabs[1].info]
-    assert 'make choose CASE="' in at.tabs[1].code[0].value
+    assert "Click a point on the chart to select a case." in [c.value for c in at.tabs[1].caption]
     assert at.tabs[3].warning[0].value.startswith("Step 1 has not chosen a case for each model yet.")
     guide = at.tabs[0].markdown[0].value
     assert guide.startswith("# Choosing a clustering case") and "## Glossary" in guide
     # the cases in words
-    descriptions = list(at.tabs[1].dataframe[0].value["case"])
+    descriptions = list(at.tabs[1].dataframe[0].value["description"])
+    assert list(at.tabs[1].dataframe[0].value["case"]) == [1, 2]
     assert list(at.tabs[1].dataframe[0].value["chosen"]) == ["", ""]
     assert descriptions == ["m, comment view · gate-opening and whole-comment hit sentences · PCA, HDBSCAN 5/5 leaf"
                             " · 2 topics",
@@ -97,9 +98,30 @@ def test_step_2_opens_on_the_two_choices(casefile):
     assert cases.main(["choose", "opening+hits.comment.bge-large-en-v1-5.m0.pca50.5-5-leaf.all.p0.kauto.s0"]) == 0
     at = _topics()
     assert at.radio(key="step1_model").options == ["BGE-large-en-v1.5", "m"]
-    assert any(x.value.startswith("The choice for BGE-large-en-v1.5:") for x in at.tabs[1].success)
+    assert any(x.value.startswith("The choice for BGE-large-en-v1.5 is case 1:") for x in at.tabs[1].success)
     assert any("are the choices of step 1" in c.value for c in at.tabs[3].caption)
     picked = {at.selectbox(key="compare_first").value, at.selectbox(key="compare_second").value}
     assert picked == {1, 2}      # the K=2 case of m and the BGE case
     shown = {m.label: m.value for m in at.tabs[3].metric}
     assert shown["Adjusted Rand"] == "1.0"
+
+
+def test_a_selected_case_is_chosen_with_the_button(casefile):
+    assert cases.main(PCA_LEAF) == 0
+    assert cases.main(PCA_LEAF + ["--k", "2"]) == 0
+    name = "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0"
+    at = _topics()
+    at.session_state["step1_case"] = name      # what a click on the chart's point sets
+    at.run()
+    assert any(m.value.startswith("**Case 2**:") for m in at.tabs[1].markdown)
+    at.text_input(key="step1_note").set_value("two topics read best")
+    at.button(key="step1_choose").click()
+    at.run()
+    assert not at.exception, [e.value for e in at.exception]
+    conn = db.connect(casefile)
+    assert [tuple(r) for r in conn.execute("SELECT model, case_name, note FROM cluster_case_choice")] == [
+        ("m", name, "two topics read best")]
+    conn.close()
+    assert any(x.value.startswith("The choice for m is case 2:") for x in at.tabs[1].success)
+    assert "This case is the choice for m." in [x.value for x in at.tabs[1].success]
+    assert list(at.tabs[1].dataframe[0].value["chosen"]) == ["", "yes"]
