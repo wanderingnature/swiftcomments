@@ -117,7 +117,7 @@ clusters:  ## steps 12 to 14: one clustering case, its clusters, topics and name
 
 CASE_RUN = $(PY) scripts/clusters/cases.py run --model "$(MODEL)" --view $(or $(VIEW),plain)
 
-case-set:  ## stage 3 of docs/choosing-a-case.md: the nine cases of the case set for one model; MODEL=<model> [VIEW=plain]
+case-set:  ## stage 3 of docs/topics-guide.md: the nine cases of the case set for one model; MODEL=<model> [VIEW=plain]
 	@test -n "$(MODEL)" || { echo "make case-set needs MODEL=<model>, the model name that make embed wrote"; exit 1; }
 	$(CASE_RUN)
 	$(CASE_RUN) --sentences opening+hits
@@ -138,10 +138,10 @@ compare-cases:  ## A=<case> B=<case>: how far two cases group the same sentences
 cases-remeasure:  ## count the coverage of every stored case again from its stored rows (comments not covered, on substantive sentences); no case runs again
 	$(PY) scripts/clusters/cases.py remeasure
 
-choose:  ## CASE=<case> [NOTE="..."]: record the case as the choice of its embedding model (stage 4 of docs/choosing-a-case.md)
+choose:  ## CASE=<case> [NOTE="..."]: record the case as the choice of its embedding model (stage 4 of docs/topics-guide.md)
 	$(PY) scripts/clusters/cases.py choose "$(CASE)" $(if $(NOTE),--note "$(NOTE)")
 
-concern-map:  ## CASE=<case> [NOTE="..."]: record one of the two choices as the concern map (stage 5 of docs/choosing-a-case.md)
+concern-map:  ## CASE=<case> [NOTE="..."]: record one of the two choices as the concern map (stage 5 of docs/topics-guide.md)
 	$(PY) scripts/clusters/cases.py concern-map "$(CASE)" $(if $(NOTE),--note "$(NOTE)")
 
 check:  ## every figure of the method beside checks/expected.json

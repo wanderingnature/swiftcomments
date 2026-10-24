@@ -1,10 +1,12 @@
 """The console's Topics page (new): the path from the sentences to the concern
-map, in five stages (docs/choosing-a-case.md). The status lines at the top show
-each stage done, next or waiting. Four tabs: Guide (docs/choosing-a-case.md);
+map, in five stages (docs/topics-guide.md). The status lines at the top show
+each stage done, next or waiting. Five tabs: Guide (docs/topics-guide.md, its
+screenshots shown with st.image);
 Stage 4, the cases of one model on a chart, a click selecting a case and a
 button recording it as the model's choice; Stage 5, the two choices compared, a
 click on a cluster showing it beside the other choice's cluster, and a button for
-each choice recording it as the concern map; Read a case, one case from
+each choice recording it as the concern map; What the stages found, the figures
+and charts of each stage, the concern map's last; Read a case, one case from
 its topics to a cluster's sentences and the comments that hold them.
 
 Every figure is read from data/roadless.sqlite through view.query, cached until
@@ -14,6 +16,7 @@ stage 5 (cluster_concern_map, as make concern-map).
 """
 import contextlib
 import json
+import re
 from pathlib import Path
 
 import altair as alt
@@ -22,12 +25,13 @@ import pandas as pd
 import streamlit as st
 
 from console import queries as q
-from console.results import CARDS, chart, metrics, pager, pct, snippet, texts
+from console.results import CARDS, chart, hbar, metrics, pager, pct, snippet, texts
 from console.view import file_signature, open_db, query, show, show_text
 from scripts.clusters.embed import VIEWS, unpack
 from shared import case_compare, db
 
-GUIDE = Path(__file__).resolve().parents[1] / "docs" / "choosing-a-case.md"
+GUIDE = Path(__file__).resolve().parents[1] / "docs" / "topics-guide.md"
+IMAGE = re.compile(r"!\[(.*)\]\((images/[^)]+)\)")
 SENTENCES = {"opening": "gate-opening sentences",
              "opening+hits": "gate-opening and whole-comment hit sentences",
              "all": "every sentence"}
@@ -46,7 +50,7 @@ def short(c):
     if c["structure"] == "by-kind":
         parts.append("by kind")
     if c["passes"]:
-        parts.append(f"{int(c['passes'])} passes")
+        parts.append(count(int(c["passes"]), "pass", "passes"))
     if c["k"] == c["k"] and c["k"] is not None:
         parts.append(f"K={int(c['k'])}")
     return " · ".join(parts)
@@ -118,7 +122,7 @@ def method(c):
     if c["merge"]:
         parts.append(f"merge {c['merge']}")
     if c["passes"]:
-        parts.append(f"{int(c['passes'])} noise passes")
+        parts.append(count(int(c["passes"]), "noise pass", "noise passes"))
     if c["structure"] == "by-kind":
         parts.append("by gate kind")
     return ", ".join(parts)
@@ -156,18 +160,35 @@ def page_topics():
     if cases.empty:
         guide, = st.tabs(["Guide"])
         with guide:
-            st.markdown(GUIDE.read_text(encoding="utf-8"))
+            show_guide()
         return
-    guide, stage4, stage5, read = st.tabs(["Guide", "Stage 4: Best case of each model", "Stage 5: Concern map",
-                                           "Read a case"])
+    guide, stage4, stage5, found, read = st.tabs(["Guide", "Stage 4: Best case of each model",
+                                                  "Stage 5: Concern map", "What the stages found", "Read a case"])
     with guide:
-        st.markdown(GUIDE.read_text(encoding="utf-8"))
+        show_guide()
     with stage4:
         tab_stage4(cases, choices)
     with stage5:
         tab_stage5(cases, choices, current)
+    with found:
+        tab_found(srun, cases, current)
     with read:
-        tab_read(cases)
+        tab_read(cases, current)
+
+
+def show_guide():
+    """The guide, with its screenshots: an image line of the Markdown becomes st.image."""
+    text = GUIDE.read_text(encoding="utf-8")
+    part = []
+    for line in text.splitlines():
+        image = IMAGE.fullmatch(line.strip())
+        if image:
+            st.markdown("\n".join(part))
+            part = []
+            st.image(str(GUIDE.parent / image.group(2)), caption=image.group(1))
+        else:
+            part.append(line)
+    st.markdown("\n".join(part))
 
 
 def status(srun, vectors, cases, choices, current):
@@ -259,8 +280,10 @@ def tab_stage4(all_cases, choices):
                         legend=alt.Legend(title="view (shape)")),
         opacity=alt.condition(select, alt.value(0.9), alt.value(0.25)),
         tooltip=tip).add_params(select)
-    numbers = alt.Chart(pts).mark_text(align="left", dx=17, dy=-15, fontSize=12, fontWeight="bold").encode(
-        x=x, y=y, text="number:Q")
+    same = pts.groupby(["sentences clustered (%)", "comments not covered"], as_index=False)["number"].agg(
+        lambda n: ", ".join(str(i) for i in sorted(n)))   # cases at one point share one label
+    numbers = alt.Chart(same).mark_text(align="left", dx=17, dy=-15, fontSize=12, fontWeight="bold").encode(
+        x=x, y=y, text="number:N")
     big = pts[pts["largest cluster"] >= CATCH_ALL]
     rings = alt.Chart(big).mark_point(shape="circle", size=520, filled=False, color="#d62728",
                                       strokeWidth=2).encode(x=x, y=y, tooltip=tip)
@@ -295,7 +318,7 @@ def tab_stage4(all_cases, choices):
     show(pd.DataFrame({
         "case": [number[n] for n in cases["case_name"]],
         "chosen": ["yes" if mine is not None and n == mine.case_name else "" for n in cases["case_name"]],
-        "description": cases["description"],
+        "settings": [short(c) for _, c in cases.iterrows()],
         "clusters": cases["clusters"],
         "topics": cases["topics"],
         "sentences clustered": [pct(a, b) for a, b in zip(cases["leaders_clustered"], cases["leaders"])],
@@ -339,12 +362,137 @@ def record_choice(case_name, note):
         case_runs.choose(conn, case_name, note)
 
 
-def tab_read(cases):
+def tab_found(srun, cases, current):
+    """What each stage wrote in the file, as figures and charts."""
+    st.caption("The results of each stage, read from the file.")
+    st.subheader("Stage 1: the sentences")
+    r = srun.iloc[0]
+    metrics([("Gate-open comments", int(r["gate_comments"]), None),
+             ("Sentences", int(r["occurrences"]), "Every sentence of the gate-open comments."),
+             ("Different sentences", int(r["distinct_sentences"]),
+              "Two sentences are the same if they differ only in case, punctuation, spacing or markup.")])
+    kinds = query(q.OPENING_KINDS).iloc[0]
+    left, right = st.columns(2)
+    with left:
+        st.markdown("**The gate-opening sentences, by gate kind**")
+        st.caption(f"{int(kinds['n']):,} sentences open the gate alone. A sentence of two kinds counts in both bars.")
+        chart(alt.Chart(pd.DataFrame({"kind": ["LAW", "EVID", "GAP", "ALT"],
+                                      "sentences": [int(kinds[k]) for k in ("LAW", "EVID", "GAP", "ALT")]}))
+              .mark_bar().encode(x=alt.X("sentences:Q"), y=alt.Y("kind:N", sort=None, title=None),
+                                 color=alt.Color("kind:N", scale=KIND_SCALE, legend=None),
+                                 tooltip=["kind:N", alt.Tooltip("sentences:Q", format=",")])
+              .properties(height=alt.Step(30)))
+    with right:
+        st.markdown("**How each gate-open comment shows in the sentences**")
+        st.caption("A comment can have a gate-opening sentence and a sentence that holds a whole-comment hit. Then"
+                   " it counts in both bars.")
+        hbar(pd.DataFrame({"comments with": ["a gate-opening sentence", "a sentence that holds a hit",
+                                             "neither"],
+                           "comments": [int(r["comments_opening"]), int(r["comments_hit"]),
+                                        int(r["comments_neither"])]}),
+             "comments with", "comments", "gate-open comments", color="#0072B2")
+
+    st.subheader("Stage 2: the vectors")
+    view_of = {v: k for k, v in VIEWS.items()}
+    vv = query(q.VECTORS_BY_VIEW)
+    vv["vectors of"] = [f"{model_name(m)}, {view_of.get(i, 'other')} view"
+                        for m, i in zip(vv["model"], vv["instruction"])]
+    st.caption(f"Each bar is one model and view. A full bar has a vector for each of the"
+               f" {int(r['distinct_sentences']):,} different sentences.")
+    hbar(vv, "vectors of", "n", "vectors", color="#0072B2")
+
+    st.subheader("Stage 3: the cases of both models")
+    st.caption("Each point is a case. A good case is low and to the right. Colour: the model. Black ring: the choice"
+               " of stage 4. Red ring: a cluster of 1,000 or more sentences.")
+    choices = set(query(q.CHOICES)["case_name"])
+    pts = pd.DataFrame({
+        "case": cases["description"],
+        "model": cases["model_label"],
+        "sentences clustered (%)": (100 * cases["leaders_clustered"] / cases["leaders"]).round(1),
+        "comments not covered": cases["comments_unclustered"],
+        "largest cluster": cases["largest_cluster"],
+        "choice": cases["case_name"].isin(choices)})
+    models = sorted(pts["model"].unique())
+    x = alt.X("sentences clustered (%):Q", scale=alt.Scale(zero=False))
+    y = alt.Y("comments not covered:Q")
+    tip = ["case:N", "sentences clustered (%):Q", "comments not covered:Q", "largest cluster:Q"]
+    chart(alt.layer(
+        alt.Chart(pts).mark_point(filled=True, size=140, opacity=0.85).encode(
+            x=x, y=y, color=alt.Color("model:N", scale=alt.Scale(domain=models, range=MODEL_COLOURS[:len(models)])),
+            tooltip=tip),
+        alt.Chart(pts[pts["largest cluster"] >= CATCH_ALL]).mark_point(
+            shape="circle", size=480, filled=False, color="#d62728", strokeWidth=2).encode(x=x, y=y, tooltip=tip),
+        alt.Chart(pts[pts["choice"]]).mark_point(
+            shape="circle", size=800, filled=False, color="black", strokeWidth=3).encode(x=x, y=y, tooltip=tip))
+          .properties(height=380))
+
+    st.subheader("Stage 5: the concern map")
+    decided = current.iloc[0]["case_name"] if not current.empty else None
+    if decided not in set(cases["case_name"]):
+        st.info("No case is the concern map. Do stage 5 first.")
+        return
+    c = cases[cases["case_name"] == decided].iloc[0]
+    st.markdown(f"The concern map is the {model_name(c['model'])} choice: {c['description']}.")
+    clusters = query("SELECT cluster, topic, leaders, law, evid, gap, alt, terms, central FROM cluster_case_cluster"
+                     " WHERE case_name = ?", (decided,))
+    clusters = clusters.merge(query(q.CLUSTER_REACH, (decided,)), on="cluster")
+    clusters["main kind"] = [KINDS[i].upper() for i in clusters[list(KINDS)].to_numpy().argmax(1)]
+    clusters["words"] = [terms(t, 4) for t in clusters["terms"]]
+    metrics([("Clusters", int(c["clusters"]), "Step 15 writes one concern statement for each cluster."),
+             ("Topics", int(c["topics"]), None),
+             (f"Comments covered, of {int(c['gate_comments']):,}",
+              int(c["gate_comments"] - c["comments_unclustered"]),
+              "Gate-open comments with a substantive sentence in a cluster."),
+             ("Median comments", int(clusters["comments"].median()), "The median number of gate-open comments that hold a sentence of a cluster.")])
+
+    topics = query(q.CASE_TOPICS, (decided,)).merge(query(q.TOPIC_REACH, (decided,)), on="topic")
+    weight = clusters[list(KINDS)].mul(clusters["leaders"], axis=0).groupby(clusters["topic"]).sum()
+    topics["main kind"] = [KINDS[i].upper() for i in weight.loc[topics["topic"]].to_numpy().argmax(1)]
+    topics["topic "] = [f"Topic {t}: {terms(w, 4)}" for t, w in zip(topics["topic"], topics["terms"])]
+    st.markdown("**The topics, by the comments that they cover**")
+    st.caption("One bar for each topic. The length is the number of gate-open comments with a sentence in the topic."
+               " The colour is the gate kind of most of its sentences.")
+    chart(alt.Chart(topics).mark_bar().encode(
+        x=alt.X("comments:Q", title="gate-open comments"),
+        y=alt.Y("topic :N", sort="-x", title=None, axis=alt.Axis(labelLimit=420, labelOverlap=False)),
+        color=alt.Color("main kind:N", scale=KIND_SCALE),
+        tooltip=["topic :N", "clusters:Q", alt.Tooltip("comments:Q", format=","), "main kind:N"])
+          .properties(height=alt.Step(20)))
+
+    top = clusters.nlargest(30, "comments").copy()
+    top["cluster "] = [f"Cluster {n}: {w}" for n, w in zip(top["cluster"], top["words"])]
+    top["sentence"] = [(json.loads(s) or [""])[0] for s in top["central"]]
+    st.markdown("**The 30 clusters that the most comments hold**")
+    st.caption("One bar for each cluster. Point to a bar to read the most typical sentence of the cluster.")
+    chart(alt.Chart(top).mark_bar().encode(
+        x=alt.X("comments:Q", title="gate-open comments"),
+        y=alt.Y("cluster :N", sort="-x", title=None, axis=alt.Axis(labelLimit=420, labelOverlap=False)),
+        color=alt.Color("main kind:N", scale=KIND_SCALE),
+        tooltip=["cluster :N", "topic:Q", alt.Tooltip("comments:Q", format=","), "leaders:Q", "sentence:N"])
+          .properties(height=alt.Step(20)))
+
+    spread = query(q.COMMENT_SPREAD, (decided,))
+    st.markdown("**The clusters of each comment**")
+    st.caption("The number of clusters that hold a sentence of a comment. A comment in five clusters makes about five"
+               " claims.")
+    chart(alt.Chart(spread).mark_bar(color="#0072B2").encode(
+        x=alt.X("clusters:O", title="clusters that hold a sentence of the comment", axis=alt.Axis(labelAngle=0)),
+        y=alt.Y("comments:Q", title="gate-open comments"),
+        tooltip=["clusters:O", alt.Tooltip("comments:Q", format=",")]).properties(height=240))
+
+    with st.expander(f"All {len(clusters):,} clusters of the concern map"):
+        show(clusters.sort_values("comments", ascending=False)[
+            ["cluster", "topic", "comments", "leaders", "main kind", "words"]].rename(
+            columns={"leaders": "sentences"}))
+
+
+def tab_read(cases, current):
     names = list(cases["case_name"])
-    selected = st.session_state.get("step1_case")
+    selected = st.session_state.get("step1_case") or (current.iloc[0]["case_name"] if not current.empty else None)
     if selected in names and st.session_state.get("read_follows") != selected:
         st.session_state["read_case"] = names.index(selected)
         st.session_state["read_follows"] = selected
+    st.caption("The case selected in stage 4 opens here. Before you select a case, the concern map opens here.")
     i = st.selectbox("Case", range(len(cases)), index=len(cases) - 1,
                      format_func=lambda j: cases.iloc[j]["description"], key="read_case")
     c = cases.iloc[i]
@@ -366,7 +514,7 @@ def tab_read(cases):
                    " analysis or an alternative.")
         chart(alt.Chart(every).mark_bar().encode(
             x=alt.X("sum(leaders):Q", title="sentences"),
-            y=alt.Y("topic:O", title="topic", sort="ascending"),
+            y=alt.Y("topic:O", title="topic", sort="ascending", axis=alt.Axis(labelOverlap=False)),
             color=alt.Color("main kind:N", scale=KIND_SCALE, title="main kind"),
             tooltip=["topic:O", "main kind:N", alt.Tooltip("sum(leaders):Q", title="sentences")])
               .properties(height=alt.Step(18)))

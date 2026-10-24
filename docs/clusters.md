@@ -8,7 +8,7 @@ eis-analysis's model-free gate clustering. No generative model reads a comment i
 
 The steps run after `make score-model-free`. This page describes each step as it is built.
 
-To choose among the cases, read `docs/choosing-a-case.md`. The console's Topics page
+To choose among the cases, read `docs/topics-guide.md`. The console's Topics page
 shows the same guide. `docs/methods-clustering.md` explains each method, why it was
 chosen, and what the measurements show.
 
@@ -126,7 +126,7 @@ make choose CASE=<case> NOTE="why"                   # record the case as its mo
 make concern-map CASE=<case> NOTE="why"              # record one of the two choices as the concern map
 ```
 
-**The case set, the choice and the concern map.** `docs/choosing-a-case.md` gives the
+**The case set, the choice and the concern map.** `docs/topics-guide.md` gives the
 path in five stages. `make case-set MODEL=<model>` runs the nine cases of stage 3 for one
 model. `make choose` records a case as the choice of its embedding model in
 `cluster_case_choice`, with a note (stage 4). `make concern-map` records one of the two
