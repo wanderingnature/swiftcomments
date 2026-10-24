@@ -522,8 +522,8 @@ the share of words in the same order (Python's `difflib.SequenceMatcher` on the 
 **What the trial found.**
 
 1. Only temperature 0 gives the same statement in each run (with the cold-call
-   exception of the trials before). At 0.1, 20 of the 24 settings give a different
-   statement in each run.
+   exception of the trials before). At 0.1, 6 of the 8 settings (4 clusters, 2
+   methods) give a different statement in each run.
 2. At 0.1 and 0.2, most statements keep most of the words of the statement at 0
    (median 0.88 and 0.82). Some do not: the lowest is 0.40 at 0.1.
 3. Between 0.2 and 0.4, the statements move far: the median falls from 0.82 to 0.50.
