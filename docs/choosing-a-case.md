@@ -85,7 +85,14 @@ terminal, `make choose CASE=<case name> NOTE="..."` records the same choice.
 5. Read the table. The clusters that break the most are at the top.
 6. Open the clusters at the top in the **Read a case** tab, in both cases.
 7. Decide which case groups those sentences by claim better.
-8. If you change your decision, choose a different case for that model in step 1.
+8. Go to **The decision** at the bottom of the tab.
+9. Type a note that tells why you decided for the case.
+10. Click the button of that case. The case becomes the concern map.
+
+The concern map is the clustering that step 15 reads. Step 15 writes one concern
+statement for each cluster. Step 15 is not built yet. A new decision replaces the old
+decision. In a terminal, `make concern-map CASE=<case name> NOTE="..."` records the same
+decision. The case must be one of the two choices of step 1.
 
 The figures:
 
@@ -121,6 +128,7 @@ The figures:
 | Choice | The case that you record for a model in step 1, or with `make choose`. Step 2 compares the choices. |
 | Central sentence | The sentence of a cluster that is nearest to the centre of the cluster. It is the best example of the cluster. |
 | Cluster | A group of sentences that HDBSCAN found close together. It is one claim if the case is good. |
+| Concern map | The case that step 2 decides on. It is one of the two choices. Step 15 reads its clusters. |
 | Comment instruction | The instruction "retrieve the sentence from the agency's record that addresses the specific claim". The model makes a vector for that task. |
 | Comments not covered | Gate-open comments with no substantive sentence in a cluster. A substantive sentence opens the gate alone, or holds a whole-comment gate hit. A clustered subject line or thank-you line does not cover a comment. |
 | eom, leaf | Two ways for HDBSCAN to select clusters. eom keeps the clusters that last longest. leaf keeps the smallest clusters. |

@@ -6,8 +6,9 @@ Read a case opens one case from its topics to a cluster's sentences. Step 2
 sets two cases side by side, the two choices first.
 
 Every figure is read from data/roadless.sqlite through view.query, cached until
-the file changes. Nothing here runs a case: make clusters does. The one write is
-the choice (cluster_case_choice), the same write as make choose.
+the file changes. Nothing here runs a case: make clusters does. The two writes are
+the choice of step 1 (cluster_case_choice, as make choose) and the decision of
+step 2 (cluster_concern_map, as make concern-map).
 """
 import contextlib
 import json
@@ -183,6 +184,9 @@ def tab_step1(s, all_cases, choices):
                    + (f". Note: {mine.note}" if mine.note else ""))
     else:
         st.info(f"No case is chosen for {label} yet.")
+    if all_cases["model"].nunique() >= 2 and all(m in chosen for m in all_cases["model"].unique()):
+        st.markdown("Each model has a choice. Open the tab **Step 2: Compare the two choices** to decide between"
+                    " them.")
     picked = st.session_state.get("step1_case")
     if picked not in number:
         picked = mine.case_name if mine is not None else None
@@ -291,7 +295,7 @@ def _selected():
 
 
 def record_choice(case_name, note):
-    """The one write of the console: the selected case recorded as its model's choice (make choose)."""
+    """A write of the console: the selected case recorded as its model's choice (make choose)."""
     from scripts.clusters import cases as case_runs
     with contextlib.closing(db.connect(db.DB_PATH)) as conn:
         case_runs.choose(conn, case_name, note)
@@ -393,6 +397,64 @@ def tab_read(cases):
 
 
 def tab_compare(cases, choices):
+    st.markdown("**What to do in this step**")
+    st.markdown("1. Read the three figures and the two charts below. They show how far the two choices agree.\n"
+                "2. Read the table. The clusters that break the most are at the top.\n"
+                "3. Open those clusters in the **Read a case** tab, in both cases.\n"
+                "4. Decide which case groups the sentences by claim better.\n"
+                "5. Under **The decision** at the bottom of this tab, type a note and click the button of that"
+                " case.")
+    compare_two(cases, choices)
+    decision(cases, choices)
+
+
+def decision(cases, choices):
+    """Step 2's result: one of the two choices recorded as the concern map."""
+    st.subheader("The decision")
+    names = list(cases["case_name"])
+    current = query(q.CONCERN_MAP)
+    decided = current.iloc[0]["case_name"] if not current.empty else None
+    if decided in names:
+        r = current.iloc[0]
+        st.success(f"The concern map is the {model_label_of(cases, decided)} case:"
+                   f" {cases[cases['case_name'] == decided].iloc[0]['description']}"
+                   + (f". Note: {r['note']}" if r["note"] else ""))
+    else:
+        st.info("No case is the concern map yet.")
+    picked = [r for r in choices.itertuples() if r.case_name in names]
+    if len(picked) < 2:
+        st.caption("The decision needs a choice for each model. Choose them in step 1.")
+        return
+    note = st.text_input("Note: why this case", key="step2_note")
+    for col, r in zip(st.columns(len(picked)), picked):
+        c = cases[cases["case_name"] == r.case_name].iloc[0]
+        with col, st.container(border=True):
+            st.markdown(f"**The {model_name(r.model)} choice**")
+            st.caption(f"{c['description']}. {c['clusters']:,} clusters in {c['topics']:,} topics. The largest"
+                       f" cluster has {c['largest_cluster']:,} sentences. {c['comments_unclustered']:,} of"
+                       f" {c['gate_comments']:,} gate-open comments are not covered.")
+            if r.case_name == decided:
+                st.markdown("This case is the concern map.")
+            elif st.button(f"Use the {model_name(r.model)} case as the concern map", key=f"step2_use_{r.model}"):
+                record_concern_map(r.case_name, note.strip() or None)
+                st.rerun()
+    st.caption("The concern map is the clustering that the next step reads: step 15 writes one concern statement"
+               " for each cluster. Step 15 is not built yet. In a terminal, make concern-map CASE=<case name>"
+               " records the same decision.")
+
+
+def model_label_of(cases, case_name):
+    return cases[cases["case_name"] == case_name].iloc[0]["model_label"]
+
+
+def record_concern_map(case_name, note):
+    """A write of the console: the decided case recorded as the concern map (make concern-map)."""
+    from scripts.clusters import cases as case_runs
+    with contextlib.closing(db.connect(db.DB_PATH)) as conn:
+        case_runs.concern_map(conn, case_name, note)
+
+
+def compare_two(cases, choices):
     if len(cases) < 2:
         st.caption("Run a second case to compare two cases.")
         return

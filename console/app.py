@@ -8,8 +8,8 @@ score-model-compare run, and any two readings of any two runs side by side), Tab
 (any table or view, paged) and Query (SQL, read-only). It launches nothing: the
 steps run from make. The connection is opened with PRAGMA query_only, so no page
 or query can write the file, and reading while a step writes is safe under WAL.
-The one write is the Topics page's choice of a case (cluster_case_choice), the
-same write as make choose.
+The Topics page writes the choice of a case (cluster_case_choice, as make choose)
+and the concern map (cluster_concern_map, as make concern-map).
 
     make console            (uv run --group console streamlit run console/app.py)
 """

@@ -202,6 +202,16 @@ def test_choose_a_case_for_each_model(casefile, capsys):
     conn.close()
     with pytest.raises(SystemExit, match="no case 'nope'"):
         cases.main(["choose", "nope"])
+    # step 2: the concern map is one of the choices, and a new decision replaces the old
+    with pytest.raises(SystemExit, match="is not a choice of step 1"):
+        cases.main(["concern-map", first])
+    assert cases.main(["concern-map", bge]) == 0
+    assert cases.main(["concern-map", again, "--note", "groups by claim"]) == 0
+    assert f"make concern-map: {again} is the concern map" in capsys.readouterr().out
+    conn = db.connect(casefile)
+    assert [tuple(r) for r in conn.execute("SELECT one, case_name, note FROM cluster_concern_map")] == [
+        (1, again, "groups by claim")]
+    conn.close()
 
 
 def test_coverage_counts_substantive_sentences_only(casefile, capsys):

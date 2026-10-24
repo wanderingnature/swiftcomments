@@ -1303,3 +1303,13 @@ CREATE TABLE cluster_case_choice (
     note       TEXT,
     chosen_at  TEXT NOT NULL
 );
+
+-- The concern map (make concern-map, scripts/clusters/cases.py concern-map): step 2 of
+-- choosing a case decides between the two choices of step 1, and the decided case is the
+-- clustering that the later steps read. One row; a new decision replaces the old one.
+CREATE TABLE cluster_concern_map (
+    one        INTEGER PRIMARY KEY CHECK (one = 1),
+    case_name  TEXT NOT NULL,
+    note       TEXT,
+    decided_at TEXT NOT NULL
+);

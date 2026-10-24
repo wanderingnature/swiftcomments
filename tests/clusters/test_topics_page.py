@@ -104,6 +104,19 @@ def test_step_2_opens_on_the_two_choices(casefile):
     assert picked == {1, 2}      # the K=2 case of m and the BGE case
     shown = {m.label: m.value for m in at.tabs[3].metric}
     assert shown["Adjusted Rand"] == "1.0"
+    assert "Each model has a choice." in " ".join(m.value for m in at.tabs[1].markdown)
+    # the decision: one of the two choices becomes the concern map
+    assert "No case is the concern map yet." in [x.value for x in at.tabs[3].info]
+    at.text_input(key="step2_note").set_value("groups by claim")
+    at.button(key="step2_use_m").click()
+    at.run()
+    assert not at.exception, [e.value for e in at.exception]
+    conn = db.connect(casefile)
+    assert [tuple(r) for r in conn.execute("SELECT case_name, note FROM cluster_concern_map")] == [
+        ("opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0", "groups by claim")]
+    conn.close()
+    assert any(x.value.startswith("The concern map is the m case:") for x in at.tabs[3].success)
+    assert "This case is the concern map." in [m.value for m in at.tabs[3].markdown]
 
 
 def test_a_selected_case_is_chosen_with_the_button(casefile):

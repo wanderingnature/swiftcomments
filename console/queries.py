@@ -741,3 +741,5 @@ ORDER BY o.comment_id
 """
 
 CHOICES = "SELECT model, case_name, note, chosen_at FROM cluster_case_choice ORDER BY model"
+
+CONCERN_MAP = "SELECT case_name, note, decided_at FROM cluster_concern_map"
