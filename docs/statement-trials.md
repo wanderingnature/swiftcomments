@@ -660,3 +660,69 @@ Temperature 0.4:
 - `collapse`, run 3: Commenters assert that the proposal's justification for rescission based on wildfire and fuels management is contradicted by peer-reviewed research and the agency's own Draft EIS, which indicate that road construction increases human-caused ignition risk and that inventoried roadless areas have significantly lower fire ignition densities than roaded lands. Commenters request that the agency quantify the expected increase in human-caused ignitions resulting from new road access, reconcile the proposal with its own ignition data, and explain how the claimed benefits of increased access outweigh the documented increase in fire risk.
 
 <!-- end statements -->
+
+## Similarity 20261024_171659: the Qwen statements by their embeddings
+
+**The question.** The words move far above temperature 0.2. Does the meaning move too?
+
+**The settings.** `make statement-similarity` on trials 20261024_163447 (temperatures 0
+and 0.7) and 20261024_170736 (0.1, 0.2, 0.4): 120 statements, 91 different texts.
+Embedding model `text-embedding-qwen3-embedding-8b@f16` (LM Studio, local), the text
+alone. Each statement is compared with the reference statement of its cluster and
+method: the statement that the most runs at temperature 0 gave. File
+`trials/statements/similarity_20261024_171659.json`. Code `d2c72d5`.
+
+**The scale.** The cosine between the reference statements of two clusters (the
+`leaders` method; `collapse` is within 0.002):
+
+| Clusters | What they are | Cosine |
+|---|---|---|
+| 1 and 207 | the same concern: the wildfire reason against the data on roads and ignitions | 0.874 |
+| 1 and 52 | wildfire; the legal mix | 0.600 |
+| 52 and 207 | the legal mix; wildfire | 0.593 |
+| 52 and 104 | the legal mix; timber revenue | 0.586 |
+| 1 and 104 | wildfire; timber revenue | 0.537 |
+| 104 and 207 | timber revenue; wildfire | 0.510 |
+
+Thus two different concerns are at 0.51 to 0.60. One concern in two clusters is at 0.87.
+
+**Each temperature against the reference.** 24 statements at each temperature.
+
+| Temperature | Cosine, median | Cosine, lowest | Words, median | Words, lowest |
+|---|---|---|---|---|
+| 0 | 1.000 | 0.987 | 1.00 | 0.91 |
+| 0.1 | 0.989 | 0.826 | 0.88 | 0.40 |
+| 0.2 | 0.978 | 0.721 | 0.82 | 0.41 |
+| 0.4 | 0.917 | 0.734 | 0.50 | 0.19 |
+| 0.7 | 0.892 | 0.756 | 0.49 | 0.23 |
+
+| Cluster | 0 | 0.1 | 0.2 | 0.4 | 0.7 |
+|---|---|---|---|---|---|
+| 1 | 1.000 | 0.993 | 0.966 | 0.920 | 0.930 |
+| 52 | 1.000 | 0.982 | 0.947 | 0.860 | 0.881 |
+| 104 | 1.000 | 0.979 | 0.984 | 0.805 | 0.807 |
+| 207 | 1.000 | 1.000 | 0.992 | 0.949 | 0.934 |
+
+(Median cosine of each cluster at each temperature.)
+
+**What the measure found.**
+
+1. The meaning moves much less than the words. At 0.4 and 0.7 the words keep half of
+   the reference (median 0.50 and 0.49), but the cosine stays at 0.92 and 0.89.
+2. No statement at any temperature comes near another concern. The lowest cosine to
+   its own reference is 0.72. The highest cosine between two different concerns is
+   0.60.
+3. The lowest cosine, 0.72, is not a different concern. It is cluster 104 (`collapse`,
+   0.2, run 1): "Commenters contend that the projected annual revenue from expanded
+   timber harvesting is disproportionately low relative to the anticipated losses,
+   noting that the estimated $5.2 to $11.4 million in government revenue and $4.6 to
+   $10.6 million in industry revenue are based on a 5-10% harvest increase that the
+   agency itself deems unlikely to be fully realized due to budget, operability, and
+   market constraints." It has the same figures and the same point as the reference.
+   Thus a cosine of 0.72 can still be the same concern, and the margin between the same
+   concern and a different concern is small: 0.72 against 0.60.
+4. Up to 0.2, the median cosine stays at 0.98 or more.
+
+**For step 15.** Temperature 0 is still the choice, because it gives the same text from
+run to run. But the meaning of the statement does not depend much on the temperature:
+at 0.7 each statement is still nearer its own concern than any other concern is.

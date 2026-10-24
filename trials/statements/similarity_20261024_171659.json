@@ -1,0 +1,1554 @@
+{
+ "run_id": "20261024_171659",
+ "created_at": "2026-10-24T17:16:59+00:00",
+ "trials": [
+  "20261024_163447",
+  "20261024_170736"
+ ],
+ "case": "opening.plain.text-embedding-qwen3-embedding-8b-f16.m95.umap5.10-10-eom.all.p1.kauto.s0",
+ "embedding_model": "text-embedding-qwen3-embedding-8b@f16",
+ "embedding_base_url": "http://127.0.0.1:1234/v1",
+ "statements_embedded": 91,
+ "references": [
+  {
+   "cluster": 1,
+   "method": "collapse",
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission reconciles with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused ignition risk, and it must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard."
+  },
+  {
+   "cluster": 1,
+   "method": "leaders",
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission is consistent with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused wildfire ignition risk, and must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard."
+  },
+  {
+   "cluster": 52,
+   "method": "collapse",
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth and Ninth Circuits have already rejected the argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a uniform national standard."
+  },
+  {
+   "cluster": 52,
+   "method": "leaders",
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth Circuit in Wyoming v. USDA and the Ninth Circuit in California ex rel. Lockyer v. USDA have already rejected the argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a uniform national standard."
+  },
+  {
+   "cluster": 104,
+   "method": "collapse",
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints."
+  },
+  {
+   "cluster": 104,
+   "method": "leaders",
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints."
+  },
+  {
+   "cluster": 207,
+   "method": "collapse",
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite."
+  },
+  {
+   "cluster": 207,
+   "method": "leaders",
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite."
+  }
+ ],
+ "between_clusters": [
+  {
+   "method": "collapse",
+   "cluster_a": 1,
+   "cluster_b": 52,
+   "cosine": 0.5981
+  },
+  {
+   "method": "collapse",
+   "cluster_a": 1,
+   "cluster_b": 104,
+   "cosine": 0.5341
+  },
+  {
+   "method": "collapse",
+   "cluster_a": 1,
+   "cluster_b": 207,
+   "cosine": 0.8753
+  },
+  {
+   "method": "leaders",
+   "cluster_a": 1,
+   "cluster_b": 52,
+   "cosine": 0.5995
+  },
+  {
+   "method": "leaders",
+   "cluster_a": 1,
+   "cluster_b": 104,
+   "cosine": 0.5365
+  },
+  {
+   "method": "leaders",
+   "cluster_a": 1,
+   "cluster_b": 207,
+   "cosine": 0.8741
+  },
+  {
+   "method": "collapse",
+   "cluster_a": 52,
+   "cluster_b": 104,
+   "cosine": 0.5938
+  },
+  {
+   "method": "collapse",
+   "cluster_a": 52,
+   "cluster_b": 207,
+   "cosine": 0.5976
+  },
+  {
+   "method": "leaders",
+   "cluster_a": 52,
+   "cluster_b": 104,
+   "cosine": 0.5864
+  },
+  {
+   "method": "leaders",
+   "cluster_a": 52,
+   "cluster_b": 207,
+   "cosine": 0.5925
+  },
+  {
+   "method": "collapse",
+   "cluster_a": 104,
+   "cluster_b": 207,
+   "cosine": 0.5098
+  },
+  {
+   "method": "leaders",
+   "cluster_a": 104,
+   "cluster_b": 207,
+   "cosine": 0.5098
+  }
+ ],
+ "rows": [
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 1,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 2,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 3,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 1,
+   "concern": "The agency must reconcile its reliance on wildfire and fuels management as justifications for the rescission with its own data demonstrating that roads drive higher ignition rates, explaining how adding roads reduces fire risk when its analysis identifies roads as an accelerant rather than a solution.",
+   "cosine": 0.9506,
+   "words": 0.6988
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 2,
+   "concern": "The agency justifies the rescission on wildfire and fuels management grounds, yet its own data demonstrates that roads increase ignition rates rather than reduce fire risk, requiring the agency to reconcile this contradiction.",
+   "cosine": 0.9465,
+   "words": 0.4857
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 3,
+   "concern": "The agency must reconcile the use of wildfire and fuels management as a justification for rescission with its own data establishing that roads drive ignition rates, rather than reducing fire risk.",
+   "cosine": 0.915,
+   "words": 0.5
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 1,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 0.9939,
+   "words": 0.9333
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 2,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 3,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 1,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, rather than reducing fire risk.",
+   "cosine": 0.958,
+   "words": 0.6866
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 2,
+   "concern": "The agency must reconcile its reliance on wildfire and fuels management as a justification for the rescission with its own prior data demonstrating that roads drive ignition rates upward rather than reducing fire risk.",
+   "cosine": 0.9216,
+   "words": 0.5352
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 3,
+   "concern": "The agency must explain how it can justify the rescission on wildfire and fuels management grounds when its own data and findings establish that road construction increases ignition rates and acts as a fire accelerant rather than a solution.",
+   "cosine": 0.891,
+   "words": 0.3947
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 1,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 2,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 3,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 1,
+   "concern": "Commenters question the validity of the economic analysis, which projects only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry even under a fully realized, albeit unlikely, harvest scenario. They argue these modest figures are disproportionately low and cannot be honestly weighed against the projected losses to recreation, tourism, and broader economic benefits.",
+   "cosine": 0.7951,
+   "words": 0.4878
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 2,
+   "concern": "The projected economic benefits of expanded timber harvesting are minimal, limited to an estimated $5.2 to $11.4 million in annual revenue for the federal government and $4.6 to $10.6 million for the timber industry, and are contingent on full harvest realization in operable areas that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 0.8188,
+   "words": 0.5965
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 3,
+   "concern": "The proposed rule projects only modest annual revenue increases of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry, assuming a 5 to 10 percent increase in sawtimber harvest that the Department itself deems unlikely due to budget, operability, and market constraints. Commenters contend that these limited economic gains are disproportionately small and cannot honestly justify the broader losses to recreation, tourism, and local economies estimated in the billions of dollars.",
+   "cosine": 0.8327,
+   "words": 0.4493
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 1,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 2,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 3,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 1,
+   "concern": "The Department’s economic analysis projects a maximum annual revenue gain of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry, figures based on a 5-10% increase in harvest volume that the agency itself acknowledges is unlikely to be fully realized due to budget, operability, and market constraints.",
+   "cosine": 0.7721,
+   "words": 0.5614
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 2,
+   "concern": "Commenters assert that the projected annual timber revenue increments of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the industry are modest, conditional on unlikely full harvest realization due to budget, operability, and market constraints, and disproportionately small relative to the estimated economic and recreational losses from rescinding the rule.",
+   "cosine": 0.884,
+   "words": 0.487
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 3,
+   "concern": "Commenters assert that the estimated incremental revenue from expanded timber harvesting is disproportionately low relative to the projected economic losses to recreation and tourism, and that the agency's own analysis identifies the full realization of these revenue figures as unlikely due to budget, operability, and market constraints.",
+   "cosine": 0.7557,
+   "words": 0.3462
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 1,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth Circuit in Wyoming v. USDA and the Ninth Circuit in California ex rel. Lockyer v. USDA have already rejected the argument that forest-level planning is a sufficient substitute for a national rule, thereby rendering the proposed action arbitrary, capricious, and legally invalid.",
+   "cosine": 0.9867,
+   "words": 0.905
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 2,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth Circuit in Wyoming v. USDA and the Ninth Circuit in California ex rel. Lockyer v. USDA have already rejected the argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a uniform national standard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 3,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth Circuit in Wyoming v. USDA and the Ninth Circuit in California ex rel. Lockyer v. USDA have already rejected the argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a uniform national standard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 1,
+   "concern": "The proposed rescission violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because it fails to conduct a programmatic 'hard look' analysis of cumulative environmental impacts and improperly relies on fragmented, local forest plans that courts have already found insufficient to protect roadless areas, contrary to the holdings in Wyoming v. USDA and California ex rel. Lockyer v. USDA.",
+   "cosine": 0.876,
+   "words": 0.5
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 2,
+   "concern": "Commenters argue that the rescission of the 2001 Roadless Rule violates the National Environmental Policy Act (NEPA), the Administrative Procedure Act (APA), and the National Forest Management Act (NFMA) because the agency failed to conduct a programmatic 'hard look' at cumulative environmental impacts, inadequately analyzed greenhouse gas emissions, and improperly decentralized uniform national protections to local forest plans contrary to prior judicial holdings in Wyoming v. USDA and California ex rel. Lockyer v. USDA.",
+   "cosine": 0.9252,
+   "words": 0.55
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 3,
+   "concern": "The rescission proposal fails to satisfy the National Environmental Policy Act and other federal statutes, including the National Forest Management Act, the Endangered Species Act, and the National Historic Preservation Act, because it relies on decentralized local planning that has already been judicially rejected as inadequate for protecting roadless areas from cumulative environmental degradation.",
+   "cosine": 0.8324,
+   "words": 0.2286
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 1,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth and Ninth Circuits have already rejected the argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a uniform national standard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 2,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth and Ninth Circuits have already rejected the argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a uniform national standard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 3,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth and Ninth Circuits have already rejected the argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a uniform national standard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 1,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates NEPA, the NFMA, and the APA because it fails to take a 'hard look' at the cumulative environmental impacts of removing national protections, ignores the legal precedent that local planning is insufficient for this conservation issue, and disregards the agency's own findings and the extensive litigation history that established the rule's validity.",
+   "cosine": 0.8859,
+   "words": 0.4593
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 2,
+   "concern": "The rescission of the 2001 Roadless Rule is legally deficient because it fails to comply with the National Environmental Policy Act (NEPA) and the Administrative Procedure Act (APA) by inadequately analyzing the rule's environmental and species impacts, and it improperly substitutes a litigated national standard with fragmented local plans, contrary to the holdings in Wyoming v. USDA and California ex rel. Lockyer v. USDA that reject the agency's rationale for decentralization.",
+   "cosine": 0.8935,
+   "words": 0.2778
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 3,
+   "concern": "The rescission is legally invalid because it violates the National Environmental Policy Act, the National Forest Management Act, the Endangered Species Act, and the Administrative Procedure Act, fails to conduct the required programmatic 'hard look' at cumulative environmental impacts, and substitutes a decentralized planning model that courts have already rejected for inadequacy.",
+   "cosine": 0.8701,
+   "words": 0.4
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 1,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission is consistent with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused wildfire ignition risk, and must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 2,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission is consistent with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused wildfire ignition risk, and must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.0,
+   "run": 3,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission is consistent with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused wildfire ignition risk, and must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 1,
+   "concern": "New road construction in inventoried roadless areas will increase, rather than reduce, wildfire risk because roads are the primary vector for human-caused ignitions, which constitute the vast majority of wildfires and are significantly more frequent near roads than in roadless terrain. The agency must explain why it departs from its own findings that road density correlates with higher ignition rates and must quantitatively calculate the net increase in human-caused ignitions introduced by new road access to weigh against any claimed hazard reduction.",
+   "cosine": 0.8689,
+   "words": 0.3333
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 2,
+   "concern": "Commenters assert that the proposal’s wildfire and fuels management justifications contradict the best available science and the agency’s own data, which demonstrate that road construction increases human-caused ignition risk while inventorial roadless areas exhibit the lowest ignition densities; they request that the agency quantify the net increase in human-caused ignitions resulting from new road access and reconcile this risk with the claimed reduction in wildfire hazard.",
+   "cosine": 0.9038,
+   "words": 0.4219
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.7,
+   "run": 3,
+   "concern": "The agency must explain why it is departing from its own findings that human-caused ignition density is significantly higher on roaded lands than in inventoried roadless areas, and quantify the expected increase in human-caused ignitions resulting from new road construction to demonstrate that the net wildfire risk reduction from rescission outweighs the increased ignition risk.",
+   "cosine": 0.9237,
+   "words": 0.3932
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 1,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission reconciles with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused ignition risk, and it must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 2,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission reconciles with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused ignition risk, and it must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.0,
+   "run": 3,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission reconciles with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused ignition risk, and it must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 1,
+   "concern": "The agency must reconcile the proposal's reliance on wildfire and fuels management as a justification for rescission with its own Draft Environmental Impact Statement findings and peer-reviewed data, which demonstrate that increased road density correlates with a significantly higher incidence of human-caused wildfire ignitions, and must quantify the expected net increase in ignition risk from new road construction rather than asserting that roads reduce fire hazard.",
+   "cosine": 0.9554,
+   "words": 0.5669
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 2,
+   "concern": "The proposal justifies rescission on wildfire and fuels management grounds, but the agency's own draft EIS and peer-reviewed data show that new roads dramatically increase human-caused ignition risk; the agency must quantify this increase and explain how it reconciles the rescission with its own findings that roadless areas have significantly lower fire ignition densities.",
+   "cosine": 0.9354,
+   "words": 0.2957
+  },
+  {
+   "trial": "20261024_163447",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.7,
+   "run": 3,
+   "concern": "The proposal justifies rescission on wildfire and fuels management grounds, yet its own draft environmental impact statement and cited peer-reviewed data demonstrate that new road construction would significantly increase human-caused wildfire ignition risk, which the agency has failed to quantify or weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9422,
+   "words": 0.4909
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 1,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 2,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 3,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 1,
+   "concern": "The agency must reconcile the use of wildfire and fuels management as a justification for rescission with its own data showing that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 0.9665,
+   "words": 0.7895
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 2,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data showing that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 0.998,
+   "words": 0.973
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 3,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data showing that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 0.998,
+   "words": 0.973
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 1,
+   "concern": "The agency must reconcile its reliance on wildfire and fuels management as a justification for rescission with its own data and findings, which establish that road construction increases ignition rates and that roads drive fire risk rather than mitigate it.",
+   "cosine": 0.8994,
+   "words": 0.4675
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 2,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data, which demonstrates that roads increase ignition rates rather than reduce fire risk.",
+   "cosine": 0.9644,
+   "words": 0.6567
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 3,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 1,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 2,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads increase ignition rates, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 3,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 0.9939,
+   "words": 0.9333
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 1,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data showing that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 0.9895,
+   "words": 0.9067
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 2,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 0.9939,
+   "words": 0.9333
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 3,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data showing that roads drive ignition rates upward, explaining how adding roads reduces fire risk when its analysis indicates the opposite.",
+   "cosine": 0.9895,
+   "words": 0.9067
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 1,
+   "concern": "The agency must reconcile its justification for rescission based on wildfire and fuels management with its own data demonstrating that road construction increases ignition rates.",
+   "cosine": 0.9328,
+   "words": 0.6774
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 2,
+   "concern": "The agency must reconcile its reliance on wildfire and fuels management as a justification for rescission with its own data demonstrating that roads drive ignition rates upward.",
+   "cosine": 0.9047,
+   "words": 0.5625
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 207,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 3,
+   "concern": "The agency must reconcile its justification of the rescission based on wildfire and fuels management with its own data demonstrating that roads drive ignition rates upward, explaining how adding roads reduces fire risk when the record indicates they are the cause of ignition rather than the solution.",
+   "cosine": 0.9673,
+   "words": 0.7143
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 1,
+   "concern": "Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures that represent a modest 5-10% increase in harvest volume and are contingent on unlikely full realization due to budget, operability, and market constraints.",
+   "cosine": 0.9656,
+   "words": 0.7833
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 2,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 3,
+   "concern": "Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures that represent a modest 5-10% increase in harvest volume and are contingent on full operability that the agency itself deems unlikely due to budget, market, and physical constraints.",
+   "cosine": 0.9806,
+   "words": 0.8
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 1,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, a figure they argue is further diminished by the agency's own acknowledgment that full harvest is unlikely due to budget, operability, and market constraints.",
+   "cosine": 0.9738,
+   "words": 0.8167
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 2,
+   "concern": "Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, even under a full-harvest scenario that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 0.9987,
+   "words": 0.9825
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 3,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small and unlikely to be realized, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry based on a 5-10% increase in harvest volume that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 0.9939,
+   "words": 0.8361
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 1,
+   "concern": "The projected annual revenue gains from expanded timber harvesting are modest, capped at $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry, and are contingent on full harvest realization that the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 0.7337,
+   "words": 0.5143
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 2,
+   "concern": "Commenters contend that the projected annual revenue gains from expanded timber harvesting—estimated at $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry—are disproportionately small relative to the potential losses to recreation, tourism, and local economies, particularly because the Department itself acknowledges that full realization of these figures is unlikely due to budget, operability, and market constraints.",
+   "cosine": 0.7906,
+   "words": 0.4878
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 3,
+   "concern": "Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small and unlikely to be realized, citing the agency's own estimates that expanded timber harvesting would yield only $5.2 to $11.4 million annually in government revenue and $4.6 to $10.6 million in industry revenue, even under a maximum scenario that the Department acknowledges is improbable due to budget, operability, and market constraints.",
+   "cosine": 0.9743,
+   "words": 0.6179
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 1,
+   "concern": "Commenters assert that the projected annual timber revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry are disproportionately small relative to the estimated losses in recreation, tourism, and other ecosystem services, and that these figures are unreliable because they assume full harvest on all operable acres, a scenario the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 0.8263,
+   "words": 0.4921
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 2,
+   "concern": "Commenters contend that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures that represent a modest 5-10% increase in harvest volume and are acknowledged by the agency as unlikely to be fully realized due to budget, operability, and market constraints.",
+   "cosine": 0.9778,
+   "words": 0.784
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 3,
+   "concern": "Commenters argue that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures the agency itself acknowledges are unlikely to be fully realized due to budget, operability, and market constraints.",
+   "cosine": 0.9915,
+   "words": 0.8596
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 1,
+   "concern": "Commenters contend that the projected annual revenue from expanded timber harvesting is disproportionately low relative to the anticipated losses, noting that the estimated $5.2 to $11.4 million in government revenue and $4.6 to $10.6 million in industry revenue are based on a 5-10% harvest increase that the agency itself deems unlikely to be fully realized due to budget, operability, and market constraints.",
+   "cosine": 0.7207,
+   "words": 0.5042
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 2,
+   "concern": "Commenters assert that the projected economic benefits of rescinding the Roadless Rule are disproportionately small, estimating only $5.2 to $11.4 million in annual revenue to the Treasury and Forest Service and $4.6 to $10.6 million to the timber industry, figures the agency itself acknowledges are unlikely to be fully realized due to budget, operability, and market constraints.",
+   "cosine": 0.9943,
+   "words": 0.8772
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 3,
+   "concern": "Commenters assert that the projected annual timber revenue of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry is disproportionately small relative to the estimated losses to recreation and tourism, and that these figures are unreliable because they assume full harvest on all operable acres, a scenario the agency itself deems unlikely due to budget, operability, and market constraints.",
+   "cosine": 0.7971,
+   "words": 0.5082
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 1,
+   "concern": "Commenters assert that the proposed rule's economic analysis is flawed because it compares the modest, unlikely-to-be-realized annual revenue estimates of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry against the significantly larger projected costs and losses to recreation, tourism, and local economies.",
+   "cosine": 0.8186,
+   "words": 0.4364
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 2,
+   "concern": "Commenters contend that the projected economic benefits of rescinding the 2001 Roadless Rule are disproportionately small, noting that the estimated annual revenue gains of $5.2 to $11.4 million for the Treasury and Forest Service and $4.6 to $10.6 million for the timber industry are based on a 5 to 10 percent increase in sawtimber harvest that the agency itself acknowledges is unlikely to be fully realized due to budget, operability, and market constraints.",
+   "cosine": 0.9795,
+   "words": 0.6615
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 104,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 3,
+   "concern": "Commenters assert that the projected annual timber revenue gains of $5.2 to $11.4 million for the government and $4.6 to $10.6 million for the industry are disproportionately small relative to the broader economic and environmental costs of roadless area development, particularly given that the agency itself acknowledges these figures are unlikely to be fully realized due to budget, operability, and market constraints.",
+   "cosine": 0.792,
+   "words": 0.5042
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 1,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth and Ninth Circuits have already rejected the argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a uniform national standard.",
+   "cosine": 0.9934,
+   "words": 0.9057
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 2,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental impacts of removing national protections, a deficiency previously identified by the Ninth and Tenth Circuits when they vacated similar rollbacks and upheld the 2001 Rule as a necessary national standard that local forest-by-forest planning cannot adequately replace.",
+   "cosine": 0.9726,
+   "words": 0.6049
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 3,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth Circuit in Wyoming v. USDA held that the Forest Service has the authority to enact national conservation standards, rendering the proposed shift to fragmented, discretionary local forest plans legally insufficient and likely to generate further litigation.",
+   "cosine": 0.9797,
+   "words": 0.6705
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 1,
+   "concern": "Commenters contend that the proposed rescission violates the National Environmental Policy Act, the Administrative Procedure Act, the National Forest Management Act, and the National Historic Preservation Act by failing to conduct a programmatic 'hard look' at cumulative environmental impacts, including greenhouse gas emissions and historic properties, and by improperly substituting fragmented local planning for a national standard that courts have previously upheld.",
+   "cosine": 0.8004,
+   "words": 0.4054
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 2,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing nationwide protections, and because the Tenth and Ninth Circuits have already rejected the argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a national rule, thereby rendering the proposed action arbitrary, capricious, and legally invalid.",
+   "cosine": 0.9855,
+   "words": 0.8214
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 3,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth Circuit in Wyoming v. USDA and the Ninth Circuit in California ex rel. Lockyer v. USDA have already rejected the argument that forest-level planning is the appropriate vehicle for managing roadless areas, thereby rendering the proposed rule arbitrary, capricious, and legally invalid.",
+   "cosine": 0.9819,
+   "words": 0.8492
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 1,
+   "concern": "Commenters assert that the proposed rescission violates NEPA, the Endangered Species Act, the National Historic Preservation Act, and the Administrative Procedure Act by failing to adequately analyze cumulative environmental impacts, relying on a flawed legal theory for decentralization that has been rejected by federal courts, and ignoring the statutory mandate for minimum road systems.",
+   "cosine": 0.7804,
+   "words": 0.1857
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 2,
+   "concern": "Commenters assert that the rescission violates federal environmental and administrative laws, including NEPA, the APA, and NFMA, because the agency failed to take a 'hard look' at cumulative impacts and ignored prior court rulings (such as Wyoming v. USDA and California ex rel. Lockyer) that rejected forest-level planning as a sufficient substitute for national roadless protections.",
+   "cosine": 0.8617,
+   "words": 0.4225
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 3,
+   "concern": "The rescission proposal fails to comply with NEPA, the APA, and NFMA because it relies on a flawed legal theory that forest-level planning is the exclusive vehicle for roadless protection, a position rejected by the Tenth Circuit in Wyoming v. USDA, and it fails to conduct the required programmatic 'hard look' at the cumulative environmental, watershed, and climate impacts of dismantling a national standard that has been upheld by courts as a durable, congressionally supported stewardship mechanism.",
+   "cosine": 0.8585,
+   "words": 0.2577
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 1,
+   "concern": "Commenters assert that the proposed rescission violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act by failing to conduct a programmatic 'hard look' at cumulative environmental impacts, including greenhouse gas emissions and species effects, and by improperly substituting fragmented local forest plans for a uniform national standard, a legal approach previously rejected by the Tenth and Ninth Circuits in Wyoming v. USDA and California ex rel. Lockyer v. USDA.",
+   "cosine": 0.8325,
+   "words": 0.4295
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 2,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and climate impacts of removing national protections, and because the Tenth and Ninth Circuits have already rejected the argument that forest-level planning is the appropriate vehicle for managing roadless areas, rendering the proposed rule legally invalid and subject to vacatur.",
+   "cosine": 0.9852,
+   "words": 0.8235
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 3,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, historic, and climate impacts of removing national protections, and because the Tenth and Ninth Circuits have already rejected the agency's argument that forest-level planning is the appropriate vehicle for managing roadless areas, thereby rendering the proposed rule arbitrary, capricious, and legally invalid.",
+   "cosine": 0.9847,
+   "words": 0.8052
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 1,
+   "concern": "Commenters assert that the proposed rescission violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act by failing to conduct a programmatic 'hard look' at cumulative environmental impacts and by improperly substituting fragmented local planning for a nationally uniform standard, a legal framework previously rejected by the Tenth and Ninth Circuits in Wyoming v. USDA and California ex rel. Lockyer v. USDA.",
+   "cosine": 0.8457,
+   "words": 0.4539
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 2,
+   "concern": "The rescission of the 2001 Roadless Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental, cultural, and watershed impacts of removing national protections, and because the Tenth and Ninth Circuits have already rejected the agency's argument that decentralized, forest-by-forest planning is a legally sufficient substitute for a uniform national standard.",
+   "cosine": 0.9865,
+   "words": 0.9655
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 3,
+   "concern": "The rescission violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act because the agency failed to conduct a programmatic 'hard look' at the cumulative environmental impacts of removing national protections, and the Tenth and Ninth Circuits have already rejected the argument that forest-level planning is the appropriate vehicle for managing roadless areas.",
+   "cosine": 0.9124,
+   "words": 0.7727
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 1,
+   "concern": "Commenters argue that the proposed rescission violates NEPA, the APA, and the NFMA by failing to conduct a programmatic 'hard look' at cumulative environmental impacts, including greenhouse gas emissions and watershed degradation, and by improperly substituting fragmented local forest plans for a national standard that has been upheld in litigation.",
+   "cosine": 0.8123,
+   "words": 0.2927
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 2,
+   "concern": "The rescission of the 2001 Roadless Area Conservation Rule violates the National Environmental Policy Act (NEPA), the Administrative Procedure Act (APA), and the National Forest Management Act (NFMA) because the agency’s proposed decentralization to forest-level planning fails to conduct the required 'hard look' at cumulative environmental impacts, including greenhouse gas emissions and watershed degradation, and ignores binding judicial precedents that affirmed the necessity of a national rule over fragmented local plans.",
+   "cosine": 0.9228,
+   "words": 0.5
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 52,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 3,
+   "concern": "The rescission of the 2001 Roadless Rule violates the National Environmental Policy Act, the Administrative Procedure Act, and the National Forest Management Act by failing to conduct a programmatic 'hard look' at the cumulative environmental, historical, and ecological impacts of removing national protections, thereby substituting a legally insufficient, fragmented local planning process for a durable, congressionally supported national standard that has been upheld by the courts.",
+   "cosine": 0.9696,
+   "words": 0.6331
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 1,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission is consistent with its own Draft Environmental Impact Statement and peer-reviewed data demonstrating that road construction significantly increases human-caused wildfire ignition risk, and must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9993,
+   "words": 0.9355
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 2,
+   "concern": "The agency must explain how the proposal's reliance on wildfire risk reduction as a justification for rescission is consistent with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused wildfire ignition density, and must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9864,
+   "words": 0.9431
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.1,
+   "run": 3,
+   "concern": "Commenters assert that the proposal's justification for rescission based on wildfire and fuels management is contradicted by peer-reviewed research and the agency's own Draft Environmental Impact Statement, which indicate that road construction significantly increases the density of human-caused wildfire ignitions in roadless areas. They request that the agency quantify the expected increase in human-caused ignitions resulting from new road access and reconcile this increased ignition risk with the claimed benefits of improved fire suppression and hazard reduction.",
+   "cosine": 0.9233,
+   "words": 0.4029
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 1,
+   "concern": "The agency must explain how the proposal's justification for rescission based on wildfire and fuels management is reconciled with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused wildfire ignition risk, and must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9933,
+   "words": 0.9016
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 2,
+   "concern": "The proposal justifies rescission on wildfire and fuels management grounds, but the agency's own draft environmental impact statement and peer-reviewed data demonstrate that road construction increases human-caused ignition risk, creating a contradiction that the agency must reconcile by quantifying the net increase in ignitions from new roads against any claimed hazard reduction.",
+   "cosine": 0.9327,
+   "words": 0.5263
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.2,
+   "run": 3,
+   "concern": "The agency must explain how its justification for rescission based on wildfire and fuels management is consistent with its own Draft Environmental Impact Statement and peer-reviewed data demonstrating that road construction and increased access significantly increase the density and likelihood of human-caused wildfire ignitions, and must quantify the expected net increase in ignition risk from new roads against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9733,
+   "words": 0.6508
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 1,
+   "concern": "The proposal justifies rescission on the grounds that new roads will improve wildfire management and reduce hazard, yet the agency's own draft environmental impact statement and cited peer-reviewed research demonstrate that road construction significantly increases the risk of human-caused wildfire ignitions, with ignition densities on roaded lands ranging from four to eight times higher than in inventoried roadless areas. The agency must reconcile this contradiction by quantifying the expected increase in human-caused ignitions resulting from new road access and weighing that figure against any claimed reduction in wildfire hazard, rather than asserting a net benefit without evidence.",
+   "cosine": 0.9155,
+   "words": 0.4277
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 2,
+   "concern": "Commenters contend that the proposal's reliance on wildfire risk reduction to justify rescission is contradicted by the agency's own Draft EIS and peer-reviewed research, which demonstrate that road construction significantly increases human-caused ignition risk in currently protected areas. They request that the final EIS quantify the net increase in human-caused ignitions resulting from new road access and weigh this increased risk against any claimed reduction in wildfire hazard, rather than assuming roads function solely as fuel-reduction access points.",
+   "cosine": 0.904,
+   "words": 0.4857
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "leaders",
+   "temperature": 0.4,
+   "run": 3,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a rationale for rescission is consistent with its own data and prior findings that road construction increases human-caused ignition density, and must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9761,
+   "words": 0.8644
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 1,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission reconciles with its own draft environmental impact statement findings and peer-reviewed data demonstrating that road construction significantly increases human-caused ignition risk, and must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9989,
+   "words": 0.9836
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 2,
+   "concern": "The agency must explain how the proposal's reliance on wildfire and fuels management as a justification for rescission reconciles with its own draft environmental impact statement and peer-reviewed data demonstrating that road construction significantly increases human-caused ignition risk, and it must quantify the expected increase in human-caused ignitions from new road access to weigh against any claimed reduction in wildfire hazard.",
+   "cosine": 1.0,
+   "words": 1.0
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.1,
+   "run": 3,
+   "concern": "The proposal justifies rescission on wildfire and fuels management grounds, but the agency's own draft environmental impact statement and peer-reviewed data demonstrate that road construction increases human-caused ignition risk, creating a contradiction that the agency must resolve by quantifying the net increase in ignitions from new roads and explaining why it departs from its prior findings that roadless areas have significantly lower fire incidence.",
+   "cosine": 0.9478,
+   "words": 0.432
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 1,
+   "concern": "The proposal justifies rescission on the grounds that new roads will improve wildfire management and reduce hazard, but the agency's own draft environmental impact statement and peer-reviewed data demonstrate that road construction significantly increases human-caused ignition risk, with ignition densities in roaded areas being up to four to seven times higher than in inventoried roadless areas. The agency must explain why it departs from these findings, quantify the expected increase in human-caused ignitions resulting from new road access, and weigh that increase against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9604,
+   "words": 0.4933
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 2,
+   "concern": "The proposal justifies rescission on wildfire and fuels management grounds, but the agency's own draft environmental impact statement and peer-reviewed data show that road construction increases human-caused ignition risk, creating a contradiction that must be quantified and reconciled.",
+   "cosine": 0.929,
+   "words": 0.4444
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.2,
+   "run": 3,
+   "concern": "The agency must explain how the proposal's justification of rescission for wildfire and fuels management reconciles with its own draft EIS findings and peer-reviewed data showing that road construction significantly increases human-caused ignition risk, and must quantify the expected increase in ignitions from new road access to weigh against any claimed hazard reduction.",
+   "cosine": 0.9711,
+   "words": 0.7719
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 1,
+   "concern": "The agency must explain how the proposal’s justification of rescission for wildfire and fuels management is reconciled with its own draft environmental impact statement findings and peer-reviewed data demonstrating that new road construction significantly increases human-caused ignition risk, and must quantify the expected increase in human-caused ignitions from new road access to weigh it against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9873,
+   "words": 0.8361
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 2,
+   "concern": "Commenters assert that the proposal's justification of rescission on wildfire and fuels management grounds is contradicted by peer-reviewed research and the agency's own draft EIS data, which demonstrate that road construction significantly increases human-caused ignition density and that inventoried roadless areas experience substantially lower fire rates than roaded lands. They request that the agency quantify the expected increase in human-caused ignitions from new road access, reconcile the proposal with its own ignition data and prior findings, and explain how it weighs this increased ignition risk against any claimed reduction in wildfire hazard.",
+   "cosine": 0.9176,
+   "words": 0.4444
+  },
+  {
+   "trial": "20261024_170736",
+   "cluster": 1,
+   "method": "collapse",
+   "temperature": 0.4,
+   "run": 3,
+   "concern": "Commenters assert that the proposal's justification for rescission based on wildfire and fuels management is contradicted by peer-reviewed research and the agency's own Draft EIS, which indicate that road construction increases human-caused ignition risk and that inventoried roadless areas have significantly lower fire ignition densities than roaded lands. Commenters request that the agency quantify the expected increase in human-caused ignitions resulting from new road access, reconcile the proposal with its own ignition data, and explain how the claimed benefits of increased access outweigh the documented increase in fire risk.",
+   "cosine": 0.9219,
+   "words": 0.36
+  }
+ ],
+ "by_temperature": [
+  {
+   "temperature": 0.0,
+   "statements": 24,
+   "cosine_median": 1.0,
+   "cosine_lowest": 0.9867,
+   "words_median": 1.0,
+   "words_lowest": 0.905
+  },
+  {
+   "temperature": 0.1,
+   "statements": 24,
+   "cosine_median": 0.9889,
+   "cosine_lowest": 0.8263,
+   "words_median": 0.8826,
+   "words_lowest": 0.4029
+  },
+  {
+   "temperature": 0.2,
+   "statements": 24,
+   "cosine_median": 0.9778,
+   "cosine_lowest": 0.7207,
+   "words_median": 0.8191,
+   "words_lowest": 0.4054
+  },
+  {
+   "temperature": 0.4,
+   "statements": 24,
+   "cosine_median": 0.9165,
+   "cosine_lowest": 0.7337,
+   "words_median": 0.5021,
+   "words_lowest": 0.1857
+  },
+  {
+   "temperature": 0.7,
+   "statements": 24,
+   "cosine_median": 0.8922,
+   "cosine_lowest": 0.7557,
+   "words_median": 0.4864,
+   "words_lowest": 0.2286
+  }
+ ],
+ "by_cluster": [
+  {
+   "cluster": 1,
+   "temperature": 0.0,
+   "statements": 6,
+   "cosine_median": 1.0,
+   "cosine_lowest": 1.0,
+   "words_median": 1.0,
+   "words_lowest": 1.0
+  },
+  {
+   "cluster": 1,
+   "temperature": 0.1,
+   "statements": 6,
+   "cosine_median": 0.9927,
+   "cosine_lowest": 0.9233,
+   "words_median": 0.9393,
+   "words_lowest": 0.4029
+  },
+  {
+   "cluster": 1,
+   "temperature": 0.2,
+   "statements": 6,
+   "cosine_median": 0.9657,
+   "cosine_lowest": 0.929,
+   "words_median": 0.5886,
+   "words_lowest": 0.4444
+  },
+  {
+   "cluster": 1,
+   "temperature": 0.4,
+   "statements": 6,
+   "cosine_median": 0.9198,
+   "cosine_lowest": 0.904,
+   "words_median": 0.4651,
+   "words_lowest": 0.36
+  },
+  {
+   "cluster": 1,
+   "temperature": 0.7,
+   "statements": 6,
+   "cosine_median": 0.9295,
+   "cosine_lowest": 0.8689,
+   "words_median": 0.4075,
+   "words_lowest": 0.2957
+  },
+  {
+   "cluster": 52,
+   "temperature": 0.0,
+   "statements": 6,
+   "cosine_median": 1.0,
+   "cosine_lowest": 0.9867,
+   "words_median": 1.0,
+   "words_lowest": 0.905
+  },
+  {
+   "cluster": 52,
+   "temperature": 0.1,
+   "statements": 6,
+   "cosine_median": 0.9822,
+   "cosine_lowest": 0.8325,
+   "words_median": 0.7379,
+   "words_lowest": 0.4295
+  },
+  {
+   "cluster": 52,
+   "temperature": 0.2,
+   "statements": 6,
+   "cosine_median": 0.9471,
+   "cosine_lowest": 0.8004,
+   "words_median": 0.7971,
+   "words_lowest": 0.4054
+  },
+  {
+   "cluster": 52,
+   "temperature": 0.4,
+   "statements": 6,
+   "cosine_median": 0.8601,
+   "cosine_lowest": 0.7804,
+   "words_median": 0.3576,
+   "words_lowest": 0.1857
+  },
+  {
+   "cluster": 52,
+   "temperature": 0.7,
+   "statements": 6,
+   "cosine_median": 0.881,
+   "cosine_lowest": 0.8324,
+   "words_median": 0.4296,
+   "words_lowest": 0.2286
+  },
+  {
+   "cluster": 104,
+   "temperature": 0.0,
+   "statements": 6,
+   "cosine_median": 1.0,
+   "cosine_lowest": 1.0,
+   "words_median": 1.0,
+   "words_lowest": 1.0
+  },
+  {
+   "cluster": 104,
+   "temperature": 0.1,
+   "statements": 6,
+   "cosine_median": 0.9792,
+   "cosine_lowest": 0.8263,
+   "words_median": 0.792,
+   "words_lowest": 0.4921
+  },
+  {
+   "cluster": 104,
+   "temperature": 0.2,
+   "statements": 6,
+   "cosine_median": 0.9839,
+   "cosine_lowest": 0.7207,
+   "words_median": 0.8264,
+   "words_lowest": 0.5042
+  },
+  {
+   "cluster": 104,
+   "temperature": 0.4,
+   "statements": 6,
+   "cosine_median": 0.8053,
+   "cosine_lowest": 0.7337,
+   "words_median": 0.5092,
+   "words_lowest": 0.4364
+  },
+  {
+   "cluster": 104,
+   "temperature": 0.7,
+   "statements": 6,
+   "cosine_median": 0.807,
+   "cosine_lowest": 0.7557,
+   "words_median": 0.4874,
+   "words_lowest": 0.3462
+  },
+  {
+   "cluster": 207,
+   "temperature": 0.0,
+   "statements": 6,
+   "cosine_median": 1.0,
+   "cosine_lowest": 0.9939,
+   "words_median": 1.0,
+   "words_lowest": 0.9333
+  },
+  {
+   "cluster": 207,
+   "temperature": 0.1,
+   "statements": 6,
+   "cosine_median": 1.0,
+   "cosine_lowest": 0.9939,
+   "words_median": 1.0,
+   "words_lowest": 0.9333
+  },
+  {
+   "cluster": 207,
+   "temperature": 0.2,
+   "statements": 6,
+   "cosine_median": 0.9917,
+   "cosine_lowest": 0.9665,
+   "words_median": 0.92,
+   "words_lowest": 0.7895
+  },
+  {
+   "cluster": 207,
+   "temperature": 0.4,
+   "statements": 6,
+   "cosine_median": 0.9486,
+   "cosine_lowest": 0.8994,
+   "words_median": 0.667,
+   "words_lowest": 0.4675
+  },
+  {
+   "cluster": 207,
+   "temperature": 0.7,
+   "statements": 6,
+   "cosine_median": 0.9341,
+   "cosine_lowest": 0.891,
+   "words_median": 0.5176,
+   "words_lowest": 0.3947
+  }
+ ]
+}
