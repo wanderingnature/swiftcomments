@@ -165,7 +165,7 @@ and references the comments name, with the letters that name any one of them; an
 substance reading, the floor and the screen, with every scored comment filtered by
 band, gate, answerability, stance or dimension, each opening to its text and the
 evidence for its score. The Topics page takes you from the sentences to the concern map
-in five stages (`docs/choosing-a-case.md`). Five more look into the file: one comment as the analysis read
+in five stages (`docs/topics-guide.md`). Five more look into the file: one comment as the analysis read
 it and every row the steps hold about it, every comparison of the two substance
 readings, what every step has written so far, any table a hundred rows at a time, and
 SQL typed in. It launches nothing. Its one place that writes is the Topics page, which records the choices and the concern map. `docs/console.md` describes the

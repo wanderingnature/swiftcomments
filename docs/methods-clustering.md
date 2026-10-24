@@ -2,7 +2,7 @@
 
 This page explains how steps 10 to 14 group the substantive sentences into clusters and
 topics, why each method was chosen, and what the measurements show. `docs/clusters.md`
-explains how to run the steps. `docs/choosing-a-case.md` explains how to choose a case.
+explains how to run the steps. `docs/topics-guide.md` explains how to choose a case.
 `docs/background.md` gives the law and the established methods of de-duplication.
 The figures are those of the reference run of this repository, with their dates.
 
@@ -289,7 +289,7 @@ appear in its name.
 Each setting above changes the clusters. No value is correct before we look, and a run
 costs no money. So the steps do not fix the settings. Each run is a case. The file keeps
 every case with its settings, its git commit, the sentence build that it read, and its
-measures. A reader compares the cases and chooses one (`docs/choosing-a-case.md`).
+measures. A reader compares the cases and chooses one (`docs/topics-guide.md`).
 
 ### 10.2 The measures of a case
 
@@ -365,7 +365,7 @@ habitat and species, and timber production under the executive orders.
 
 - **No measure of truth.** The measures tell coverage, size and agreement. They do not
   tell if a cluster is one claim. A person must read the clusters
-  (`docs/choosing-a-case.md`, check 1). A hand-labelled set is the next measure to make.
+  (`docs/topics-guide.md`, check 1). A hand-labelled set is the next measure to make.
 - **One seed.** Each case uses one UMAP seed. The agreement between seeds of one setting is
   not yet measured.
 - **The names.** Class-based TF-IDF drops a word that one cluster alone uses. A name can

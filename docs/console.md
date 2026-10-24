@@ -71,11 +71,11 @@ letter and stance, opening to its text and its evidence (the rules' hits by dime
 with the words they matched; the model's rationale).
 
 **Topics.** The path from the sentences to the concern map, in five stages
-(`docs/choosing-a-case.md`). Status lines at the top show each stage as done, next or
+(`docs/topics-guide.md`). Status lines at the top show each stage as done, next or
 waiting, with its figure from the file. For the next stage, they show the command to run.
 
-- **Guide** shows `docs/choosing-a-case.md`: the five stages, the four checks, how to read
-  a case, the commands and the glossary.
+- **Guide** shows `docs/topics-guide.md`, with its screenshots: the five stages, the four
+  checks, how to read a case, what the reference run found, the commands and the glossary.
 - **Stage 4: Best case of each model** shows the cases of one model on a chart. Each point
   is a case, with its number from the table. A red ring marks a cluster of 1,000 or more
   sentences. A black ring marks the choice. Click a point to select the case. A note and a
@@ -85,7 +85,13 @@ waiting, with its figure from the file. For the next stage, they show the comman
   of its sentences that stays together. The most split clusters are at the top. Click a
   row to read the two clusters side by side. A note and a button under each choice record
   it as the concern map.
-- **Read a case** shows the case selected in stage 4, or another case. Charts show the
+- **What the stages found** shows the result of each stage. Stage 1: the gate-opening
+  sentences by gate kind, and how each gate-open comment shows in the sentences. Stage 2:
+  the vectors of each model and view. Stage 3: the cases of both models on one chart. The
+  concern map: its topics by the comments that they cover, the 30 clusters that the most
+  comments hold, and the number of clusters of each comment.
+- **Read a case** shows the case selected in stage 4, or the concern map if no case is
+  selected, or another case. Charts show the
   topics by gate kind, the cluster sizes, the topic cut and a map of the clusters. Each
   topic opens to its clusters, each with its most typical sentence. Open a cluster to
   read each of its sentences in full. A switch under a sentence lists the comments that

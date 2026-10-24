@@ -1,7 +1,8 @@
 """The console's Topics page (console/topics.py) through Streamlit's AppTest,
 over the case fixture: the status of the five stages, stage 4 (a case selected
 and chosen), Read a case (following the selected case; a sentence opening to its
-comments), and stage 5 (the two choices compared, one decided as the concern map).
+comments), stage 5 (the two choices compared, one decided as the concern map), and
+What the stages found (the figures and charts of each stage, the concern map's last).
 
     uv run pytest tests/clusters
 """
@@ -71,15 +72,13 @@ def test_stage_4_selects_and_chooses_a_case(casefile):
     assert cases.main(PCA_LEAF + ["--k", "2"]) == 0
     at = _topics()
     assert [t.label for t in at.tabs] == ["Guide", "Stage 4: Best case of each model", "Stage 5: Concern map",
-                                          "Read a case"]
+                                          "What the stages found", "Read a case"]
     stage4 = at.tabs[1]
     assert "No case is chosen for m." in [x.value for x in stage4.info]
     assert "Click a point on the chart to select a case." in [c.value for c in stage4.caption]
     table = stage4.dataframe[0].value
     assert list(table["case"]) == [1, 2] and list(table["chosen"]) == ["", ""]
-    assert list(table["description"]) == [
-        "m, comment view · gate-opening and whole-comment hit sentences · PCA, HDBSCAN 5/5 leaf · topics at the eigengap",
-        "m, comment view · gate-opening and whole-comment hit sentences · PCA, HDBSCAN 5/5 leaf · 2 topics"]
+    assert list(table["settings"]) == ["m · comment · opening+hits · PCA 5/5", "m · comment · opening+hits · PCA 5/5 · K=2"]
     assert "Stage 4 is not done." in at.tabs[2].info[0].value
     # a click on the chart's point sets step1_case; Read a case follows it
     at.session_state["step1_case"] = K2
@@ -96,12 +95,14 @@ def test_stage_4_selects_and_chooses_a_case(casefile):
     conn.close()
     assert any(x.value.startswith("The choice for m is case 2:") for x in at.tabs[1].success)
     assert list(at.tabs[1].dataframe[0].value["chosen"]) == ["", "yes"]
-    # the chart of the cases; the four of Read a case; once asked for, how alike the cases are
-    assert len(at.get("vega_lite_chart")) == 5
+    # the chart of the cases; four of What the stages found (no concern map yet); four of Read a case;
+    # once asked for, how alike the cases are
+    assert "No case is the concern map. Do stage 5 first." in [x.value for x in at.tabs[3].info]
+    assert len(at.get("vega_lite_chart")) == 9
     at.toggle(key="agreement_on").set_value(True)
     at.run()
     assert not at.exception, [e.value for e in at.exception]
-    assert len(at.get("vega_lite_chart")) == 6
+    assert len(at.get("vega_lite_chart")) == 10
 
 
 def test_stage_5_compares_the_two_choices_and_decides(casefile):
@@ -139,6 +140,12 @@ def test_stage_5_compares_the_two_choices_and_decides(casefile):
     assert any(x.value.startswith("The concern map is the m choice:") for x in at.tabs[2].success)
     assert "This case is the concern map." in [m.value for m in at.tabs[2].markdown]
     assert _lines(at)[4].startswith("**5. Concern map**: done.")
+    # What the stages found ends with the concern map; Read a case opens it
+    found = at.tabs[3]
+    assert any(m.value.startswith("The concern map is the m choice:") for m in found.markdown)
+    shown = {m.label: m.value for m in found.metric}
+    assert shown["Clusters"] == "6" and shown["Comments covered, of 158"] == "150"
+    assert at.selectbox(key="read_case").value == 1
 
 
 def test_read_a_case_opens_a_sentence_to_its_comments(casefile):
@@ -150,7 +157,7 @@ def test_read_a_case_opens_a_sentence_to_its_comments(casefile):
     conn.close()
     assert cases.main(PCA_LEAF) == 0
     at = _topics()
-    read = at.tabs[3]
+    read = at.tabs[4]
     labels = [e.label for e in read.expander]
     assert sum(1 for x in labels if x.startswith("Topic ")) == 2
     assert sum(1 for m in read.markdown if m.value.startswith("**Cluster ")) == 6
@@ -162,6 +169,6 @@ def test_read_a_case_opens_a_sentence_to_its_comments(casefile):
     toggles[0].set_value(True)
     at.run()
     assert not at.exception, [e.value for e in at.exception]
-    opened = [e for e in at.tabs[3].expander if e.label.startswith("c")]
+    opened = [e for e in at.tabs[4].expander if e.label.startswith("c")]
     assert len(opened) == 1 and "The whole letter of" in opened[0].label
     assert opened[0].markdown[0].value.startswith("The whole letter of ")

@@ -748,3 +748,29 @@ CONCERN_MAP = "SELECT case_name, note, decided_at FROM cluster_concern_map"
 # it; no vector is read).
 VECTORS = ("SELECT model, max(n) AS n FROM (SELECT model, instruction, count(*) AS n FROM sentence_embedding"
            " GROUP BY model, instruction) GROUP BY model ORDER BY model")
+
+VECTORS_BY_VIEW = ("SELECT model, instruction, count(*) AS n FROM sentence_embedding"
+                   " GROUP BY model, instruction ORDER BY model, instruction")
+
+# The gate-opening sentences of each gate kind (a sentence of two kinds counts in both).
+OPENING_KINDS = ("SELECT sum(law) AS LAW, sum(evid) AS EVID, sum(gap) AS GAP, sum(alt) AS ALT, count(*) AS n"
+                 " FROM gate_sentence_occurrence WHERE opens = 1")
+
+# The comments that hold a sentence of each cluster of one case.
+_CASE_COMMENTS = """
+FROM cluster_case_member m
+JOIN cluster_case_leader l ON l.case_name = m.case_name AND l.leader_key = m.leader_key
+JOIN gate_sentence_occurrence o ON o.text_key = l.text_key
+WHERE m.case_name = ? AND m.cluster > 0
+"""
+
+CLUSTER_REACH = ("SELECT m.cluster, count(DISTINCT o.comment_id) AS comments" + _CASE_COMMENTS
+                 + " GROUP BY m.cluster")
+
+TOPIC_REACH = ("SELECT c.topic, count(DISTINCT o.comment_id) AS comments" + _CASE_COMMENTS.replace(
+    "JOIN gate_sentence_occurrence", "JOIN cluster_case_cluster c ON c.case_name = m.case_name"
+    " AND c.cluster = m.cluster\nJOIN gate_sentence_occurrence") + " GROUP BY c.topic")
+
+# The comments by the number of clusters that hold one of their sentences.
+COMMENT_SPREAD = ("SELECT clusters, count(*) AS comments FROM (SELECT o.comment_id, count(DISTINCT m.cluster)"
+                  " AS clusters" + _CASE_COMMENTS + " GROUP BY o.comment_id) GROUP BY clusters ORDER BY clusters")
