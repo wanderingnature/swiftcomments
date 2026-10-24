@@ -114,8 +114,17 @@ def test_stage_5_compares_the_two_choices_and_decides(casefile):
     assert lines[3].startswith("**4. Best case of each model**: done.")
     assert lines[4] == "**5. Concern map**: **next**. Not decided."
     stage5 = at.tabs[2]
-    assert "First choice" in stage5.markdown[1].value and "Second choice" in stage5.markdown[1].value
     assert not [s for s in stage5.selectbox]           # no other case can be picked here
+    # the table of the first choice's clusters, and the most split one beside its match
+    assert len(stage5.dataframe[0].value) == 6
+    sides = [m.value for m in stage5.markdown if m.value.startswith(("**BGE-large-en-v1.5 cluster ", "**m cluster "))]
+    assert sides[0].startswith("**BGE-large-en-v1.5 cluster ") and sides[1].startswith("**m cluster ")
+    # a click on a row (what the table's selection sets) shows that cluster
+    other = int(stage5.dataframe[0].value["BGE-large-en-v1.5 cluster"].iloc[3])
+    at.session_state["stage5_cluster"] = other
+    at.run()
+    assert any(m.value.startswith(f"**BGE-large-en-v1.5 cluster {other}** (25)") for m in at.tabs[2].markdown)
+    stage5 = at.tabs[2]
     shown = {m.label: m.value for m in stage5.metric}
     assert shown["Adjusted Rand"] == "1.0" and shown["Clusters kept together"] == "6 of 6"
     assert "No case is the concern map." in [x.value for x in stage5.info]

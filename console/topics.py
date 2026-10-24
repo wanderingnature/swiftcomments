@@ -2,8 +2,9 @@
 map, in five stages (docs/choosing-a-case.md). The status lines at the top show
 each stage done, next or waiting. Four tabs: Guide (docs/choosing-a-case.md);
 Stage 4, the cases of one model on a chart, a click selecting a case and a
-button recording it as the model's choice; Stage 5, the two choices compared and
-a button for each recording it as the concern map; Read a case, one case from
+button recording it as the model's choice; Stage 5, the two choices compared, a
+click on a cluster showing it beside the other choice's cluster, and a button for
+each choice recording it as the concern map; Read a case, one case from
 its topics to a cluster's sentences and the comments that hold them.
 
 Every figure is read from data/roadless.sqlite through view.query, cached until
@@ -438,15 +439,18 @@ def tab_stage5(cases, choices, current):
     if len(picked) < 2:
         st.info("Stage 4 is not done. Choose a case for each model in the tab Stage 4 first.")
         return
-    st.markdown("**What to do here**\n\n"
-                "1. Read the three numbers.\n"
-                "2. Read the table. The second choice splits the clusters at the top most.\n"
-                "3. Open two or three of these clusters in the tab **Read a case**, in both choices.\n"
-                "4. Decide which choice keeps one claim in each cluster.\n"
-                "5. Type a note and click **Use this case as the concern map** under that choice.")
     first = cases[cases["case_name"] == picked[0].case_name].iloc[0]
     second = cases[cases["case_name"] == picked[1].case_name].iloc[0]
-    st.markdown(f"**First choice**: {first['description']}  \n**Second choice**: {second['description']}")
+    left_name, right_name = model_name(first["model"]), model_name(second["model"])
+    st.markdown("**What to do here**\n\n"
+                "The two choices group the same sentences. This tab shows where they group them differently.\n\n"
+                "1. In the table, click a row near the top. The top rows are where the two choices differ most.\n"
+                f"2. Read the two clusters under the table: the {left_name} cluster on the left, the {right_name}"
+                " cluster on the right.\n"
+                "3. Note which side makes one claim.\n"
+                "4. Do steps 1 to 3 for three or four rows.\n"
+                "5. Under the choice that made one claim more often, type a note and click **Use this case as the"
+                " concern map**.")
     with open_db() as conn:
         a = case_compare.labels(conn, first["case_name"])
         b = case_compare.labels(conn, second["case_name"])
@@ -454,59 +458,69 @@ def tab_stage5(cases, choices, current):
             "SELECT cluster, terms FROM cluster_case_cluster WHERE case_name = ?", (n,))}
             for n in (first["case_name"], second["case_name"])}
     m = case_compare.compare(a, b)
-    metrics([("Clustered by both", m["clustered_both"],
-              f"The first choice clusters {m['clustered_first']:,} sentences, the second {m['clustered_second']:,}."),
-             ("Adjusted Rand", m["ari"] if m["ari"] is not None else "-",
-              "How alike the two choices cluster the same sentences. 1: the same clusters. Near 0: different"
-              " clusters."),
-             ("Clusters kept together", f"{m['clusters_80']} of {len(m['crossing'])}",
-              "Clusters of the first choice with 80% or more of their sentences in one cluster of the second.")])
     crossing = pd.DataFrame(m["crossing"])
-    if not crossing.empty:
-        left, right = st.columns(2)
-        with left:
-            st.markdown("**How much of each cluster stays together**")
-            st.caption("The clusters of the first choice, by the part of their sentences in one cluster of the"
-                       " second choice. Bars right of the line: the cluster stays together.")
-            dist = pd.DataFrame({"share": crossing["share"] * 100})
-            chart(alt.layer(
-                alt.Chart(dist).mark_bar(color="#0072B2").encode(
-                    x=alt.X("share:Q", bin=alt.Bin(step=5), title="part in one cluster of the second choice (%)"),
-                    y=alt.Y("count():Q", title="clusters of the first choice")),
-                alt.Chart(pd.DataFrame({"x": [80]})).mark_rule(color="#D55E00", strokeDash=[4, 3]).encode(x="x:Q"))
-                  .properties(height=260))
-        with right:
-            st.markdown("**Where the 20 largest clusters go**")
-            st.caption("Rows: the 20 largest clusters of the first choice. Columns: the clusters of the second"
-                       " choice. One dark cell in a row: the cluster stays together.")
-            top = list(crossing.sort_values("sentences", ascending=False)["cluster"][:20])
-            cells = {}
-            for k, ca in a.items():
-                if ca in top and b.get(k, 0) > 0:
-                    cells[(ca, b[k])] = cells.get((ca, b[k]), 0) + 1
-            size = dict(zip(crossing["cluster"], crossing["sentences"]))
-            heat = pd.DataFrame([(f"{ca}", f"{cb}", n / size[ca]) for (ca, cb), n in cells.items()],
-                                columns=["first", "second", "share"])
-            if not heat.empty:
-                heat = heat[heat["share"] >= 0.05]
-                chart(alt.Chart(heat).mark_rect().encode(
-                    x=alt.X("second:N", title="cluster of the second choice", sort=None),
-                    y=alt.Y("first:N", title="cluster of the first choice", sort=[str(t) for t in top]),
-                    color=alt.Color("share:Q", scale=alt.Scale(domain=[0, 1], scheme="greens"), title="part"),
-                    tooltip=["first:N", "second:N", alt.Tooltip("share:Q", format=".0%")])
-                      .properties(height=alt.Step(16)))
-        st.caption("Each row is a cluster of the first choice. \"Part\": the part of its sentences in one cluster"
-                   " of the second choice. The clusters that the second choice splits most are at the top.")
-        show(pd.DataFrame({
-            "cluster": crossing["cluster"],
-            "terms": crossing["cluster"].map(names_of[first["case_name"]]),
-            "sentences": crossing["sentences"],
-            "goes mostly to": crossing["best_second"],
-            "part": [f"{s:.0%}" for s in crossing["share"]],
-            "its terms": crossing["best_second"].map(names_of[second["case_name"]]),
-            "in no cluster there": crossing["noise_in_second"],
-        }).iloc[crossing["share"].argsort(kind="stable")])
+    if crossing.empty:
+        st.caption(f"The {left_name} choice has no cluster.")
+        decision(cases, picked, current)
+        return
+    crossing = crossing.iloc[crossing["share"].argsort(kind="stable")].reset_index(drop=True)
+    order = list(crossing["cluster"])
+    st.subheader("Where the two choices differ")
+    st.caption(f"One row for each {left_name} cluster. \"Kept together\": the part of its sentences that the"
+               f" {right_name} choice puts in one cluster. A low part means that {right_name} splits the cluster.")
+    st.dataframe(pd.DataFrame({
+        f"{left_name} cluster": crossing["cluster"],
+        "its words": crossing["cluster"].map(names_of[first["case_name"]]),
+        "sentences": crossing["sentences"],
+        "kept together": [f"{s:.0%}" for s in crossing["share"]],
+        f"{right_name} cluster": crossing["best_second"],
+        "its words ": crossing["best_second"].map(names_of[second["case_name"]]),
+        f"in no {right_name} cluster": crossing["noise_in_second"],
+    }), hide_index=True, width="stretch", height=320, key="stage5_table", on_select=lambda: _row(order),
+        selection_mode="single-row")
+    cluster = st.session_state.get("stage5_cluster")
+    if cluster not in order:
+        cluster = order[0]
+    row = crossing[crossing["cluster"] == cluster].iloc[0]
+    other = int(row["best_second"])
+    left, right = st.columns(2)
+    with left:
+        leader_rows(first["case_name"], int(cluster), f"{left_name} cluster {cluster}", "stage5_left")
+    with right:
+        if other:
+            leader_rows(second["case_name"], other, f"{right_name} cluster {other}", "stage5_right")
+            st.caption(f"This cluster holds {row['share']:.0%} of the sentences of {left_name} cluster {cluster}."
+                       f" {int(row['noise_in_second']):,} of them are in no {right_name} cluster.")
+        else:
+            st.markdown(f"**{right_name}**")
+            st.caption(f"The {right_name} choice puts the sentences of {left_name} cluster {cluster} in no"
+                       " cluster.")
+
+    with st.expander("How far the two choices agree overall"):
+        metrics([("Clustered by both", m["clustered_both"],
+                  f"{left_name} clusters {m['clustered_first']:,} sentences, {right_name} {m['clustered_second']:,}."),
+                 ("Adjusted Rand", m["ari"] if m["ari"] is not None else "-",
+                  "How alike the two choices cluster the same sentences. 1: the same clusters. Near 0: different"
+                  " clusters."),
+                 ("Clusters kept together", f"{m['clusters_80']} of {len(crossing)}",
+                  f"{left_name} clusters with 80% or more of their sentences in one {right_name} cluster.")])
+        dist = pd.DataFrame({"share": crossing["share"] * 100})
+        st.caption(f"The {left_name} clusters, by the part of their sentences in one {right_name} cluster. Bars"
+                   " right of the line: the cluster stays together.")
+        chart(alt.layer(
+            alt.Chart(dist).mark_bar(color="#0072B2").encode(
+                x=alt.X("share:Q", bin=alt.Bin(step=5), title=f"part in one {right_name} cluster (%)"),
+                y=alt.Y("count():Q", title=f"{left_name} clusters")),
+            alt.Chart(pd.DataFrame({"x": [80]})).mark_rule(color="#D55E00", strokeDash=[4, 3]).encode(x="x:Q"))
+              .properties(height=240))
     decision(cases, picked, current)
+
+
+def _row(order):
+    """The table's click: the clicked row's cluster becomes the cluster shown side by side."""
+    rows = st.session_state["stage5_table"]["selection"]["rows"]
+    if rows:
+        st.session_state["stage5_cluster"] = order[rows[0]]
 
 
 def decision(cases, picked, current):

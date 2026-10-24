@@ -99,19 +99,23 @@ noise passes put almost every sentence in a cluster, but some clusters then mix 
 
 ## Stage 5: Concern map
 
-Go to the tab **Stage 5: Concern map**. The tab shows the two choices of stage 4.
+Go to the tab **Stage 5: Concern map**. The two choices group the same sentences. The tab
+shows where they group them differently.
 
-1. Read the three numbers at the top.
-2. Read the table. Each row is a cluster of the first choice. The second choice splits
-   the clusters at the top of the table most.
-3. Open two or three of these clusters in **Read a case**, in both choices.
-4. Decide which choice keeps one claim in each cluster.
-5. Type a note that tells why.
-6. Click **Use this case as the concern map** under that choice.
+1. In the table, click a row near the top. The top rows are where the two choices differ
+   most.
+2. Read the two clusters under the table: the cluster of the first choice on the left, the
+   matching cluster of the second choice on the right.
+3. Note which side makes one claim.
+4. Do steps 1 to 3 for three or four rows.
+5. Under the choice that made one claim more often, type a note and click **Use this case
+   as the concern map**.
 
 A new decision replaces the old decision.
 
-The three numbers:
+Each row of the table is a cluster of the first choice. "Kept together" is the part of
+its sentences that the second choice puts in one cluster. A low part means that the second
+choice splits the cluster. "How far the two choices agree overall" gives three numbers:
 
 - **Clustered by both**: the sentences that both choices put in a cluster. The other two
   numbers use these sentences only.
