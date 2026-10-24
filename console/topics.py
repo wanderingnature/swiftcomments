@@ -214,7 +214,7 @@ def tab_step1(s, all_cases, choices):
                         legend=alt.Legend(title="view (shape)")),
         opacity=alt.condition(select, alt.value(0.9), alt.value(0.25)),
         tooltip=tip).add_params(select)
-    numbers = alt.Chart(pts).mark_text(align="left", dx=9, dy=-9, fontSize=11).encode(x=x, y=y, text="number:Q")
+    numbers = alt.Chart(pts).mark_text(align="left", dx=17, dy=-15, fontSize=12, fontWeight="bold").encode(x=x, y=y, text="number:Q")
     big = pts[pts["largest cluster"] >= CATCH_ALL]
     rings = alt.Chart(big).mark_point(shape="circle", size=520, filled=False, color="#d62728",
                                       strokeWidth=2).encode(x=x, y=y, tooltip=tip)
