@@ -14,7 +14,7 @@ DB  := data/roadless.sqlite
 
 .PHONY: help all schema schema-add corpus fetch dedup ngrams ner tag floor groups screen \
         stance stance-runs score-model score-model-free assemble rate text attachments orgs \
-        facts check console jump extract score-model-compare sentences embed clusters cases compare-cases choose cases-remeasure
+        facts check console jump extract score-model-compare sentences embed clusters cases compare-cases choose concern-map cases-remeasure
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
@@ -126,6 +126,9 @@ cases-remeasure:  ## count the coverage of every stored case again from its stor
 
 choose:  ## CASE=<case> [NOTE="..."]: record the case as the choice of its embedding model (step 1 of docs/choosing-a-case.md)
 	$(PY) scripts/clusters/cases.py choose "$(CASE)" $(if $(NOTE),--note "$(NOTE)")
+
+concern-map:  ## CASE=<case> [NOTE="..."]: record one of the two choices as the concern map (step 2 of docs/choosing-a-case.md)
+	$(PY) scripts/clusters/cases.py concern-map "$(CASE)" $(if $(NOTE),--note "$(NOTE)")
 
 check:  ## every figure of the method beside checks/expected.json
 	$(PY) checks/check.py

@@ -8,10 +8,12 @@
     uv run python scripts/clusters/cases.py compare CASE_A CASE_B
     uv run python scripts/clusters/cases.py choose CASE [--note TEXT]
     uv run python scripts/clusters/cases.py remeasure
+    uv run python scripts/clusters/cases.py concern-map CASE [--note TEXT]
     make clusters [SENTENCES=... VIEW=... MERGE=... REDUCTION=... MCS=... MS=... SELECTION=... STRUCTURE=... PASSES=... K=... SEED=...]
     make cases
     make compare-cases A=<case> B=<case>
     make choose CASE=<case> [NOTE="..."]
+    make concern-map CASE=<case> [NOTE="..."]
 
 The steps are code with no model call, so their choices are run as cases and
 compared, not decided beforehand. A case is one value on each axis:
@@ -84,6 +86,18 @@ def choose(conn, case_name: str, note: str | None) -> str:
                      " VALUES (?, ?, ?, ?)",
                      (row[0], case_name, note, datetime.now(timezone.utc).isoformat(timespec="seconds")))
     return row[0]
+
+
+def concern_map(conn, case_name: str, note: str | None) -> None:
+    """Record the case as the concern map: step 2 decides between the choices of step 1, so
+    the case has to be one of them. A new decision replaces the old."""
+    chosen = {r[0] for r in conn.execute("SELECT case_name FROM cluster_case_choice")}
+    if case_name not in chosen:
+        raise SystemExit(f"{case_name!r} is not a choice of step 1: make choose records one for each model first")
+    with conn.transaction():
+        conn.execute("INSERT OR REPLACE INTO cluster_concern_map (one, case_name, note, decided_at)"
+                     " VALUES (1, ?, ?, ?)",
+                     (case_name, note, datetime.now(timezone.utc).isoformat(timespec="seconds")))
 
 
 def model_slug(model: str) -> str:
@@ -368,6 +382,14 @@ def cmd_choose(a: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_concern_map(a: argparse.Namespace) -> int:
+    conn = db.connect(db.DB_PATH)
+    concern_map(conn, a.case, a.note)
+    conn.close()
+    print(f"make concern-map: {a.case} is the concern map")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -397,6 +419,10 @@ def main(argv: list[str] | None = None) -> int:
     ch.add_argument("case")
     ch.add_argument("--note", help="why it was chosen")
     ch.set_defaults(fn=cmd_choose)
+    cm = sub.add_parser("concern-map", help="record one of the two choices as the concern map (step 2)")
+    cm.add_argument("case")
+    cm.add_argument("--note", help="why it was decided")
+    cm.set_defaults(fn=cmd_concern_map)
     a = ap.parse_args(argv)
     return int(a.fn(a))
 

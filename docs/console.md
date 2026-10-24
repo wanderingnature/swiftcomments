@@ -4,9 +4,9 @@ A browser of `data/roadless.sqlite`: what the analysis found, and what the steps
 wrote. It is not the analysis: the nine steps run from `make`, and the console
 launches nothing. It opens the file with SQLite's `query_only` pragma, so nothing
 typed into it can write, and it can be open while a step is writing (the file is in
-write-ahead-log mode; readers do not block the writer or wait for it). The one write
-is the choice of a clustering case on the Topics page. It is the same write as
-`make choose`.
+write-ahead-log mode; readers do not block the writer or wait for it). The Topics page
+writes two things: the choice of a case for each model (the same write as `make choose`)
+and the concern map (the same write as `make concern-map`).
 
 ```
 make console
@@ -88,11 +88,13 @@ steps: the best case of each model, then the two choices compared.
   cluster. Each of its sentences is a card with the full text. A switch on the card lists
   the comments that hold the sentence, and each comment opens to its full text. The
   sentences in no cluster show in the same way.
-- **Step 2: Compare the two choices** opens on the two chosen cases. It shows the
-  sentences that both cluster, the adjusted Rand index and the clusters kept together.
-  Two charts show how the clusters of the first case hold together, and where its 20
-  largest clusters go. A table gives each cluster of the first case with the cluster of
-  the second that holds most of its sentences.
+- **Step 2: Compare the two choices** opens on the two chosen cases. Numbered steps at the
+  top tell what to do. It shows the sentences that both cluster, the adjusted Rand index
+  and the clusters kept together. Two charts show how the clusters of the first case hold
+  together, and where its 20 largest clusters go. A table gives each cluster of the first
+  case with the cluster of the second that holds most of its sentences. "The decision" at
+  the bottom has a button for each choice. The button records that case as the concern
+  map.
 
 The other five look into the file.
 
