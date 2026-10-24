@@ -80,9 +80,11 @@ waiting, with its figure from the file. For the next stage, they show the comman
   is a case, with its number from the table. A red ring marks a cluster of 1,000 or more
   sentences. A black ring marks the choice. Click a point to select the case. A note and a
   button record the selected case as the model's choice.
-- **Stage 5: Concern map** shows the two choices of stage 4, and no other case. It shows
-  how far they agree: three numbers, two charts and a table of the clusters of the first
-  choice. A note and a button under each choice record it as the concern map.
+- **Stage 5: Concern map** shows the two choices of stage 4, and no other case. A table
+  gives each cluster of the first choice, the matching cluster of the second, and the part
+  of its sentences that stays together. The most split clusters are at the top. Click a
+  row to read the two clusters side by side. A note and a button under each choice record
+  it as the concern map.
 - **Read a case** shows the case selected in stage 4, or another case. Charts show the
   topics by gate kind, the cluster sizes, the topic cut and a map of the clusters. Each
   topic opens to its clusters, each with its most typical sentence. Open a cluster to
