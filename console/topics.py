@@ -30,9 +30,9 @@ SENTENCES = {"opening": "gate-opening sentences",
              "all": "every sentence"}
 KINDS = ("law", "evid", "gap", "alt")
 CATCH_ALL = 1000
-MODEL_COLOURS = ["#c6863d", "#2f6b4e", "#4c78a8", "#9e4a6e"]
+MODEL_COLOURS = ["#D55E00", "#0072B2", "#009E73", "#CC79A7"]   # Okabe-Ito: told apart, also by colour-blind readers
 VIEW_SHAPES = ["square", "circle", "triangle-up"]
-KIND_SCALE = alt.Scale(domain=["LAW", "EVID", "GAP", "ALT"], range=["#4c78a8", "#2f6b4e", "#c6863d", "#9e4a6e"])
+KIND_SCALE = alt.Scale(domain=["LAW", "EVID", "GAP", "ALT"], range=["#0072B2", "#E69F00", "#009E73", "#CC79A7"])
 
 
 def short(c):
@@ -328,7 +328,7 @@ def tab_read(cases):
     with right:
         st.markdown("**The cluster sizes**")
         st.caption("Most clusters should be small. A bar far to the right is a catch-all cluster.")
-        chart(alt.Chart(every).mark_bar(color="#2f6b4e").encode(
+        chart(alt.Chart(every).mark_bar(color="#0072B2").encode(
             x=alt.X("leaders:Q", bin=alt.Bin(maxbins=40), title="sentences in the cluster"),
             y=alt.Y("count():Q", title="clusters"),
             tooltip=[alt.Tooltip("count():Q", title="clusters")]).properties(height=260))
@@ -339,7 +339,7 @@ def tab_read(cases):
             gaps["cut"] = gaps["topics"] == int(c["topics"])
             chart(alt.Chart(gaps).mark_bar().encode(
                 x=alt.X("topics:O", title="number of topics"), y=alt.Y("gap:Q", title="eigengap"),
-                color=alt.condition("datum.cut", alt.value("#c6863d"), alt.value("#9e9e9e")),
+                color=alt.condition("datum.cut", alt.value("#D55E00"), alt.value("#BBBBBB")),
                 tooltip=["topics:O", alt.Tooltip("gap:Q", format=".4f")]).properties(height=180))
 
     st.subheader("The map of the clusters")
@@ -428,10 +428,10 @@ def tab_compare(cases, choices):
                    " second. Bars to the right of the line stay together.")
         dist = pd.DataFrame({"share": crossing["share"] * 100})
         chart(alt.layer(
-            alt.Chart(dist).mark_bar(color="#2f6b4e").encode(
+            alt.Chart(dist).mark_bar(color="#0072B2").encode(
                 x=alt.X("share:Q", bin=alt.Bin(step=5), title="share in one cluster of the second case (%)"),
                 y=alt.Y("count():Q", title="clusters of the first case")),
-            alt.Chart(pd.DataFrame({"x": [80]})).mark_rule(color="#c6863d", strokeDash=[4, 3]).encode(x="x:Q"))
+            alt.Chart(pd.DataFrame({"x": [80]})).mark_rule(color="#D55E00", strokeDash=[4, 3]).encode(x="x:Q"))
               .properties(height=260))
     with right:
         st.markdown("**Where the largest clusters go**")
