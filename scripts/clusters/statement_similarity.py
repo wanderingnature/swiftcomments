@@ -21,6 +21,9 @@ One JSON file, trials/statements/similarity_<run_id>.json: the trials, the embed
 model, every statement with both measures, and the median and the lowest of each
 measure for each temperature, and for each cluster and temperature. Nothing is written
 to the analysis file.
+
+For scale, the file also holds the cosine between the reference statements of every
+two clusters of one method: how close two different concerns are.
 """
 from __future__ import annotations
 
@@ -107,6 +110,10 @@ def main(argv: list[str] | None = None) -> None:
                      "temperature": x["temperature"], "run": x["run"], "concern": x["concern"],
                      "cosine": round(float(vecs[x["concern"]] @ vecs[ref]), 4),
                      "words": round(words(x["concern"], ref), 4)})
+    keys = sorted(refs)
+    between = [{"method": a[1], "cluster_a": a[0], "cluster_b": b[0],
+                "cosine": round(float(vecs[refs[a]] @ vecs[refs[b]]), 4)}
+               for i, a in enumerate(keys) for b in keys[i + 1:] if a[1] == b[1]]
     by_temp = summarise(rows, ("temperature",))
     by_cluster = summarise(rows, ("cluster", "temperature"))
     run_id = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
@@ -114,7 +121,7 @@ def main(argv: list[str] | None = None) -> None:
               "trials": args.trials, "case": cases.pop(), "embedding_model": model, "embedding_base_url": base,
               "statements_embedded": len(texts),
               "references": [{"cluster": c, "method": m, "concern": t} for (c, m), t in sorted(refs.items())],
-              "rows": rows, "by_temperature": by_temp, "by_cluster": by_cluster}
+              "between_clusters": between, "rows": rows, "by_temperature": by_temp, "by_cluster": by_cluster}
     path = OUT / f"similarity_{run_id}.json"
     path.write_text(json.dumps(record, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"{len(texts)} distinct statements embedded by {model}")
@@ -126,6 +133,9 @@ def main(argv: list[str] | None = None) -> None:
     for s in by_cluster:
         print(f"{s['cluster']:<8} {s['temperature']:<12g} {s['cosine_median']:<14} {s['cosine_lowest']:<7}"
               f" {s['words_median']}")
+    print("between the reference statements of two clusters (same method)")
+    for b in between:
+        print(f"  {b['method']:<9} {b['cluster_a']:>4} - {b['cluster_b']:<4} {b['cosine']}")
     print(f"wrote {path.relative_to(_REPO)}")
 
 
