@@ -258,8 +258,10 @@ These limits apply to any automated reader, by code or by model.
 
 ## 8. Future work
 
-1. **A hand-labelled set.** Two people code a sample sentence by sentence. Then measure
-   each reading against people, not against another instrument.
+1. **A person-coded labelled set.** `seeds/labelled_set.jsonl` is a first labelled set:
+   374 items coded by two frontier models under one guide, with the disagreements ruled
+   by hand (gate kappa 0.740 between the coders). Coding by two people remains future
+   work. Then measure each reading against people, not against another instrument.
 2. **Precision and recall for each rule** on that set.
 3. **The stability of the clusters.** Run one setting with different seeds and report the
    adjusted Rand index between the runs. `make compare-cases` measures it between cases.

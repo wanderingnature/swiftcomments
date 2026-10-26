@@ -161,6 +161,55 @@ The four gate dimensions follow the regulation. GAP and EVID are issues and new
 information. ALT is an alternative. LAW is compliance with law, which 7 CFR 1b.11(53)
 makes substantive by definition.
 
+### 4.1 The four prongs
+
+7 CFR 1b.11(53) names four things that substantive information informs. Each is a prong,
+and each prong is a 0-or-1 column beside the gate, computed from the dimension levels in
+the assembly (`make assemble`, or `make prongs` on stored rows). The mapping is the same
+for both readings:
+
+| Prong | The regulation's words | Opens when |
+|---|---|---|
+| `impacts` | the consideration of reasonably foreseeable impacts | GAP 2+ or EVID 2+ |
+| `significance` | the resulting significance determination | GAP 3 |
+| `alternatives` | decisions on how to proceed (the alternatives) | ALT 2+ |
+| `compliance` | compliance with applicable laws, executive orders, and regulations | LAW 2 |
+
+Two identities pin the mapping, and the tests enforce both. The union of the four prongs
+equals the gate $g$ of section 4 on every comment. The answerability levels of section 6
+derive from the prongs: A1 from `compliance`; A2 from `significance`, from
+`alternatives`, or from `impacts` with a mechanism and a citation. `significance` is a
+subset of `impacts` by construction; its count is the figure of interest, not its
+clusters. Each prong keeps a basis column (`prong_*_basis`) naming the dimension and the
+unit that opened it.
+
+**The counts (2026-10-26, the model reading's rated population, 57,277 comments).** The
+gate set is 4,846 comments: `impacts` 4,291 (88.5% of the gate set), `compliance` 1,727
+(35.6%), `significance` 536 (11.1%), `alternatives` 295 (6.1%). The combinations:
+
+| Combination | Comments |
+|---|---|
+| impacts only | 2,614 |
+| impacts + compliance | 942 |
+| compliance only | 503 |
+| impacts + significance | 307 |
+| impacts + significance + compliance | 185 |
+| impacts + alternatives | 127 |
+| impacts + alternatives + compliance | 72 |
+| alternatives only | 47 |
+| impacts + significance + alternatives | 24 |
+| all four | 20 |
+| alternatives + compliance | 5 |
+
+**What the compliance-only count is not.** A reading test
+(`seeds/prong_reading.jsonl`: 50 compliance-only and 50 impacts-only comments, two
+model coders blind to the columns, the disagreements ruled by hand) found the assigned
+prong a right description of what the comment asks for 49 of the 50 impacts-only
+comments, but only 6 of the 50 compliance-only comments (coder kappa on the measure
+0.918). The compliance-only comments cite a law or an order, but almost all of them ask
+the agency to weigh impacts. `compliance` counts citations; its single-prong count does
+not identify the comments a response answers by a legal reading.
+
 ## 5. Three ways to read a comment
 
 The rules read a unit. A comment can be read as one unit or as many sentences.
@@ -236,6 +285,23 @@ The comments that v3 opens and the rules do not are the failure that matters. Wh
 has the fewest of them and opens the most extra comments; sentence mode has the most;
 hybrid mode lies between.
 
+**Agreement by prong (2026-10-26, the 7,588 comments both readings read directly).**
+One combined kappa averages four different failure modes. The prongs of section 4.1
+separate them:
+
+| Gate | Kappa | Precision | Recall | Rules open | v3 open |
+|---|---|---|---|---|---|
+| `impacts` | 0.451 | 0.583 | 0.944 | 4,883 | 3,016 |
+| `significance` | −0.001 | 0.000 | 0.000 | 4 | 510 |
+| `alternatives` | 0.148 | 0.171 | 0.179 | 245 | 235 |
+| `compliance` | 1.000 | 0.999 | 1.000 | 1,642 | 1,641 |
+| combined gate | 0.485 | 0.640 | 0.972 | 5,326 | 3,508 |
+
+`compliance` agrees because LAW is mechanical on both sides: the same citation and
+authority tables decide it. `significance` is the rules' largest miss: the rules reach
+GAP 3 on 4 comments where v3 reaches it on 510, so the rules have no working
+significance reading. `impacts` and `alternatives` are where rule work goes next.
+
 The rule reading of law depends on the citation and authority tables, so `make tag` must
 run before this step.
 
@@ -254,8 +320,11 @@ Two inputs of the rules are not read.
 
 ## 10. Limits
 
-- The rules are compared with another instrument, not with people. Agreement with v3 is
-  not accuracy. A hand-labelled set is the next measure to make.
+- The rules are compared with another instrument and with the labelled set
+  (`seeds/labelled_set.jsonl`): 374 items coded by two frontier models under one guide,
+  the disagreements ruled by hand (gate kappa 0.740 between the coders). Agreement with
+  v3 or with coders is still not accuracy in the full sense; a person-coded set remains
+  to be made.
 - The word lists are written by hand (`scripts/model_free/vocab/`). A list misses the
   words it does not contain.
 - The scheme is the v3 scheme. Its definitions of the eight dimensions are a choice, made

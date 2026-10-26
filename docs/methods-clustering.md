@@ -228,6 +228,14 @@ as law, as evidence and as a missing analysis.
 cluster, against 73% clustered together. The comments with no sentence in a cluster fell
 from 1,838 to 1,652 (BGE) and from 1,880 to 1,610 (Qwen).
 
+**By prong, measured and not adopted (2026-10-26).** A case can also cluster by the
+prongs of `docs/methods-scoring.md`, section 4.1 (`STRUCTURE=by-prong`). At the
+reference settings the prong clusters are not tighter than the kind clusters: mean
+tightness 0.7834 against 0.7908 (Qwen) and 0.7446 against 0.7562 (BGE), with fewer
+clusters (285 and 286 against 349 and 340) and more comments not covered (1,747 and
+1,696 against 1,635 and 1,618). The prongs describe the gate set as columns and counts;
+the clusters stay by gate kind. The cases are kept.
+
 ## 8. The topics
 
 The topics group the clusters by subject.
@@ -260,6 +268,20 @@ $$c_k \cdot c_l = \lVert \mu \rVert^2 + \mu \cdot (\epsilon_k + \epsilon_l) + \e
 
 When $\lVert \mu \rVert$ is large, every pair looks similar, and the term that tells
 subjects apart, $\epsilon_k \cdot \epsilon_l$, is a small part of the cosine.
+
+**The sentence-level correction, tested and bounded (2026-10-25).** The same removal can
+run on the sentence vectors before the merge and the clustering (`TOP=D`: the mean
+subtracted, the top $D$ principal components removed, unit length restored; $D = 0$ is
+the centring alone). Measured on the `opening` selection at the reference settings: the
+first principal component explains 0.088 (Qwen) and 0.074 (BGE) of the variance and the
+spectrum is flat after it, so the corpus has no single dominant shared direction. The
+centring alone (`TOP=0`) helps: 14% more clusters on Qwen (237), a smaller largest
+cluster (318 against 386), and BGE's 2,664-leader catch-all gone; it is the
+default for new cases. Removing components ($D \ge 1$) harms: the sentences of known
+subject clusters land in other clusters, not in noise — the Tribal-consultation
+cluster's best-match share falls to 0.25 at $D = 1$ (Qwen) and the ignition cluster's to
+0.32 at $D = 2$. Past the mean, the components carry subject, so $D \ge 1$ is refuted.
+The centroid removal of this section stays.
 
 **Why the eigengap.** If the graph had $k$ separate components, the eigenvalue 0 would
 occur $k$ times, and $\lambda_{k+1}$ would be above 0. In a connected graph, perturbation
@@ -365,7 +387,9 @@ habitat and species, and timber production under the executive orders.
 
 - **No measure of truth.** The measures tell coverage, size and agreement. They do not
   tell if a cluster is one claim. A person must read the clusters
-  (`docs/topics-guide.md`, check 1). A hand-labelled set is the next measure to make.
+  (`docs/topics-guide.md`, check 1). The labelled set (`seeds/labelled_set.jsonl`)
+  measures the gate instruments, not the clusters; a coded sample of the clusters
+  remains to be made.
 - **Seed sensitivity, measured.** Over seeds 0 to 4 at the reference settings with the
   vectors centred (`TOP=0`), the mean adjusted Rand index between two seeds of one
   setting is 0.645 on the Qwen vectors (lowest pair 0.437) and 0.757 on BGE (lowest
