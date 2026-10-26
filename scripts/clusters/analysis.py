@@ -36,6 +36,25 @@ def unit(V: np.ndarray) -> np.ndarray:
     return V / (np.linalg.norm(V, axis=1, keepdims=True) + 1e-9)
 
 
+def all_but_the_top(V: np.ndarray, d: int) -> tuple[np.ndarray, list[float]]:
+    """All-but-the-top (Mu and Viswanath 2018) on unit vectors: the mean removed,
+    the top `d` principal components removed, unit length again. `d` 0 is the
+    centring alone. Fitted on the rows given — the case's own selection, not the
+    corpus. Returns the corrected vectors and the share of variance of each of
+    the top 10 components, a case measure whatever `d` is."""
+    from sklearn.decomposition import PCA
+    k = min(d + 10, len(V) - 1, V.shape[1])
+    if k < max(d, 1):
+        raise SystemExit(f"--top {d}: only {max(k, 0)} component(s) exist for {len(V)} vectors")
+    C = V - V.mean(0)
+    p = PCA(k, random_state=0).fit(C)
+    shares = [round(float(x), 4) for x in p.explained_variance_ratio_[:10]]
+    if d > 0:
+        U = p.components_[:d]
+        C = C - (C @ U.T) @ U
+    return unit(C), shares
+
+
 def leader_merge(V: np.ndarray, copies: np.ndarray, texts: list[str], thresh: float) -> np.ndarray:
     """Each row's leader index (itself for a leader). Most-copied first (ties by
     text), each unabsorbed row leads and absorbs every unabsorbed row at or above

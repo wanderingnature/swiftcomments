@@ -2,14 +2,14 @@
 """The clustering cases: steps 12 to 14, the clusters, the topics and their names.
 
     uv run python scripts/clusters/cases.py run [--sentences opening|opening+hits|all] [--view comment|plain|topic]
-        [--merge 0.98] [--reduction pca50|umap5] [--min-cluster-size N] [--min-samples N]
+        [--merge 0.98] [--top D] [--reduction pca50|umap5] [--min-cluster-size N] [--min-samples N]
         [--selection eom|leaf] [--structure all|by-kind] [--noise-passes N] [--k N] [--seed N] [--model M]
     uv run python scripts/clusters/cases.py list
     uv run python scripts/clusters/cases.py compare CASE_A CASE_B
     uv run python scripts/clusters/cases.py choose CASE [--note TEXT]
     uv run python scripts/clusters/cases.py remeasure
     uv run python scripts/clusters/cases.py concern-map CASE [--note TEXT]
-    make clusters [SENTENCES=... VIEW=... MERGE=... REDUCTION=... MCS=... MS=... SELECTION=... STRUCTURE=... PASSES=... K=... SEED=...]
+    make clusters [SENTENCES=... VIEW=... MERGE=... TOP=... REDUCTION=... MCS=... MS=... SELECTION=... STRUCTURE=... PASSES=... K=... SEED=...]
     make cases
     make compare-cases A=<case> B=<case>
     make choose CASE=<case> [NOTE="..."]
@@ -23,6 +23,9 @@ compared, not decided beforehand. A case is one value on each axis:
     view        the vectors read (make embed VIEW=)
     merge       near-copies at this cosine or more collapsed into one leader first, most-copied
                 first; 0 for none
+    top         all-but-the-top: the mean of the case's vectors removed, the top D principal
+                components removed, unit length again, before the merge; 0 for the centring
+                alone; unset for no correction
     reduction   pca50 (PCA to 50) or umap5 (UMAP to 5: 15 neighbours, min_dist 0, cosine)
     HDBSCAN     min_cluster_size, min_samples, selection eom or leaf
     structure   all: one clustering; by-kind: one clustering for each gate kind (LAW, EVID, GAP, ALT)
@@ -110,7 +113,8 @@ def case_name(a: argparse.Namespace) -> str:
     merge = f"m{int(round(a.merge * 100))}" if a.merge > 0 else "m0"
     return (f"{a.sentences}.{a.view}.{model_slug(a.model)}.{merge}.{a.reduction}"
             f".{a.min_cluster_size}-{a.min_samples}-{a.selection}"
-            f".{a.structure}.p{a.noise_passes}.k{a.k or 'auto'}.s{a.seed}")
+            f".{a.structure}.p{a.noise_passes}.k{a.k or 'auto'}.s{a.seed}"
+            + (f".top{a.top}" if a.top is not None else ""))
 
 
 def resolve_model(conn, view: str, model: str | None) -> str:
@@ -211,6 +215,10 @@ def run_case(conn, a: argparse.Namespace) -> dict:
     name = case_name(a)
     srun = conn.execute("SELECT max(run_id) FROM gate_sentence_run").fetchone()[0]
     keys, texts, occ, kinds, V = load(conn, a.sentences, a.view, model)
+    top_variance = None
+    if a.top is not None:
+        V, shares = an.all_but_the_top(V, a.top)
+        top_variance = json.dumps(shares)
     leader = an.leader_merge(V, occ, texts, a.merge)
     lead = np.flatnonzero(leader == np.arange(len(keys)))
     pos = {int(i): j for j, i in enumerate(lead)}
@@ -265,13 +273,14 @@ def run_case(conn, a: argparse.Namespace) -> dict:
         for t in TABLES:
             conn.execute(f"DELETE FROM {t} WHERE case_name = ?", (name,))
         conn.execute(
-            "INSERT INTO cluster_case VALUES (" + ",".join("?" * 31) + ")",
+            "INSERT INTO cluster_case VALUES (" + ",".join("?" * 33) + ")",
             (name, a.sentences, a.view, model, a.merge, a.reduction, a.min_cluster_size, a.min_samples, a.selection,
              a.structure, a.noise_passes, a.k, a.seed, srun, head, dirty,
              datetime.now(timezone.utc).isoformat(timespec="seconds"), round(time.time() - t0, 1),
              m["input_sentences"], m["occurrences"], m["leaders"], m["clusters"], m["topics"], m["eigengaps"],
              m["leaders_clustered"], m["occurrences_clustered"], m["largest_cluster"], m["gate_comments"],
-             m["comments_unclustered"], m["opening_occurrences"], m["opening_occurrences_clustered"]))
+             m["comments_unclustered"], m["opening_occurrences"], m["opening_occurrences_clustered"],
+             a.top, top_variance))
         conn.executemany("INSERT INTO cluster_case_leader VALUES (?,?,?)",
                          [(name, keys[i], keys[int(leader[i])]) for i in range(len(keys))])
         member = {}
@@ -306,6 +315,8 @@ def run_case(conn, a: argparse.Namespace) -> dict:
 def cmd_run(a: argparse.Namespace) -> int:
     if a.merge < 0 or a.merge >= 1:
         raise SystemExit("--merge is a cosine below 1, or 0 for none")
+    if a.top is not None and a.top < 0:
+        raise SystemExit("--top is 0 or more: the components removed, 0 for the centring alone")
     conn = db.connect(db.DB_PATH)
     a.model = resolve_model(conn, a.view, a.model)
     print(f"make clusters: case {case_name(a)}", flush=True)
@@ -398,6 +409,9 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--view", choices=sorted(VIEWS), default="comment")
     r.add_argument("--model", help="the embedding model, when vectors of more than one are in the file")
     r.add_argument("--merge", type=float, default=0.0, help="leader-merge cosine; 0 for none")
+    r.add_argument("--top", type=int, default=None,
+                   help="all-but-the-top: components removed from the vectors before the merge;"
+                        " 0 for the centring alone (default: no correction)")
     r.add_argument("--reduction", choices=("pca50", "umap5"), default="umap5")
     r.add_argument("--min-cluster-size", type=int, default=10)
     r.add_argument("--min-samples", type=int, default=10)

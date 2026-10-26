@@ -10,9 +10,10 @@ scripts/entity_tagging/load_references.py in `make tag`.
     uv run python scripts/make_schema.py --add      # adds to an existing file what it lacks
 
 --add creates, in the existing file, every table, index and view of the schema
-the file does not have, and nothing else: no row is read, written or deleted,
-and a table the file has is left as it is, even if the schema's has changed.
-It is how a file a run has filled gets the tables of a step added since.
+the file does not have, and adds to a table the file has every column the
+schema's table carries and the file's lacks (nullable or defaulted columns
+only; anything else is refused). No row is read, written or deleted. It is how
+a file a run has filled gets the tables and columns of a step added since.
 
 Refuses a SQLite library older than 3.38 (shared/db.py). Prints what it made.
 """
@@ -43,16 +44,52 @@ def statements(sql: str) -> list[str]:
     return out
 
 
+def ddl_columns(create_table: str) -> list[tuple[str, str]]:
+    """(name, definition) of each column of a CREATE TABLE statement, comments gone."""
+    inner = create_table[create_table.index("(") + 1:create_table.rindex(")")]
+    parts, depth, buf = [], 0, ""
+    for ch in inner:
+        depth += (ch == "(") - (ch == ")")
+        if ch == "," and depth == 0:
+            parts.append(buf)
+            buf = ""
+        else:
+            buf += ch
+    parts.append(buf)
+    out = []
+    for part in parts:
+        d = " ".join(part.split())
+        first = d.split(" ", 1)[0]
+        if d and first.upper() not in ("CONSTRAINT", "PRIMARY", "FOREIGN", "UNIQUE", "CHECK"):
+            out.append((first, d))
+    return out
+
+
 def add_missing(conn) -> list[str]:
-    """Create every table, index, view and trigger of the schema the file lacks; return their names."""
+    """Create every table, index, view and trigger of the schema the file lacks, and
+    add to an existing table the columns the schema's has at its end; return their names."""
     have = {r[0] for r in conn.execute("SELECT name FROM sqlite_master")}
     added = []
     for stmt in statements(db.SCHEMA_PATH.read_text(encoding="utf-8")):
-        body = "\n".join(l for l in stmt.splitlines() if not l.lstrip().startswith("--"))
+        body = re.sub(r"--[^\n]*", "", stmt)
         m = _CREATE.search(body)
-        if m and m.group(2) not in have:
+        if not m:
+            continue
+        kind, name = m.group(1).lower(), m.group(2)
+        if name not in have:
             conn.execute(body)
-            added.append(f"{m.group(1).lower()} {m.group(2)}")
+            added.append(f"{kind} {name}")
+        elif kind == "table":
+            # table_xinfo, not table_info: the latter hides generated columns
+            existing = {r[1] for r in conn.execute(f"PRAGMA table_xinfo({name})")}
+            for col, definition in ddl_columns(body):
+                if col in existing:
+                    continue
+                if "NOT NULL" in definition.upper() and "DEFAULT" not in definition.upper():
+                    raise SystemExit(f"cannot add {name}.{col}: NOT NULL with no default"
+                                     " cannot be added to an existing table")
+                conn.execute(f"ALTER TABLE {name} ADD COLUMN {definition}")
+                added.append(f"column {name}.{col}")
     conn.commit()
     return added
 PROFILE_SEEDS = ("roadless_profile.sql", "roadless_prompt_v2.sql")

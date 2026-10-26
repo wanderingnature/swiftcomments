@@ -104,6 +104,60 @@ def test_by_kind_and_cases_kept_apart(casefile):
     conn.close()
 
 
+def test_all_but_the_top_removes_the_shared_direction():
+    import numpy as np
+    from clusters import analysis as an
+    rng = np.random.default_rng(3)
+    # eight subjects, each sentence with its own amount of one shared register
+    # direction; the correction removes the register, the subjects separate
+    reg = an.unit(rng.normal(size=(1, 64)))[0]
+    groups, per = 8, 5
+    subj = an.unit(rng.normal(size=(groups, 64)))
+    r = rng.uniform(0.0, 2.0, size=groups * per)
+    V = an.unit(np.vstack([0.7 * subj[i % groups] + r[i] * reg + 0.03 * rng.normal(size=64)
+                           for i in range(groups * per)]))
+    g = np.arange(groups * per) % groups
+
+    def pair_means(M):
+        S, n = M @ M.T, len(M)
+        same = [S[i, j] for i in range(n) for j in range(i + 1, n) if g[i] == g[j]]
+        diff = [S[i, j] for i in range(n) for j in range(i + 1, n) if g[i] != g[j]]
+        return float(np.mean(same)), float(np.mean(diff))
+
+    _, across_before = pair_means(V)
+    corrected, shares = an.all_but_the_top(V, 1)
+    assert len(shares) == 10 and shares[0] > 0.15
+    assert np.allclose(np.linalg.norm(corrected, axis=1), 1.0, atol=1e-5)
+    within, across = pair_means(corrected)
+    assert across < 0.3 < within and across < across_before
+    # d = 0 is the centring alone: unit rows and the same shares
+    centred, shares0 = an.all_but_the_top(V, 0)
+    assert shares0 == shares
+    assert np.allclose(np.linalg.norm(centred, axis=1), 1.0, atol=1e-5)
+    with pytest.raises(SystemExit, match="only"):
+        an.all_but_the_top(V[:1], 1)
+
+
+def test_top_axis(casefile):
+    assert cases.main(PCA_LEAF + ["--k", "2", "--top", "1"]) == 0
+    name = "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0.top1"
+    conn = db.connect(casefile)
+    c = _case(conn, name)
+    assert c["top_removed"] == 1
+    shares = json.loads(c["top_variance"])
+    assert len(shares) == 10 and 0 < shares[0] < 1
+    conn.close()
+    # the uncorrected case is a different case; its row carries no correction
+    assert cases.main(PCA_LEAF + ["--k", "2"]) == 0
+    conn = db.connect(casefile)
+    assert conn.execute("SELECT count(*) FROM cluster_case").fetchone()[0] == 2
+    base = _case(conn, "opening+hits.comment.m.m0.pca50.5-5-leaf.all.p0.k2.s0")
+    assert base["top_removed"] is None and base["top_variance"] is None
+    conn.close()
+    with pytest.raises(SystemExit, match="--top is 0 or more"):
+        cases.main(PCA_LEAF + ["--top", "-1"])
+
+
 def test_noise_passes_and_umap(casefile):
     # eom on the six groups finds the two families first; a noise pass adds nothing it has not got
     assert cases.main(["run", "--reduction", "pca50", "--min-cluster-size", "5", "--min-samples", "5",

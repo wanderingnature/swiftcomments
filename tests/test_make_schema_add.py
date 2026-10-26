@@ -46,6 +46,29 @@ def test_add_creates_what_the_file_lacks(tmp_path, monkeypatch, capsys):
     assert "has every object of the schema" in capsys.readouterr().out
 
 
+def test_add_adds_missing_columns(tmp_path, monkeypatch, capsys):
+    path = tmp_path / "roadless.sqlite"
+    monkeypatch.setattr(db, "DB_PATH", path)
+    monkeypatch.setattr(sys, "argv", ["make_schema.py"])
+    make_schema.main()
+    conn = db.connect(path)
+    conn.execute("ALTER TABLE cluster_case DROP COLUMN top_variance")
+    conn.execute("ALTER TABLE cluster_case DROP COLUMN top_removed")
+    conn.commit()
+    conn.close()
+    capsys.readouterr()
+    monkeypatch.setattr(sys, "argv", ["make_schema.py", "--add"])
+    make_schema.main()
+    out = capsys.readouterr().out
+    assert "column cluster_case.top_removed" in out and "column cluster_case.top_variance" in out
+    conn = db.connect(path)
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(cluster_case)")]
+    assert cols[-2:] == ["top_removed", "top_variance"]
+    conn.close()
+    make_schema.main()
+    assert "has every object of the schema" in capsys.readouterr().out
+
+
 def test_add_needs_a_file(tmp_path, monkeypatch):
     monkeypatch.setattr(db, "DB_PATH", tmp_path / "none.sqlite")
     monkeypatch.setattr(sys, "argv", ["make_schema.py", "--add"])

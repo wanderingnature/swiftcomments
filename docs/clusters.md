@@ -105,6 +105,7 @@ and compared with the others. A case is one value on each axis:
 | The sentences | `SENTENCES=` | `opening`: the sentences that open the gate alone; `opening+hits`: and the sentences that hold a whole-comment gate hit; `all`: every sentence of the gate-open comments | `opening` |
 | The view | `VIEW=` | the vectors of `make embed VIEW=`: `comment`, `plain`, `topic` | `comment` |
 | The merge | `MERGE=` | a cosine below 1: near-copies at it or more become one leader, most-copied first; 0 for none | 0 |
+| All-but-the-top | `TOP=` | the mean of the case's vectors removed, the top D principal components removed, unit length again, before the merge; 0 for the centring alone; unset for no correction | none |
 | The reduction | `REDUCTION=` | `pca50`: PCA to 50 dimensions; `umap5`: UMAP to 5 (15 neighbours, min_dist 0, cosine) | `umap5` |
 | HDBSCAN | `MCS=` `MS=` `SELECTION=` | min_cluster_size, min_samples; `eom` or `leaf` | 10, 10, `eom` |
 | The structure | `STRUCTURE=` | `all`: one clustering; `by-kind`: one for each gate kind (LAW, EVID, GAP, ALT) over the leaders of that kind, the topics drawn across the kinds | `all` |
@@ -145,7 +146,11 @@ vectors compare the models; two settings on one model compare the settings.
 
 1. **Sentences and vectors.** The distinct sentences its `SENTENCES=` selects, each with
    the occurrences it reads and the gate kinds of those occurrences, and their vectors
-   under the view. A sentence with no vector stops the case (`make embed`).
+   under the view. A sentence with no vector stops the case (`make embed`). With `TOP=D`,
+   the vectors are corrected first (all-but-the-top, Mu and Viswanath 2018: the mean of
+   the case's vectors removed, the top D principal components removed, unit length
+   again), so the merge, the clusters and the topics read the corrected vectors; the
+   share of variance of the top 10 components is kept with the case (`top_variance`).
 2. **The merge** (step 12). In order of occurrences, each sentence not yet absorbed
    becomes a leader and absorbs every sentence at `MERGE=` cosine or more to it. Members
    of one group are within twice the angle of each other, so the merge does not chain.

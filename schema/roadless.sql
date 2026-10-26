@@ -1232,7 +1232,12 @@ CREATE TABLE cluster_case (
     gate_comments                 INTEGER NOT NULL,
     comments_unclustered          INTEGER NOT NULL,           -- gate-open comments with no sentence in a cluster
     opening_occurrences           INTEGER NOT NULL,           -- sentences that open the gate alone
-    opening_occurrences_clustered INTEGER NOT NULL
+    -- all-but-the-top: top_removed is the components removed before the merge
+    -- (NULL: no correction, 0: the centring alone); top_variance is JSON, the
+    -- share of variance of the top 10 components, when the correction ran
+    opening_occurrences_clustered INTEGER NOT NULL,
+    top_removed                   INTEGER,
+    top_variance                  TEXT
 );
 
 CREATE TABLE cluster_case_leader (
