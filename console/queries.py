@@ -342,6 +342,24 @@ STEPS = [
              " created_at FROM cluster_case ORDER BY created_at"),
         ],
     },
+    {
+        "target": "docindex",
+        "what": "the record documents: their sections, chunks and chunk vectors (docs/docindex.md)",
+        "figures": [
+            ("documents", "SELECT count(*) FROM doc_documents"),
+            ("sections", "SELECT count(*) FROM doc_sections"),
+            ("chunks", "SELECT count(*) FROM doc_chunks"),
+            ("chunk vectors", "SELECT count(*) FROM doc_chunk_embeddings"),
+        ],
+        "breakdowns": [
+            ("the documents",
+             "SELECT d.title, d.source_file, count(DISTINCT s.section_id) AS sections,"
+             " count(c.chunk_id) AS chunks, d.ingested_at FROM doc_documents d"
+             " LEFT JOIN doc_sections s USING (document_id)"
+             " LEFT JOIN doc_chunks c USING (section_id)"
+             " GROUP BY d.document_id ORDER BY d.title"),
+        ],
+    },
 ]
 
 # The Comment page: (title, query); every ? is the comment id.

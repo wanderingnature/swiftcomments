@@ -1212,6 +1212,73 @@ CREATE TABLE sentence_embedding (
     PRIMARY KEY (text_key, model, instruction)
 );
 
+-- The record documents (make docindex, scripts/docindex/ingest_documents.py):
+-- the Draft EIS volumes, the Biological Assessments, the Economic Analysis,
+-- the notices, the Tribal Summary Impact Statement and the orders, their
+-- sections, their chunks and the chunks' vectors.
+--
+--   doc_documents         one row per source file; sha256 of the markdown so a
+--                         re-ingest of changed text is detectable.
+--   doc_sections          the document split by its heading tree (or letter
+--                         boundaries for the agency-letters volume);
+--                         heading_path is the recovered nesting, root first,
+--                         as a JSON array. Offsets are character offsets into
+--                         the source file.
+--   doc_chunks            fixed-size overlapping windows of a section's text,
+--                         the unit that is embedded; offsets into the source
+--                         file, so a match cites back to the exact passage.
+--   doc_chunk_embeddings  one row per chunk per model, vectors packed as
+--                         sentence_embedding packs them, so a document chunk
+--                         and a comment sentence embedded by the same model
+--                         compare directly.
+
+CREATE TABLE doc_documents (
+    document_id  INTEGER PRIMARY KEY,
+    title        TEXT    NOT NULL,
+    source_file  TEXT    NOT NULL UNIQUE,
+    sha256       TEXT    NOT NULL,
+    n_chars      INTEGER NOT NULL,
+    ingested_at  TEXT    NOT NULL
+);
+
+CREATE TABLE doc_sections (
+    section_id    INTEGER PRIMARY KEY,
+    document_id   INTEGER NOT NULL REFERENCES doc_documents (document_id) ON DELETE CASCADE,
+    ordinal       INTEGER NOT NULL,
+    heading_path  TEXT    NOT NULL,          -- JSON array, root first
+    kind          TEXT    NOT NULL,          -- front | toc | body | letter
+    start_char    INTEGER NOT NULL,
+    end_char      INTEGER NOT NULL,
+    section_text  TEXT    NOT NULL,
+    page_start    INTEGER,                   -- source pages spanned, from <!-- page N -->
+    page_end      INTEGER,
+    UNIQUE (document_id, ordinal)
+);
+
+CREATE TABLE doc_chunks (
+    chunk_id        INTEGER PRIMARY KEY,
+    section_id      INTEGER NOT NULL REFERENCES doc_sections (section_id) ON DELETE CASCADE,
+    chunk_index     INTEGER NOT NULL,
+    chunk_text      TEXT    NOT NULL,
+    start_char      INTEGER NOT NULL,
+    end_char        INTEGER NOT NULL,
+    max_chunk_size  INTEGER NOT NULL,
+    chunk_overlap   INTEGER NOT NULL,
+    page_start      INTEGER,
+    page_end        INTEGER,
+    UNIQUE (section_id, chunk_index)
+);
+
+CREATE TABLE doc_chunk_embeddings (
+    chunk_id              INTEGER NOT NULL REFERENCES doc_chunks (chunk_id) ON DELETE CASCADE,
+    embedding             BLOB    NOT NULL,
+    embedding_model       TEXT    NOT NULL,
+    embedding_dimensions  INTEGER NOT NULL,
+    token_count           INTEGER,
+    created_at            TEXT    NOT NULL,
+    PRIMARY KEY (chunk_id, embedding_model)
+);
+
 -- The clustering cases (make clusters, scripts/clusters/cases.py). A case is one
 -- value on each axis: the sentences, the view, the merge, the reduction, the
 -- HDBSCAN settings, the structure, the noise passes, the topic cut, the seed.

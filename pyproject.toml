@@ -25,6 +25,8 @@ dependencies = [
     "scikit-learn>=1.9.1",
     "umap-learn>=0.5.12",
     "pacmap>=0.9.1",
+    # The record documents' chunk windows (scripts/docindex/)
+    "langchain-text-splitters",
 ]
 
 [dependency-groups]

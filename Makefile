@@ -14,12 +14,12 @@ DB  := data/roadless.sqlite
 
 .PHONY: help all schema schema-add corpus fetch dedup ngrams ner tag floor groups screen \
         stance stance-runs score-model score-model-free assemble rate text attachments orgs \
-        facts check console jump extract score-model-compare sentences embed clusters cases case-set compare-cases choose concern-map cases-remeasure
+        facts check console jump extract score-model-compare sentences embed clusters cases case-set compare-cases choose concern-map cases-remeasure docindex
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
 
-all: schema corpus dedup ngrams ner tag floor groups screen stance score-model score-model-free assemble rate fetch text attachments orgs facts sentences embed clusters check  ## every step, in order
+all: schema corpus dedup ngrams ner tag floor groups screen stance score-model score-model-free assemble rate fetch text attachments orgs facts sentences embed clusters docindex check  ## every step, in order
 
 schema:  ## create data/roadless.sqlite from schema/roadless.sql and load the seeds; refuses SQLite < 3.38
 	$(PY) scripts/make_schema.py
@@ -118,6 +118,9 @@ embed:  ## step 11 (clusters): one vector for each distinct sentence, from the e
 
 clusters:  ## steps 12 to 14: one clustering case, its clusters, topics and names; SENTENCES= VIEW= MERGE= TOP= REDUCTION= MCS= MS= SELECTION= STRUCTURE= PASSES= K= SEED= (docs/clusters.md); no model call
 	$(PY) scripts/clusters/cases.py run $(if $(SENTENCES),--sentences $(SENTENCES)) $(if $(VIEW),--view $(VIEW)) $(if $(MODEL),--model $(MODEL)) $(if $(MERGE),--merge $(MERGE)) $(if $(TOP),--top $(TOP)) $(if $(REDUCTION),--reduction $(REDUCTION)) $(if $(MCS),--min-cluster-size $(MCS)) $(if $(MS),--min-samples $(MS)) $(if $(SELECTION),--selection $(SELECTION)) $(if $(STRUCTURE),--structure $(STRUCTURE)) $(if $(PASSES),--noise-passes $(PASSES)) $(if $(K),--k $(K)) $(if $(SEED),--seed $(SEED))
+
+docindex:  ## the record documents: sections, chunks and chunk vectors from the converted markdowns in deis/; DIR= another directory, REPLACE=1 re-ingests a changed source, SKIP=<file>, DRY=1 counts only; embeds with the server of .env
+	$(PY) scripts/docindex/ingest_documents.py $(if $(DIR),--dir $(DIR)) $(if $(REPLACE),--replace) $(if $(SKIP),--skip $(SKIP)) $(if $(DRY),--dry-run)
 
 statement-trial:  ## step 15 trial (model): CLUSTERS="207 104 52" (or every cluster) of the concern map or of CASE=<case>, RUNS=N calls at each of TEMPERATURES="0 0.7", wordings two ways; JSON under trials/statements/
 	$(PY) scripts/clusters/statement_trial.py $(if $(CLUSTERS),--clusters $(CLUSTERS),--all) --runs $(RUNS) --temperatures $(TEMPERATURES) $(if $(CASE),--case "$(CASE)")
