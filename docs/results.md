@@ -9,6 +9,7 @@ A decision is one of: **adopted**, **kept as a case**, **refuted**.
 | Method | Date | Commits | Decision |
 |---|---|---|---|
 | The labelled set | 2026-10-26 | 60e4d6a | adopted as the measure |
+| The answerability reread (revised guide) | 2026-10-26 | see `seeds/answerability_reread.md` | adopted; the A-levels of the 100 comments are settled |
 | Shared-direction removal on the sentence vectors (`TOP=D`) | 2026-10-25 | a8af27e | `TOP=0` adopted; D ≥ 1 refuted |
 | PaCMAP as the reduction | 2026-10-25 | 3c3392b, bcf5a41 | refuted; kept as cases |
 | One gate per prong | 2026-10-26 | 9ef075a, 86587e5, 0fdfa16, 30871e8 | adopted as columns and counts; by-prong clustering refuted |
@@ -23,6 +24,18 @@ kappa on the 100 comments: **0.504** — weaker than the gate labels, so the `fi
 field carries an answerability level only where the coders agree or a ruling settled
 it. The set and its guide: `seeds/labelled_set.jsonl`, `seeds/labelled_set.md`. It is
 the reference the gate instruments are measured against.
+
+## The answerability reread
+
+The first guide wording did not separate A2 from A3, so the 100 comments were reread by
+the same two coders under a revised A-level block (the levels applied in order; A2 as
+three strict tests; a citation enough for A1). Answerability kappa rose from 0.504 to
+**0.615**; the 24 disagreements were ruled by hand (7 against the resolver). Every one
+of the 100 comments now carries a settled level: A0 10, A1 35, A2 47, A3 8. The table
+and the revised guide: `seeds/answerability_reread.jsonl`,
+`seeds/answerability_reread.md`. Against the decision table's levels, the coders place
+8 of 25 table-A2 and 3 of 25 table-A3 comments at A1 (the table under-credits
+citations), and 22 of 25 table-A3 comments at A2.
 
 ## Shared-direction removal on the sentence vectors
 
