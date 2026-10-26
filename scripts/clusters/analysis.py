@@ -1,8 +1,9 @@
 """What the clustering cases share: the leader merge, the reduction, HDBSCAN,
 the topic graph and cut, and the names.
 
-The reductions: UMAP (15 neighbours, 5 components, min_dist 0, cosine) and PCA
-(at most one fewer component than rows). The seed is the case's, not a constant.
+The reductions: UMAP (15 neighbours, 5 components, min_dist 0, cosine), PCA
+(at most one fewer component than rows) and PaCMAP (10 neighbours, 5 components,
+angular). The seed is the case's, not a constant.
 """
 from __future__ import annotations
 
@@ -14,6 +15,7 @@ import numpy as np
 REPO = Path(__file__).resolve().parents[2]
 PCA_DIMS = 50
 UMAP_NEIGHBORS = 15
+PACMAP_NEIGHBORS = 10
 UMAP_DIMS = 5
 TOPIC_KNN = 5
 MAX_TOPICS = 40
@@ -80,7 +82,8 @@ def leader_merge(V: np.ndarray, copies: np.ndarray, texts: list[str], thresh: fl
 
 
 def reduce(V: np.ndarray, how: str, seed: int) -> np.ndarray:
-    """PCA to 50 (at most one fewer than the rows) or UMAP to 5 on cosine."""
+    """PCA to 50 (at most one fewer than the rows), UMAP to 5 on cosine, or
+    PaCMAP to 5 on the angular distance."""
     if how == "pca50":
         from sklearn.decomposition import PCA
         return PCA(min(PCA_DIMS, len(V) - 1), random_state=seed).fit_transform(V)
@@ -88,6 +91,10 @@ def reduce(V: np.ndarray, how: str, seed: int) -> np.ndarray:
         import umap
         return umap.UMAP(n_neighbors=UMAP_NEIGHBORS, n_components=UMAP_DIMS, min_dist=0.0, metric="cosine",
                          random_state=seed).fit_transform(V)
+    if how == "pacmap5":
+        import pacmap
+        return pacmap.PaCMAP(n_components=UMAP_DIMS, n_neighbors=PACMAP_NEIGHBORS, distance="angular",
+                             random_state=seed).fit_transform(V)
     raise ValueError(f"unknown reduction {how!r}")
 
 

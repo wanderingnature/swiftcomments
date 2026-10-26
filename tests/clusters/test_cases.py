@@ -171,6 +171,15 @@ def test_noise_passes_and_umap(casefile):
     conn.close()
 
 
+def test_pacmap_reduction(casefile):
+    assert cases.main(["run", "--reduction", "pacmap5", "--min-cluster-size", "5", "--min-samples", "5",
+                       "--sentences", "opening+hits", "--k", "2"]) == 0
+    conn = db.connect(casefile)
+    c = _case(conn, "opening+hits.comment.m.m0.pacmap5.5-5-eom.all.p0.k2.s0")
+    assert c["reduction"] == "pacmap5" and c["clusters"] >= 2 and c["leaders_clustered"] >= 140
+    conn.close()
+
+
 def test_list(casefile, capsys):
     assert cases.main(["list"]) == 0
     assert "no case yet" in capsys.readouterr().out

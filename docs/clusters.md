@@ -106,7 +106,7 @@ and compared with the others. A case is one value on each axis:
 | The view | `VIEW=` | the vectors of `make embed VIEW=`: `comment`, `plain`, `topic` | `comment` |
 | The merge | `MERGE=` | a cosine below 1: near-copies at it or more become one leader, most-copied first; 0 for none | 0 |
 | All-but-the-top | `TOP=` | the mean of the case's vectors removed, the top D principal components removed, unit length again, before the merge; 0 for the centring alone; unset for no correction | none |
-| The reduction | `REDUCTION=` | `pca50`: PCA to 50 dimensions; `umap5`: UMAP to 5 (15 neighbours, min_dist 0, cosine) | `umap5` |
+| The reduction | `REDUCTION=` | `pca50`: PCA to 50 dimensions; `umap5`: UMAP to 5 (15 neighbours, min_dist 0, cosine); `pacmap5`: PaCMAP to 5 (10 neighbours, angular) | `umap5` |
 | HDBSCAN | `MCS=` `MS=` `SELECTION=` | min_cluster_size, min_samples; `eom` or `leaf` | 10, 10, `eom` |
 | The structure | `STRUCTURE=` | `all`: one clustering; `by-kind`: one for each gate kind (LAW, EVID, GAP, ALT) over the leaders of that kind, the topics drawn across the kinds | `all` |
 | The noise passes | `PASSES=` | how many times the noise of the pass before is clustered again on its own, with a reduction fitted to it, until a pass finds no cluster | 0 |

@@ -26,7 +26,8 @@ compared, not decided beforehand. A case is one value on each axis:
     top         all-but-the-top: the mean of the case's vectors removed, the top D principal
                 components removed, unit length again, before the merge; 0 for the centring
                 alone; unset for no correction
-    reduction   pca50 (PCA to 50) or umap5 (UMAP to 5: 15 neighbours, min_dist 0, cosine)
+    reduction   pca50 (PCA to 50), umap5 (UMAP to 5: 15 neighbours, min_dist 0, cosine)
+                or pacmap5 (PaCMAP to 5: 10 neighbours, angular)
     HDBSCAN     min_cluster_size, min_samples, selection eom or leaf
     structure   all: one clustering; by-kind: one clustering for each gate kind (LAW, EVID, GAP, ALT)
                 over the leaders of that kind, the topics then drawn across the kinds
@@ -196,7 +197,7 @@ def cluster_group(LV: np.ndarray, a: argparse.Namespace) -> list[tuple[int, np.n
     out: list[tuple[int, np.ndarray]] = []
     remaining = np.arange(len(LV))
     for p in range(1, a.noise_passes + 2):
-        floor = max(a.min_cluster_size, an.UMAP_NEIGHBORS if a.reduction == "umap5" else 1)
+        floor = max(a.min_cluster_size, {"umap5": an.UMAP_NEIGHBORS, "pacmap5": an.PACMAP_NEIGHBORS}.get(a.reduction, 1))
         if len(remaining) <= floor:
             break
         lab = an.renumber(an.hdbscan(an.reduce(LV[remaining], a.reduction, a.seed),
@@ -412,7 +413,7 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--top", type=int, default=None,
                    help="all-but-the-top: components removed from the vectors before the merge;"
                         " 0 for the centring alone (default: no correction)")
-    r.add_argument("--reduction", choices=("pca50", "umap5"), default="umap5")
+    r.add_argument("--reduction", choices=("pca50", "umap5", "pacmap5"), default="umap5")
     r.add_argument("--min-cluster-size", type=int, default=10)
     r.add_argument("--min-samples", type=int, default=10)
     r.add_argument("--selection", choices=("eom", "leaf"), default="eom")

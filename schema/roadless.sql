@@ -1207,7 +1207,7 @@ CREATE TABLE cluster_case (
     view                          TEXT    NOT NULL,
     model                         TEXT    NOT NULL,
     merge                         REAL    NOT NULL,           -- leader-merge cosine; 0 for none
-    reduction                     TEXT    NOT NULL CHECK (reduction IN ('pca50', 'umap5')),
+    reduction                     TEXT    NOT NULL CHECK (reduction IN ('pca50', 'umap5', 'pacmap5')),
     min_cluster_size              INTEGER NOT NULL,
     min_samples                   INTEGER NOT NULL,
     selection                     TEXT    NOT NULL CHECK (selection IN ('eom', 'leaf')),
