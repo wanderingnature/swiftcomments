@@ -69,9 +69,9 @@ def test_union_equals_gate():
 
 
 def test_a_level_from_the_prongs_equals_the_rating():
-    """Method-2 section 2.3: A1 follows from compliance; A2 from significance,
-    from alternatives, or from impacts with a mechanism and a citation. The
-    decision table does not change. LAW stays 0-2: it is mechanical."""
+    """A1 follows from compliance; A2 from significance, from alternatives,
+    or from impacts with a mechanism and a citation. The decision table does
+    not change. LAW stays 0-2: it is mechanical."""
     for gap in range(4):
         for evid in range(4):
             for alt in range(4):

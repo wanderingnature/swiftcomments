@@ -105,7 +105,7 @@ def main() -> None:
                 raise SystemExit(
                     f"{table}: the union of the four gates differs from the stored"
                     f" gate on {counts['union_ne_gate']:,} row(s) — the mapping is"
-                    " wrong (method test 1); nothing written.")
+                    " wrong; nothing written.")
             print(f"  union of the four gates = stored gate on every row")
             if args.write and updates:
                 set_cols = [f"prong_{p} = ?" for p in PRONGS] \
