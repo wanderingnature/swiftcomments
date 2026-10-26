@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Ingest the record documents into doc_* and embed their chunks.
 
-Sources are markdown files converted from the PDFs outside the repository, one per
-document, in deis/. The conversion keeps the heading levels and marks every page with a
-`<!-- page N -->` line. Each document is split into sections by its heading tree (the
-agency letters, one section per letter), the sections into 600-character chunks with 100
-overlap, and every chunk is embedded with the embedding server of .env
-(shared/embeddings.py), so a document chunk and a comment sentence compare. Every
-section and chunk records the pages it spans (page_start, page_end), read from the page
-markers.
+Sources are markdown files converted from the PDFs, one per document, in deis/, each
+with the conversion's page map beside it: `<stem>.pages.json`, {"source", "sha256",
+"pages": [{"pdf_page", "printed", "start"}]}, where start is the character offset in the
+markdown at which that PDF page begins. Each document is split into sections by its
+heading tree (the agency letters, one section per letter), the sections into
+600-character chunks with 100 overlap, and every chunk is embedded with the embedding
+server of .env (shared/embeddings.py), so a document chunk and a comment sentence
+compare. Every section and chunk records the pages it spans (page_start, page_end),
+read from the page map.
 
 Stored text and offsets are the source file's, byte for byte: start_char/end_char index
 the markdown. What is SENT to the embedder is cleaned — page markers, image references and
@@ -72,9 +73,6 @@ _LIGATURES = [(re.compile(r"\b([Ee])fect"), r"\1ffect"),
               (re.compile(r"\b([Ff])sh"), r"\1ish")]
 _IMAGE_RE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
 _SUP_RE = re.compile(r"</?su[bp]>")     # <sup> and <sub> tags; their text stays
-# `<!-- page N -->`, or `<!-- page N label="…" -->` when a PDF defines page labels: N,
-# the 1-based PDF page, is the page recorded; a label is ignored.
-_PAGE_RE = re.compile(r"<!-- page (\d+)(?: [^>]*)? -->")
 _SUP_BLOCK_RE = re.compile(r"<sup>.*?</sup>")
 _TAG_RE = re.compile(r"<[^>]+>")
 
@@ -116,7 +114,7 @@ def _close(bounds, total):
 def _front(text, bounds):
     if not bounds or bounds[0][0] > 0:
         first = bounds[0][0] if bounds else len(text)
-        if _PAGE_RE.sub("", text[:first]).strip():     # a page marker alone is not front matter
+        if text[:first].strip():
             return [(0, ["(front matter)"], "front")]
     return []
 
@@ -240,14 +238,22 @@ SOURCES = [
 ]
 
 
-def page_marks(source_file, text):
-    """[(offset, page)] of every `<!-- page N -->` marker, in order. A source without
-    them cannot say where a passage is, so it is refused."""
-    marks = [(m.start(), int(m.group(1))) for m in _PAGE_RE.finditer(text)]
-    if not marks:
-        raise SystemExit(f"{source_file}: no <!-- page N --> markers — not the paged"
+def page_marks(md_path, text):
+    """[(offset, pdf_page)] from the conversion's page map, `<stem>.pages.json` beside
+    the markdown. A source without one cannot say where a passage is, so it is refused,
+    and so is a map whose sha256 is not the markdown's: the pair does not match."""
+    pj = md_path.parent / (md_path.stem + ".pages.json")
+    if not pj.exists():
+        raise SystemExit(f"{md_path.name}: no {pj.name} beside it — not the paged"
                          " conversion")
-    return marks
+    m = json.loads(pj.read_text(encoding="utf-8"))
+    sha = hashlib.sha256(text.encode()).hexdigest()
+    if m.get("sha256") != sha:
+        raise SystemExit(f"{pj.name}: its sha256 is not {md_path.name}'s — the pair"
+                         " does not match")
+    if not m.get("pages"):
+        raise SystemExit(f"{pj.name}: no pages")
+    return [(p["start"], p["pdf_page"]) for p in m["pages"]]
 
 
 def page_at(marks, pos):
@@ -257,29 +263,22 @@ def page_at(marks, pos):
     return marks[max(i, 0)][1]
 
 
-_EDGE = r"(?:\s|<!-- page \d+(?: [^>]*)? -->)*"
-_LEAD_RE = re.compile(r"\A" + _EDGE)
-_TRAIL_RE = re.compile(_EDGE + r"\Z")
-
-
 def page_span(marks, text, start, end):
     """(page_start, page_end) of the text [start, end): the pages of its first and last
-    characters that are not whitespace or a page marker — a chunk that ends on the next
-    page's marker has not reached that page."""
+    characters that are not whitespace — a chunk that ends on the next page's boundary
+    has not reached that page."""
     piece = text[start:end]
-    lead = _LEAD_RE.match(piece)
-    trail = _TRAIL_RE.search(piece)
-    a = start + (lead.end() if lead else 0)
-    b = start + (trail.start() if trail else len(piece))
-    if b <= a:                      # nothing but markers and whitespace
+    a = start + (len(piece) - len(piece.lstrip()))
+    b = start + len(piece.rstrip())
+    if b <= a:                      # nothing but whitespace
         a, b = start, end
     return page_at(marks, a), page_at(marks, max(a, b - 1))
 
 
 def embed_text(source_file, chunk):
-    """What the embedder is sent for a chunk: page markers, images and <sup>/<sub> tags
-    dropped, and the USFWS BA's lost ligatures restored."""
-    t = _SUP_RE.sub("", _IMAGE_RE.sub("", _PAGE_RE.sub("", chunk)))
+    """What the embedder is sent for a chunk: images and <sup>/<sub> tags dropped, and
+    the USFWS BA's lost ligatures restored."""
+    t = _SUP_RE.sub("", _IMAGE_RE.sub("", chunk))
     if source_file == "Draft_Biological_Assessment_USFWS_Species.md":
         for rx, rep in _LIGATURES:
             t = rx.sub(rep, t)
@@ -325,7 +324,7 @@ def plan(src_dir, skip=()):
         if fname in skip:
             continue
         text = (src_dir / fname).read_text(encoding="utf-8")
-        marks = page_marks(fname, text)
+        marks = page_marks(src_dir / fname, text)
         secs = seg(text, _BANNERS.get(fname, ()))
         out.append((fname, title, text, hashlib.sha256(text.encode()).hexdigest(), secs,
                     [chunk_section(fname, text, s) for s in secs], marks))

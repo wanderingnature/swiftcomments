@@ -1250,7 +1250,7 @@ CREATE TABLE doc_sections (
     start_char    INTEGER NOT NULL,
     end_char      INTEGER NOT NULL,
     section_text  TEXT    NOT NULL,
-    page_start    INTEGER,                   -- source pages spanned, from <!-- page N -->
+    page_start    INTEGER,                   -- source pages spanned, from the page map
     page_end      INTEGER,
     UNIQUE (document_id, ordinal)
 );

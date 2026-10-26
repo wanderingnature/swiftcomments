@@ -1,0 +1,36 @@
+{
+ "source": "sm-1078-006.md",
+ "sha256": "c1095ced061825d620bc94e437cfd98519625da6c2daf68ef89c9a0caf8fa019",
+ "pages": [
+  {
+   "pdf_page": 1,
+   "printed": null,
+   "start": 0
+  },
+  {
+   "pdf_page": 2,
+   "printed": "2",
+   "start": 1833
+  },
+  {
+   "pdf_page": 3,
+   "printed": "3",
+   "start": 4599
+  },
+  {
+   "pdf_page": 4,
+   "printed": "4",
+   "start": 7099
+  },
+  {
+   "pdf_page": 5,
+   "printed": "5",
+   "start": 9749
+  },
+  {
+   "pdf_page": 6,
+   "printed": "6",
+   "start": 12265
+  }
+ ]
+}

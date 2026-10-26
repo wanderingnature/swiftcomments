@@ -1,0 +1,36 @@
+{
+ "source": "Tribal-Summary-Impact-Statement.md",
+ "sha256": "90beb75321f88a22f3cc04b421bb370eef4a0336a92226f3bcd57842d8be1758",
+ "pages": [
+  {
+   "pdf_page": 1,
+   "printed": null,
+   "start": 0
+  },
+  {
+   "pdf_page": 2,
+   "printed": "2",
+   "start": 2930
+  },
+  {
+   "pdf_page": 3,
+   "printed": "3",
+   "start": 6914
+  },
+  {
+   "pdf_page": 4,
+   "printed": "4",
+   "start": 9997
+  },
+  {
+   "pdf_page": 5,
+   "printed": "5",
+   "start": 12481
+  },
+  {
+   "pdf_page": 6,
+   "printed": "6",
+   "start": 15534
+  }
+ ]
+}

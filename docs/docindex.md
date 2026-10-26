@@ -8,12 +8,15 @@ then compare by cosine, under the same embedding model.
 
 ## The input
 
-The repository ships the 15 record documents in `deis/`: each source PDF and its
-markdown conversion side by side. The step reads the markdown files, one per document.
-The conversion keeps the heading levels and marks every page with a `<!-- page N -->`
-line. A file without page markers is refused. The file names and titles are fixed in
-`scripts/docindex/ingest_documents.py` (`SOURCES`); a markdown file in `deis/` that
-`SOURCES` does not name stops the step.
+The repository ships the 15 record documents in `deis/`, three files per document: the
+source PDF, its markdown conversion, and the conversion's page map
+(`<stem>.pages.json`), which records the character offset where every PDF page starts
+and the SHA-256 of the markdown. The step reads the markdown and the page map; a
+markdown file without its page map, or whose SHA-256 the map does not match, is
+refused. 14 documents were converted with pymupdf4llm 1.28.2 (page edges stripped,
+page seams joined); the agency-letters volume with MinerU 3.4.4. The file names and
+titles are fixed in `scripts/docindex/ingest_documents.py` (`SOURCES`); a markdown
+file in `deis/` that `SOURCES` does not name stops the step.
 
 ## What the step does
 
@@ -22,10 +25,10 @@ line. A file without page markers is refused. The file names and titles are fixe
 2. It splits each section into 600-character chunks with 100 overlap. Table-of-contents
    sections are skipped.
 3. It records, for every section and chunk, the character offsets into the source file
-   and the pages it spans.
+   and the pages it spans, from the page map.
 4. It embeds every chunk with the embedding server of `.env` (`EMBED_BASE_URL`,
-   `EMBED_MODEL`). Page markers, image references and `<sup>`/`<sub>` tags are not
-   sent; the stored text keeps them.
+   `EMBED_MODEL`). Image references and `<sup>`/`<sub>` tags are not sent; the stored
+   text keeps them.
 
 The step is resumable. A document already ingested with the same SHA-256 is skipped. A
 changed document is refused unless `REPLACE=1`, which deletes its rows first. A chunk

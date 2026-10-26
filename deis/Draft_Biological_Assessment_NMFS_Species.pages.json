@@ -1,0 +1,766 @@
+{
+ "source": "Draft_Biological_Assessment_NMFS_Species.md",
+ "sha256": "f455cb5fe920e41bad272a852e05dbfe5c391479d823c04309709cc09e771d00",
+ "pages": [
+  {
+   "pdf_page": 1,
+   "printed": null,
+   "start": 0
+  },
+  {
+   "pdf_page": 2,
+   "printed": null,
+   "start": 229
+  },
+  {
+   "pdf_page": 3,
+   "printed": null,
+   "start": 3941
+  },
+  {
+   "pdf_page": 4,
+   "printed": null,
+   "start": 7528
+  },
+  {
+   "pdf_page": 5,
+   "printed": null,
+   "start": 11257
+  },
+  {
+   "pdf_page": 6,
+   "printed": "1",
+   "start": 11889
+  },
+  {
+   "pdf_page": 7,
+   "printed": "2",
+   "start": 15267
+  },
+  {
+   "pdf_page": 8,
+   "printed": "3",
+   "start": 18678
+  },
+  {
+   "pdf_page": 9,
+   "printed": "4",
+   "start": 21411
+  },
+  {
+   "pdf_page": 10,
+   "printed": "5",
+   "start": 24662
+  },
+  {
+   "pdf_page": 11,
+   "printed": "6",
+   "start": 29083
+  },
+  {
+   "pdf_page": 12,
+   "printed": "7",
+   "start": 32534
+  },
+  {
+   "pdf_page": 13,
+   "printed": "8",
+   "start": 36254
+  },
+  {
+   "pdf_page": 14,
+   "printed": "9",
+   "start": 40106
+  },
+  {
+   "pdf_page": 15,
+   "printed": "10",
+   "start": 44069
+  },
+  {
+   "pdf_page": 16,
+   "printed": "11",
+   "start": 47264
+  },
+  {
+   "pdf_page": 17,
+   "printed": "12",
+   "start": 50421
+  },
+  {
+   "pdf_page": 18,
+   "printed": "13",
+   "start": 52706
+  },
+  {
+   "pdf_page": 19,
+   "printed": "14",
+   "start": 54548
+  },
+  {
+   "pdf_page": 20,
+   "printed": "15",
+   "start": 59026
+  },
+  {
+   "pdf_page": 21,
+   "printed": "16",
+   "start": 63103
+  },
+  {
+   "pdf_page": 22,
+   "printed": "17",
+   "start": 67061
+  },
+  {
+   "pdf_page": 23,
+   "printed": "18",
+   "start": 68545
+  },
+  {
+   "pdf_page": 24,
+   "printed": "19",
+   "start": 71035
+  },
+  {
+   "pdf_page": 25,
+   "printed": "20",
+   "start": 73149
+  },
+  {
+   "pdf_page": 26,
+   "printed": "21",
+   "start": 75009
+  },
+  {
+   "pdf_page": 27,
+   "printed": "22",
+   "start": 77200
+  },
+  {
+   "pdf_page": 28,
+   "printed": "23",
+   "start": 78494
+  },
+  {
+   "pdf_page": 29,
+   "printed": "24",
+   "start": 79696
+  },
+  {
+   "pdf_page": 30,
+   "printed": "25",
+   "start": 81178
+  },
+  {
+   "pdf_page": 31,
+   "printed": "26",
+   "start": 82592
+  },
+  {
+   "pdf_page": 32,
+   "printed": "27",
+   "start": 83792
+  },
+  {
+   "pdf_page": 33,
+   "printed": "28",
+   "start": 84795
+  },
+  {
+   "pdf_page": 34,
+   "printed": "29",
+   "start": 88463
+  },
+  {
+   "pdf_page": 35,
+   "printed": "30",
+   "start": 91372
+  },
+  {
+   "pdf_page": 36,
+   "printed": "31",
+   "start": 94412
+  },
+  {
+   "pdf_page": 37,
+   "printed": "32",
+   "start": 94736
+  },
+  {
+   "pdf_page": 38,
+   "printed": "33",
+   "start": 95885
+  },
+  {
+   "pdf_page": 39,
+   "printed": "34",
+   "start": 97727
+  },
+  {
+   "pdf_page": 40,
+   "printed": "35",
+   "start": 99190
+  },
+  {
+   "pdf_page": 41,
+   "printed": "36",
+   "start": 100692
+  },
+  {
+   "pdf_page": 42,
+   "printed": "37",
+   "start": 102264
+  },
+  {
+   "pdf_page": 43,
+   "printed": "38",
+   "start": 103961
+  },
+  {
+   "pdf_page": 44,
+   "printed": "39",
+   "start": 104602
+  },
+  {
+   "pdf_page": 45,
+   "printed": "40",
+   "start": 107316
+  },
+  {
+   "pdf_page": 46,
+   "printed": "41",
+   "start": 111170
+  },
+  {
+   "pdf_page": 47,
+   "printed": "42",
+   "start": 112937
+  },
+  {
+   "pdf_page": 48,
+   "printed": "43",
+   "start": 115579
+  },
+  {
+   "pdf_page": 49,
+   "printed": "44",
+   "start": 117208
+  },
+  {
+   "pdf_page": 50,
+   "printed": "45",
+   "start": 118360
+  },
+  {
+   "pdf_page": 51,
+   "printed": "46",
+   "start": 120166
+  },
+  {
+   "pdf_page": 52,
+   "printed": "47",
+   "start": 122603
+  },
+  {
+   "pdf_page": 53,
+   "printed": "48",
+   "start": 124485
+  },
+  {
+   "pdf_page": 54,
+   "printed": "49",
+   "start": 126449
+  },
+  {
+   "pdf_page": 55,
+   "printed": "50",
+   "start": 128789
+  },
+  {
+   "pdf_page": 56,
+   "printed": "51",
+   "start": 131049
+  },
+  {
+   "pdf_page": 57,
+   "printed": "52",
+   "start": 132672
+  },
+  {
+   "pdf_page": 58,
+   "printed": "53",
+   "start": 134071
+  },
+  {
+   "pdf_page": 59,
+   "printed": "54",
+   "start": 135893
+  },
+  {
+   "pdf_page": 60,
+   "printed": "55",
+   "start": 137339
+  },
+  {
+   "pdf_page": 61,
+   "printed": "56",
+   "start": 139479
+  },
+  {
+   "pdf_page": 62,
+   "printed": "57",
+   "start": 141392
+  },
+  {
+   "pdf_page": 63,
+   "printed": "58",
+   "start": 143013
+  },
+  {
+   "pdf_page": 64,
+   "printed": "59",
+   "start": 145024
+  },
+  {
+   "pdf_page": 65,
+   "printed": "60",
+   "start": 147066
+  },
+  {
+   "pdf_page": 66,
+   "printed": "61",
+   "start": 148799
+  },
+  {
+   "pdf_page": 67,
+   "printed": "62",
+   "start": 151004
+  },
+  {
+   "pdf_page": 68,
+   "printed": "63",
+   "start": 152508
+  },
+  {
+   "pdf_page": 69,
+   "printed": "64",
+   "start": 154580
+  },
+  {
+   "pdf_page": 70,
+   "printed": "65",
+   "start": 156601
+  },
+  {
+   "pdf_page": 71,
+   "printed": "66",
+   "start": 158399
+  },
+  {
+   "pdf_page": 72,
+   "printed": "67",
+   "start": 159871
+  },
+  {
+   "pdf_page": 73,
+   "printed": "68",
+   "start": 164192
+  },
+  {
+   "pdf_page": 74,
+   "printed": "69",
+   "start": 167472
+  },
+  {
+   "pdf_page": 75,
+   "printed": "70",
+   "start": 171608
+  },
+  {
+   "pdf_page": 76,
+   "printed": "71",
+   "start": 175656
+  },
+  {
+   "pdf_page": 77,
+   "printed": "72",
+   "start": 179550
+  },
+  {
+   "pdf_page": 78,
+   "printed": "73",
+   "start": 183641
+  },
+  {
+   "pdf_page": 79,
+   "printed": "74",
+   "start": 186110
+  },
+  {
+   "pdf_page": 80,
+   "printed": "75",
+   "start": 189129
+  },
+  {
+   "pdf_page": 81,
+   "printed": "76",
+   "start": 191009
+  },
+  {
+   "pdf_page": 82,
+   "printed": "77",
+   "start": 193613
+  },
+  {
+   "pdf_page": 83,
+   "printed": "78",
+   "start": 196226
+  },
+  {
+   "pdf_page": 84,
+   "printed": "79",
+   "start": 197207
+  },
+  {
+   "pdf_page": 85,
+   "printed": "80",
+   "start": 198704
+  },
+  {
+   "pdf_page": 86,
+   "printed": "81",
+   "start": 200122
+  },
+  {
+   "pdf_page": 87,
+   "printed": "82",
+   "start": 200929
+  },
+  {
+   "pdf_page": 88,
+   "printed": "83",
+   "start": 204650
+  },
+  {
+   "pdf_page": 89,
+   "printed": "84",
+   "start": 208475
+  },
+  {
+   "pdf_page": 90,
+   "printed": "85",
+   "start": 211972
+  },
+  {
+   "pdf_page": 91,
+   "printed": "86",
+   "start": 215848
+  },
+  {
+   "pdf_page": 92,
+   "printed": "87",
+   "start": 219058
+  },
+  {
+   "pdf_page": 93,
+   "printed": "88",
+   "start": 222330
+  },
+  {
+   "pdf_page": 94,
+   "printed": "89",
+   "start": 225878
+  },
+  {
+   "pdf_page": 95,
+   "printed": "90",
+   "start": 229262
+  },
+  {
+   "pdf_page": 96,
+   "printed": "91",
+   "start": 232819
+  },
+  {
+   "pdf_page": 97,
+   "printed": "92",
+   "start": 236099
+  },
+  {
+   "pdf_page": 98,
+   "printed": "93",
+   "start": 239556
+  },
+  {
+   "pdf_page": 99,
+   "printed": "94",
+   "start": 243255
+  },
+  {
+   "pdf_page": 100,
+   "printed": "95",
+   "start": 246455
+  },
+  {
+   "pdf_page": 101,
+   "printed": "96",
+   "start": 249942
+  },
+  {
+   "pdf_page": 102,
+   "printed": "97",
+   "start": 253231
+  },
+  {
+   "pdf_page": 103,
+   "printed": "98",
+   "start": 256889
+  },
+  {
+   "pdf_page": 104,
+   "printed": "99",
+   "start": 259699
+  },
+  {
+   "pdf_page": 105,
+   "printed": "100",
+   "start": 262994
+  },
+  {
+   "pdf_page": 106,
+   "printed": "101",
+   "start": 266859
+  },
+  {
+   "pdf_page": 107,
+   "printed": "102",
+   "start": 270192
+  },
+  {
+   "pdf_page": 108,
+   "printed": "103",
+   "start": 273484
+  },
+  {
+   "pdf_page": 109,
+   "printed": "104",
+   "start": 276394
+  },
+  {
+   "pdf_page": 110,
+   "printed": "105",
+   "start": 279290
+  },
+  {
+   "pdf_page": 111,
+   "printed": "106",
+   "start": 282445
+  },
+  {
+   "pdf_page": 112,
+   "printed": "107",
+   "start": 285561
+  },
+  {
+   "pdf_page": 113,
+   "printed": "108",
+   "start": 288653
+  },
+  {
+   "pdf_page": 114,
+   "printed": "109",
+   "start": 291755
+  },
+  {
+   "pdf_page": 115,
+   "printed": "110",
+   "start": 294640
+  },
+  {
+   "pdf_page": 116,
+   "printed": "111",
+   "start": 297600
+  },
+  {
+   "pdf_page": 117,
+   "printed": "112",
+   "start": 300594
+  },
+  {
+   "pdf_page": 118,
+   "printed": "113",
+   "start": 303802
+  },
+  {
+   "pdf_page": 119,
+   "printed": "114",
+   "start": 306845
+  },
+  {
+   "pdf_page": 120,
+   "printed": "115",
+   "start": 307561
+  },
+  {
+   "pdf_page": 121,
+   "printed": "116",
+   "start": 307700
+  },
+  {
+   "pdf_page": 122,
+   "printed": "117",
+   "start": 307848
+  },
+  {
+   "pdf_page": 123,
+   "printed": "118",
+   "start": 308004
+  },
+  {
+   "pdf_page": 124,
+   "printed": "119",
+   "start": 308154
+  },
+  {
+   "pdf_page": 125,
+   "printed": "120",
+   "start": 308295
+  },
+  {
+   "pdf_page": 126,
+   "printed": "121",
+   "start": 308452
+  },
+  {
+   "pdf_page": 127,
+   "printed": "122",
+   "start": 308602
+  },
+  {
+   "pdf_page": 128,
+   "printed": "123",
+   "start": 308761
+  },
+  {
+   "pdf_page": 129,
+   "printed": "124",
+   "start": 308929
+  },
+  {
+   "pdf_page": 130,
+   "printed": "125",
+   "start": 309081
+  },
+  {
+   "pdf_page": 131,
+   "printed": "126",
+   "start": 309223
+  },
+  {
+   "pdf_page": 132,
+   "printed": "127",
+   "start": 309372
+  },
+  {
+   "pdf_page": 133,
+   "printed": "128",
+   "start": 309524
+  },
+  {
+   "pdf_page": 134,
+   "printed": "129",
+   "start": 309672
+  },
+  {
+   "pdf_page": 135,
+   "printed": "130",
+   "start": 309812
+  },
+  {
+   "pdf_page": 136,
+   "printed": "131",
+   "start": 309981
+  },
+  {
+   "pdf_page": 137,
+   "printed": "132",
+   "start": 310123
+  },
+  {
+   "pdf_page": 138,
+   "printed": "133",
+   "start": 310274
+  },
+  {
+   "pdf_page": 139,
+   "printed": "134",
+   "start": 310424
+  },
+  {
+   "pdf_page": 140,
+   "printed": "135",
+   "start": 310570
+  },
+  {
+   "pdf_page": 141,
+   "printed": "136",
+   "start": 310715
+  },
+  {
+   "pdf_page": 142,
+   "printed": "137",
+   "start": 310861
+  },
+  {
+   "pdf_page": 143,
+   "printed": "138",
+   "start": 310998
+  },
+  {
+   "pdf_page": 144,
+   "printed": "139",
+   "start": 311141
+  },
+  {
+   "pdf_page": 145,
+   "printed": "140",
+   "start": 311297
+  },
+  {
+   "pdf_page": 146,
+   "printed": "141",
+   "start": 311442
+  },
+  {
+   "pdf_page": 147,
+   "printed": "142",
+   "start": 311588
+  },
+  {
+   "pdf_page": 148,
+   "printed": "143",
+   "start": 311736
+  },
+  {
+   "pdf_page": 149,
+   "printed": "144",
+   "start": 311869
+  },
+  {
+   "pdf_page": 150,
+   "printed": "145",
+   "start": 312008
+  },
+  {
+   "pdf_page": 151,
+   "printed": "146",
+   "start": 312153
+  },
+  {
+   "pdf_page": 152,
+   "printed": "147",
+   "start": 314619
+  }
+ ]
+}
