@@ -56,6 +56,17 @@ tables that target writes, as they stood after it ran, without indexes and witho
 the comment text. The corpus has no extract: the repository ships the download, and
 `make corpus` rebuilds the table in minutes. The fetch has none: it writes files.
 
+The repository ships each extract zipped beside the jump's path,
+`extracts/<target>.sqlite.zip`. Unzip the ones you need in place:
+
+```
+unzip extracts/floor.sqlite.zip -d extracts/
+```
+
+The ngrams extract does not ship: zipped it is near 2 GB. The step is local
+lexical processing, so run `make ngrams` yourself. If you cannot, open an issue
+on the repository and ask for the file.
+
 ```
 make jump STEP=floor
 ```
@@ -93,4 +104,5 @@ The corpus and the fetch are not extracted (above). This is how the reference ex
 made, and how a reader makes their own after changing a step.
 
 The registry of step to tables is `shared/steps.py`; the console's Steps page, the
-dump and the load read it. `extracts/` is git-ignored.
+dump and the load read it. The unzipped `extracts/*.sqlite` files are git-ignored;
+the shipped zips are committed, one per step whose reference rows exist.
