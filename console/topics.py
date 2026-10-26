@@ -251,9 +251,6 @@ def tab_stage4(all_cases, choices):
         picked = mine.case_name if mine is not None else None
 
     st.subheader("The cases of this model")
-    st.caption("Each point is a case. The number is the case number in the table. A good case is low and to the"
-               " right. Colour: the model. Shape: the view. Red ring: a cluster of 1,000 or more sentences. Black"
-               " ring: the choice. Click a point to select the case.")
     pts = pd.DataFrame({
         "case_name": cases["case_name"],
         "number": [number[n] for n in cases["case_name"]],
@@ -267,6 +264,16 @@ def tab_stage4(all_cases, choices):
     })
     models = sorted(pts["model"].unique())
     views = [v for v in ("plain", "comment", "topic") if v in set(pts["view"])]
+    # the caption and the legends name only what varies on this chart, and the
+    # colour legend's symbol is a plotted shape, not a shape no mark uses
+    bits = ["Each mark is a case. The number is the case number in the table. A good case is low and to the right."]
+    if len(models) > 1:
+        bits.append("Colour: the model.")
+    if len(views) > 1:
+        bits.append("Shape: the view.")
+    bits.append("Red ring: a cluster of 1,000 or more sentences. Black ring: the choice."
+                " Click a mark to select the case.")
+    st.caption(" ".join(bits))
     x = alt.X("sentences clustered (%):Q", scale=alt.Scale(zero=False))
     y = alt.Y("comments not covered:Q")
     tip = ["number:Q", "case:N", "clusters:Q", "sentences clustered (%):Q", "comments not covered:Q",
@@ -275,9 +282,10 @@ def tab_stage4(all_cases, choices):
     dots = alt.Chart(pts).mark_point(filled=True, size=160).encode(
         x=x, y=y,
         color=alt.Color("model:N", scale=alt.Scale(domain=models, range=MODEL_COLOURS[:len(models)]),
-                        legend=alt.Legend(title="model (colour)", symbolType="diamond", symbolSize=200)),
+                        legend=None if len(models) == 1 else alt.Legend(
+                            title="model (colour)", symbolType=VIEW_SHAPES[0], symbolSize=200)),
         shape=alt.Shape("view:N", scale=alt.Scale(domain=views, range=VIEW_SHAPES[:len(views)]),
-                        legend=alt.Legend(title="view (shape)")),
+                        legend=None if len(views) == 1 else alt.Legend(title="view (shape)")),
         opacity=alt.condition(select, alt.value(0.9), alt.value(0.25)),
         tooltip=tip).add_params(select)
     same = pts.groupby(["sentences clustered (%)", "comments not covered"], as_index=False)["number"].agg(
