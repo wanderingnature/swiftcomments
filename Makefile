@@ -118,9 +118,9 @@ clusters:  ## steps 12 to 14: one clustering case, its clusters, topics and name
 statement-trial:  ## step 15 trial (model): CLUSTERS="207 104 52" (or every cluster) of the concern map or of CASE=<case>, RUNS=N calls at each of TEMPERATURES="0 0.7", wordings two ways; JSON under trials/statements/
 	$(PY) scripts/clusters/statement_trial.py $(if $(CLUSTERS),--clusters $(CLUSTERS),--all) --runs $(RUNS) --temperatures $(TEMPERATURES) $(if $(CASE),--case "$(CASE)")
 
-CASE_RUN =$(PY) scripts/clusters/cases.py run --model "$(MODEL)" --view $(or $(VIEW),plain)
+CASE_RUN =$(PY) scripts/clusters/cases.py run --model "$(MODEL)" --view $(or $(VIEW),plain)$(if $(TOP), --top $(TOP))
 
-case-set:  ## stage 3 of docs/topics-guide.md: the nine cases of the case set for one model; MODEL=<model> [VIEW=plain]
+case-set:  ## stage 3 of docs/topics-guide.md: the nine cases of the case set for one model; MODEL=<model> [VIEW=plain] [TOP=D]
 	@test -n "$(MODEL)" || { echo "make case-set needs MODEL=<model>, the model name that make embed wrote"; exit 1; }
 	$(CASE_RUN)
 	$(CASE_RUN) --sentences opening+hits
