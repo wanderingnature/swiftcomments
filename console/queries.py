@@ -689,7 +689,7 @@ FROM gate_sentence_run ORDER BY run_id DESC LIMIT 1
 
 CASES = """
 SELECT case_name, sentences, view, model, merge, reduction, min_cluster_size AS mcs, min_samples AS ms, selection,
-       structure, noise_passes AS passes, k, seed, clusters, topics, input_sentences AS sentences_read,
+       structure, noise_passes AS passes, k, seed, top_removed, clusters, topics, input_sentences AS sentences_read,
        leaders, leaders_clustered, occurrences, occurrences_clustered, largest_cluster, gate_comments,
        comments_unclustered, opening_occurrences, opening_occurrences_clustered, eigengaps, seconds,
        sentence_run_id, substr(code_version, 1, 10) AS code, code_dirty, created_at

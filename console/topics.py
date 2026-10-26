@@ -226,6 +226,18 @@ def status(srun, vectors, cases, choices, current):
                 st.markdown(f"Open the tab **Stage {name.split('.')[0]}** below.")
 
 
+def case_set(cases, keep_names=()):
+    """The choice candidates: the case set at the current defaults (seed 0, the
+    centring correction, UMAP or PCA), plus the named cases. A file with no such
+    case shows everything, so older files keep working."""
+    base = (cases["seed"].eq(0) & cases["top_removed"].fillna(-1).eq(0)
+            & cases["reduction"].isin(("umap5", "pca50")))
+    if not base.any():
+        return cases
+    keep = base | cases["case_name"].isin(set(keep_names))
+    return cases[keep].reset_index(drop=True)
+
+
 def tab_stage4(all_cases, choices):
     st.markdown("**What to do here**\n\n"
                 "1. Select a model.\n"
@@ -238,6 +250,8 @@ def tab_stage4(all_cases, choices):
     cases = all_cases[all_cases["model_label"] == label].reset_index(drop=True)
     chosen = {r.model: r for r in choices.itertuples()}
     mine = next((chosen[m] for m in cases["model"].unique() if m in chosen), None)
+    if not st.toggle("Show every case, the measurement runs too", key="step1_all"):
+        cases = case_set(cases, [mine.case_name] if mine is not None else [])
     number = {n: i + 1 for i, n in enumerate(cases["case_name"])}
     if mine is not None and mine.case_name in number:
         st.success(f"The choice for {label} is case {number[mine.case_name]}:"
@@ -279,15 +293,18 @@ def tab_stage4(all_cases, choices):
     tip = ["number:Q", "case:N", "clusters:Q", "sentences clustered (%):Q", "comments not covered:Q",
            "largest cluster:Q"]
     select = alt.selection_point(name="case", fields=["case_name"], on="click")
-    dots = alt.Chart(pts).mark_point(filled=True, size=160).encode(
+    enc = dict(
         x=x, y=y,
         color=alt.Color("model:N", scale=alt.Scale(domain=models, range=MODEL_COLOURS[:len(models)]),
                         legend=None if len(models) == 1 else alt.Legend(
-                            title="model (colour)", symbolType=VIEW_SHAPES[0], symbolSize=200)),
-        shape=alt.Shape("view:N", scale=alt.Scale(domain=views, range=VIEW_SHAPES[:len(views)]),
-                        legend=None if len(views) == 1 else alt.Legend(title="view (shape)")),
+                            title="model (colour)",
+                            symbolType="circle" if len(views) == 1 else VIEW_SHAPES[0], symbolSize=200)),
         opacity=alt.condition(select, alt.value(0.9), alt.value(0.25)),
-        tooltip=tip).add_params(select)
+        tooltip=tip)
+    if len(views) > 1:
+        enc["shape"] = alt.Shape("view:N", scale=alt.Scale(domain=views, range=VIEW_SHAPES[:len(views)]),
+                                 legend=alt.Legend(title="view (shape)"))
+    dots = alt.Chart(pts).mark_point(filled=True, size=160).encode(**enc).add_params(select)
     same = pts.groupby(["sentences clustered (%)", "comments not covered"], as_index=False)["number"].agg(
         lambda n: ", ".join(str(i) for i in sorted(n)))   # cases at one point share one label
     numbers = alt.Chart(same).mark_text(align="left", dx=17, dy=-15, fontSize=12, fontWeight="bold").encode(
@@ -413,6 +430,7 @@ def tab_found(srun, cases, current):
     st.caption("Each point is a case. A good case is low and to the right. Colour: the model. Black ring: the choice"
                " of stage 4. Red ring: a cluster of 1,000 or more sentences.")
     choices = set(query(q.CHOICES)["case_name"])
+    cases = case_set(cases, choices)
     pts = pd.DataFrame({
         "case": cases["description"],
         "model": cases["model_label"],
