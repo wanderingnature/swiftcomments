@@ -80,9 +80,13 @@ score-model-free:  ## step 6 (model-free): the MODEL-FREE reading of the same cl
 score-model-compare:  ## LIMIT=N class A comments read by both methods, or COMMENTS_OF=<run> the comments of an earlier run; kept for the console's Compare page, JSON under compare/
 	$(PY) scripts/score_model_compare.py $(if $(LIMIT),--limit $(LIMIT)) $(if $(COMMENTS_OF),--comments-of $(COMMENTS_OF)) $(if $(CONCURRENCY),--concurrency $(CONCURRENCY))
 
-assemble:  ## step 6: campaign inheritance and the delta rows; then the LAW check (a report; --write if it lists rows)
+assemble:  ## step 6: campaign inheritance and the delta rows; the four prong gates; then the LAW check (a report; --write if it lists rows)
 	$(PY) scripts/substance/assemble_scores.py --project roadless --write
+	$(PY) scripts/substance/prongs.py --project roadless --write
 	$(PY) scripts/substance/refresh_law.py --project roadless
+
+prongs:  ## step 6 (gates): recompute the four prong gates from the stored scores, both readings
+	$(PY) scripts/substance/prongs.py --project roadless --write
 
 rate:  ## step 7: the answerability rating
 	$(PY) scripts/substance/answerability.py --project roadless --write

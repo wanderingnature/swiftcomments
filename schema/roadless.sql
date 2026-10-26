@@ -710,6 +710,14 @@ CREATE TABLE substance_scores (
     gate_basis TEXT NOT NULL DEFAULT '[]',        -- JSON arrays
     moves      TEXT NOT NULL DEFAULT '[]',
     targets    TEXT NOT NULL DEFAULT '[]',
+    prong_impacts      INTEGER NOT NULL DEFAULT 0 CHECK (prong_impacts IN (0, 1)),
+    prong_significance INTEGER NOT NULL DEFAULT 0 CHECK (prong_significance IN (0, 1)),
+    prong_alternatives INTEGER NOT NULL DEFAULT 0 CHECK (prong_alternatives IN (0, 1)),
+    prong_compliance   INTEGER NOT NULL DEFAULT 0 CHECK (prong_compliance IN (0, 1)),
+    prong_impacts_basis      TEXT NOT NULL DEFAULT '[]',
+    prong_significance_basis TEXT NOT NULL DEFAULT '[]',
+    prong_alternatives_basis TEXT NOT NULL DEFAULT '[]',
+    prong_compliance_basis   TEXT NOT NULL DEFAULT '[]',
     topics     TEXT NOT NULL DEFAULT '[]',
     originality TEXT CHECK (originality IN ('verbatim_template', 'template_plus_original',
                                             'original', 'unknown')),
@@ -936,6 +944,14 @@ CREATE TABLE mf_comment_score (
     moves           TEXT NOT NULL,
     targets         TEXT NOT NULL,
     sentence_count  INTEGER NOT NULL,
+    prong_impacts      INTEGER NOT NULL DEFAULT 0 CHECK (prong_impacts IN (0, 1)),
+    prong_significance INTEGER NOT NULL DEFAULT 0 CHECK (prong_significance IN (0, 1)),
+    prong_alternatives INTEGER NOT NULL DEFAULT 0 CHECK (prong_alternatives IN (0, 1)),
+    prong_compliance   INTEGER NOT NULL DEFAULT 0 CHECK (prong_compliance IN (0, 1)),
+    prong_impacts_basis      TEXT NOT NULL DEFAULT '[]',
+    prong_significance_basis TEXT NOT NULL DEFAULT '[]',
+    prong_alternatives_basis TEXT NOT NULL DEFAULT '[]',
+    prong_compliance_basis   TEXT NOT NULL DEFAULT '[]',
     PRIMARY KEY (ruleset_version, comment_id)
 );
 

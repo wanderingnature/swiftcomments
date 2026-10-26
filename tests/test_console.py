@@ -243,13 +243,17 @@ def results_file(dbfile):
     conn.execute("INSERT INTO substance_screen (comment_id, screen_class, authority, reference, doc_cite,"
                  " action_ref, deficiency, evid_ner) VALUES (?, 'A', 1, 1, 0, 0, 0, 0)", (CID,))
     conn.execute("INSERT INTO mf_score_run (ruleset_version, started_at) VALUES ('3', 's')")
-    conn.execute("INSERT INTO mf_comment_score VALUES ('3', ?, 1, 2, 0, 1, 0, 0, 0, 0, 2, 5, 1,"
+    conn.execute("INSERT INTO mf_comment_score (ruleset_version, comment_id, run_id, place, stand,"
+                 " doc, gap, evid, ask, alt, law, strength, gate, gate_basis, band, moves, targets,"
+                 " sentence_count) VALUES ('3', ?, 1, 2, 0, 1, 0, 0, 0, 0, 2, 5, 1,"
                  " '[{\"dimension\": \"LAW\", \"unit_id\": -100001}]', 'minimal', '[]', '[]', 1)", (CID,))
     conn.execute("INSERT INTO mf_comment_answerability VALUES ('3', ?, 1, 'A1', '[]', '[]', 0, 1)", (CID,))
     # C4 screened B1 and read by the rules (make score-model-free CLASSES=B1): gate closed
     conn.execute("INSERT INTO substance_screen (comment_id, screen_class, authority, reference, doc_cite,"
                  " action_ref, deficiency, evid_ner) VALUES (?, 'B1', 0, 0, 0, 1, 0, 1)", (C4,))
-    conn.execute("INSERT INTO mf_comment_score VALUES ('3', ?, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, '[]',"
+    conn.execute("INSERT INTO mf_comment_score (ruleset_version, comment_id, run_id, place, stand,"
+                 " doc, gap, evid, ask, alt, law, strength, gate, gate_basis, band, moves, targets,"
+                 " sentence_count) VALUES ('3', ?, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, '[]',"
                  " 'minimal', '[]', '[]', 1)", (C4,))
     conn.execute("INSERT INTO mf_comment_answerability VALUES ('3', ?, 1, 'A0', '[]', '[]', 0, 0)", (C4,))
     conn.execute("INSERT INTO mf_sentence_score VALUES ('3', -100001, 1, ?, 0, 48, 'k', 2, 0, 1, 0, 0, 0, 0, 2,"

@@ -101,7 +101,9 @@ class Store:
             arows.append((ruleset, a.comment_id, run_id, a.level, json.dumps(a.defeated),
                           json.dumps(a.open), int(a.mechanism), int(a.cite)))
         self.conn.executemany(
-            "INSERT OR REPLACE INTO mf_comment_score VALUES (" + ",".join("?" * 18) + ")", rows)
+            "INSERT OR REPLACE INTO mf_comment_score (ruleset_version, comment_id, run_id,"
+            " place, stand, doc, gap, evid, ask, alt, law, strength, gate, gate_basis, band,"
+            " moves, targets, sentence_count) VALUES (" + ",".join("?" * 18) + ")", rows)
         self.conn.executemany(
             "INSERT OR REPLACE INTO mf_comment_answerability VALUES (?,?,?,?,?,?,?,?)", arows)
         return n
