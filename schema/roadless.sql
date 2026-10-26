@@ -1227,7 +1227,7 @@ CREATE TABLE cluster_case (
     min_cluster_size              INTEGER NOT NULL,
     min_samples                   INTEGER NOT NULL,
     selection                     TEXT    NOT NULL CHECK (selection IN ('eom', 'leaf')),
-    structure                     TEXT    NOT NULL CHECK (structure IN ('all', 'by-kind')),
+    structure                     TEXT    NOT NULL CHECK (structure IN ('all', 'by-kind', 'by-prong')),
     noise_passes                  INTEGER NOT NULL,
     k                             INTEGER,                    -- the topic cut asked for; NULL: the largest eigengap
     seed                          INTEGER NOT NULL,
@@ -1267,7 +1267,7 @@ CREATE INDEX cluster_case_leader_leader ON cluster_case_leader (case_name, leade
 CREATE TABLE cluster_case_member (
     case_name  TEXT    NOT NULL,
     leader_key TEXT    NOT NULL,
-    kind       TEXT    NOT NULL,                  -- '' when the structure is all; LAW, EVID, GAP or ALT when by kind
+    kind       TEXT    NOT NULL,                  -- '' when the structure is all; LAW, EVID, GAP or ALT when by kind; the prong when by prong
     cluster    INTEGER NOT NULL,                  -- 0 for noise
     PRIMARY KEY (case_name, leader_key, kind)
 );

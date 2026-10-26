@@ -104,6 +104,30 @@ def test_by_kind_and_cases_kept_apart(casefile):
     conn.close()
 
 
+def test_by_prong(casefile):
+    # both GAP groups' comments (sediment c3, trout c4) carry GAP 3, so their
+    # GAP sentences are the significance prong as well as impacts
+    conn = db.connect(casefile)
+    conn.executemany(
+        "INSERT INTO substance_scores (comment_id, was_floored, gate, strength, strength_check,"
+        " band, gap) VALUES (?, 0, 1, 3, 3, 'minimal', 3)",
+        [(f"c{g}-{i:02d}",) for g in (3, 4) for i in range(25)])
+    conn.commit()
+    conn.close()
+    assert cases.main(PCA_LEAF + ["--structure", "by-prong", "--k", "2"]) == 0
+    name = "opening+hits.comment.m.m0.pca50.5-5-leaf.by-prong.p0.k2.s0"
+    conn = db.connect(casefile)
+    prongs = dict(conn.execute("SELECT kind, count(*) FROM cluster_case_cluster WHERE case_name = ? GROUP BY kind",
+                               (name,)).fetchall())
+    # impacts holds the four EVID and GAP groups (the strays too few to cluster);
+    # significance the two GAP-3 groups; compliance the two LAW groups; no ALT
+    assert prongs == {"impacts": 4, "significance": 2, "compliance": 2}
+    members = {k: n for k, n in conn.execute(
+        "SELECT kind, count(*) FROM cluster_case_member WHERE case_name = ? GROUP BY kind", (name,))}
+    assert members["significance"] == 50 and members["impacts"] == 100 + 8 and members["compliance"] == 50
+    conn.close()
+
+
 def test_all_but_the_top_removes_the_shared_direction():
     import numpy as np
     from clusters import analysis as an

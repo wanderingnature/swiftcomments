@@ -3,7 +3,7 @@
 
     uv run python scripts/clusters/cases.py run [--sentences opening|opening+hits|all] [--view comment|plain|topic]
         [--merge 0.98] [--top D] [--reduction pca50|umap5] [--min-cluster-size N] [--min-samples N]
-        [--selection eom|leaf] [--structure all|by-kind] [--noise-passes N] [--k N] [--seed N] [--model M]
+        [--selection eom|leaf] [--structure all|by-kind|by-prong] [--noise-passes N] [--k N] [--seed N] [--model M]
     uv run python scripts/clusters/cases.py list
     uv run python scripts/clusters/cases.py compare CASE_A CASE_B
     uv run python scripts/clusters/cases.py choose CASE [--note TEXT]
@@ -30,7 +30,9 @@ compared, not decided beforehand. A case is one value on each axis:
                 or pacmap5 (PaCMAP to 5: 10 neighbours, angular)
     HDBSCAN     min_cluster_size, min_samples, selection eom or leaf
     structure   all: one clustering; by-kind: one clustering for each gate kind (LAW, EVID, GAP, ALT)
-                over the leaders of that kind, the topics then drawn across the kinds
+                over the leaders of that kind, the topics then drawn across the kinds; by-prong: one
+                clustering for each prong gate (impacts, significance, alternatives, compliance) over
+                the leaders whose sentences open it
     noise       passes in which the noise of the pass before is clustered again on its own, a fresh
                 reduction fitted to it, until a pass finds no cluster
     k           the topic cut; none: the largest eigengap
@@ -75,6 +77,7 @@ from clusters import analysis as an  # noqa: E402
 from clusters.embed import VIEWS, unpack  # noqa: E402
 
 KINDS = ("LAW", "EVID", "GAP", "ALT")
+PRONGS = ("impacts", "significance", "alternatives", "compliance")
 SENTENCES = {"opening": "o.opens = 1", "opening+hits": "(o.opens = 1 OR o.holds_hit = 1)", "all": "1 = 1"}
 TABLES = ("cluster_case", "cluster_case_leader", "cluster_case_member", "cluster_case_cluster", "cluster_case_topic")
 
@@ -135,10 +138,13 @@ def resolve_model(conn, view: str, model: str | None) -> str:
 
 def load(conn, sentences: str, view: str, model: str):
     """The case's distinct sentences: keys, texts, occurrences (of the occurrences the
-    case reads), kinds (4 booleans), and unit vectors."""
+    case reads), kinds (4 booleans), significance (a GAP sentence of a GAP-3 comment),
+    and unit vectors."""
     rows = conn.execute(
-        "SELECT o.text_key, count(*) AS n, max(o.law), max(o.evid), max(o.gap), max(o.alt), s.text"
+        "SELECT o.text_key, count(*) AS n, max(o.law), max(o.evid), max(o.gap), max(o.alt),"
+        " max(CASE WHEN o.gap = 1 AND ss.gap >= 3 THEN 1 ELSE 0 END), s.text"
         " FROM gate_sentence_occurrence o JOIN gate_sentence s USING (text_key)"
+        " LEFT JOIN substance_scores ss USING (comment_id)"
         f" WHERE {SENTENCES[sentences]} GROUP BY o.text_key ORDER BY o.text_key").fetchall()
     if not rows:
         raise SystemExit("no sentence to cluster: run make sentences first")
@@ -151,8 +157,9 @@ def load(conn, sentences: str, view: str, model: str):
         raise SystemExit(f"{len(missing):,} of the case's {len(keys):,} sentences have no vector under view {view}"
                          f" by {model}: run make embed VIEW={view}")
     V = an.unit(np.vstack([unpack(vec[k]) for k in keys]).astype(np.float32))
-    return (keys, [r[6] for r in rows], np.array([r[1] for r in rows], dtype=np.int64),
-            np.array([[r[2], r[3], r[4], r[5]] for r in rows], dtype=bool), V)
+    return (keys, [r[7] for r in rows], np.array([r[1] for r in rows], dtype=np.int64),
+            np.array([[r[2], r[3], r[4], r[5]] for r in rows], dtype=bool),
+            np.array([r[6] for r in rows], dtype=bool), V)
 
 
 def coverage(conn, clustered_keys: set[str]) -> tuple[int, int, int, int]:
@@ -215,7 +222,7 @@ def run_case(conn, a: argparse.Namespace) -> dict:
     model = a.model = resolve_model(conn, a.view, a.model)
     name = case_name(a)
     srun = conn.execute("SELECT max(run_id) FROM gate_sentence_run").fetchone()[0]
-    keys, texts, occ, kinds, V = load(conn, a.sentences, a.view, model)
+    keys, texts, occ, kinds, sig, V = load(conn, a.sentences, a.view, model)
     top_variance = None
     if a.top is not None:
         V, shares = an.all_but_the_top(V, a.top)
@@ -226,12 +233,23 @@ def run_case(conn, a: argparse.Namespace) -> dict:
     L_occ = np.bincount(leader, weights=occ, minlength=len(keys)).astype(np.int64)[lead]
     L_var = (np.bincount(leader, minlength=len(keys)) - 1)[lead]
     L_kinds = np.zeros((len(lead), 4), dtype=bool)
+    L_sig = np.zeros(len(lead), dtype=bool)
     for i, li in enumerate(leader):
         L_kinds[pos[int(li)]] |= kinds[i]
+        L_sig[pos[int(li)]] |= sig[i]
     LV, L_texts = V[lead], np.array([texts[i] for i in lead], dtype=object)
 
-    groups = [("", np.arange(len(lead)))] if a.structure == "all" else \
-        [(k, np.flatnonzero(L_kinds[:, j])) for j, k in enumerate(KINDS)]
+    if a.structure == "all":
+        groups = [("", np.arange(len(lead)))]
+    elif a.structure == "by-kind":
+        groups = [(k, np.flatnonzero(L_kinds[:, j])) for j, k in enumerate(KINDS)]
+    else:
+        # KINDS order is LAW, EVID, GAP, ALT; a prong holds the leaders whose
+        # sentences open it (impacts: GAP or EVID; significance: a GAP sentence
+        # of a GAP-3 comment; alternatives: ALT; compliance: LAW)
+        L_prongs = np.stack([L_kinds[:, 1] | L_kinds[:, 2], L_sig,
+                             L_kinds[:, 3], L_kinds[:, 0]], axis=1)
+        groups = [(p, np.flatnonzero(L_prongs[:, j])) for j, p in enumerate(PRONGS)]
     found: list[tuple[str, int, np.ndarray]] = []           # (kind, pass, leader rows)
     for kind, rows in groups:
         for p, members in cluster_group(LV[rows], a):
@@ -417,7 +435,7 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--min-cluster-size", type=int, default=10)
     r.add_argument("--min-samples", type=int, default=10)
     r.add_argument("--selection", choices=("eom", "leaf"), default="eom")
-    r.add_argument("--structure", choices=("all", "by-kind"), default="all")
+    r.add_argument("--structure", choices=("all", "by-kind", "by-prong"), default="all")
     r.add_argument("--noise-passes", type=int, default=0)
     r.add_argument("--k", type=int, help="the topic cut (default: the largest eigengap)")
     r.add_argument("--seed", type=int, default=0)
