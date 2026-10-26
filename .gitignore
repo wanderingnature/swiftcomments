@@ -13,12 +13,12 @@ wheels/
 csv/mv4-z8fw-q5jx.csv
 
 # The analysis inputs and outputs: the extracted bulk download, the fetched
-# attachments, the record documents' converted markdowns, the SQLite file and
-# the reader's environment
+# attachments, the record documents' converted markdowns (their source PDFs
+# are committed beside them), the SQLite file and the reader's environment
 csv/*.csv
 attachments/
 data/
-deis/
+deis/*.md
 extracts/
 .env
 

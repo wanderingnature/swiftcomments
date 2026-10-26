@@ -8,11 +8,13 @@ then compare by cosine, under the same embedding model.
 
 ## The input
 
-The step reads markdown files from `deis/`, one per document. Each file is a conversion
-of the source PDF. The conversion keeps the heading levels and marks every page with a
-`<!-- page N -->` line. A file without page markers is refused. The file names and
-titles are fixed in `scripts/docindex/ingest_documents.py` (`SOURCES`); a file in
-`deis/` that `SOURCES` does not name stops the step.
+The repository ships the 15 source PDFs in `deis/`. The step reads markdown files from
+the same folder, one per document. Each file is a conversion of the PDF beside it. The
+conversion keeps the heading levels and marks every page with a `<!-- page N -->` line.
+A file without page markers is refused. The file names and titles are fixed in
+`scripts/docindex/ingest_documents.py` (`SOURCES`); a markdown file in `deis/` that
+`SOURCES` does not name stops the step. A reader without the conversions loads the
+step's rows from its extract (`make jump`, `docs/limit-and-jump.md`).
 
 ## What the step does
 
