@@ -5,24 +5,25 @@ The combined gate is one test: a dimension of GAP, EVID, ALT or LAW at 2 or
 more. This step splits it into four gates, one per prong of the regulation's
 definition, and keeps the combined gate as their union:
 
-  impacts        GAP 2+, or EVID 2+ aimed at the impacts (T1, or no T3)
-  significance   GAP 3, or move M1 with target T1 on a gated comment
-  alternatives   ALT 2+, or EVID 2+ aimed at an alternative (T3)
-  compliance     LAW 2+
+  impacts        GAP 2+ or EVID 2+ (a deficiency named, or evidence offered)
+  significance   GAP 3 (the deficiency carries into a conclusion)
+  alternatives   ALT 2+ (a distinct alternative)
+  compliance     LAW 2+ (a legal authority)
 
-The model reading records moves and targets, so its EVID routes by target.
-The rules' reading does not aim its dimensions: its `impacts` opens on any
-GAP or EVID at 2+, its `alternatives` on ALT alone. That difference is part
-of what the compare runs measure.
+The mapping is the same for both readings and uses the dimension levels
+alone. Two constraints fix it: the union of the four gates must equal the
+stored gate on every row, and the answerability levels must reproduce
+(A1 from compliance; A2 from significance, alternatives, or impacts with a
+mechanism and a citation). A mapping that routes a dimension by its moves or
+targets breaks both.
 
-Each gate stores a basis: the dimension and level (and target or move) that
-opened it, as a JSON array.
+Each gate stores a basis: the dimension and level that opened it, as a JSON
+array.
 
-The columns are pure derivations of each row's stored dimensions, moves and
-targets. This script recomputes them for every row of substance_scores (the
-model reading) and mf_comment_score (the rules), reports the counts, checks
-that the union of the four gates equals the stored gate on every row, and
-with --write stores them. Re-runnable; no model call.
+The columns are pure derivations of each row's stored dimensions. This
+script recomputes them for every row of substance_scores (the model reading)
+and mf_comment_score (the rules), reports the counts, checks the union rule
+on every row, and with --write stores them. Re-runnable; no model call.
 
     python scripts/substance/prongs.py --project roadless
     python scripts/substance/prongs.py --project roadless --write
@@ -44,52 +45,37 @@ from shared.project_context import add_project_argument, context_from_args  # no
 PRONGS = ("impacts", "significance", "alternatives", "compliance")
 
 
-def prongs_for(gap, evid, alt, law, moves, targets, gate, reading):
-    """{prong: (0 or 1, basis list)} from one comment row's stored fields.
+def prongs_for(gap, evid, alt, law):
+    """{prong: (0 or 1, basis list)} from one comment row's dimension levels.
 
-    `reading` is 'model' (moves and targets route EVID and add the M1 path)
-    or 'rules' (levels alone). The union of the four flags equals `gate` for
-    the levels alone; the M1 path is guarded by the gate so it cannot widen
-    the union.
+    The union of the four flags equals the combined gate (a dimension of GAP,
+    EVID, ALT or LAW at 2 or more) by construction.
     """
-    out = {p: [0, []] for p in PRONGS}
-    if gap >= 2:
-        out["impacts"] = [1, [f"GAP {gap}"]]
-    if reading == "model":
-        if evid >= 2 and ("T1" in targets or "T3" not in targets):
-            out["impacts"][0] = 1
-            out["impacts"][1].append(f"EVID {evid} T1" if "T1" in targets else f"EVID {evid}")
-        if evid >= 2 and "T3" in targets:
-            out["alternatives"] = [1, [f"EVID {evid} T3"]]
-        if "M1" in moves and "T1" in targets and gate:
-            out["significance"][0] = 1
-            out["significance"][1].append("M1 T1")
-    elif evid >= 2:
-        out["impacts"][0] = 1
-        out["impacts"][1].append(f"EVID {evid}")
+    out = {p: (0, []) for p in PRONGS}
+    if gap >= 2 or evid >= 2:
+        basis = [f"GAP {gap}"] if gap >= 2 else []
+        if evid >= 2:
+            basis.append(f"EVID {evid}")
+        out["impacts"] = (1, basis)
     if gap >= 3:
-        out["significance"][0] = 1
-        out["significance"][1].insert(0, f"GAP {gap}")
+        out["significance"] = (1, [f"GAP {gap}"])
     if alt >= 2:
-        out["alternatives"][0] = 1
-        out["alternatives"][1].insert(0, f"ALT {alt}")
+        out["alternatives"] = (1, [f"ALT {alt}"])
     if law >= 2:
-        out["compliance"] = [1, [f"LAW {law}"]]
-    return {p: (flag, basis) for p, (flag, basis) in out.items()}
+        out["compliance"] = (1, [f"LAW {law}"])
+    return out
 
 
-def recompute(conn, ctx, table, key_cols, reading):
+def recompute(conn, ctx, table, key_cols):
     """(updates, counts) for one table: every row's four gates and bases."""
-    sql = (f"SELECT {', '.join(key_cols)}, gap, evid, alt, law, moves, targets, gate"
+    sql = (f"SELECT {', '.join(key_cols)}, gap, evid, alt, law, gate"
            f" FROM {{analysis}}.{table}")
     updates, counts = [], {p: 0 for p in PRONGS}
     counts["rows"] = counts["union_ne_gate"] = 0
     for row in conn.execute(ctx.render_sql(sql)):
         keys = row[:len(key_cols)]
-        gap, evid, alt, law, moves, targets, gate = row[len(key_cols):]
-        got = prongs_for(int(gap or 0), int(evid or 0), int(alt or 0), int(law or 0),
-                         json.loads(moves or "[]"), json.loads(targets or "[]"),
-                         int(gate or 0), reading)
+        gap, evid, alt, law, gate = row[len(key_cols):]
+        got = prongs_for(int(gap or 0), int(evid or 0), int(alt or 0), int(law or 0))
         counts["rows"] += 1
         for p in PRONGS:
             counts[p] += got[p][0]
@@ -108,12 +94,12 @@ def main() -> None:
     args = p.parse_args()
     ctx = context_from_args(args)
 
-    tables = (("substance_scores", ("comment_id",), "model"),
-              ("mf_comment_score", ("ruleset_version", "comment_id"), "rules"))
+    tables = (("substance_scores", ("comment_id",)),
+              ("mf_comment_score", ("ruleset_version", "comment_id")))
     with db.connect(**ctx.db_config) as conn:
-        for table, key_cols, reading in tables:
-            updates, counts = recompute(conn, ctx, table, key_cols, reading)
-            print(f"{table} ({reading}): {counts['rows']:,} rows; "
+        for table, key_cols in tables:
+            updates, counts = recompute(conn, ctx, table, key_cols)
+            print(f"{table}: {counts['rows']:,} rows; "
                   + ", ".join(f"{p} {counts[p]:,}" for p in PRONGS))
             if counts["union_ne_gate"]:
                 raise SystemExit(
