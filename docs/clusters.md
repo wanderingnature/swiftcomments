@@ -113,6 +113,12 @@ and compared with the others. A case is one value on each axis:
 | The topic cut | `K=` | the number of topics; none: the largest eigengap | the eigengap |
 | The seed | `SEED=` | the seed of the reduction | 0 |
 
+Measured on this corpus (seeds 0 to 4 at the reference settings with `TOP=0`): the mean
+adjusted Rand index between two seeds of one setting is 0.645 (Qwen vectors) and 0.757
+(BGE) for `umap5`, 0.497 and 0.632 for `pacmap5`, and PaCMAP's mean largest cluster is
+2,578 and 4,231 against UMAP's 566 and 275 — so `umap5` stays the default, and the two
+reductions group the sentences differently (ARI between them at one seed: 0.21 and 0.05).
+
 `MODEL=` names the embedding model when the file holds vectors of more than one.
 
 ```

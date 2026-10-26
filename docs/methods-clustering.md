@@ -366,8 +366,12 @@ habitat and species, and timber production under the executive orders.
 - **No measure of truth.** The measures tell coverage, size and agreement. They do not
   tell if a cluster is one claim. A person must read the clusters
   (`docs/topics-guide.md`, check 1). A hand-labelled set is the next measure to make.
-- **One seed.** Each case uses one UMAP seed. The agreement between seeds of one setting is
-  not yet measured.
+- **Seed sensitivity, measured.** Over seeds 0 to 4 at the reference settings with the
+  vectors centred (`TOP=0`), the mean adjusted Rand index between two seeds of one
+  setting is 0.645 on the Qwen vectors (lowest pair 0.437) and 0.757 on BGE (lowest
+  0.719) for UMAP, and 0.497 and 0.632 for PaCMAP, which also collapses into one large
+  cluster (mean largest 2,578 and 4,231 against UMAP's 566 and 275). UMAP stays the
+  default; a case is one seed, and the cross-seed spread is part of reading it.
 - **The names.** Class-based TF-IDF drops a word that one cluster alone uses. A name can
   miss the most specific word of a cluster.
 - **Steps 15 and 16 are not built.** A concern statement for each cluster and the response
