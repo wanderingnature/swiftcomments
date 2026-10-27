@@ -122,8 +122,8 @@ clusters:  ## steps 12 to 14: one clustering case, its clusters, topics and name
 docindex:  ## the record documents: sections, chunks and chunk vectors from the converted markdowns in deis/; DIR= another directory, REPLACE=1 re-ingests a changed source, SKIP=<file>, DRY=1 counts only; embeds with the server of .env
 	$(PY) scripts/docindex/ingest_documents.py $(if $(DIR),--dir $(DIR)) $(if $(REPLACE),--replace) $(if $(SKIP),--skip $(SKIP)) $(if $(DRY),--dry-run)
 
-retrieve:  ## the K nearest record chunks per gate-opening sentence, by cosine; MODEL= when two embedding models fit, K=5, LETTERS=1 prints the letter-volume figure and writes nothing, DRY=1
-	$(PY) scripts/docindex/retrieve.py $(if $(MODEL),--model $(MODEL)) $(if $(K),--k $(K)) $(if $(LETTERS),--letters) $(if $(DRY),--dry-run)
+retrieve:  ## the K nearest record chunks per gate-opening sentence, by cosine; MODEL= when two embedding models fit, K=5, EXCLUDED=1 prints the excluded-sections figure and writes nothing, DRY=1
+	$(PY) scripts/docindex/retrieve.py $(if $(MODEL),--model $(MODEL)) $(if $(K),--k $(K)) $(if $(EXCLUDED),--excluded) $(if $(DRY),--dry-run)
 
 nli:  ## the cross-encoder over the retrieved pairs, then the labels; needs uv sync --group nli; THRESHOLD=0.75, LIMIT=N a pilot, LABELS=1 rebuilds the labels only, DRY=1
 	$(PY) scripts/docindex/nli.py $(if $(THRESHOLD),--threshold $(THRESHOLD)) $(if $(NLI_MODEL),--nli-model $(NLI_MODEL)) $(if $(MODEL),--model $(MODEL)) $(if $(LIMIT),--limit $(LIMIT)) $(if $(LABELS),--labels-only) $(if $(DRY),--dry-run)

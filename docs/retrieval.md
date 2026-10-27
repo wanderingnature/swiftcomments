@@ -15,11 +15,13 @@ same embedding model, so their cosine compares them. For each distinct sentence
 that opens the gate alone, the step stores the 5 nearest chunks in
 `doc_retrieval`, nearest first.
 
-Letter sections are not searched. The agency-letters volume holds letters that
-commenters sent to the agency. They are not the agency's analysis, so a match
-there does not mean the record addresses the point. Run
-`make retrieve LETTERS=1` to measure the exclusion: it searches the letters
-too, prints how many sentences take a letter chunk first, and writes nothing.
+Sections that carry commenters' words are not searched. Three bodies of text
+are excluded: the agency-letters volume, the comment-summary appendix, and the
+response-to-comments appendix. Each holds what commenters said, or the agency's
+paraphrase of it. A match there does not mean the record addresses the point.
+Run `make retrieve EXCLUDED=1` to measure the exclusion: it searches the
+excluded sections too, prints how many sentences take an excluded chunk first,
+and writes nothing.
 
 ## The NLI reading
 
@@ -51,9 +53,9 @@ order contested, not_addressed, near, addressed (`doc_comment_label`).
 ## The commands
 
 ```
-make retrieve DRY=1     count the sentences and chunks, write nothing
-make retrieve           the 5 nearest chunks per sentence
-make retrieve LETTERS=1 the letter-exclusion figure, write nothing
+make retrieve DRY=1      count the sentences and chunks, write nothing
+make retrieve            the 5 nearest chunks per sentence
+make retrieve EXCLUDED=1 the excluded-sections figure, write nothing
 uv sync --group nli     install the NLI model's dependencies, once
 make nli LIMIT=10       a pilot: read 10 pairs, no labels yet
 make nli                read every near pair, then build the labels

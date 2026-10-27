@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """The record retrieval: the K nearest record chunks for each gate-opening sentence.
 
-    uv run python scripts/docindex/retrieve.py [--model M] [--k 5] [--letters] [--dry-run]
-    make retrieve [MODEL=...] [K=5] [LETTERS=1] [DRY=1]
+    uv run python scripts/docindex/retrieve.py [--model M] [--k 5] [--excluded] [--dry-run]
+    make retrieve [MODEL=...] [K=5] [EXCLUDED=1] [DRY=1]
 
 For every distinct sentence that opens the gate alone (gate_sentence.opens = 1),
 the cosine of its comment-view vector (sentence_embedding, under the comment
@@ -10,10 +10,12 @@ instruction of make embed) against the vector of every record chunk
 (doc_chunk_embeddings), under one embedding model. The K nearest chunks are
 stored in doc_retrieval, nearest first; a run replaces the model's rows.
 
-Sections of kind letter are not searched: the agency-letters volume holds
-letters submitted to the agency and published with the record; they are not the
-agency's analysis. --letters searches them too, prints how many sentences take
-a letter chunk first, and writes nothing: the figure that justifies the
+Sections that carry commenters' words instead of the agency's analysis are not
+searched: the agency-letters volume (kind letter), and the sections of a
+comment-summary or response-to-comments appendix, named by their headings. A
+match there is the agency's paraphrase of a comment, not the record addressing
+the point. --excluded searches them too, prints how many sentences take an
+excluded chunk first, and writes nothing: the figure that justifies the
 exclusion.
 
 The embedding model is --model, or is discovered when exactly one model has
@@ -40,6 +42,10 @@ from clusters.embed import VIEWS, unpack  # noqa: E402
 K = 5
 # Sentence rows per block of the cosine products, as the merge blocks them.
 BLOCK = 2048
+# A section whose chunks are commenters' words, not the agency's analysis: the
+# letters volume, and the appendixes that summarize or respond to comments.
+EXCLUDED_SQL = ("(s.kind = 'letter' OR s.heading_path LIKE '%Comment Summary%'"
+                " OR s.heading_path LIKE '%Response to Comments%')")
 
 
 def discover_model(conn) -> str:
@@ -80,10 +86,10 @@ def sentence_matrix(conn, model: str) -> tuple[list[str], np.ndarray]:
     return [r[0] for r in rows], unit(np.stack([unpack(r[1]) for r in rows]))
 
 
-def chunk_matrix(conn, model: str, letters: bool) -> tuple[list[int], np.ndarray, set[int]]:
-    """(chunk_ids, unit vectors, the ids of letter chunks) of every record chunk in
-    scope: letter sections only under --letters."""
-    scope = "" if letters else " AND s.kind <> 'letter'"
+def chunk_matrix(conn, model: str, excluded: bool) -> tuple[list[int], np.ndarray, set[int]]:
+    """(chunk_ids, unit vectors, the ids of excluded-section chunks) of every record
+    chunk in scope: the excluded sections only under --excluded."""
+    scope = "" if excluded else " AND NOT " + EXCLUDED_SQL
     missing = conn.execute(
         "SELECT count(*) FROM doc_chunks c JOIN doc_sections s USING (section_id)"
         " WHERE NOT EXISTS (SELECT 1 FROM doc_chunk_embeddings e"
@@ -92,14 +98,14 @@ def chunk_matrix(conn, model: str, letters: bool) -> tuple[list[int], np.ndarray
     if missing:
         raise SystemExit(f"{missing:,} chunks have no vector under {model}: run make docindex")
     rows = conn.execute(
-        "SELECT c.chunk_id, e.embedding, s.kind FROM doc_chunks c"
+        "SELECT c.chunk_id, e.embedding, " + EXCLUDED_SQL + " FROM doc_chunks c"
         " JOIN doc_sections s USING (section_id)"
         " JOIN doc_chunk_embeddings e ON e.chunk_id = c.chunk_id AND e.embedding_model = ?"
         " WHERE 1 = 1" + scope + " ORDER BY c.chunk_id", (model,)).fetchall()
     if not rows:
         raise SystemExit("no record chunks: run make docindex first")
     return ([r[0] for r in rows], unit(np.stack([unpack(r[1]) for r in rows])),
-            {r[0] for r in rows if r[2] == "letter"})
+            {r[0] for r in rows if r[2]})
 
 
 def nearest(Q: np.ndarray, C: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray]:
@@ -135,27 +141,27 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--model", help="the embedding model; discovered when only one fits")
     ap.add_argument("--k", type=int, default=K, help="nearest chunks kept per sentence")
-    ap.add_argument("--letters", action="store_true",
-                    help="search the letter sections too; print how many sentences take a"
-                         " letter chunk first; write nothing")
+    ap.add_argument("--excluded", action="store_true",
+                    help="search the excluded sections too; print how many sentences take an"
+                         " excluded chunk first; write nothing")
     ap.add_argument("--dry-run", action="store_true", help="count what would run; write nothing")
     args = ap.parse_args(argv)
     conn = db.connect(db.DB_PATH)
     model = args.model or discover_model(conn)
     keys, Q = sentence_matrix(conn, model)
-    chunk_ids, C, letter_ids = chunk_matrix(conn, model, args.letters)
+    chunk_ids, C, excluded_ids = chunk_matrix(conn, model, args.excluded)
     print(f"make retrieve: {len(keys):,} gate-opening sentences x {len(chunk_ids):,} record"
           f" chunks, {min(args.k, len(chunk_ids))} per sentence, model {model}"
-          + (" (letter sections included)" if args.letters else ""), flush=True)
+          + (" (excluded sections included)" if args.excluded else ""), flush=True)
     if args.dry_run:
         conn.close()
         print("nothing written")
         return 0
     idx, cos = nearest(Q, C, args.k)
-    if args.letters:
-        first = sum(1 for i in range(len(keys)) if chunk_ids[idx[i, 0]] in letter_ids)
-        print(f"{first:,} of {len(keys):,} sentences ({first / len(keys):.1%}) take a letter"
-              " chunk first; nothing written")
+    if args.excluded:
+        first = sum(1 for i in range(len(keys)) if chunk_ids[idx[i, 0]] in excluded_ids)
+        print(f"{first:,} of {len(keys):,} sentences ({first / len(keys):.1%}) take an"
+              " excluded chunk first; nothing written")
         conn.close()
         return 0
     n = write(conn, model, keys, chunk_ids, idx, cos)
