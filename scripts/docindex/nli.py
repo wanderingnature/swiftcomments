@@ -1,26 +1,27 @@
 #!/usr/bin/env python3
-"""Natural-language inference over the retrieved pairs, then the labels.
+"""Natural-language inference over every retrieved pair, then the labels.
 
-    uv run python scripts/docindex/nli.py [--threshold 0.75] [--nli-model M] [--batch 32]
+    uv run python scripts/docindex/nli.py [--nli-model M] [--batch 32]
                                           [--limit N] [--labels-only] [--dry-run]
-    make nli [THRESHOLD=0.75] [LIMIT=N] [LABELS=1] [DRY=1]
+    make nli [LIMIT=N] [LABELS=1] [DRY=1]
 
-For every doc_retrieval pair at or above the similarity threshold, the
-cross-encoder reads the chunk as the premise and the sentence as the hypothesis
-and gives the three probabilities, stored in doc_nli. A pair with a row for the
-NLI model is not read again, so the run resumes. The model runs locally
-(dependency group nli: uv sync --group nli); the first run downloads it.
+For every doc_retrieval pair, the cross-encoder reads the chunk as the premise
+and the sentence as the hypothesis and gives the three probabilities, stored in
+doc_nli. No similarity floor gates the reading: the retrieval reading test
+found no cosine below which the retrieval stops finding the meant passage. A
+pair with a row for the NLI model is not read again, so the run resumes. The
+model runs locally (dependency group nli: uv sync --group nli); the first run
+downloads it.
 
 Then the labels, rebuilt whole from doc_retrieval and doc_nli:
 
   per sentence (doc_sentence_label)
-    contested      a pair at or above the threshold reads contradiction (p >= 0.7)
+    contested      a pair reads contradiction (p >= 0.7)
     addressed      no contradiction; a pair reads entailment
-    near           pairs at or above the threshold, none decisive
-    not_addressed  no pair at or above the threshold
+    not_addressed  every pair read; none decisive
   per comment (doc_comment_label)
     the strongest label over its gate-opening sentences, in the order
-    contested, not_addressed, near, addressed
+    contested, not_addressed, addressed
 
 --labels-only rebuilds the two label tables and reads no pair.
 """
@@ -40,9 +41,6 @@ from docindex import ingest_documents as ing  # noqa: E402
 from docindex.retrieve import discover_model  # noqa: E402
 
 NLI_MODEL = "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli"
-# The cosine at or above which a retrieved pair is read; test 1 of the method
-# sets the final value.
-THRESHOLD = 0.75
 # The probability at or above which a pair's reading is entailment or
 # contradiction; below it on both, the pair is neutral.
 DECISIVE = 0.7
@@ -51,7 +49,7 @@ BATCH = 32
 # Tokens the pair is cut to; a 600-character chunk and a sentence fit well under.
 MAX_TOKENS = 512
 # The comment's label is the strongest over its sentences, in this order.
-ORDER = ["contested", "not_addressed", "near", "addressed"]
+ORDER = ["contested", "not_addressed", "addressed"]
 
 
 def label_order(id2label: dict) -> tuple[int, int, int]:
@@ -65,10 +63,10 @@ def label_order(id2label: dict) -> tuple[int, int, int]:
     return tuple(names[w] for w in want)
 
 
-def queue(conn, nli_model: str, threshold: float) -> list[tuple[str, int, str, str]]:
-    """(text_key, chunk_id, premise, hypothesis) of every pair at or above the
-    threshold with no doc_nli row for the model. The premise is the chunk as the
-    embedder saw it (ingest_documents.embed_text)."""
+def queue(conn, nli_model: str) -> list[tuple[str, int, str, str]]:
+    """(text_key, chunk_id, premise, hypothesis) of every retrieved pair with no
+    doc_nli row for the model. The premise is the chunk as the embedder saw it
+    (ingest_documents.embed_text)."""
     rows = conn.execute(
         "SELECT DISTINCT r.text_key, r.chunk_id, d.source_file, c.chunk_text, s.text"
         " FROM doc_retrieval r"
@@ -76,9 +74,9 @@ def queue(conn, nli_model: str, threshold: float) -> list[tuple[str, int, str, s
         " JOIN doc_chunks c ON c.chunk_id = r.chunk_id"
         " JOIN doc_sections sec USING (section_id)"
         " JOIN doc_documents d USING (document_id)"
-        " WHERE r.cosine >= ? AND NOT EXISTS (SELECT 1 FROM doc_nli n"
+        " WHERE NOT EXISTS (SELECT 1 FROM doc_nli n"
         "  WHERE n.text_key = r.text_key AND n.chunk_id = r.chunk_id AND n.nli_model = ?)"
-        " ORDER BY r.text_key, r.chunk_id", (threshold, nli_model)).fetchall()
+        " ORDER BY r.text_key, r.chunk_id", (nli_model,)).fetchall()
     return [(k, cid, ing.embed_text(f, chunk), text) for k, cid, f, chunk, text in rows]
 
 
@@ -114,19 +112,15 @@ def read_pairs(conn, pairs, nli_model: str, batch_size: int) -> int:
     return done
 
 
-def sentence_label(rows: list[tuple[int, float, float | None, float | None, float | None]],
-                   threshold: float):
+def sentence_label(rows: list[tuple[int, float, float | None, float | None, float | None]]):
     """(label, chunk_id, cosine, p_ent, p_neu, p_con) from one sentence's retrieved
     rows (chunk_id, cosine, and the three probabilities, None for an unread pair).
-    Contradiction outranks entailment, as the comment order does."""
-    above = [r for r in rows if r[1] >= threshold]
-    if not above:
-        top = max(rows, key=lambda r: r[1])
-        return ("not_addressed", None, top[1], None, None, None)
-    read = [r for r in above if r[2] is not None]
-    if len(read) != len(above):
-        raise SystemExit(f"{len(above) - len(read)} pairs at or above the threshold are"
-                         " unread: run make nli without LABELS=1")
+    Contradiction outranks entailment, as the comment order does. not_addressed
+    cites the nearest pair: read, and neither entailed nor contradicted."""
+    read = [r for r in rows if r[2] is not None]
+    if len(read) != len(rows):
+        raise SystemExit(f"{len(rows) - len(read)} retrieved pairs are unread:"
+                         " run make nli without LABELS=1")
     contested = [r for r in read if r[4] >= DECISIVE]
     if contested:
         c, cos, pe, pn, pc = max(contested, key=lambda r: (r[4], r[1], -r[0]))
@@ -136,11 +130,12 @@ def sentence_label(rows: list[tuple[int, float, float | None, float | None, floa
         c, cos, pe, pn, pc = max(entailed, key=lambda r: (r[2], r[1], -r[0]))
         return ("addressed", c, cos, pe, pn, pc)
     c, cos, pe, pn, pc = max(read, key=lambda r: (r[1], -r[0]))
-    return ("near", c, cos, pe, pn, pc)
+    return ("not_addressed", c, cos, pe, pn, pc)
 
 
-def labels(conn, embedding_model: str, nli_model: str, threshold: float) -> tuple[int, int]:
-    """Both label tables rebuilt whole for the two models."""
+def labels(conn, embedding_model: str, nli_model: str) -> tuple[int, int]:
+    """Both label tables rebuilt whole for the two models. The threshold column
+    stores 0: no similarity floor applies, every retrieved pair is read."""
     by_key = {}
     for key, cid, cos, pe, pn, pc in conn.execute(
             "SELECT r.text_key, r.chunk_id, r.cosine, n.p_entailment, n.p_neutral,"
@@ -153,12 +148,12 @@ def labels(conn, embedding_model: str, nli_model: str, threshold: float) -> tupl
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     conn.execute("DELETE FROM doc_sentence_label WHERE embedding_model = ? AND nli_model = ?",
                  (embedding_model, nli_model))
-    sent = {key: sentence_label(rows, threshold) for key, rows in sorted(by_key.items())}
+    sent = {key: sentence_label(rows) for key, rows in sorted(by_key.items())}
     conn.executemany(
         "INSERT INTO doc_sentence_label (text_key, embedding_model, nli_model, label,"
         " chunk_id, cosine, p_entailment, p_neutral, p_contradiction, threshold, created_at)"
         " VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-        [(key, embedding_model, nli_model, *row, threshold, now) for key, row in sent.items()])
+        [(key, embedding_model, nli_model, *row, 0.0, now) for key, row in sent.items()])
     rank = {lab: i for i, lab in enumerate(ORDER)}
     comments = {}
     for cid, key in conn.execute(
@@ -182,8 +177,6 @@ def labels(conn, embedding_model: str, nli_model: str, threshold: float) -> tupl
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--threshold", type=float, default=THRESHOLD,
-                    help="the cosine at or above which a pair is read")
     ap.add_argument("--nli-model", default=NLI_MODEL)
     ap.add_argument("--model", help="the embedding model; discovered when only one fits")
     ap.add_argument("--batch", type=int, default=BATCH, help="pairs per forward pass")
@@ -195,9 +188,9 @@ def main(argv: list[str] | None = None) -> int:
     conn = db.connect(db.DB_PATH)
     embedding_model = args.model or discover_model(conn)
     if not args.labels_only:
-        pairs = queue(conn, args.nli_model, args.threshold)
+        pairs = queue(conn, args.nli_model)
         todo = pairs[:args.limit] if args.limit else pairs
-        print(f"make nli: {len(todo):,} pairs to read at threshold {args.threshold}"
+        print(f"make nli: {len(todo):,} pairs to read"
               + (f" (--limit {args.limit})" if args.limit else ""), flush=True)
         if args.dry_run:
             conn.close()
@@ -214,7 +207,7 @@ def main(argv: list[str] | None = None) -> int:
         conn.close()
         print("nothing written")
         return 0
-    n_sent, n_com = labels(conn, embedding_model, args.nli_model, args.threshold)
+    n_sent, n_com = labels(conn, embedding_model, args.nli_model)
     for lab, n in conn.execute(
             "SELECT label, count(*) FROM doc_comment_label WHERE embedding_model = ?"
             " AND nli_model = ? GROUP BY label ORDER BY count(*) DESC",

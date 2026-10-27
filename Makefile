@@ -125,8 +125,8 @@ docindex:  ## the record documents: sections, chunks and chunk vectors from the 
 retrieve:  ## the K nearest record chunks per gate-opening sentence, by cosine; MODEL= when two embedding models fit, K=5, EXCLUDED=1 prints the excluded-sections figure and writes nothing, DRY=1
 	$(PY) scripts/docindex/retrieve.py $(if $(MODEL),--model $(MODEL)) $(if $(K),--k $(K)) $(if $(EXCLUDED),--excluded) $(if $(DRY),--dry-run)
 
-nli:  ## the cross-encoder over the retrieved pairs, then the labels; needs uv sync --group nli; THRESHOLD=0.75, LIMIT=N a pilot, LABELS=1 rebuilds the labels only, DRY=1
-	$(PY) scripts/docindex/nli.py $(if $(THRESHOLD),--threshold $(THRESHOLD)) $(if $(NLI_MODEL),--nli-model $(NLI_MODEL)) $(if $(MODEL),--model $(MODEL)) $(if $(LIMIT),--limit $(LIMIT)) $(if $(LABELS),--labels-only) $(if $(DRY),--dry-run)
+nli:  ## the cross-encoder over every retrieved pair, then the labels; needs uv sync --group nli; LIMIT=N a pilot, LABELS=1 rebuilds the labels only, DRY=1
+	$(PY) scripts/docindex/nli.py $(if $(NLI_MODEL),--nli-model $(NLI_MODEL)) $(if $(MODEL),--model $(MODEL)) $(if $(LIMIT),--limit $(LIMIT)) $(if $(LABELS),--labels-only) $(if $(DRY),--dry-run)
 
 statement-trial:  ## step 15 trial (model): CLUSTERS="207 104 52" (or every cluster) of the concern map or of CASE=<case>, RUNS=N calls at each of TEMPERATURES="0 0.7", wordings two ways; JSON under trials/statements/
 	$(PY) scripts/clusters/statement_trial.py $(if $(CLUSTERS),--clusters $(CLUSTERS),--all) --runs $(RUNS) --temperatures $(TEMPERATURES) $(if $(CASE),--case "$(CASE)")

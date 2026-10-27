@@ -377,7 +377,7 @@ STEPS = [
     },
     {
         "target": "nli",
-        "what": "the cross-encoder's reading of the near pairs, and the retrieval labels (docs/retrieval.md)",
+        "what": "the cross-encoder's reading of every retrieved pair, and the retrieval labels (docs/retrieval.md)",
         "figures": [
             ("pairs read", "SELECT count(*) FROM doc_nli"),
             ("sentence labels", "SELECT count(*) FROM doc_sentence_label"),

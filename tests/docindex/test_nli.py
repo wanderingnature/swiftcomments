@@ -64,40 +64,40 @@ def test_sentence_labels_and_comment_order(dbfile):
     pair(dbfile, "k-con", 11, 2, 0.8, (0.1, 0.1, 0.8))
     # addressed: entailment, no contradiction
     pair(dbfile, "k-add", 10, 1, 0.85, (0.9, 0.05, 0.05))
-    # near: above the threshold, nothing decisive
-    pair(dbfile, "k-near", 11, 1, 0.8, (0.3, 0.5, 0.2))
-    # not_addressed: below the threshold; the pair is unread and need not be
-    pair(dbfile, "k-not", 10, 1, 0.4)
-    for cid, key in [("C1", "k-add"), ("C1", "k-con"), ("C2", "k-near"),
-                     ("C2", "k-not"), ("C3", "k-add")]:
+    # not_addressed: read, nothing decisive, whatever the cosine
+    pair(dbfile, "k-nd", 11, 1, 0.8, (0.3, 0.5, 0.2))
+    pair(dbfile, "k-low", 10, 1, 0.4, (0.3, 0.6, 0.1))
+    for cid, key in [("C1", "k-add"), ("C1", "k-con"), ("C2", "k-nd"),
+                     ("C2", "k-low"), ("C3", "k-add")]:
         opener(dbfile, cid, key)
-    n_sent, n_com = nli.labels(dbfile, EMB, NLI, threshold=0.75)
+    n_sent, n_com = nli.labels(dbfile, EMB, NLI)
     assert (n_sent, n_com) == (4, 3)
     got = dict(dbfile.execute("SELECT text_key, label FROM doc_sentence_label").fetchall())
     assert got == {"k-con": "contested", "k-add": "addressed",
-                   "k-near": "near", "k-not": "not_addressed"}
+                   "k-nd": "not_addressed", "k-low": "not_addressed"}
     # the contested row cites the contradiction pair, not the nearer entailed one
     row = dbfile.execute("SELECT chunk_id, cosine, p_contradiction FROM doc_sentence_label"
                          " WHERE text_key = 'k-con'").fetchone()
     assert (row[0], row[1], row[2]) == (11, 0.8, 0.8)
-    # not_addressed cites no chunk and keeps its nearest cosine
+    # not_addressed cites its nearest read pair, at any cosine
     row = dbfile.execute("SELECT chunk_id, cosine, p_entailment FROM doc_sentence_label"
-                         " WHERE text_key = 'k-not'").fetchone()
-    assert tuple(row) == (None, 0.4, None)
-    # the comment takes the strongest label: contested, not_addressed, near, addressed
+                         " WHERE text_key = 'k-low'").fetchone()
+    assert tuple(row) == (10, 0.4, 0.3)
+    # the comment takes the strongest label: contested, not_addressed, addressed
     got = dict(dbfile.execute("SELECT comment_id, label FROM doc_comment_label").fetchall())
     assert got == {"C1": "contested", "C2": "not_addressed", "C3": "addressed"}
     # a second build replaces, not duplicates
-    nli.labels(dbfile, EMB, NLI, threshold=0.75)
+    nli.labels(dbfile, EMB, NLI)
     assert dbfile.execute("SELECT count(*) FROM doc_sentence_label").fetchone()[0] == 4
 
 
-def test_unread_pair_above_threshold_stops(dbfile):
-    pair(dbfile, "k-x", 10, 1, 0.9)
+def test_any_unread_pair_stops(dbfile):
+    pair(dbfile, "k-x", 10, 1, 0.9, (0.9, 0.05, 0.05))
+    pair(dbfile, "k-x", 11, 2, 0.4)
     with pytest.raises(SystemExit, match="unread"):
-        nli.labels(dbfile, EMB, NLI, threshold=0.75)
+        nli.labels(dbfile, EMB, NLI)
 
 
 def test_empty_retrieval_stops(dbfile):
     with pytest.raises(SystemExit, match="run make retrieve"):
-        nli.labels(dbfile, EMB, NLI, threshold=0.75)
+        nli.labels(dbfile, EMB, NLI)
