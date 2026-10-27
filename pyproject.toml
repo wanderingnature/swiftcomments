@@ -33,6 +33,14 @@ dependencies = [
 console = [
     "streamlit>=1.65.0",
 ]
+# The cross-encoder of make nli (scripts/docindex/nli.py). sentencepiece and
+# protobuf load the DeBERTa-v3 tokenizer.
+nli = [
+    "torch>=2.9",
+    "transformers>=4.57",
+    "sentencepiece",
+    "protobuf",
+]
 dev = ["pytest", { include-group = "console" }]
 
 [tool.pytest.ini_options]

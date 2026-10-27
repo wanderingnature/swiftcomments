@@ -14,12 +14,12 @@ DB  := data/roadless.sqlite
 
 .PHONY: help all schema schema-add corpus fetch dedup ngrams ner tag floor groups screen \
         stance stance-runs score-model score-model-free assemble rate text attachments orgs \
-        facts check console jump extract score-model-compare sentences embed clusters cases case-set compare-cases choose concern-map cases-remeasure docindex
+        facts check console jump extract score-model-compare sentences embed clusters cases case-set compare-cases choose concern-map cases-remeasure docindex retrieve nli
 
 help:  ## the targets, in run order
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
 
-all: schema corpus dedup ngrams ner tag floor groups screen stance score-model score-model-free assemble rate fetch text attachments orgs facts sentences embed clusters docindex check  ## every step, in order
+all: schema corpus dedup ngrams ner tag floor groups screen stance score-model score-model-free assemble rate fetch text attachments orgs facts sentences embed clusters docindex retrieve nli check  ## every step, in order
 
 schema:  ## create data/roadless.sqlite from schema/roadless.sql and load the seeds; refuses SQLite < 3.38
 	$(PY) scripts/make_schema.py
@@ -121,6 +121,12 @@ clusters:  ## steps 12 to 14: one clustering case, its clusters, topics and name
 
 docindex:  ## the record documents: sections, chunks and chunk vectors from the converted markdowns in deis/; DIR= another directory, REPLACE=1 re-ingests a changed source, SKIP=<file>, DRY=1 counts only; embeds with the server of .env
 	$(PY) scripts/docindex/ingest_documents.py $(if $(DIR),--dir $(DIR)) $(if $(REPLACE),--replace) $(if $(SKIP),--skip $(SKIP)) $(if $(DRY),--dry-run)
+
+retrieve:  ## the K nearest record chunks per gate-opening sentence, by cosine; MODEL= when two embedding models fit, K=5, LETTERS=1 prints the letter-volume figure and writes nothing, DRY=1
+	$(PY) scripts/docindex/retrieve.py $(if $(MODEL),--model $(MODEL)) $(if $(K),--k $(K)) $(if $(LETTERS),--letters) $(if $(DRY),--dry-run)
+
+nli:  ## the cross-encoder over the retrieved pairs, then the labels; needs uv sync --group nli; THRESHOLD=0.75, LIMIT=N a pilot, LABELS=1 rebuilds the labels only, DRY=1
+	$(PY) scripts/docindex/nli.py $(if $(THRESHOLD),--threshold $(THRESHOLD)) $(if $(NLI_MODEL),--nli-model $(NLI_MODEL)) $(if $(MODEL),--model $(MODEL)) $(if $(LIMIT),--limit $(LIMIT)) $(if $(LABELS),--labels-only) $(if $(DRY),--dry-run)
 
 statement-trial:  ## step 15 trial (model): CLUSTERS="207 104 52" (or every cluster) of the concern map or of CASE=<case>, RUNS=N calls at each of TEMPERATURES="0 0.7", wordings two ways; JSON under trials/statements/
 	$(PY) scripts/clusters/statement_trial.py $(if $(CLUSTERS),--clusters $(CLUSTERS),--all) --runs $(RUNS) --temperatures $(TEMPERATURES) $(if $(CASE),--case "$(CASE)")

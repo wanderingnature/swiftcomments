@@ -360,6 +360,38 @@ STEPS = [
              " GROUP BY d.document_id ORDER BY d.title"),
         ],
     },
+    {
+        "target": "retrieve",
+        "what": "the K nearest record chunks per gate-opening sentence, by cosine (docs/retrieval.md)",
+        "figures": [
+            ("pairs", "SELECT count(*) FROM doc_retrieval"),
+            ("sentences", "SELECT count(DISTINCT text_key) FROM doc_retrieval"),
+        ],
+        "breakdowns": [
+            ("by document, first-ranked chunks",
+             "SELECT d.title, count(*) AS first_hits, round(avg(r.cosine), 4) AS mean_cosine"
+             " FROM doc_retrieval r JOIN doc_chunks c ON c.chunk_id = r.chunk_id"
+             " JOIN doc_sections s USING (section_id) JOIN doc_documents d USING (document_id)"
+             " WHERE r.rank = 1 GROUP BY d.document_id ORDER BY first_hits DESC"),
+        ],
+    },
+    {
+        "target": "nli",
+        "what": "the cross-encoder's reading of the near pairs, and the retrieval labels (docs/retrieval.md)",
+        "figures": [
+            ("pairs read", "SELECT count(*) FROM doc_nli"),
+            ("sentence labels", "SELECT count(*) FROM doc_sentence_label"),
+            ("comment labels", "SELECT count(*) FROM doc_comment_label"),
+        ],
+        "breakdowns": [
+            ("comments by label",
+             "SELECT label, count(*) AS comments FROM doc_comment_label"
+             " GROUP BY label ORDER BY comments DESC"),
+            ("sentences by label",
+             "SELECT label, count(*) AS sentences FROM doc_sentence_label"
+             " GROUP BY label ORDER BY sentences DESC"),
+        ],
+    },
 ]
 
 # The Comment page: (title, query); every ? is the comment id.

@@ -1279,6 +1279,74 @@ CREATE TABLE doc_chunk_embeddings (
     PRIMARY KEY (chunk_id, embedding_model)
 );
 
+-- The retrieval against the record (make retrieve, make nli;
+-- scripts/docindex/retrieve.py, scripts/docindex/nli.py): each gate-opening
+-- sentence against the record chunks, natural-language inference over the
+-- near pairs, and the labels both give (docs/retrieval.md).
+--
+--   doc_retrieval       the K nearest record chunks per distinct gate-opening
+--                       sentence: the cosine of the sentence's comment-view
+--                       vector against each chunk's vector, one embedding
+--                       model, nearest first. Letter sections are not
+--                       searched: they are commenters' words, not the
+--                       agency's analysis.
+--   doc_nli             one row per read pair and NLI model: the chunk as the
+--                       premise, the sentence as the hypothesis, the three
+--                       probabilities.
+--   doc_sentence_label  the retrieval label of each sentence — addressed,
+--                       contested, not_addressed or near — with the pair that
+--                       gave it and the similarity threshold applied.
+--   doc_comment_label   the strongest label over a comment's gate-opening
+--                       sentences, in the order contested, not_addressed,
+--                       near, addressed.
+
+CREATE TABLE doc_retrieval (
+    text_key         TEXT    NOT NULL,
+    embedding_model  TEXT    NOT NULL,
+    rank             INTEGER NOT NULL,          -- 1: the nearest
+    chunk_id         INTEGER NOT NULL REFERENCES doc_chunks (chunk_id) ON DELETE CASCADE,
+    cosine           REAL    NOT NULL,
+    created_at       TEXT    NOT NULL,
+    PRIMARY KEY (text_key, embedding_model, rank)
+);
+CREATE INDEX doc_retrieval_chunk ON doc_retrieval (chunk_id);
+
+CREATE TABLE doc_nli (
+    text_key         TEXT    NOT NULL,
+    chunk_id         INTEGER NOT NULL REFERENCES doc_chunks (chunk_id) ON DELETE CASCADE,
+    nli_model        TEXT    NOT NULL,
+    p_entailment     REAL    NOT NULL,
+    p_neutral        REAL    NOT NULL,
+    p_contradiction  REAL    NOT NULL,
+    created_at       TEXT    NOT NULL,
+    PRIMARY KEY (text_key, chunk_id, nli_model)
+);
+
+CREATE TABLE doc_sentence_label (
+    text_key         TEXT    NOT NULL,
+    embedding_model  TEXT    NOT NULL,
+    nli_model        TEXT    NOT NULL,
+    label            TEXT    NOT NULL CHECK (label IN ('addressed', 'contested', 'not_addressed', 'near')),
+    chunk_id         INTEGER REFERENCES doc_chunks (chunk_id) ON DELETE CASCADE,  -- NULL: not_addressed
+    cosine           REAL    NOT NULL,          -- the pair's; the nearest chunk's when not_addressed
+    p_entailment     REAL,                      -- NULL: not_addressed
+    p_neutral        REAL,
+    p_contradiction  REAL,
+    threshold        REAL    NOT NULL,          -- the similarity threshold applied
+    created_at       TEXT    NOT NULL,
+    PRIMARY KEY (text_key, embedding_model, nli_model)
+);
+
+CREATE TABLE doc_comment_label (
+    comment_id       TEXT    NOT NULL,
+    embedding_model  TEXT    NOT NULL,
+    nli_model        TEXT    NOT NULL,
+    label            TEXT    NOT NULL CHECK (label IN ('addressed', 'contested', 'not_addressed', 'near')),
+    text_key         TEXT    NOT NULL,          -- the sentence that gave the label
+    created_at       TEXT    NOT NULL,
+    PRIMARY KEY (comment_id, embedding_model, nli_model)
+);
+
 -- The clustering cases (make clusters, scripts/clusters/cases.py). A case is one
 -- value on each axis: the sentences, the view, the merge, the reduction, the
 -- HDBSCAN settings, the structure, the noise passes, the topic cut, the seed.

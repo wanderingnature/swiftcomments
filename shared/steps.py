@@ -44,6 +44,8 @@ STEPS = [
     ("clusters", ["cluster_case", "cluster_case_leader", "cluster_case_member",
                   "cluster_case_cluster", "cluster_case_topic", "cluster_case_choice"]),
     ("docindex", ["doc_documents", "doc_sections", "doc_chunks", "doc_chunk_embeddings"]),
+    ("retrieve", ["doc_retrieval"]),
+    ("nli", ["doc_nli", "doc_sentence_label", "doc_comment_label"]),
 ]
 
 TARGETS = [target for target, _ in STEPS]
