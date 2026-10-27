@@ -228,6 +228,91 @@ catch-all cluster, and refuted. The final grouping — which clusters are one
 concern — is a human choice, made in the console's Topics page with the cases
 in view, and recorded (`topics-guide.md`).
 
+### What the chosen case found
+
+The recorded choice on the Qwen vectors (2026-10-26: the `opening` selection,
+plain view, merge 0.95, UMAP to 5, HDBSCAN 10/10 eom, one noise pass, seed 0,
+vectors centred) groups the 11,563 gate-opening sentences into 9,530 merged
+items, puts 8,817 of them — 13,485 of the 14,356 occurrences — into 237
+clusters, with no catch-all (largest 318), and draws 11 topics over them.
+5,285 of the 6,516 gate-open comments have a substantive sentence in a
+cluster. The BGE choice beside it finds 352 clusters in 9 topics; with the
+merge, the two choices agree at adjusted Rand 0.56 (the recorded choice
+note).
+
+The topics, with their extractive names exactly as the case stored them — no
+model wrote a word of this:
+
+![Bar chart of the 11 topics by sentence occurrences, from wildfire and ignition density (3,193) to fragmentation range figures (127).](images/overview/topics.svg)
+
+| Topic | Clusters | Distinct sentences | Occurrences | The name's terms, verbatim |
+|---|---|---|---|---|
+| 1 | 46 | 1,898 | 3,193 | roadless, areas, wildfire, density, roads, roadless areas, ignition, forest |
+| 2 | 37 | 1,286 | 2,008 | roads, roadless, water, areas, road, habitat, species, roadless areas |
+| 3 | 27 | 1,072 | 1,934 | agency, proposal, rescission, record, wildfire, agency record, data, rule |
+| 4 | 29 | 1,254 | 1,530 | roadless, rule, acres, forest, million, conservation, area conservation, area |
+| 5 | 29 | 959 | 1,448 | million, maintenance, recreation, analysis, billion, backlog, road, agency |
+| 6 | 21 | 679 | 1,195 | rule, tribal, court, cfr, district, agency, cfr subpart, exercising |
+| 7 | 20 | 841 | 1,003 | species, deis, forest, agency, adversely, rescission, critical habitats, analysis |
+| 8 | 10 | 311 | 435 | forest, executive, executive order, production, order, timber, unleashing, order unleashing |
+| 9 | 9 | 269 | 385 | roadless, rule, state-specific, proposal, colorado, local, agency, one-size-fits-all |
+| 10 | 5 | 155 | 227 | enforceable, agency, forest, provision, municipal, plan provisions, water, forest plans |
+| 11 | 4 | 93 | 127 | fragmentation range, range million, agency apply, cited fragmentation, acres, million, apply cited, million acres |
+
+The subjects are read off the terms: wildfire and ignition density near roads;
+water, habitat and species; the agency's record against its own rationale;
+the acres the rule protects; the road-maintenance backlog and the economics;
+Tribal consultation, the courts and the CFR; species and critical habitat in
+the DEIS; timber production under the executive orders; state-specific rules;
+municipal water under forest plans; the fragmentation figures.
+
+Four clusters show what a cluster is. Each is one claim; the sentences shown
+are the two nearest its centre, verbatim from the comments.
+
+**One claim in 318 wordings** — cluster 1 (topic 1): 318 distinct sentences,
+378 occurrences, all applying the same ignition-density research:
+
+> "Research suggests that most wildfire ignitions occur near roads (Aplet,
+> G.H., Hartger, P. & Dietz, M.S. Three-decade record of contiguous-U.S.
+> national forest wildfires indicates increased density of ignitions near
+> roads. fire ecol 22, 8 (2026)); allowing for additional road construction
+> in roadless areas increases wildfire risk."
+>
+> "Research in Fire Ecology found that fires are about four times more likely
+> to start near a road than in a roadless area, and the agency's own analysis
+> acknowledges that human-caused wildfires could become more frequent if
+> roads open this terrain to vehicles and campfires."
+
+**One quoted line, filed 272 times** — cluster 226 (topic 1): 11 distinct
+wordings, 272 occurrences, a campaign quoting the DEIS against the proposal:
+
+> "The DEIS states — 'Building a road into a forest at high risk from
+> uncharacteristic wildfire effects could increase the incidence of
+> human-caused fires.'"
+
+**One study, cited a hundred ways** — cluster 13 (topic 2): 100 distinct
+sentences, 154 occurrences, the same drinking-water finding:
+
+> "Olden et al. (PLOS Water, 2026) found roadless-rule-protected watersheds
+> supply drinking water to an estimated 25 million Americans, with ~62,000 of
+> the ~80,000 protected river miles relying on the roadless rule as their
+> only federal protection."
+
+**One concern in personal words** — cluster 7 (topic 2): 134 distinct
+sentences, each a commenter's own place:
+
+> "Roads and logging up to their edges would degrade the experience that
+> defines the White Mountains."
+>
+> "Areas such as Silver Peak are still wild and remote, and I would be
+> devastated to see that landscape fragmented by new roads."
+
+That range is the capability: a verbatim campaign line, a citation repeated
+in a hundred paraphrases, and hundreds of individually written sentences,
+each gathered into one claim a reader answers once. The console's Topics page
+opens any topic to its clusters and any cluster to its sentences and their
+comments.
+
 ## 6 · The record search
 
 A point is answerable when the record can answer it, so the last stage asks
