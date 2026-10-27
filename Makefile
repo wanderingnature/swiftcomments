@@ -166,8 +166,8 @@ check:  ## every figure of the method beside checks/expected.json
 jump:  ## load the stored rows of a finished run for every step up to STEP from extracts/; make jump STEP=floor
 	$(PY) scripts/load_extract.py --target $(STEP)
 
-extract:  ## write extracts/STEP.sqlite, the tables STEP wrote, for make jump; make extract STEP=floor
-	$(PY) scripts/dump_extract.py --target $(STEP)
+extract:  ## write extracts/STEP.sqlite, the tables STEP wrote, for make jump; make extract STEP=floor, FORCE=1 replaces an existing extract
+	$(PY) scripts/dump_extract.py --target $(STEP) $(if $(FORCE),--force)
 
 console:  ## a read-only browser of the file: what each step wrote, one comment, any table, SQL
 	uv run --group console streamlit run console/app.py --server.headless true

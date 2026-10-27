@@ -94,10 +94,10 @@ independent of every other extract: take it any time after `make floor` has fini
 before or after the later steps have run, in any order, one step at a time. The only
 condition is that the step has not been run again since, because the extract is a
 copy of what the tables hold at the moment it is taken. It refuses to overwrite an
-extract that exists; to replace one, run the script with `--force`:
+extract that exists; to replace one, add `FORCE=1`:
 
 ```
-uv run python scripts/dump_extract.py --target floor --force
+make extract STEP=floor FORCE=1
 ```
 
 The corpus and the fetch are not extracted (above). This is how the reference extracts are
