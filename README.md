@@ -19,6 +19,9 @@ hand-reviewed tables.
 Everything lives in one SQLite file, `data/roadless.sqlite`. No PostgreSQL, no Docker,
 no service of ours.
 
+`docs/method-overview.md` explains the whole method on one page, with figures: what
+question each stage answers, how the docket narrows, and how the method is measured.
+
 ## What you need
 
 - Python 3.14 and `uv`. `uv sync` installs the Python dependencies, including the spaCy
@@ -85,6 +88,9 @@ make facts                       one row per comment
 make sentences    step 10        the sentences of the comments whose model-free gate is open, for the clusters
 make embed        step 11  EMBED one vector for each distinct sentence, from the embedding server
 make clusters     steps 12-14    one clustering case: clusters, topics, their names; make cases lists them
+make docindex                    the 15 record documents: sections, chunks with page spans, vectors
+make retrieve                    the 5 nearest record chunks per gate-opening sentence
+make nli                         every retrieved pair read; each sentence and comment addressed, contested, or not_addressed
 make check                       every figure beside checks/expected.json
 ```
 
@@ -93,7 +99,9 @@ substantive comments grouped by meaning into clusters and topics, by code, with 
 generative model (`docs/clusters.md`). `make embed` sends each distinct sentence once
 to an embedding server named in `.env`. `make clusters` runs one clustering case and
 records it beside the others, so the settings are compared on the results, not chosen
-beforehand. The methods, with the reasons for each choice and the
+beforehand. `make docindex`, `make retrieve` and `make nli` ask what the record
+already does with each gate-opening point (`docs/retrieval.md`). The methods, with
+the reasons for each choice and the
 measurements, are in `docs/methods-scoring.md` and `docs/methods-clustering.md`.
 `docs/background.md` gives the law, the agencies' practice and the established methods.
 
@@ -277,14 +285,15 @@ attachments/, data/   the fetched files and the SQLite file, git-ignored
 ## Status
 
 The repository is being built in phases. At this commit it holds the skeleton, the
-seeds, the schema, the loader and the steps through the substance reading:
-`make schema`, `make corpus`, `make dedup`, `make ngrams`, `make ner`, `make tag`,
-`make floor`, `make groups`, `make screen`, `make stance`, `make score-model`,
-`make score-model-free`, `make assemble` and `make rate` are built, `make console` reads
-the file, and `make extract`, `make jump` and `make score-model-compare` work. Not yet
-here, in run order: `make fetch`, `make text`, `make attachments`, `make orgs`,
-`make facts` and `make check`; each lands in its own commit, and this list shrinks
-with each.
+seeds, the schema, the loader, the steps through the substance reading, and the
+extension: `make schema`, `make corpus`, `make dedup`, `make ngrams`, `make ner`,
+`make tag`, `make floor`, `make groups`, `make screen`, `make stance`,
+`make score-model`, `make score-model-free`, `make assemble`, `make rate`,
+`make sentences`, `make embed`, `make clusters`, `make docindex`, `make retrieve`
+and `make nli` are built, `make console` reads the file, and `make extract`,
+`make jump` and `make score-model-compare` work. Not yet here, in run order:
+`make fetch`, `make text`, `make attachments`, `make orgs`, `make facts` and
+`make check`; each lands in its own commit, and this list shrinks with each.
 
 ## Licence
 

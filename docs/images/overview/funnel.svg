@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="218" viewBox="0 0 760 218" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="218" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">From the docket to the record labels</text>
+<text x="320" y="54" font-size="13" fill="#24292f" text-anchor="end">comments in the docket</text>
+<rect x="330" y="40" width="320.0" height="20" rx="3" fill="#2b6cb0"/>
+<text x="656.0" y="54" font-size="13" fill="#24292f">390,064</text>
+<text x="320" y="82" font-size="13" fill="#24292f" text-anchor="end">distinct texts, one stance reading each</text>
+<rect x="330" y="68" width="64.8" height="20" rx="3" fill="#2b6cb0"/>
+<text x="400.8" y="82" font-size="13" fill="#24292f">78,953</text>
+<text x="320" y="110" font-size="13" fill="#24292f" text-anchor="end">comments rated for answerability</text>
+<rect x="330" y="96" width="47.0" height="20" rx="3" fill="#2b6cb0"/>
+<text x="383.0" y="110" font-size="13" fill="#24292f">57,277</text>
+<text x="320" y="138" font-size="13" fill="#24292f" text-anchor="end">gate open under the rules reading</text>
+<rect x="330" y="124" width="5.3" height="20" rx="3" fill="#2b6cb0"/>
+<text x="341.3" y="138" font-size="13" fill="#24292f">6,516</text>
+<text x="320" y="166" font-size="13" fill="#24292f" text-anchor="end">with a sentence that opens the gate alone</text>
+<rect x="330" y="152" width="4.5" height="20" rx="3" fill="#2b6cb0"/>
+<text x="340.5" y="166" font-size="13" fill="#24292f">5,544</text>
+<text x="320" y="194" font-size="13" fill="#24292f" text-anchor="end">comments the record contests</text>
+<rect x="330" y="180" width="2.0" height="20" rx="3" fill="#2b6cb0"/>
+<text x="338.0" y="194" font-size="13" fill="#24292f">2,189</text>
+</svg>

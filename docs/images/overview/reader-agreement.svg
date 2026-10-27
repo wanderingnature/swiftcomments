@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="190" viewBox="0 0 760 190" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="190" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">Reader agreement on the reviewed tables (Cohen's kappa)</text>
+<text x="320" y="54" font-size="13" fill="#24292f" text-anchor="end">the labelled set (the gate)</text>
+<rect x="330" y="40" width="236.8" height="20" rx="3" fill="#2b6cb0"/>
+<text x="572.8" y="54" font-size="13" fill="#24292f">0.740</text>
+<text x="320" y="82" font-size="13" fill="#24292f" text-anchor="end">the answerability reread</text>
+<rect x="330" y="68" width="196.8" height="20" rx="3" fill="#2b6cb0"/>
+<text x="532.8" y="82" font-size="13" fill="#24292f">0.615</text>
+<text x="320" y="110" font-size="13" fill="#24292f" text-anchor="end">the prong reading</text>
+<rect x="330" y="96" width="293.8" height="20" rx="3" fill="#2b6cb0"/>
+<text x="629.8" y="110" font-size="13" fill="#24292f">0.918</text>
+<text x="320" y="138" font-size="13" fill="#24292f" text-anchor="end">the retrieval reading</text>
+<rect x="330" y="124" width="218.6" height="20" rx="3" fill="#2b6cb0"/>
+<text x="554.6" y="138" font-size="13" fill="#24292f">0.683</text>
+<text x="320" y="166" font-size="13" fill="#24292f" text-anchor="end">the NLI reading</text>
+<rect x="330" y="152" width="263.0" height="20" rx="3" fill="#2b6cb0"/>
+<text x="599.0" y="166" font-size="13" fill="#24292f">0.822</text>
+</svg>

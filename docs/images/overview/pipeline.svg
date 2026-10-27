@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="673" viewBox="0 0 760 673" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="673" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">The pipeline</text>
+<rect x="32" y="40" width="420" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+<text x="44" y="62" font-size="13" font-weight="600" fill="#24292f">1 · The corpus</text>
+<text x="44" y="79" font-size="12" fill="#57606a">make corpus</text>
+<text x="44" y="96" font-size="12" fill="#24292f">390,064 comments from the bulk download</text>
+<rect x="32" y="137" width="420" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+<text x="44" y="159" font-size="13" font-weight="600" fill="#24292f">2 · The copies and the campaigns</text>
+<text x="44" y="176" font-size="12" fill="#57606a">make dedup · ngrams · groups</text>
+<text x="44" y="193" font-size="12" fill="#24292f">78,953 distinct texts; the campaign split</text>
+<rect x="32" y="234" width="420" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+<text x="44" y="256" font-size="13" font-weight="600" fill="#24292f">3 · The mechanical reading</text>
+<text x="44" y="273" font-size="12" fill="#57606a">make ner · tag · floor · screen</text>
+<text x="44" y="290" font-size="12" fill="#24292f">entities, citations, the floor; classes A, B1, B2</text>
+<rect x="32" y="331" width="420" height="88" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+<text x="44" y="353" font-size="13" font-weight="600" fill="#24292f">4 · The substance readings</text>
+<text x="44" y="370" font-size="12" fill="#57606a">make stance · score-model ·</text>
+<text x="44" y="387" font-size="12" fill="#57606a">score-model-free · assemble · rate</text>
+<text x="44" y="404" font-size="12" fill="#24292f">the stance; eight dimensions; answerability A0 to A3</text>
+<rect x="32" y="445" width="420" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+<text x="44" y="467" font-size="13" font-weight="600" fill="#24292f">5 · The sentences and the concerns</text>
+<text x="44" y="484" font-size="12" fill="#57606a">make sentences · embed · clusters</text>
+<text x="44" y="501" font-size="12" fill="#24292f">clusters, topics, the concern map</text>
+<rect x="32" y="542" width="420" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+<text x="44" y="564" font-size="13" font-weight="600" fill="#24292f">6 · The record search</text>
+<text x="44" y="581" font-size="12" fill="#57606a">make docindex · retrieve · nli</text>
+<text x="44" y="598" font-size="12" fill="#24292f">addressed, contested, or not_addressed</text>
+<line x1="242.0" y1="111" x2="242.0" y2="130" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 238.0 129 L 246.0 129 L 242.0 136 Z" fill="#57606a"/>
+<line x1="242.0" y1="208" x2="242.0" y2="227" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 238.0 226 L 246.0 226 L 242.0 233 Z" fill="#57606a"/>
+<line x1="242.0" y1="305" x2="242.0" y2="324" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 238.0 323 L 246.0 323 L 242.0 330 Z" fill="#57606a"/>
+<line x1="242.0" y1="419" x2="242.0" y2="438" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 238.0 437 L 246.0 437 L 242.0 444 Z" fill="#57606a"/>
+<line x1="242.0" y1="516" x2="242.0" y2="535" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 238.0 534 L 246.0 534 L 242.0 541 Z" fill="#57606a"/>
+<rect x="492" y="331" width="236" height="88" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-dasharray="4 3"/>
+<text x="504" y="353" font-size="13" font-weight="600" fill="#24292f">The attachments</text>
+<text x="504" y="370" font-size="12" fill="#57606a">make fetch · text · attachments · orgs</text>
+<text x="504" y="387" font-size="12" fill="#24292f">what each file is; the OCR; who filed;</text>
+<text x="504" y="404" font-size="12" fill="#24292f">who ran each campaign</text>
+<path d="M 452 75.5 L 610.0 75.5 L 610.0 324" fill="none" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 606.0 323 L 614.0 323 L 610.0 330 Z" fill="#57606a"/>
+<rect x="492" y="542" width="236" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+<text x="504" y="564" font-size="13" font-weight="600" fill="#24292f">The record</text>
+<text x="504" y="581" font-size="12" fill="#57606a">deis/: the 15 record documents</text>
+<text x="504" y="598" font-size="12" fill="#24292f">sections, chunks, page spans, vectors</text>
+<line x1="492" y1="577.5" x2="460" y2="577.5" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 460 573.5 L 460 581.5 L 453 577.5 Z" fill="#57606a"/>
+<text x="32" y="657" font-size="12" fill="#57606a">Everything writes to one SQLite file, data/roadless.sqlite. make check prints every figure beside the reference run.</text>
+</svg>
