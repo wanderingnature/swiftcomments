@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="144" viewBox="0 0 760 144" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="144" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">The 5,544 comments by label</text>
+<text x="176" y="54" font-size="13" fill="#24292f" text-anchor="end">not_addressed</text>
+<rect x="186.0" y="40" width="456.0" height="20" rx="3" fill="#2b6cb0"/>
+<text x="650.0" y="54" font-size="13" fill="#24292f">3,212</text>
+<text x="176" y="82" font-size="13" fill="#24292f" text-anchor="end">contested</text>
+<rect x="186.0" y="68" width="310.8" height="20" rx="3" fill="#2b6cb0"/>
+<text x="504.8" y="82" font-size="13" fill="#24292f">2,189</text>
+<text x="176" y="110" font-size="13" fill="#24292f" text-anchor="end">addressed</text>
+<rect x="186.0" y="96" width="20.3" height="20" rx="3" fill="#2b6cb0"/>
+<text x="214.3" y="110" font-size="13" fill="#24292f">143</text>
+</svg>

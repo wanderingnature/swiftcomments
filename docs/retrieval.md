@@ -52,6 +52,29 @@ it:
 Each comment gets the strongest label over its gate-opening sentences, in the
 order contested, not_addressed, addressed (`doc_comment_label`).
 
+## The figures of the run (2026-10-27)
+
+The run reads 11,563 gate-opening sentences and stores the 5 nearest chunks
+for each: 57,815 pairs. The cross-encoder reads every pair. Most pairs read
+neutral. The decisive calls set the labels.
+
+![Bar chart of the cross-encoder's calls over all 57,815 pairs: 52,844 neutral, 3,337 contradiction, 1,634 entailment.](images/retrieval/pair-calls.svg)
+
+The labels that result:
+
+![Bar chart of the 11,563 sentences by label: 8,804 not_addressed, 1,959 contested, 800 addressed.](images/retrieval/sentence-labels.svg)
+
+![Bar chart of the 5,544 comments by label: 3,212 not_addressed, 2,189 contested, 143 addressed.](images/retrieval/comment-labels.svg)
+
+A reading test of the cross-encoder's calls is in `seeds/nli_reading.md`, with
+its figures in `docs/results.md`. Readers confirm most of its neutral calls
+and few of its contradiction calls. Read the `contested` counts with that
+result in view.
+
+The exclusion figure: with the excluded sections searched, 7,294 of 11,563
+sentences (63.1%) take an excluded chunk first. Without the exclusion, most
+sentences match a commenter's own words, not the record.
+
 ## The commands
 
 ```

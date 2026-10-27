@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="250" viewBox="0 0 760 250" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="250" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">The meant passage, per 100 reviewed sentences</text>
+<text x="186" y="50" font-size="12" fill="#57606a">retrieved first</text>
+<text x="176" y="74" font-size="13" fill="#24292f" text-anchor="end">comment view</text>
+<rect x="186.0" y="60" width="259.9" height="20" rx="3" fill="#2b6cb0"/>
+<text x="453.9" y="74" font-size="13" fill="#24292f">57</text>
+<text x="176" y="102" font-size="13" fill="#24292f" text-anchor="end">plain view</text>
+<rect x="186.0" y="88" width="196.1" height="20" rx="3" fill="#b08020"/>
+<text x="390.1" y="102" font-size="13" fill="#24292f">43</text>
+<text x="186" y="140" font-size="12" fill="#57606a">in the top 5</text>
+<text x="176" y="164" font-size="13" fill="#24292f" text-anchor="end">comment view</text>
+<rect x="186.0" y="150" width="373.9" height="20" rx="3" fill="#2b6cb0"/>
+<text x="567.9" y="164" font-size="13" fill="#24292f">82</text>
+<text x="176" y="192" font-size="13" fill="#24292f" text-anchor="end">plain view</text>
+<rect x="186.0" y="178" width="323.8" height="20" rx="3" fill="#b08020"/>
+<text x="517.8" y="192" font-size="13" fill="#24292f">71</text>
+<rect x="186" y="220" width="12" height="12" rx="2" fill="#2b6cb0"/>
+<text x="204" y="231" font-size="12" fill="#57606a">comment view</text>
+<rect x="336" y="220" width="12" height="12" rx="2" fill="#b08020"/>
+<text x="354" y="231" font-size="12" fill="#57606a">plain view</text>
+</svg>

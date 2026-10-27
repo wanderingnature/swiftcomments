@@ -13,6 +13,8 @@ A decision is one of: **adopted**, **kept as a case**, **refuted**.
 | Shared-direction removal on the sentence vectors (`TOP=D`) | 2026-10-25 | a8af27e | `TOP=0` adopted; D ≥ 1 refuted |
 | PaCMAP as the reduction | 2026-10-25 | 3c3392b, bcf5a41 | refuted; kept as cases |
 | One gate per prong | 2026-10-26 | 9ef075a, 86587e5, 0fdfa16, 30871e8 | adopted as columns and counts; by-prong clustering refuted |
+| The record retrieval | 2026-10-27 | 6362f8b, 9bc19fb, e80b371, 536295a | adopted; the comment view stays, the cosine floor retired |
+| The cross-encoder's NLI calls | 2026-10-27 | dab6255 | contradiction calls refuted by the reading test |
 
 ## The labelled set
 
@@ -69,3 +71,48 @@ clustering is not tighter than by-kind (0.7834 against 0.7908 on Qwen, 0.7446 ag
 0.7562 on BGE) — refuted, cases kept. **Adopted as columns and counts.** Figures:
 `docs/methods-scoring.md`, sections 4.1 and 8; `docs/methods-clustering.md`, sections 7
 and 8.
+
+## The record retrieval
+
+A reviewed table of 200 retrieval lists: 100 gate-opening sentences that cite the
+record, each retrieved under the comment-view vectors and under the plain vectors
+(`seeds/retrieval_reading.jsonl`). Two models read every item; a third-provider
+tie-breaker and a human ruling settled the 39 disagreements (reader kappa 0.683).
+Under the comment view the meant passage is first for 57 of 100 sentences and in the
+top 5 for 82 of 100; under the plain view, 43 and 71. **The comment view is adopted**:
+its instruction earns the separate embedding run.
+
+![Grouped bar chart. Retrieved first: comment view 57, plain view 43. In the top 5: comment view 82, plain view 71.](images/retrieval/retrieval-reading.svg)
+
+At every cosine level the meant passage is present far more often than absent, so no
+cosine floor separates found from not found. **The floor is retired**: `make nli`
+reads every retrieved pair (commit 536295a).
+
+![Grouped bar chart by first-rank cosine band. In each of the four bands from 0.55 to 0.75, the meant passage is present at least twice as often as absent.](images/retrieval/cosine-bands.svg)
+
+## The NLI reading test
+
+100 read pairs, drawn across the cross-encoder's own calls (30 contradiction, 30
+entailment, 40 neutral), each judged by two blind readers
+(`seeds/nli_reading.jsonl`). A tie-breaker and a human ruling settled the 8
+disagreements; reader kappa 0.822. The readers confirm 5 of the 30 contradiction
+calls: the cross-encoder calls contradiction where the passage is on a nearby point
+without disputing the sentence. Its neutral calls hold (33 of 40).
+
+![Stacked bar chart. Readers confirm 16 of 30 entailment calls, 5 of 30 contradiction calls, and 33 of 40 neutral calls.](images/retrieval/nli-confirmation.svg)
+
+Against the settled labels, the cross-encoder's kappa is 0.157 on contradiction,
+0.485 on entailment, 0.270 three-way. The two readers against each other: 0.822.
+
+![Bar chart of the four kappa figures. The contradiction bar is far shorter than the others and is marked in red.](images/retrieval/nli-kappa.svg)
+
+The cross-tab, the cross-encoder's call (rows) against the settled label (columns):
+
+| | entailment | contradiction | neutral |
+|---|---|---|---|
+| entailment | 16 | 2 | 12 |
+| contradiction | 0 | 5 | 25 |
+| neutral | 6 | 1 | 33 |
+
+**The contradiction calls are refuted by the reading test.** The `contested` labels
+of `make nli` rest on these calls; read them with this result in view.

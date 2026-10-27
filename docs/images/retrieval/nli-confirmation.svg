@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="168" viewBox="0 0 760 168" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="168" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">The cross-encoder's calls the readers confirm, 100 read pairs</text>
+<text x="176" y="54" font-size="13" fill="#24292f" text-anchor="end">entailment</text>
+<rect x="186.0" y="40" width="182.4" height="20" rx="3" fill="#2b6cb0"/>
+<rect x="370.4" y="40" width="159.6" height="20" rx="3" fill="#d8dde3"/>
+<text x="538.0" y="54" font-size="13" fill="#24292f">16 of 30</text>
+<text x="176" y="82" font-size="13" fill="#24292f" text-anchor="end">contradiction</text>
+<rect x="186.0" y="68" width="57.0" height="20" rx="3" fill="#2b6cb0"/>
+<rect x="245.0" y="68" width="285.0" height="20" rx="3" fill="#d8dde3"/>
+<text x="538.0" y="82" font-size="13" fill="#24292f">5 of 30</text>
+<text x="176" y="110" font-size="13" fill="#24292f" text-anchor="end">neutral</text>
+<rect x="186.0" y="96" width="376.2" height="20" rx="3" fill="#2b6cb0"/>
+<rect x="564.2" y="96" width="79.8" height="20" rx="3" fill="#d8dde3"/>
+<text x="652.0" y="110" font-size="13" fill="#24292f">33 of 40</text>
+<rect x="186" y="138" width="12" height="12" rx="2" fill="#2b6cb0"/>
+<text x="204" y="149" font-size="12" fill="#57606a">readers confirm the call</text>
+<rect x="432" y="138" width="12" height="12" rx="2" fill="#d8dde3"/>
+<text x="450" y="149" font-size="12" fill="#57606a">readers settle on another label</text>
+</svg>
