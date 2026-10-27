@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="435" viewBox="0 0 760 435" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="435" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">The record search (make docindex, make retrieve, make nli)</text>
+<rect x="32" y="44" width="348" height="88" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="66" font-size="13" font-weight="600" fill="#24292f">The record documents</text>
+<text x="44" y="83" font-size="12" fill="#57606a">the 15 documents ship in deis/; sections by</text>
+<text x="44" y="100" font-size="12" fill="#57606a">heading tree; 600-character chunks, 100 overlap;</text>
+<text x="44" y="117" font-size="12" fill="#24292f">one vector per chunk</text>
+<rect x="396" y="44" width="348" height="88" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="408" y="66" font-size="13" font-weight="600" fill="#24292f">The gate-opening sentences</text>
+<text x="408" y="83" font-size="12" fill="#57606a">11,563 distinct sentences, embedded under the</text>
+<text x="408" y="100" font-size="12" fill="#57606a">comment view: “retrieve the record sentence</text>
+<text x="408" y="117" font-size="12" fill="#24292f">that addresses this claim”</text>
+<line x1="206.0" y1="132" x2="206.0" y2="151" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 202.0 150 L 210.0 150 L 206.0 157 Z" fill="#57606a"/>
+<line x1="570.0" y1="132" x2="570.0" y2="151" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 566.0 150 L 574.0 150 L 570.0 157 Z" fill="#57606a"/>
+<rect x="32" y="158" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="180" font-size="13" font-weight="600" fill="#24292f">The retrieval: the 5 nearest chunks per sentence, by cosine</text>
+<text x="44" y="197" font-size="12" fill="#57606a">the sections that carry commenters' words are excluded: the letters volume and the</text>
+<text x="44" y="214" font-size="12" fill="#24292f">comment-summary and response appendixes — a comment must not match a comment</text>
+<line x1="380" y1="229" x2="380" y2="246" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 245 L 384 245 L 380 252 Z" fill="#57606a"/>
+<rect x="32" y="253" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="275" font-size="13" font-weight="600" fill="#24292f">The reading: every retrieved pair</text>
+<text x="44" y="292" font-size="12" fill="#57606a">a natural-language-inference model reads chunk as premise, sentence as hypothesis;</text>
+<text x="44" y="309" font-size="12" fill="#24292f">three probabilities; a call is decisive at 0.7</text>
+<line x1="380" y1="324" x2="380" y2="341" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 340 L 384 340 L 380 347 Z" fill="#57606a"/>
+<rect x="32" y="348" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="370" font-size="13" font-weight="600" fill="#24292f">The labels</text>
+<text x="44" y="387" font-size="12" fill="#57606a">sentence: contested (a pair reads contradiction) / addressed (entailment, no contradiction)</text>
+<text x="44" y="404" font-size="12" fill="#24292f">/ not_addressed; a comment takes its strongest sentence label</text>
+</svg>

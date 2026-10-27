@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="452" viewBox="0 0 760 452" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="452" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">The four layers of de-duplication (390,064 comments to 78,953 distinct texts)</text>
+<rect x="32" y="40" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="62" font-size="13" font-weight="600" fill="#24292f">Identical copies</text>
+<text x="44" y="79" font-size="12" fill="#57606a">SHA-256 of the canonical full text</text>
+<text x="44" y="96" font-size="12" fill="#24292f">the same text submitted more than once</text>
+<line x1="380" y1="111" x2="380" y2="130" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 129 L 384 129 L 380 136 Z" fill="#57606a"/>
+<text x="390" y="128.0" font-size="12" fill="#57606a">what the layer above did not fold</text>
+<rect x="32" y="137" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="159" font-size="13" font-weight="600" fill="#24292f">Template letters</text>
+<text x="44" y="176" font-size="12" fill="#57606a">a hash of the body, opening and closing removed</text>
+<text x="44" y="193" font-size="12" fill="#24292f">one body under personal openings and signatures</text>
+<line x1="380" y1="208" x2="380" y2="227" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 226 L 384 226 L 380 233 Z" fill="#57606a"/>
+<text x="390" y="225.0" font-size="12" fill="#57606a">what the layer above did not fold</text>
+<rect x="32" y="234" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="256" font-size="13" font-weight="600" fill="#24292f">Small families</text>
+<text x="44" y="273" font-size="12" fill="#57606a">6-to-8-word n-gram sets; resemblance and containment; leader assignment at 0.85</text>
+<text x="44" y="290" font-size="12" fill="#24292f">a few copies of one letter, lightly edited</text>
+<line x1="380" y1="305" x2="380" y2="324" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 323 L 384 323 L 380 330 Z" fill="#57606a"/>
+<text x="390" y="322.0" font-size="12" fill="#57606a">what the layer above did not fold</text>
+<rect x="32" y="331" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="353" font-size="13" font-weight="600" fill="#24292f">Campaign letters</text>
+<text x="44" y="370" font-size="12" fill="#57606a">shared sentences</text>
+<text x="44" y="387" font-size="12" fill="#24292f">one template, reworded by each sender</text>
+<text x="32" y="434" font-size="12" fill="#57606a">Each layer assigns every text to a leader, never by transitive closure: a member is within the threshold of its own leader.</text>
+</svg>

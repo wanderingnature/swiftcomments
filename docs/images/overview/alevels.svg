@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="162" viewBox="0 0 760 162" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="162" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">Answerability of the 57,277 rated comments (model reading)</text>
+<text x="290" y="54" font-size="13" fill="#24292f" text-anchor="end">A0 — the gate is closed</text>
+<rect x="300" y="40" width="340.0" height="20" rx="3" fill="#2b6cb0"/>
+<text x="646.0" y="54" font-size="13" fill="#24292f">52,431</text>
+<text x="290" y="82" font-size="13" fill="#24292f" text-anchor="end">A1 — the analysis must address the law</text>
+<rect x="300" y="68" width="11.2" height="20" rx="3" fill="#2b6cb0"/>
+<text x="317.2" y="82" font-size="13" fill="#24292f">1,727</text>
+<text x="290" y="110" font-size="13" fill="#24292f" text-anchor="end">A2 — states a mechanism and cites a source</text>
+<rect x="300" y="96" width="9.8" height="20" rx="3" fill="#2b6cb0"/>
+<text x="315.8" y="110" font-size="13" fill="#24292f">1,516</text>
+<text x="290" y="138" font-size="13" fill="#24292f" text-anchor="end">A3 — open gate, defeats no dismissal</text>
+<rect x="300" y="124" width="10.4" height="20" rx="3" fill="#2b6cb0"/>
+<text x="316.4" y="138" font-size="13" fill="#24292f">1,603</text>
+</svg>

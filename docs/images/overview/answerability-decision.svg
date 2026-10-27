@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="372" viewBox="0 0 760 372" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="372" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">Answerability: which no-action reply a comment defeats (7 CFR 1b.7(f)(2)(vi))</text>
+<rect x="32" y="40" width="696" height="54" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="62" font-size="13" font-weight="600" fill="#24292f">Is the gate open?</text>
+<text x="44" y="79" font-size="12" fill="#24292f">no: A0 — nothing requires an answer</text>
+<line x1="380" y1="94" x2="380" y2="111" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 110 L 384 110 L 380 117 Z" fill="#57606a"/>
+<rect x="32" y="118" width="696" height="54" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="140" font-size="13" font-weight="600" fill="#24292f">Does LAW reach 2?</text>
+<text x="44" y="157" font-size="12" fill="#24292f">yes: A1 — the analysis must address the law</text>
+<line x1="380" y1="172" x2="380" y2="189" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 188 L 384 188 L 380 195 Z" fill="#57606a"/>
+<rect x="32" y="196" width="696" height="54" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="218" font-size="13" font-weight="600" fill="#24292f">GAP 3, or ALT 2 or more, or (GAP 2 or EVID 2+) with a mechanism and a citation?</text>
+<text x="44" y="235" font-size="12" fill="#24292f">yes: A2 — defeats “no cause and effect”</text>
+<line x1="380" y1="250" x2="380" y2="267" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 266 L 384 266 L 380 273 Z" fill="#57606a"/>
+<rect x="32" y="274" width="696" height="54" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="296" font-size="13" font-weight="600" fill="#24292f">Otherwise</text>
+<text x="44" y="313" font-size="12" fill="#24292f">A3 — the gate is open, but no dismissal is defeated</text>
+<text x="32" y="354" font-size="12" fill="#57606a">The cases run top to bottom. A mechanism is a move and a target both present; a citation is DOC 2+ or a named source.</text>
+</svg>

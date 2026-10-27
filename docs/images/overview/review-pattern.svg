@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="323" viewBox="0 0 760 323" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="323" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">How a reading is measured: the reviewed-table pattern</text>
+<rect x="32" y="44" width="348" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="66" font-size="13" font-weight="600" fill="#24292f">Reader 1 (a frontier model)</text>
+<text x="44" y="83" font-size="12" fill="#57606a">reads every item, blind to the other reader,</text>
+<text x="44" y="100" font-size="12" fill="#24292f">the pipeline and the stored calls</text>
+<rect x="396" y="44" width="348" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="408" y="66" font-size="13" font-weight="600" fill="#24292f">Reader 2 (a different provider)</text>
+<text x="408" y="83" font-size="12" fill="#57606a">reads the same items under the same guide,</text>
+<text x="408" y="100" font-size="12" fill="#24292f">temperature 0</text>
+<line x1="206.0" y1="115" x2="206.0" y2="134" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 202.0 133 L 210.0 133 L 206.0 140 Z" fill="#57606a"/>
+<line x1="570.0" y1="115" x2="570.0" y2="134" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 566.0 133 L 574.0 133 L 570.0 140 Z" fill="#57606a"/>
+<rect x="32" y="141" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="163" font-size="13" font-weight="600" fill="#24292f">Agree? The agreed label is final.</text>
+<text x="44" y="180" font-size="12" fill="#57606a">Disagree? A tie-breaker from a third provider picks one, with its reason —</text>
+<text x="44" y="197" font-size="12" fill="#24292f">and a human reviewer rules every disagreement, not limited to the readers' labels</text>
+<line x1="380" y1="212" x2="380" y2="229" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 228 L 384 228 L 380 235 Z" fill="#57606a"/>
+<rect x="32" y="236" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="258" font-size="13" font-weight="600" fill="#24292f">The reviewed table, committed</text>
+<text x="44" y="275" font-size="12" fill="#57606a">every item, every label, every note and ruling, under seeds/ (CC BY-NC 4.0) —</text>
+<text x="44" y="292" font-size="12" fill="#24292f">a reader can check every label behind every figure</text>
+</svg>

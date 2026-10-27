@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="358" viewBox="0 0 760 358" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="358" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">The gate set by prong combination (4,846 comments, model reading)</text>
+<text x="290" y="54" font-size="13" fill="#24292f" text-anchor="end">impacts only</text>
+<rect x="300" y="40" width="340.0" height="20" rx="3" fill="#2b6cb0"/>
+<text x="646.0" y="54" font-size="13" fill="#24292f">2,614</text>
+<text x="290" y="82" font-size="13" fill="#24292f" text-anchor="end">impacts + compliance</text>
+<rect x="300" y="68" width="122.5" height="20" rx="3" fill="#2b6cb0"/>
+<text x="428.5" y="82" font-size="13" fill="#24292f">942</text>
+<text x="290" y="110" font-size="13" fill="#24292f" text-anchor="end">compliance only</text>
+<rect x="300" y="96" width="65.4" height="20" rx="3" fill="#b08020"/>
+<text x="371.4" y="110" font-size="13" fill="#24292f">503</text>
+<text x="290" y="138" font-size="13" fill="#24292f" text-anchor="end">impacts + significance</text>
+<rect x="300" y="124" width="39.9" height="20" rx="3" fill="#2b6cb0"/>
+<text x="345.9" y="138" font-size="13" fill="#24292f">307</text>
+<text x="290" y="166" font-size="13" fill="#24292f" text-anchor="end">impacts + significance + compliance</text>
+<rect x="300" y="152" width="24.1" height="20" rx="3" fill="#2b6cb0"/>
+<text x="330.1" y="166" font-size="13" fill="#24292f">185</text>
+<text x="290" y="194" font-size="13" fill="#24292f" text-anchor="end">impacts + alternatives</text>
+<rect x="300" y="180" width="16.5" height="20" rx="3" fill="#2b6cb0"/>
+<text x="322.5" y="194" font-size="13" fill="#24292f">127</text>
+<text x="290" y="222" font-size="13" fill="#24292f" text-anchor="end">impacts + alternatives + compliance</text>
+<rect x="300" y="208" width="9.4" height="20" rx="3" fill="#2b6cb0"/>
+<text x="315.4" y="222" font-size="13" fill="#24292f">72</text>
+<text x="290" y="250" font-size="13" fill="#24292f" text-anchor="end">alternatives only</text>
+<rect x="300" y="236" width="6.1" height="20" rx="3" fill="#2b6cb0"/>
+<text x="312.1" y="250" font-size="13" fill="#24292f">47</text>
+<text x="290" y="278" font-size="13" fill="#24292f" text-anchor="end">impacts + significance + alternatives</text>
+<rect x="300" y="264" width="3.1" height="20" rx="3" fill="#2b6cb0"/>
+<text x="309.1" y="278" font-size="13" fill="#24292f">24</text>
+<text x="290" y="306" font-size="13" fill="#24292f" text-anchor="end">all four</text>
+<rect x="300" y="292" width="2.6" height="20" rx="3" fill="#2b6cb0"/>
+<text x="308.6" y="306" font-size="13" fill="#24292f">20</text>
+<text x="290" y="334" font-size="13" fill="#24292f" text-anchor="end">alternatives + compliance</text>
+<rect x="300" y="320" width="2.0" height="20" rx="3" fill="#2b6cb0"/>
+<text x="308.0" y="334" font-size="13" fill="#24292f">5</text>
+</svg>

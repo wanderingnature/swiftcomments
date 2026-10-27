@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="134" viewBox="0 0 760 134" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="134" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">Three roadless dockets, by comments received</text>
+<text x="250" y="54" font-size="13" fill="#24292f" text-anchor="end">2001 Roadless Rule (manual)</text>
+<rect x="260" y="40" width="380.0" height="20" rx="3" fill="#2b6cb0"/>
+<text x="646.0" y="54" font-size="13" fill="#24292f">1,155,000 — read by coders over months</text>
+<text x="250" y="82" font-size="13" fill="#24292f" text-anchor="end">2008 Idaho roadless rule (manual)</text>
+<rect x="260" y="68" width="45.8" height="20" rx="3" fill="#2b6cb0"/>
+<text x="311.8" y="82" font-size="13" fill="#24292f">139,120</text>
+<text x="250" y="110" font-size="13" fill="#24292f" text-anchor="end">this docket, FS-2025-0001 (this method)</text>
+<rect x="260" y="96" width="128.3" height="20" rx="3" fill="#b08020"/>
+<text x="394.3" y="110" font-size="13" fill="#24292f">390,064</text>
+</svg>

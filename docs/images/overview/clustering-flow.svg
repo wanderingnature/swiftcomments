@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="610" viewBox="0 0 760 610" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="610" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">From sentences to concerns (steps 10 to 14)</text>
+<rect x="32" y="40" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="62" font-size="13" font-weight="600" fill="#24292f">The sentences of the gate-open comments</text>
+<text x="44" y="79" font-size="12" fill="#57606a">6,516 comments; the gate-opening sentences alone carry the substance:</text>
+<text x="44" y="96" font-size="12" fill="#24292f">11,563 distinct sentences (selection: opening, or opening+hits)</text>
+<line x1="380" y1="111" x2="380" y2="128" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 127 L 384 127 L 380 134 Z" fill="#57606a"/>
+<rect x="32" y="135" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="157" font-size="13" font-weight="600" fill="#24292f">One vector per distinct sentence</text>
+<text x="44" y="174" font-size="12" fill="#57606a">Qwen3-Embedding-8B f16, 1,024 leading dimensions; BGE-large beside it</text>
+<text x="44" y="191" font-size="12" fill="#24292f">a second model shows what depends on the model</text>
+<line x1="380" y1="206" x2="380" y2="223" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 222 L 384 222 L 380 229 Z" fill="#57606a"/>
+<rect x="32" y="230" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="252" font-size="13" font-weight="600" fill="#24292f">The leader merge</text>
+<text x="44" y="269" font-size="12" fill="#57606a">near-copies at cosine 0.98 or more join their leader</text>
+<text x="44" y="286" font-size="12" fill="#24292f">form-letter variants become one item; no chaining</text>
+<line x1="380" y1="301" x2="380" y2="318" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 317 L 384 317 L 380 324 Z" fill="#57606a"/>
+<rect x="32" y="325" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="347" font-size="13" font-weight="600" fill="#24292f">UMAP to 5 dimensions, then HDBSCAN</text>
+<text x="44" y="364" font-size="12" fill="#57606a">density clustering; a one-off wording is noise, not a forced member</text>
+<text x="44" y="381" font-size="12" fill="#24292f">about 73 to 80% of sentences land in a cluster; the rest is noise</text>
+<line x1="380" y1="396" x2="380" y2="413" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 412 L 384 412 L 380 419 Z" fill="#57606a"/>
+<rect x="32" y="420" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="442" font-size="13" font-weight="600" fill="#24292f">The topics</text>
+<text x="44" y="459" font-size="12" fill="#57606a">cluster centroids, the shared direction removed; 5-nearest-neighbour graph;</text>
+<text x="44" y="476" font-size="12" fill="#24292f">the eigengap of the graph Laplacian picks the number of topics</text>
+<line x1="380" y1="491" x2="380" y2="508" stroke="#57606a" stroke-width="1.5"/>
+<path d="M 376 507 L 384 507 L 380 514 Z" fill="#57606a"/>
+<rect x="32" y="515" width="696" height="71" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="537" font-size="13" font-weight="600" fill="#24292f">The names, then the concern map</text>
+<text x="44" y="554" font-size="12" fill="#57606a">class-based TF-IDF names each cluster and topic; no model writes a name;</text>
+<text x="44" y="571" font-size="12" fill="#24292f">a person groups the clusters into concerns in the console and the choice is recorded</text>
+</svg>

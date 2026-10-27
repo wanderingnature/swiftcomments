@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="362" viewBox="0 0 760 362" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<rect width="760" height="362" fill="#ffffff"/>
+<text x="16" y="24" font-size="14" font-weight="600" fill="#24292f">The eight dimensions of the substance reading</text>
+<rect x="32" y="44" width="348" height="50" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="64" font-size="13" font-weight="600" fill="#24292f">PLACE</text>
+<text x="44" y="81" font-size="12" fill="#24292f">a place named</text>
+<rect x="396" y="44" width="348" height="50" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="408" y="64" font-size="13" font-weight="600" fill="#24292f">STAND</text>
+<text x="408" y="81" font-size="12" fill="#24292f">the commenter's connection to it</text>
+<rect x="32" y="112" width="348" height="50" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44" y="132" font-size="13" font-weight="600" fill="#24292f">DOC</text>
+<text x="44" y="149" font-size="12" fill="#24292f">a reference to the agency's documents</text>
+<rect x="396" y="112" width="348" height="50" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="408" y="132" font-size="13" font-weight="600" fill="#24292f">ASK</text>
+<text x="408" y="149" font-size="12" fill="#24292f">a request with an action and a subject</text>
+<rect x="32" y="180" width="348" height="50" rx="6" fill="#f6f8fa" stroke="#2b6cb0" stroke-width="1.5"/>
+<text x="44" y="200" font-size="13" font-weight="600" fill="#24292f">GAP — gate</text>
+<text x="44" y="217" font-size="12" fill="#24292f">a deficiency in the analysis</text>
+<rect x="396" y="180" width="348" height="50" rx="6" fill="#f6f8fa" stroke="#2b6cb0" stroke-width="1.5"/>
+<text x="408" y="200" font-size="13" font-weight="600" fill="#24292f">EVID — gate</text>
+<text x="408" y="217" font-size="12" fill="#24292f">a source applied to this proposal</text>
+<rect x="32" y="248" width="348" height="50" rx="6" fill="#f6f8fa" stroke="#2b6cb0" stroke-width="1.5"/>
+<text x="44" y="268" font-size="13" font-weight="600" fill="#24292f">ALT — gate</text>
+<text x="44" y="285" font-size="12" fill="#24292f">a distinct alternative</text>
+<rect x="396" y="248" width="348" height="50" rx="6" fill="#f6f8fa" stroke="#2b6cb0" stroke-width="1.5"/>
+<text x="408" y="268" font-size="13" font-weight="600" fill="#24292f">LAW — gate</text>
+<text x="408" y="285" font-size="12" fill="#24292f">a legal authority</text>
+<text x="32" y="328" font-size="12" fill="#24292f">Each dimension takes a level from 0 to 3. The gate opens when GAP, EVID, ALT or LAW reaches level 2 —</text>
+<text x="32" y="345" font-size="12" fill="#24292f">the four things 7 CFR 1b.11(53) says substantive information informs.</text>
+</svg>
