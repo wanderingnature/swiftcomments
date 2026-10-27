@@ -9,7 +9,8 @@ For every doc_retrieval pair, the cross-encoder reads the chunk as the premise
 and the sentence as the hypothesis and gives the three probabilities, stored in
 doc_nli. No similarity floor gates the reading: the retrieval reading test
 found no cosine below which the retrieval stops finding the meant passage. A
-pair with a row for the NLI model is not read again, so the run resumes. The
+pair with a row for the NLI model is not read again, so the run resumes. A
+stored reading of a pair the rebuilt retrieval no longer holds is removed. The
 model runs locally (dependency group nli: uv sync --group nli); the first run
 downloads it.
 
@@ -78,6 +79,16 @@ def queue(conn, nli_model: str) -> list[tuple[str, int, str, str]]:
         "  WHERE n.text_key = r.text_key AND n.chunk_id = r.chunk_id AND n.nli_model = ?)"
         " ORDER BY r.text_key, r.chunk_id", (nli_model,)).fetchall()
     return [(k, cid, ing.embed_text(f, chunk), text) for k, cid, f, chunk, text in rows]
+
+
+def prune(conn) -> int:
+    """Stored readings of pairs the current retrieval does not hold, removed:
+    a rebuilt retrieval leaves them behind, and they belong to no label."""
+    cur = conn.execute(
+        "DELETE FROM doc_nli WHERE NOT EXISTS (SELECT 1 FROM doc_retrieval r"
+        " WHERE r.text_key = doc_nli.text_key AND r.chunk_id = doc_nli.chunk_id)")
+    conn.commit()
+    return cur.rowcount
 
 
 def read_pairs(conn, pairs, nli_model: str, batch_size: int) -> int:
@@ -196,6 +207,10 @@ def main(argv: list[str] | None = None) -> int:
             conn.close()
             print("nothing read")
             return 0
+        stale = prune(conn)
+        if stale:
+            print(f"  {stale:,} stored readings of pairs no longer retrieved, removed",
+                  flush=True)
         if todo:
             read_pairs(conn, todo, args.nli_model, args.batch)
         if args.limit and len(pairs) > len(todo):

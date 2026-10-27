@@ -35,7 +35,8 @@ found no cosine below which the retrieval stops finding the meant passage
 The model is `MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli`. It
 runs on your machine. Install it with `uv sync --group nli`; the first run
 downloads it from Hugging Face. The run resumes: a pair with a stored row is
-not read again.
+not read again. If you rebuild the retrieval, the run removes the stored
+readings of pairs the new retrieval does not hold.
 
 ## The labels
 

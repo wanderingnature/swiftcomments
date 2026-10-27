@@ -91,6 +91,18 @@ def test_sentence_labels_and_comment_order(dbfile):
     assert dbfile.execute("SELECT count(*) FROM doc_sentence_label").fetchone()[0] == 4
 
 
+def test_prune_removes_readings_of_unretrieved_pairs(dbfile):
+    pair(dbfile, "k-kept", 10, 1, 0.9, (0.9, 0.05, 0.05))
+    # a reading of a pair the rebuilt retrieval no longer holds
+    dbfile.execute("INSERT INTO doc_nli (text_key, chunk_id, nli_model, p_entailment,"
+                   " p_neutral, p_contradiction, created_at)"
+                   " VALUES ('k-gone', 11, ?, 0.1, 0.1, 0.8, 't')", (NLI,))
+    assert nli.prune(dbfile) == 1
+    got = [tuple(r) for r in dbfile.execute("SELECT text_key, chunk_id FROM doc_nli")]
+    assert got == [("k-kept", 10)]
+    assert nli.prune(dbfile) == 0
+
+
 def test_any_unread_pair_stops(dbfile):
     pair(dbfile, "k-x", 10, 1, 0.9, (0.9, 0.05, 0.05))
     pair(dbfile, "k-x", 11, 2, 0.4)
